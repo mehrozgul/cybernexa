@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 01 - Linux Basics | CyberNexa</title>
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+    <style>
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background: #02080d;
+        }
+        /* =====================================================
+           MAIN
+        ====================================================== */
+        .lab-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            padding: 65px 20px 80px;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+        .lab-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        /* =====================================================
+           HEADER
+        ====================================================== */
+        .lab-header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+        .lab-label {
+            display: inline-block;
+            margin-bottom: 12px;
+            color: #67e8f9;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .lab-header h1 {
+            margin: 0;
+            color: #f8fafc;
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        .lab-header h1 span {
+            color: #67e8f9;
+        }
+        .lab-intro {
+            max-width: 720px;
+            margin: 16px auto 0;
+            color: #b6c2cc;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        /* =====================================================
+           INFO BAR
+        ====================================================== */
+        .lab-info {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .info-box {
+
+            padding: 16px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            text-align: center;
+        }
+
+
+        .info-box strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .info-box span {
+
+            color: #dbeafe;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            position: relative;
+
+            margin-bottom: 18px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+
+        .step-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 17px;
+        }
+
+
+        .step-number {
+
+            width: 38px;
+
+            height: 38px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.35);
+
+            border-radius: 9px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        .step-heading h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 19px;
+
+            font-weight: 750;
+        }
+
+
+        .step-description {
+
+            margin: 0 0 15px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           INSTRUCTION
+        ====================================================== */
+
+        .instruction-box {
+
+            margin-bottom: 15px;
+
+            padding: 15px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 8px 8px 0;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+        }
+
+
+        .instruction-box strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #f8fafc;
+
+            font-size: 13px;
+        }
+
+
+        .instruction-box span {
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           COMMAND AREA
+        ====================================================== */
+
+        .command-wrapper {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+
+        .command-box {
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 14px 16px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 9px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            white-space: nowrap;
+        }
+
+
+        .copy-button {
+
+            flex-shrink: 0;
+
+            padding: 12px 15px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .copy-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.13);
+        }
+
+
+        .copy-button.copied {
+
+            color: #67e8f9;
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+        }
+
+
+        /* =====================================================
+           EXPECTED RESULT
+        ====================================================== */
+
+        .expected-result {
+
+            margin-top: 14px;
+
+            padding: 13px 15px;
+
+            border:
+                1px solid rgba(34, 197, 94, 0.15);
+
+            border-radius: 8px;
+
+            background:
+                rgba(34, 197, 94, 0.035);
+
+            color: #b6c2cc;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        .expected-result strong {
+
+            color: #86efac;
+        }
+
+
+        /* =====================================================
+           IMPORTANT NOTE
+        ====================================================== */
+
+        .note-box {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(250, 204, 21, 0.18);
+
+            border-radius: 9px;
+
+            background:
+                rgba(250, 204, 21, 0.035);
+
+            color: #cbd5e1;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        .note-box strong {
+
+            color: #fde68a;
+        }
+
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion-card {
+
+            margin-top: 30px;
+
+            padding: 30px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(103, 232, 249, 0.055),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            text-align: center;
+        }
+
+
+        .completion-card h2 {
+
+            margin: 0 0 10px;
+
+            color: #f8fafc;
+
+            font-size: 22px;
+        }
+
+
+        .completion-card p {
+
+            margin: 0 auto 20px;
+
+            max-width: 600px;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        .complete-button {
+
+            padding: 13px 22px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.35);
+
+            border-radius: 9px;
+
+            color: #021014;
+
+            background: #67e8f9;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .complete-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 25px rgba(103, 232, 249, 0.18);
+        }
+
+
+        .complete-button.completed {
+
+            color: #86efac;
+
+            background:
+                rgba(34, 197, 94, 0.10);
+
+            border-color:
+                rgba(34, 197, 94, 0.40);
+
+            cursor: default;
+
+            box-shadow: none;
+        }
+
+
+        .completion-message {
+
+            min-height: 20px;
+
+            margin-top: 15px;
+
+            color: #67e8f9;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-top: 25px;
+        }
+
+
+        .lab-nav-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 12px 17px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.045);
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .lab-nav-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.55);
+
+            background:
+                rgba(103, 232, 249, 0.09);
+        }
+
+
+        .lab-nav-button span {
+
+            color: #67e8f9;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .lab-page {
+
+                padding:
+                    45px 12px 60px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 31px;
+            }
+
+
+            .lab-intro {
+
+                font-size: 13px;
+            }
+
+
+            .lab-info {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .lab-card {
+
+                padding: 19px 16px;
+            }
+
+
+            .step-heading h2 {
+
+                font-size: 17px;
+            }
+
+
+            .command-wrapper {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .command-box {
+
+                width: 100%;
+            }
+
+
+            .copy-button {
+
+                width: 100%;
+            }
+
+
+            .lab-navigation {
+
+                flex-direction: column;
+            }
+
+
+            .lab-nav-button {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="lab-header">
+
+                <div class="lab-label">
+                    PRACTICAL CYBERSECURITY LABS
+                </div>
+
+                <h1>
+                    Lab 01 — <span>Linux Basics</span>
+                </h1>
+
+                <p class="lab-intro">
+
+                    In this practical lab, you will learn how to
+                    identify the current Linux user, navigate the
+                    file system, create a directory, create a file
+                    and verify your work using basic Linux commands.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LAB INFORMATION
+            ================================================== -->
+
+            <div class="lab-info">
+
+                <div class="info-box">
+
+                    <strong>Level</strong>
+
+                    <span>Beginner</span>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <strong>Category</strong>
+
+                    <span>Ubuntu/Debian Linux</span>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <strong>Lab</strong>
+
+                    <span>01 / Linux Basics</span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 STEP 1
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-heading">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <h2>
+                        Open the Linux Terminal
+                    </h2>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What to do?
+                    </strong>
+
+                    <span>
+
+                        Open your Linux terminal. If you are using
+                        Kali Linux or Ubuntu, open the Terminal
+                        application.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-result">
+
+                    <strong>Expected:</strong>
+
+                    You should see a terminal window where you can
+                    type Linux commands.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 2
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-heading">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    <h2>
+                        Check the Current User
+                    </h2>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Where to write the command?
+                    </strong>
+
+                    <span>
+
+                        Type the following command directly into
+                        your Linux terminal and press
+                        <strong>Enter</strong>.
+
+                    </span>
+
+                </div>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+
+                        <code id="command1">
+                            whoami
+                        </code>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="copy-button"
+                        data-command="whoami"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+
+                <div class="expected-result">
+
+                    <strong>Expected:</strong>
+
+                    Linux will display the username of the account
+                    currently being used.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 3
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-heading">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    <h2>
+                        Check Your Current Directory
+                    </h2>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What to do?
+                    </strong>
+
+                    <span>
+
+                        Copy the command below, paste it into the
+                        terminal and press <strong>Enter</strong>.
+
+                    </span>
+
+                </div>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+
+                        <code>
+                            pwd
+                        </code>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="copy-button"
+                        data-command="pwd"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+
+                <div class="expected-result">
+
+                    <strong>Expected:</strong>
+
+                    The terminal displays the full path of your
+                    current working directory.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 4
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-heading">
+
+                    <div class="step-number">
+                        04
+                    </div>
+
+                    <h2>
+                        List Files and Directories
+                    </h2>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What to do?
+                    </strong>
+
+                    <span>
+
+                        Use the following command to see the files
+                        and directories in your current location.
+
+                    </span>
+
+                </div>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+
+                        <code>
+                            ls
+                        </code>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="copy-button"
+                        data-command="ls"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+
+                <div class="expected-result">
+
+                    <strong>Expected:</strong>
+
+                    Linux displays the files and directories
+                    available in the current location.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 5
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-heading">
+
+                    <div class="step-number">
+                        05
+                    </div>
+
+                    <h2>
+                        Create a Lab Directory
+                    </h2>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What to do?
+                    </strong>
+
+                    <span>
+
+                        Create a new directory named
+                        <strong>cybernexa-lab</strong>.
+
+                        Copy the command and run it in the
+                        terminal.
+
+                    </span>
+
+                </div>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+
+                        <code>
+                            mkdir cybernexa-lab
+                        </code>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="copy-button"
+                        data-command="mkdir cybernexa-lab"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+
+                <div class="expected-result">
+
+                    <strong>Expected:</strong>
+
+                    No error message normally means the directory
+                    was created successfully.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 6
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-heading">
+
+                    <div class="step-number">
+                        06
+                    </div>
+
+                    <h2>
+                        Enter the New Directory
+                    </h2>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What to do?
+                    </strong>
+
+                    <span>
+
+                        Move into the directory you created in the
+                        previous step.
+
+                    </span>
+
+                </div>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+
+                        <code>
+                            cd cybernexa-lab
+                        </code>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="copy-button"
+                        data-command="cd cybernexa-lab"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+
+                <div class="expected-result">
+
+                    <strong>Expected:</strong>
+
+                    Your terminal prompt changes to show that you
+                    are working inside the cybernexa-lab directory.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 7
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-heading">
+
+                    <div class="step-number">
+                        07
+                    </div>
+
+                    <h2>
+                        Create a File
+                    </h2>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What to do?
+                    </strong>
+
+                    <span>
+
+                        Create an empty file named
+                        <strong>notes.txt</strong> inside your
+                        current directory.
+
+                    </span>
+
+                </div>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+
+                        <code>
+                            touch notes.txt
+                        </code>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="copy-button"
+                        data-command="touch notes.txt"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+
+                <div class="expected-result">
+
+                    <strong>Expected:</strong>
+
+                    The file notes.txt is created. The command
+                    normally produces no output when successful.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 8
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-heading">
+
+                    <div class="step-number">
+                        08
+                    </div>
+
+                    <h2>
+                        Verify the File
+                    </h2>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What to do?
+                    </strong>
+
+                    <span>
+
+                        Use <strong>ls</strong> again to verify that
+                        notes.txt exists.
+
+                    </span>
+
+                </div>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+
+                        <code>
+                            ls
+                        </code>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="copy-button"
+                        data-command="ls"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+
+                <div class="expected-result">
+
+                    <strong>Expected:</strong>
+
+                    You should see <strong>notes.txt</strong> in
+                    the output.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 9
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-heading">
+
+                    <div class="step-number">
+                        09
+                    </div>
+
+                    <h2>
+                        Verify Your Final Location
+                    </h2>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What to do?
+                    </strong>
+
+                    <span>
+
+                        Finally, use <strong>pwd</strong> to confirm
+                        that you are inside the cybernexa-lab
+                        directory.
+
+                    </span>
+
+                </div>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+
+                        <code>
+                            pwd
+                        </code>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="copy-button"
+                        data-command="pwd"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+
+                <div class="expected-result">
+
+                    <strong>Expected:</strong>
+
+                    The displayed path should end with:
+
+                    <strong>/cybernexa-lab</strong>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 IMPORTANT NOTE
+            ================================================== -->
+
+            <div class="note-box">
+
+                <strong>Important:</strong>
+
+                These commands should be executed in your own
+                Linux practice environment such as Kali Linux,
+                Ubuntu or another Linux system. Do not run
+                commands on systems that you do not own or have
+                permission to use.
+
+            </div>
+
+
+
+            <!-- =================================================
+                 COMPLETION
+            ================================================== -->
+
+            <section class="completion-card">
+
+                <h2>
+                    Lab 01 Completion
+                </h2>
+
+                <p>
+
+                    If you have completed all the steps and verified
+                    the final result in your Linux terminal, click
+                    the button below to mark Lab 01 as completed.
+
+                </p>
+
+
+                <button
+                    type="button"
+                    id="completeLabButton"
+                    class="complete-button"
+                >
+                    ✓ Mark Lab 01 as Complete
+                </button>
+
+
+                <div
+                    id="completionMessage"
+                    class="completion-message"
+                ></div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="lab-navigation">
+
+                <a
+                    href="../lab/linux-labs.html"
+                    class="lab-nav-button"
+                >
+
+                    <span>←</span>
+
+                    Back to Labs Hub
+
+                </a>
+
+
+                <a
+                    href="../theory/linux-file-system.html"
+                    class="lab-nav-button"
+                >
+
+                    Next Topic: Linux File System
+
+                    <span>→</span>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+
+    <!-- =====================================================
+         COPY COMMAND + COMPLETION JS
+    ====================================================== -->
+
+    <script>
+
+        /* =====================================================
+           COPY BUTTONS
+        ====================================================== */
+
+        const copyButtons =
+            document.querySelectorAll(".copy-button");
+
+
+        copyButtons.forEach(button => {
+
+            button.addEventListener("click", async function () {
+
+                const command =
+                    this.getAttribute("data-command");
+
+
+                try {
+
+                    await navigator.clipboard.writeText(command);
+
+                    const originalText =
+                        this.textContent;
+
+                    this.textContent =
+                        "✓ Copied";
+
+                    this.classList.add("copied");
+
+
+                    setTimeout(() => {
+
+                        this.textContent =
+                            originalText;
+
+                        this.classList.remove("copied");
+
+                    }, 1500);
+
+
+                } catch (error) {
+
+                    this.textContent =
+                        "Copy failed";
+
+                }
+
+            });
+
+        });
+
+
+
+        /* =====================================================
+           LAB COMPLETION
+        ====================================================== */
+
+        const completeLabButton =
+            document.getElementById(
+                "completeLabButton"
+            );
+
+
+        const completionMessage =
+            document.getElementById(
+                "completionMessage"
+            );
+
+
+        const labCompletionKey =
+            "cybernexa_lab01_linux_basics";
+
+
+        function showCompletedState() {
+
+            completeLabButton.textContent =
+                "✓ Lab 01 Completed";
+
+            completeLabButton.classList.add(
+                "completed"
+            );
+
+            completionMessage.textContent =
+                "Lab 01 has been marked as completed.";
+
+        }
+
+
+        /* Check saved status */
+
+        if (
+            localStorage.getItem(
+                labCompletionKey
+            ) === "completed"
+        ) {
+
+            showCompletedState();
+
+        }
+
+
+        /* Mark complete */
+
+        completeLabButton.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    localStorage.getItem(
+                        labCompletionKey
+                    ) === "completed"
+                ) {
+
+                    return;
+
+                }
+
+
+                localStorage.setItem(
+                    labCompletionKey,
+                    "completed"
+                );
+
+
+                showCompletedState();
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

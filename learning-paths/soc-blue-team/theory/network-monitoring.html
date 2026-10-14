@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>What is Network Monitoring? | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn what Network Monitoring is, why it matters, what security teams monitor, common network indicators and practical SOC monitoring concepts.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        /* =========================================================
+   CYBERNEXA — SOC / BLUE TEAM
+   TOPIC: NETWORK MONITORING
+   ========================================================= */
+
+        :root {
+            --nm-bg: #070d14;
+            --nm-panel: #0d151f;
+            --nm-panel-2: #111c28;
+
+            --nm-blue: #42a5ff;
+            --nm-cyan: #28d7e8;
+            --nm-green: #43d19e;
+            --nm-yellow: #ffd166;
+            --nm-red: #ff5364;
+
+            --nm-text: #edf6fb;
+            --nm-muted: #91a5b7;
+
+            --nm-border: #203342;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+
+            background:
+                radial-gradient(circle at 12% 12%,
+                    rgba(66, 165, 255, 0.10),
+                    transparent 30%),
+                radial-gradient(circle at 88% 25%,
+                    rgba(40, 215, 232, 0.07),
+                    transparent 28%),
+                var(--nm-bg);
+
+            color: var(--nm-text);
+            font-family: Arial, Helvetica, sans-serif;
+
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .nm-container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+
+        /* =========================================================
+   HERO
+   ========================================================= */
+
+        .nm-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 85px 0 70px;
+
+            border-bottom: 1px solid var(--nm-border);
+        }
+
+        .nm-hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 430px;
+            height: 430px;
+
+            right: -190px;
+            top: -190px;
+
+            border: 1px solid rgba(66, 165, 255, 0.13);
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 45px rgba(66, 165, 255, 0.025),
+                0 0 0 90px rgba(66, 165, 255, 0.015);
+        }
+
+        .nm-breadcrumb {
+            margin-bottom: 22px;
+
+            color: var(--nm-cyan);
+
+            font-size: 13px;
+            letter-spacing: 0.4px;
+        }
+
+        .nm-hero-grid {
+            display: grid;
+
+            grid-template-columns: 1.35fr 0.65fr;
+
+            gap: 45px;
+
+            align-items: center;
+        }
+
+        .nm-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 13px;
+            margin-bottom: 18px;
+
+            border: 1px solid rgba(40, 215, 232, 0.32);
+            border-radius: 4px;
+
+            background: rgba(40, 215, 232, 0.055);
+
+            color: var(--nm-cyan);
+
+            font-size: 12px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nm-pulse {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--nm-cyan);
+
+            box-shadow:
+                0 0 12px rgba(40, 215, 232, 0.85);
+        }
+
+        .nm-hero h1 {
+            margin: 0 0 18px;
+
+            font-size: clamp(38px, 5vw, 62px);
+
+            line-height: 1.05;
+
+            letter-spacing: -1px;
+        }
+
+        .nm-hero h1 span {
+            color: var(--nm-blue);
+        }
+
+        .nm-description {
+            max-width: 720px;
+
+            color: var(--nm-muted);
+
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+   NETWORK STATUS PANEL
+   ========================================================= */
+
+        .nm-status-panel {
+            padding: 24px;
+
+            border: 1px solid var(--nm-border);
+            border-top: 2px solid var(--nm-blue);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(17, 28, 40, 0.98),
+                    rgba(8, 14, 21, 0.98));
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .nm-status-header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+        .nm-status-header strong {
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .nm-live {
+            color: var(--nm-green);
+
+            font-size: 11px;
+        }
+
+        .nm-divider {
+            height: 1px;
+
+            background: var(--nm-border);
+
+            margin: 15px 0;
+        }
+
+        .nm-status-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 8px 0;
+
+            color: var(--nm-muted);
+
+            font-size: 13px;
+        }
+
+        .nm-status-row strong {
+            color: var(--nm-text);
+
+            font-weight: normal;
+        }
+
+        .nm-status-active {
+            color: var(--nm-green) !important;
+        }
+
+        .nm-status-focus {
+            color: var(--nm-blue) !important;
+        }
+
+
+        /* =========================================================
+   SECTIONS
+   ========================================================= */
+
+        .nm-section {
+            padding: 70px 0;
+        }
+
+        .nm-section-title {
+            margin-bottom: 28px;
+        }
+
+        .nm-section-title h2 {
+            margin: 0 0 10px;
+
+            font-size: 32px;
+        }
+
+        .nm-section-title p {
+            color: var(--nm-muted);
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+   DEFINITION
+   ========================================================= */
+
+        .nm-definition {
+            padding: 28px;
+
+            border: 1px solid rgba(66, 165, 255, 0.25);
+            border-left: 3px solid var(--nm-blue);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(40, 215, 232, 0.025));
+        }
+
+        .nm-definition-label {
+            margin-bottom: 12px;
+
+            color: var(--nm-cyan);
+
+            font-size: 12px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nm-definition p {
+            margin: 0;
+
+            color: var(--nm-text);
+
+            font-size: 18px;
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+   CONTENT CARD
+   ========================================================= */
+
+        .nm-content-card {
+            padding: 30px;
+
+            border: 1px solid var(--nm-border);
+            border-left: 3px solid var(--nm-blue);
+
+            border-radius: 7px;
+
+            background: var(--nm-panel);
+        }
+
+        .nm-content-card p {
+            margin: 0 0 16px;
+
+            color: var(--nm-muted);
+
+            line-height: 1.85;
+
+            font-size: 15px;
+        }
+
+        .nm-content-card p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================================
+   MONITORING GRID
+   ========================================================= */
+
+        .nm-monitor-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .nm-monitor-card {
+            position: relative;
+
+            padding: 24px;
+
+            border: 1px solid var(--nm-border);
+
+            border-radius: 7px;
+
+            background: var(--nm-panel);
+
+            transition: 0.2s ease;
+        }
+
+        .nm-monitor-card:hover {
+            transform: translateY(-3px);
+
+            border-color: rgba(66, 165, 255, 0.4);
+        }
+
+        .nm-monitor-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 17px;
+
+            border: 1px solid rgba(66, 165, 255, 0.25);
+
+            border-radius: 6px;
+
+            background: rgba(66, 165, 255, 0.07);
+
+            color: var(--nm-blue);
+
+            font-size: 17px;
+        }
+
+        .nm-monitor-card h3 {
+            margin: 0 0 10px;
+
+            font-size: 17px;
+        }
+
+        .nm-monitor-card p {
+            margin: 0;
+
+            color: var(--nm-muted);
+
+            font-size: 14px;
+
+            line-height: 1.65;
+        }
+
+
+        /* =========================================================
+   TRAFFIC FLOW
+   ========================================================= */
+
+        .nm-flow {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 12px;
+
+            margin-top: 30px;
+        }
+
+        .nm-flow-step {
+            position: relative;
+
+            min-height: 120px;
+
+            padding: 18px 12px;
+
+            border: 1px solid var(--nm-border);
+
+            border-radius: 6px;
+
+            background: var(--nm-panel);
+
+            text-align: center;
+        }
+
+        .nm-flow-step::after {
+            content: "→";
+
+            position: absolute;
+
+            right: -17px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--nm-blue);
+
+            z-index: 2;
+        }
+
+        .nm-flow-step:last-child::after {
+            display: none;
+        }
+
+        .nm-flow-number {
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: var(--nm-cyan);
+
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .nm-flow-step strong {
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+   NORMAL VS SUSPICIOUS
+   ========================================================= */
+
+        .nm-compare {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .nm-compare-box {
+            padding: 26px;
+
+            border: 1px solid var(--nm-border);
+
+            border-radius: 7px;
+
+            background: var(--nm-panel);
+        }
+
+        .nm-compare-box h3 {
+            margin: 0 0 17px;
+
+            font-size: 18px;
+        }
+
+        .nm-compare-box ul {
+            margin: 0;
+
+            padding-left: 20px;
+        }
+
+        .nm-compare-box li {
+            margin-bottom: 11px;
+
+            color: var(--nm-muted);
+
+            line-height: 1.6;
+
+            font-size: 14px;
+        }
+
+        .nm-normal {
+            border-top: 2px solid var(--nm-green);
+        }
+
+        .nm-normal h3 {
+            color: var(--nm-green);
+        }
+
+        .nm-suspicious {
+            border-top: 2px solid var(--nm-red);
+        }
+
+        .nm-suspicious h3 {
+            color: var(--nm-red);
+        }
+
+
+        /* =========================================================
+   EXAMPLE
+   ========================================================= */
+
+        .nm-example {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .nm-example-box {
+            padding: 25px;
+
+            border: 1px solid var(--nm-border);
+
+            border-radius: 7px;
+
+            background: var(--nm-panel);
+        }
+
+        .nm-example-box h3 {
+            margin: 0 0 15px;
+
+            font-size: 17px;
+        }
+
+        .nm-example-box p {
+            margin: 0;
+
+            color: var(--nm-muted);
+
+            line-height: 1.7;
+
+            font-size: 14px;
+        }
+
+        .nm-alert-box {
+            border-top: 2px solid var(--nm-red);
+        }
+
+        .nm-response-box {
+            border-top: 2px solid var(--nm-blue);
+        }
+
+
+        /* =========================================================
+   KEY CONCEPTS
+   ========================================================= */
+
+        .nm-key-list {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .nm-key {
+            padding: 17px 20px;
+
+            border: 1px solid var(--nm-border);
+
+            border-radius: 6px;
+
+            background: var(--nm-panel);
+        }
+
+        .nm-key strong {
+            color: var(--nm-text);
+        }
+
+        .nm-key span {
+            color: var(--nm-muted);
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   SUMMARY
+   ========================================================= */
+
+        .nm-summary {
+            padding: 30px;
+
+            border: 1px solid rgba(67, 209, 158, 0.25);
+
+            border-radius: 7px;
+
+            background: rgba(67, 209, 158, 0.035);
+        }
+
+        .nm-summary h2 {
+            margin-top: 0;
+
+            color: var(--nm-green);
+        }
+
+        .nm-summary p {
+            margin: 0;
+
+            color: var(--nm-muted);
+
+            line-height: 1.8;
+        }
+
+        /* =========================================================
+   PRACTICAL LAB CTA
+   ========================================================= */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+
+            margin-top: 35px;
+            padding: 24px 26px;
+
+            border: 1px solid rgba(66, 165, 255, 0.22);
+            border-left: 3px solid var(--aa-blue);
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 208, 0.025));
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.20);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* Top scanning line */
+
+        .lab-area::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(66, 165, 255, 0.7),
+                    rgba(53, 214, 208, 0.6),
+                    transparent);
+        }
+
+
+        /* Lab text */
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 0;
+        }
+
+
+        .lab-text strong {
+            color: var(--aa-text);
+
+            font-size: 16px;
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .lab-text span {
+            color: var(--aa-muted);
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* Lab button */
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            min-width: 155px;
+
+            padding: 12px 20px;
+
+            border: 1px solid rgba(66, 165, 255, 0.40);
+            border-radius: 5px;
+
+            color: var(--aa-blue);
+
+            background:
+                rgba(66, 165, 255, 0.07);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            text-decoration: none;
+
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        /* Hover */
+
+        .lab-button:hover {
+            color: #ffffff;
+
+            border-color: rgba(66, 165, 255, 0.75);
+
+            background:
+                rgba(66, 165, 255, 0.14);
+
+            box-shadow:
+                0 0 18px rgba(66, 165, 255, 0.16);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* Active */
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* =========================================================
+   LAB CTA RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .lab-area {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 18px;
+
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+        }
+
+        /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 950px) {
+
+            .nm-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nm-monitor-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nm-flow {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .nm-flow-step::after {
+                display: none;
+            }
+
+            .nm-example {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 768px) {
+
+            .nav-container {
+                width: 94%;
+                min-height: 64px;
+                padding: 8px 0;
+            }
+
+            .nm-hero {
+                padding: 70px 0 55px;
+            }
+
+            .nm-section {
+                padding: 60px 0;
+            }
+
+            .nm-monitor-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .nm-flow {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .nm-compare {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .nm-container {
+                width: 92%;
+            }
+
+            .nm-hero {
+                padding: 55px 0 45px;
+            }
+
+            .nm-breadcrumb {
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .nm-badge {
+                font-size: 10px;
+                padding: 7px 10px;
+            }
+
+            .nm-hero h1 {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .nm-description {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+
+            .nm-status-panel {
+                padding: 20px;
+            }
+
+            .nm-section {
+                padding: 50px 0;
+            }
+
+            .nm-section-title h2 {
+                font-size: 26px;
+            }
+
+            .nm-section-title p {
+                font-size: 14px;
+            }
+
+            .nm-definition {
+                padding: 22px;
+            }
+
+            .nm-definition p {
+                font-size: 16px;
+            }
+
+            .nm-content-card {
+                padding: 22px;
+            }
+
+            .nm-content-card p {
+                font-size: 14px;
+            }
+
+            .nm-monitor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nm-flow {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .nm-flow-step {
+                min-height: 95px;
+                padding: 15px 8px;
+            }
+
+            .nm-example {
+                grid-template-columns: 1fr;
+            }
+
+            .nm-key-list {
+                grid-template-columns: 1fr;
+            }
+
+            .nm-summary {
+                padding: 22px;
+            }
+
+            .nm-topic-nav {
+                flex-direction: column;
+            }
+
+            .nm-nav-button {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+
+        @media (max-width: 380px) {
+
+            .nm-container {
+                width: 94%;
+            }
+
+            .nm-hero h1 {
+                font-size: 32px;
+            }
+
+            .nm-flow {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="navbar-placeholder" data-navbar-path="../../../components/navbar.html" data-root-path="../../../">
+    </div>
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <header class="nm-hero">
+
+        <div class="nm-container">
+
+            <div class="nm-breadcrumb">
+                CyberNexa / SOC / Blue Team / Network Monitoring
+            </div>
+
+
+            <div class="nm-hero-grid">
+
+                <div>
+
+                    <div class="nm-badge">
+
+                        <span class="nm-pulse"></span>
+
+                        Network Monitoring
+
+                    </div>
+
+
+                    <h1>
+                        What is <span>Network Monitoring?</span>
+                    </h1>
+
+
+                    <p class="nm-description">
+
+                        Network Monitoring is the process of observing network
+                        traffic, connections, devices and communication patterns
+                        to identify performance problems, unusual activity and
+                        potential security threats.
+
+                    </p>
+
+                </div>
+
+
+                <div class="nm-status-panel">
+
+                    <div class="nm-status-header">
+
+                        <strong>
+                            NETWORK OPERATIONS
+                        </strong>
+
+                        <span class="nm-live">
+                            ● MONITORING
+                        </span>
+
+                    </div>
+
+
+                    <div class="nm-divider"></div>
+
+
+                    <div class="nm-status-row">
+                        <span>Network</span>
+                        <strong class="nm-status-focus">
+                            Active
+                        </strong>
+                    </div>
+
+
+                    <div class="nm-status-row">
+                        <span>Traffic</span>
+                        <strong>
+                            Analyzing
+                        </strong>
+                    </div>
+
+
+                    <div class="nm-status-row">
+                        <span>Visibility</span>
+                        <strong>
+                            Continuous
+                        </strong>
+                    </div>
+
+
+                    <div class="nm-status-row">
+                        <span>Security</span>
+                        <strong class="nm-status-active">
+                            Monitored
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+        <section class="nm-section">
+
+            <div class="nm-container">
+
+                <div class="nm-section-title">
+
+                    <h2>Definition</h2>
+
+                    <p>
+                        Understand the core concept of Network Monitoring.
+                    </p>
+
+                </div>
+
+
+                <div class="nm-definition">
+
+                    <div class="nm-definition-label">
+                        Core Definition
+                    </div>
+
+                    <p>
+
+                        Network Monitoring is the continuous observation and
+                        analysis of network devices, traffic, connections and
+                        communication patterns to maintain visibility into
+                        network activity and identify abnormal or potentially
+                        malicious behavior.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     CORE EXPLANATION
+====================================================== -->
+
+        <section class="nm-section">
+
+            <div class="nm-container">
+
+                <div class="nm-section-title">
+
+                    <h2>How Network Monitoring Works</h2>
+
+                    <p>
+                        Security and network teams collect information about
+                        network activity and analyze it for meaningful patterns.
+                    </p>
+
+                </div>
+
+
+                <div class="nm-content-card">
+
+                    <p>
+
+                        Network monitoring begins by collecting information from
+                        devices and communication systems such as routers,
+                        switches, firewalls, servers and endpoints.
+
+                    </p>
+
+
+                    <p>
+
+                        The collected information can include source and
+                        destination IP addresses, ports, protocols, connection
+                        attempts, traffic volume and timestamps.
+
+                    </p>
+
+
+                    <p>
+
+                        Monitoring tools then help security teams identify
+                        normal traffic patterns and detect activity that may
+                        require investigation.
+
+                    </p>
+
+
+                    <p>
+
+                        In a SOC environment, network monitoring provides
+                        visibility that can help analysts identify suspicious
+                        connections, unusual traffic and possible security
+                        incidents.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     WHAT WE MONITOR
+====================================================== -->
+
+        <section class="nm-section">
+
+            <div class="nm-container">
+
+                <div class="nm-section-title">
+
+                    <h2>What Security Teams Monitor</h2>
+
+                    <p>
+                        Important network indicators provide visibility into
+                        network behavior.
+                    </p>
+
+                </div>
+
+
+                <div class="nm-monitor-grid">
+
+
+                    <div class="nm-monitor-card">
+
+                        <div class="nm-monitor-icon">
+                            IP
+                        </div>
+
+                        <h3>IP Addresses</h3>
+
+                        <p>
+                            Source and destination addresses help analysts
+                            understand where network communication originates
+                            and where it is going.
+                        </p>
+
+                    </div>
+
+
+                    <div class="nm-monitor-card">
+
+                        <div class="nm-monitor-icon">
+                            PORT
+                        </div>
+
+                        <h3>Ports</h3>
+
+                        <p>
+                            Ports indicate which network services are being
+                            accessed or communicating across the network.
+                        </p>
+
+                    </div>
+
+
+                    <div class="nm-monitor-card">
+
+                        <div class="nm-monitor-icon">
+                            NET
+                        </div>
+
+                        <h3>Protocols</h3>
+
+                        <p>
+                            Protocols such as TCP, UDP, HTTP and DNS provide
+                            information about how systems communicate.
+                        </p>
+
+                    </div>
+
+
+                    <div class="nm-monitor-card">
+
+                        <div class="nm-monitor-icon">
+                            LOG
+                        </div>
+
+                        <h3>Connections</h3>
+
+                        <p>
+                            Repeated, failed or unusual connection attempts
+                            can provide useful security indicators.
+                        </p>
+
+                    </div>
+
+
+                    <div class="nm-monitor-card">
+
+                        <div class="nm-monitor-icon">
+                            TRAFFIC
+                        </div>
+
+                        <h3>Traffic Volume</h3>
+
+                        <p>
+                            Unusual increases or decreases in traffic can
+                            indicate operational or security problems.
+                        </p>
+
+                    </div>
+
+
+                    <div class="nm-monitor-card">
+
+                        <div class="nm-monitor-icon">
+                            TIME
+                        </div>
+
+                        <h3>Activity Timing</h3>
+
+                        <p>
+                            The time and frequency of network activity can help
+                            identify behavior outside normal patterns.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     NETWORK FLOW
+====================================================== -->
+
+        <section class="nm-section">
+
+            <div class="nm-container">
+
+                <div class="nm-section-title">
+
+                    <h2>Network Monitoring Flow</h2>
+
+                    <p>
+                        A simplified SOC-oriented monitoring process.
+                    </p>
+
+                </div>
+
+
+                <div class="nm-flow">
+
+
+                    <div class="nm-flow-step">
+
+                        <span class="nm-flow-number">
+                            01
+                        </span>
+
+                        <strong>
+                            Collect
+                        </strong>
+
+                    </div>
+
+
+                    <div class="nm-flow-step">
+
+                        <span class="nm-flow-number">
+                            02
+                        </span>
+
+                        <strong>
+                            Observe
+                        </strong>
+
+                    </div>
+
+
+                    <div class="nm-flow-step">
+
+                        <span class="nm-flow-number">
+                            03
+                        </span>
+
+                        <strong>
+                            Analyze
+                        </strong>
+
+                    </div>
+
+
+                    <div class="nm-flow-step">
+
+                        <span class="nm-flow-number">
+                            04
+                        </span>
+
+                        <strong>
+                            Detect
+                        </strong>
+
+                    </div>
+
+
+                    <div class="nm-flow-step">
+
+                        <span class="nm-flow-number">
+                            05
+                        </span>
+
+                        <strong>
+                            Investigate
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     NORMAL VS SUSPICIOUS
+====================================================== -->
+
+        <section class="nm-section">
+
+            <div class="nm-container">
+
+                <div class="nm-section-title">
+
+                    <h2>Normal vs Suspicious Network Activity</h2>
+
+                    <p>
+                        Analysts compare observed activity with expected
+                        network behavior.
+                    </p>
+
+                </div>
+
+
+                <div class="nm-compare">
+
+
+                    <div class="nm-compare-box nm-normal">
+
+                        <h3>✓ Normal Activity</h3>
+
+                        <ul>
+
+                            <li>Expected internal communication</li>
+
+                            <li>Known services and ports</li>
+
+                            <li>Regular traffic patterns</li>
+
+                            <li>Authorized connections</li>
+
+                            <li>Expected DNS and web activity</li>
+
+                        </ul>
+
+                    </div>
+
+
+                    <div class="nm-compare-box nm-suspicious">
+
+                        <h3>⚠ Suspicious Activity</h3>
+
+                        <ul>
+
+                            <li>Repeated connection attempts</li>
+
+                            <li>Unexpected external communication</li>
+
+                            <li>Unusual ports or protocols</li>
+
+                            <li>Unexpected traffic spikes</li>
+
+                            <li>Communication with suspicious destinations</li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SIMPLE EXAMPLE
+====================================================== -->
+
+        <section class="nm-section">
+
+            <div class="nm-container">
+
+                <div class="nm-section-title">
+
+                    <h2>Simple SOC Example</h2>
+
+                    <p>
+                        Consider an endpoint communicating with an unusual
+                        external destination.
+                    </p>
+
+                </div>
+
+
+                <div class="nm-example">
+
+
+                    <div class="nm-example-box nm-alert-box">
+
+                        <h3>⚠ Possible Suspicious Activity</h3>
+
+                        <p>
+
+                            A workstation normally communicates with approved
+                            services but suddenly begins making repeated
+                            connections to an unfamiliar external IP address
+                            over an unusual port.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="nm-example-box nm-response-box">
+
+                        <h3>✓ Analyst Response</h3>
+
+                        <p>
+
+                            The analyst reviews the source IP, destination IP,
+                            port, protocol and connection frequency, then
+                            correlates the activity with other available logs
+                            before deciding whether further investigation is
+                            required.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+        <section class="nm-section">
+
+            <div class="nm-container">
+
+                <div class="nm-section-title">
+
+                    <h2>Key Concepts</h2>
+
+                    <p>
+                        Important terms to remember.
+                    </p>
+
+                </div>
+
+
+                <div class="nm-key-list">
+
+
+                    <div class="nm-key">
+
+                        <strong>Network Traffic:</strong>
+
+                        <span>
+                            Data moving between systems across a network.
+                        </span>
+
+                    </div>
+
+
+                    <div class="nm-key">
+
+                        <strong>Source IP:</strong>
+
+                        <span>
+                            The IP address initiating a network communication.
+                        </span>
+
+                    </div>
+
+
+                    <div class="nm-key">
+
+                        <strong>Destination IP:</strong>
+
+                        <span>
+                            The IP address receiving the communication.
+                        </span>
+
+                    </div>
+
+
+                    <div class="nm-key">
+
+                        <strong>Port:</strong>
+
+                        <span>
+                            A logical endpoint used by network services.
+                        </span>
+
+                    </div>
+
+
+                    <div class="nm-key">
+
+                        <strong>Protocol:</strong>
+
+                        <span>
+                            Rules used by systems to communicate over a network.
+                        </span>
+
+                    </div>
+
+
+                    <div class="nm-key">
+
+                        <strong>Baseline:</strong>
+
+                        <span>
+                            A representation of normal network behavior used
+                            for comparison.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+        <section class="nm-section">
+
+            <div class="nm-container">
+
+                <div class="nm-summary">
+
+                    <h2>Summary</h2>
+
+                    <p>
+
+                        Network Monitoring provides visibility into network
+                        communication and behavior. Security teams monitor
+                        IP addresses, ports, protocols, connections, traffic
+                        volume and activity patterns. By comparing observed
+                        activity with expected behavior, analysts can identify
+                        events that may require further investigation.
+
+                    </p>
+
+                </div>
+                
+<!-- LESSON COMPLETION -->
+<section class="nm-section" id="lesson-completion">
+    <div class="nm-container">
+        <div class="nm-content-card">
+
+            <div class="nm-section-title">
+                <h2>Lesson Completion</h2>
+                <p>
+                    You have completed the Network Monitoring lesson.
+                    Review the key concepts and mark this lesson as completed.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="network-monitoring"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/network-monitoring.html"
+                data-status-id="networkMonitoringCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="networkMonitoringCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+
+        </div>
+    </div>
+</section>
+                <div class="lab-area">
+
+                    <div class="lab-text">
+                        <strong>Ready for the Practical Lab?</strong>
+
+                        <span>
+                            Test your understanding through an
+                            authorized SOC security-training simulation.
+                        </span>
+                    </div>
+
+                    <a href="../lab/network-monitoring-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

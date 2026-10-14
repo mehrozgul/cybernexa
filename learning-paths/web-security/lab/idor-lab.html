@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IDOR Practical Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 8%,
+                    rgba(0, 191, 255, 0.065),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 88% 12%,
+                    rgba(0, 255, 176, 0.045),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b,
+                    #020914,
+                    #01050b
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: auto;
+        }
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 40px 32px;
+
+            margin-bottom: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.15);
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 34, 0.98),
+                    rgba(2, 10, 21, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 13px;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 39px;
+            line-height: 1.15;
+        }
+
+        .lab-hero h1 span {
+
+            color: #00bfff;
+        }
+
+        .lab-hero p {
+
+            max-width: 760px;
+
+            margin: 14px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+
+        .lab-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .meta {
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.02);
+        }
+
+        .meta small {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #536a7f;
+
+            font-size: 8px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .meta strong {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+        }
+
+        .meta strong.green {
+
+            color: #00ffb0;
+        }
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            margin-bottom: 15px;
+        }
+
+        .number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+        .lab-card p {
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        .request-box {
+
+            padding: 18px;
+
+            margin-top: 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 9px;
+
+            background: #01070d;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        .request-line {
+
+            margin-bottom: 8px;
+
+            color: #71879b;
+
+            font-size: 11px;
+        }
+
+        .request-line:last-child {
+
+            margin-bottom: 0;
+        }
+
+        .request-line .blue {
+
+            color: #00bfff;
+        }
+
+        .request-line .green {
+
+            color: #00ffb0;
+        }
+
+        .simulator {
+
+            padding: 20px;
+
+            margin-top: 16px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, 0.20);
+        }
+
+        .simulator label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #71879b;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .simulator select {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.18);
+
+            border-radius: 7px;
+
+            outline: none;
+
+            color: #dce9f4;
+
+            background: #06111c;
+
+            font-family: inherit;
+
+            font-size: 12px;
+        }
+
+        .simulator button {
+
+            width: 100%;
+
+            margin-top: 11px;
+
+            padding: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 7px;
+
+            color: #d4f5ff;
+
+            background:
+                rgba(0, 191, 255, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .simulator button:hover {
+
+            background:
+                rgba(0, 191, 255, 0.10);
+        }
+
+        .result {
+
+            display: none;
+
+            margin-top: 14px;
+
+            padding: 16px;
+
+            border-radius: 8px;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        .result.safe {
+
+            display: block;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.18);
+
+            color: #9debd5;
+
+            background:
+                rgba(0, 255, 176, 0.035);
+        }
+
+        .result.warning {
+
+            display: block;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.20);
+
+            color: #ffd37a;
+
+            background:
+                rgba(255, 177, 0, 0.035);
+        }
+
+        .mcq {
+
+            padding: 18px;
+
+            margin-top: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .mcq-question {
+
+            margin-bottom: 12px;
+
+            color: #dce9f4;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .option {
+
+            display: block;
+
+            padding: 9px 11px;
+
+            margin-bottom: 7px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.07);
+
+            border-radius: 7px;
+
+            color: #71879b;
+
+            cursor: pointer;
+
+            font-size: 11px;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.20);
+
+            color: #cce9f5;
+        }
+
+        .check-btn {
+
+            margin-top: 15px;
+
+            padding: 10px 17px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.25);
+
+            border-radius: 7px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.04);
+
+            cursor: pointer;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .quiz-result {
+
+            margin-top: 13px;
+
+            color: #00ffb0;
+
+            font-family: Consolas, monospace;
+
+            font-size: 11px;
+        }
+
+        .lab-navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .lab-navigation a {
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 8px;
+
+            color: #71879b;
+
+            background:
+                rgba(0, 191, 255, 0.02);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .lab-navigation a:hover {
+
+            color: #d4f5ff;
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+        }
+
+        @media (max-width: 750px) {
+
+            .lab-meta {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+
+                font-size: 30px;
+            }
+
+            .lab-card {
+
+                padding: 20px;
+            }
+
+            .lab-navigation {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+<div class="lab-container">
+
+
+<section class="lab-hero">
+
+    <div class="lab-kicker">
+        WEB SECURITY / PRACTICAL LAB
+    </div>
+
+    <h1>
+        <span>IDOR</span> Authorization Lab
+    </h1>
+
+    <p>
+        Simulate an Insecure Direct Object Reference scenario and learn why
+        object identifiers must always be protected by server-side
+        authorization checks.
+    </p>
+
+</section>
+
+
+<div class="lab-meta">
+
+    <div class="meta">
+
+        <small>Topic</small>
+
+        <strong>
+            IDOR
+        </strong>
+
+    </div>
+
+    <div class="meta">
+
+        <small>Level</small>
+
+        <strong>
+            Intermediate
+        </strong>
+
+    </div>
+
+    <div class="meta">
+
+        <small>Environment</small>
+
+        <strong class="green">
+            Local Simulation
+        </strong>
+
+    </div>
+
+    <div class="meta">
+
+        <small>Mode</small>
+
+        <strong>
+            Safe Practice
+        </strong>
+
+    </div>
+
+</div>
+
+
+<section class="lab-card">
+
+    <div class="heading">
+
+        <div class="number">
+            01
+        </div>
+
+        <h2>
+            Understand the Scenario
+        </h2>
+
+    </div>
+
+    <p>
+        You are logged in as <strong>Student A</strong>. The application
+        contains several simulated user profiles. Your account is allowed
+        to access its own profile.
+    </p>
+
+    <div class="request-box">
+
+        <div class="request-line">
+            Current user:
+            <span class="green">Student A</span>
+        </div>
+
+        <div class="request-line">
+            Authorized object:
+            <span class="blue">Profile 1001</span>
+        </div>
+
+        <div class="request-line">
+            Another object:
+            <span class="blue">Profile 1002</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="lab-card">
+
+    <div class="heading">
+
+        <div class="number">
+            02
+        </div>
+
+        <h2>
+            Object Reference Simulator
+        </h2>
+
+    </div>
+
+    <p>
+        Select an object identifier below. The simulator represents what a
+        properly protected application should do when authorization is
+        checked before returning the object.
+    </p>
+
+
+    <div class="simulator">
+
+        <label for="objectId">
+            Select Object ID
+        </label>
+
+        <select id="objectId">
+
+            <option value="1001">
+                1001 — Student A
+            </option>
+
+            <option value="1002">
+                1002 — Student B
+            </option>
+
+            <option value="1003">
+                1003 — Student C
+            </option>
+
+        </select>
+
+
+        <button onclick="checkObject()">
+            Check Authorization
+        </button>
+
+
+        <div id="result" class="result"></div>
+
+    </div>
+
+</section>
+
+
+<section class="lab-card">
+
+    <div class="heading">
+
+        <div class="number">
+            03
+        </div>
+
+        <h2>
+            Vulnerability Concept
+        </h2>
+
+    </div>
+
+    <p>
+        In a vulnerable application, changing an object reference may expose
+        another user's resource if the server does not verify ownership or
+        authorization.
+    </p>
+
+    <div class="request-box">
+
+        <div class="request-line">
+            Request:
+            <span class="blue">GET /profile?id=1002</span>
+        </div>
+
+        <div class="request-line">
+            Authentication:
+            <span class="green">Student A</span>
+        </div>
+
+        <div class="request-line">
+            Required check:
+            <span class="green">Does Student A own object 1002?</span>
+        </div>
+
+        <div class="request-line">
+            Secure result:
+            <span class="green">ACCESS DENIED</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="lab-card">
+
+    <div class="heading">
+
+        <div class="number">
+            04
+        </div>
+
+        <h2>
+            Knowledge Check
+        </h2>
+
+    </div>
+
+
+    <div class="mcq">
+
+        <div class="mcq-question">
+            1. What is the main security issue in an IDOR vulnerability?
+        </div>
+
+        <label class="option">
+            <input type="radio" name="q1" value="a">
+            Weak password hashing
+        </label>
+
+        <label class="option">
+            <input type="radio" name="q1" value="b">
+            Missing or insufficient authorization checks
+        </label>
+
+        <label class="option">
+            <input type="radio" name="q1" value="c">
+            Slow network connection
+        </label>
+
+        <label class="option">
+            <input type="radio" name="q1" value="d">
+            Invalid HTML syntax
+        </label>
+
+    </div>
+
+
+    <div class="mcq">
+
+        <div class="mcq-question">
+            2. Which control is most important for preventing IDOR?
+        </div>
+
+        <label class="option">
+            <input type="radio" name="q2" value="a">
+            Server-side authorization
+        </label>
+
+        <label class="option">
+            <input type="radio" name="q2" value="b">
+            Changing the website color
+        </label>
+
+        <label class="option">
+            <input type="radio" name="q2" value="c">
+            Disabling CSS
+        </label>
+
+        <label class="option">
+            <input type="radio" name="q2" value="d">
+            Increasing screen resolution
+        </label>
+
+    </div>
+
+
+    <div class="mcq">
+
+        <div class="mcq-question">
+            3. Can an authenticated user still be affected by IDOR?
+        </div>
+
+        <label class="option">
+            <input type="radio" name="q3" value="a">
+            No
+        </label>
+
+        <label class="option">
+            <input type="radio" name="q3" value="b">
+            Yes
+        </label>
+
+        <label class="option">
+            <input type="radio" name="q3" value="c">
+            Only when CSS is disabled
+        </label>
+
+        <label class="option">
+            <input type="radio" name="q3" value="d">
+            Only on mobile
+        </label>
+
+    </div>
+
+
+    <button
+        class="check-btn"
+        onclick="checkQuiz()"
+    >
+        Check Answers
+    </button>
+
+
+    <div
+        id="quizResult"
+        class="quiz-result"
+    ></div>
+
+</section>
+
+
+<section class="lab-card">
+
+    <div class="heading">
+
+        <div class="number">
+            05
+        </div>
+
+        <h2>
+            Secure Development Rule
+        </h2>
+
+    </div>
+
+    <div class="request-box">
+
+        <div class="request-line">
+            <span class="blue">REQUEST</span>
+            →
+            identify requested object
+        </div>
+
+        <div class="request-line">
+            <span class="blue">AUTHENTICATE</span>
+            →
+            identify current user
+        </div>
+
+        <div class="request-line">
+            <span class="blue">AUTHORIZE</span>
+            →
+            verify permission
+        </div>
+
+        <div class="request-line">
+            <span class="green">RETURN DATA</span>
+            →
+            only after authorization succeeds
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="lab-navigation">
+
+    <a href="csrf-lab.html">
+        ←Lab: CSRF
+    </a>
+
+    <a href="web-security-lab.html">
+        All Labs
+    </a>
+
+    <a href="../theory/file-upload-vulnerabilities.html">
+        Next Theory: File Upload Vulnerabilities →
+    </a>
+
+</div>
+
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+    function checkObject() {
+
+        const objectId =
+            document.getElementById("objectId").value;
+
+        const result =
+            document.getElementById("result");
+
+        if (objectId === "1001") {
+
+            result.className = "result safe";
+
+            result.innerHTML =
+                "✓ ACCESS ALLOWED<br>" +
+                "Object 1001 belongs to the authenticated user.<br>" +
+                "Authorization check: PASSED.";
+
+        } else {
+
+            result.className = "result warning";
+
+            result.innerHTML =
+                "⚠ ACCESS DENIED<br>" +
+                "The requested object does not belong to the authenticated user.<br>" +
+                "A secure application must reject this request.";
+        }
+    }
+
+
+    function checkQuiz() {
+
+        let score = 0;
+
+        const q1 =
+            document.querySelector(
+                'input[name="q1"]:checked'
+            );
+
+        const q2 =
+            document.querySelector(
+                'input[name="q2"]:checked'
+            );
+
+        const q3 =
+            document.querySelector(
+                'input[name="q3"]:checked'
+            );
+
+
+        if (q1 && q1.value === "b") {
+            score++;
+        }
+
+        if (q2 && q2.value === "a") {
+            score++;
+        }
+
+        if (q3 && q3.value === "b") {
+            score++;
+        }
+
+
+        const result =
+            document.getElementById("quizResult");
+
+
+        if (score === 3) {
+
+            result.innerHTML =
+                "✓ Excellent — 3/3 correct. IDOR concept understood.";
+
+        } else {
+
+            result.innerHTML =
+                "Score: " +
+                score +
+                "/3 — Review the IDOR theory and try again.";
+        }
+
+    }
+
+</script>
+
+
+<script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

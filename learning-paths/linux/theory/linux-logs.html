@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Logs - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+    <style>
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%),
+                radial-gradient(circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%),
+                #02080d;
+        }
+
+
+        .linux-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-topic-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+
+        .linux-topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-topic-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ====================================================== */
+
+        .linux-search-wrapper {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin: 0 auto 35px;
+        }
+
+
+        .linux-search-box {
+
+            width: 100%;
+            max-width: 650px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 5px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .linux-search-box:focus-within {
+
+            border-color:
+                rgba(103, 232, 249, 0.55);
+
+            box-shadow:
+                0 0 20px rgba(103, 232, 249, 0.08);
+        }
+
+
+        .linux-search-box input {
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 12px 14px;
+
+            border: none;
+
+            outline: none;
+
+            color: #f8fafc;
+
+            background: transparent;
+
+            font-size: 13px;
+        }
+
+
+        .linux-search-box input::placeholder {
+
+            color: #71808c;
+        }
+
+
+        .linux-search-box button {
+
+            padding: 11px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 8px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .linux-search-box button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+
+            background:
+                rgba(103, 232, 249, 0.12);
+        }
+
+
+        .linux-search-result {
+
+            display: none;
+
+            max-width: 650px;
+
+            margin: -20px auto 25px;
+
+            padding: 12px 16px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 8px 8px 0;
+
+            color: #b6c2cc;
+
+            background:
+                rgba(103, 232, 249, 0.045);
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98));
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           DESKTOP HOVER
+        ====================================================== */
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-card::after,
+        .linux-user-card::after,
+        .linux-command-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent);
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover::after,
+            .linux-user-card:hover::after,
+            .linux-command-card:hover::after {
+
+                animation:
+                    linuxLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .linux-definition-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-definition-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-definition-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LOG TYPES GRID
+        ====================================================== */
+
+        .linux-user-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-user-card {
+
+            position: relative;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-user-card:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.35);
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .linux-user-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+
+        .linux-user-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .linux-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+
+        /* =====================================================
+           COMMAND CARDS
+        ====================================================== */
+
+        .linux-command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-command-card {
+
+            position: relative;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+        }
+
+
+        .linux-command-card code {
+
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .linux-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-flow-item {
+
+            padding: 12px 16px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .linux-summary-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-summary-list li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 23px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-summary-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .linux-summary-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-learning-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-topic-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-learning-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-topic-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-topic-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-search-box input {
+
+                font-size: 12px;
+            }
+
+
+            .linux-search-box button {
+
+                padding:
+                    10px 13px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-definition-box {
+
+                padding: 16px;
+            }
+
+
+            .linux-definition-box span {
+
+                font-size: 13px;
+            }
+
+
+            .linux-user-grid,
+            .linux-command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-key-item {
+
+                font-size: 11px;
+
+                padding:
+                    9px 11px;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-learning-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+        #navbar-placeholder a[href*="linux"] svg,
+        #navbar-placeholder a[href*="linux"] i {
+            width: 18px;
+            height: 18px;
+            font-size: 16px;
+        }
+
+        /* Page-specific fix: Linux navbar icon */
+        #navbar-placeholder a[href*="linux"] svg,
+        #navbar-placeholder a[href*="linux"] i,
+        #navbar-placeholder a[href*="linux"] .nav-icon,
+        #navbar-placeholder a[href*="linux"] .nav-icon-wrapper {
+            width: 18px !important;
+            height: 18px !important;
+            min-width: 18px !important;
+            min-height: 18px !important;
+            font-size: 16px !important;
+        }
+
+        /* Keep the Linux navigation item compact */
+        #navbar-placeholder a[href*="linux"] {
+            gap: 8px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- SHARED NAVBAR -->
+    <div id="navbar-placeholder" data-navbar-path="../../../components/navbar.html" data-root-path="../../../">
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-learning-page">
+
+        <div class="linux-learning-container">
+
+
+            <!-- HEADER -->
+
+            <header class="linux-topic-header">
+
+                <div class="linux-topic-category">
+                    LINUX
+                </div>
+
+                <h1>
+                    Linux <span>Logs</span>
+                </h1>
+
+                <p class="linux-topic-intro">
+
+                    Linux logs record important system, authentication,
+                    service and application events. Understanding logs
+                    is essential for troubleshooting, monitoring and
+                    cybersecurity investigation.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 SEARCH
+            ================================================== -->
+
+            <div class="linux-search-wrapper">
+
+                <div class="linux-search-box">
+
+                    <input type="text" id="linuxSearch" placeholder="Search Linux Logs topics...">
+
+                    <button type="button" onclick="searchLinuxLogs()">
+                        Search
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div id="linuxSearchResult" class="linux-search-result"></div>
+
+
+
+            <!-- =================================================
+                 DEFINITION
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        📋
+                    </div>
+
+                    <h2>
+                        What are Linux Logs?
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-definition-box">
+
+                    <strong>
+                        Simple Definition
+                    </strong>
+
+                    <span>
+
+                        Linux logs are records of events generated by
+                        the operating system, services, applications
+                        and users. They help administrators understand
+                        what is happening on a Linux system.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 WHY LOGS MATTER
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔎
+                    </div>
+
+                    <h2>
+                        Why Linux Logs Matter
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Logs provide useful information for troubleshooting,
+                    system monitoring and security investigations.
+
+                </p>
+
+
+                <div class="linux-user-grid">
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Troubleshooting
+                        </h3>
+
+                        <p>
+
+                            Logs can help identify errors and problems
+                            affecting the operating system or applications.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Security Monitoring
+                        </h3>
+
+                        <p>
+
+                            Security-related events can be reviewed
+                            to identify suspicious activity.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Authentication
+                        </h3>
+
+                        <p>
+
+                            Authentication logs can help track login
+                            attempts and account activity.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Incident Investigation
+                        </h3>
+
+                        <p>
+
+                            Investigators can examine logs to understand
+                            events that occurred on a system.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 IMPORTANT LOG DIRECTORIES
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        /
+                    </div>
+
+                    <h2>
+                        Important Linux Log Locations
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Traditional Linux systems commonly store many
+                    log files inside the <strong>/var/log</strong>
+                    directory.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            /var/log
+                        </code>
+
+                        <p>
+                            Main directory containing many system
+                            and application log files.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            /var/log/auth.log
+                        </code>
+
+                        <p>
+                            Commonly contains authentication-related
+                            events on Debian-based systems.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            /var/log/syslog
+                        </code>
+
+                        <p>
+                            Commonly contains general system events
+                            on Debian-based systems.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            /var/log/kern.log
+                        </code>
+
+                        <p>
+                            Commonly contains kernel-related
+                            messages on systems that use this log.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LOG COMMANDS
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Basic Log Commands
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux provides commands that can be used to
+                    view and analyze log information.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        ls /var/log
+                    </code>
+
+                    <br>
+
+                    <code>
+                        cat /var/log/syslog
+                    </code>
+
+                    <br>
+
+                    <code>
+                        less /var/log/syslog
+                    </code>
+
+                    <br>
+
+                    <code>
+                        tail /var/log/syslog
+                    </code>
+
+                    <br>
+
+                    <code>
+                        tail -f /var/log/syslog
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TAIL
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        →
+                    </div>
+
+                    <h2>
+                        Using tail to Monitor Logs
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>tail</strong> command displays the
+                    last part of a file. It is especially useful
+                    for monitoring logs.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        tail /var/log/syslog
+                    </code>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>-f</strong> option continuously
+                    displays new lines added to the log.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        tail -f /var/log/syslog
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 JOURNALCTL
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        J
+                    </div>
+
+                    <h2>
+                        journalctl
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    On systems using <strong>systemd</strong>,
+                    <strong>journalctl</strong> is commonly used
+                    to view logs stored by the system journal.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            journalctl
+                        </code>
+
+                        <p>
+                            Displays journal entries.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            journalctl -b
+                        </code>
+
+                        <p>
+                            Shows messages from the current boot.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            journalctl -u ssh
+                        </code>
+
+                        <p>
+                            Displays journal entries for a specified service.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            journalctl -f
+                        </code>
+
+                        <p>
+                            Follows new journal entries in real time.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LOG ANALYSIS
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        Searching Logs
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Log files can contain a large amount of information.
+                    Tools such as <strong>grep</strong> can be used
+                    to search for specific words or patterns.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        grep "error" /var/log/syslog
+                    </code>
+
+                    <br>
+
+                    <code>
+                        grep "failed" /var/log/auth.log
+                    </code>
+
+                    <br>
+
+                    <code>
+                        grep -i "warning" /var/log/syslog
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECURITY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Linux Logs in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Security professionals use logs to investigate
+                    authentication activity, suspicious behavior,
+                    system events and possible security incidents.
+
+                </p>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        System Event
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Log Entry
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Analysis
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Security Investigation
+                    </div>
+
+                </div>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Authentication Logs
+                    </div>
+
+                    <div class="linux-key-item">
+                        Failed Logins
+                    </div>
+
+                    <div class="linux-key-item">
+                        System Events
+                    </div>
+
+                    <div class="linux-key-item">
+                        Service Events
+                    </div>
+
+                    <div class="linux-key-item">
+                        Incident Investigation
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL EXAMPLE
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        >
+                    </div>
+
+                    <h2>
+                        Practical Example
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Suppose an administrator wants to find failed
+                    authentication attempts. A log file can be searched
+                    for relevant entries.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        grep "failed" /var/log/auth.log
+                    </code>
+
+                </div>
+
+
+                <p>
+
+                    The resulting entries can then be reviewed to
+                    understand when and where failed authentication
+                    activity occurred.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SUMMARY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Quick Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-summary-list">
+
+                    <li>
+                        Linux logs record important system and application events.
+                    </li>
+
+                    <li>
+                        Many traditional log files are stored under /var/log.
+                    </li>
+
+                    <li>
+                        Logs are useful for troubleshooting and monitoring.
+                    </li>
+
+                    <li>
+                        Authentication logs can help investigate login activity.
+                    </li>
+
+                    <li>
+                        tail can display the latest lines of a log file.
+                    </li>
+
+                    <li>
+                        tail -f can monitor new log entries in real time.
+                    </li>
+
+                    <li>
+                        journalctl is commonly used with systemd journal logs.
+                    </li>
+
+                    <li>
+                        grep can search logs for specific words or patterns.
+                    </li>
+
+                    <li>
+                        Linux logs are important for cybersecurity investigations.
+                    </li>
+
+                </ul>
+            </section>
+            
+<!-- Lesson Completion -->
+<section class="linux-card" id="lessonCompletion">
+    <div class="linux-card-heading">
+        <div class="linux-icon" aria-hidden="true">✓</div>
+        <h2>Complete This Lesson</h2>
+    </div>
+
+    <p>
+        Mark this lesson as complete after studying all the topics.
+        Your progress will be saved to your CyberNexa account.
+    </p>
+
+    <button
+        type="button"
+        class="linux-topic-button"
+        data-lesson-progress
+        data-course-id="linux"
+        data-lesson-id="linux-logs"
+        data-dashboard-url="../learning-paths/linux/theory/linux-logs.html"
+        data-status-id="lessonCompletionStatus">
+
+        Mark Lesson Complete
+    </button>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite">
+    </p>
+</section>
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-topic-navigation">
+
+
+                <a href="linux-security.html" class="linux-topic-button previous">
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Linux Security
+                    </strong>
+
+                </a>
+
+                <a href="../lab/lab13.html" class="linux-topic-button practical-lab">
+                    <span>🧪</span>
+                    <strong>Perform Lab</strong> </a>
+            </div>
+        </div>
+    </main>
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../js/supabase-client.js"></script>
+    <script src="../../../js/lesson-progress.js"></script>
+    <script src="../../../js/navbar-loader.js"></script>
+    <script src="../../../js/navbar.js"></script>
+    <script src="../../../js/session.js"></script>
+    <script>
+
+        const linuxSearchInput =
+            document.getElementById("linuxSearch");
+
+        const linuxSearchResult =
+            document.getElementById("linuxSearchResult");
+
+
+        function searchLinuxLogs() {
+
+            const query =
+                linuxSearchInput.value.trim().toLowerCase();
+
+
+            /* EMPTY SEARCH */
+
+            if (!query) {
+
+                linuxSearchResult.style.display = "block";
+
+                linuxSearchResult.textContent =
+                    "Please enter a Linux Logs topic to search.";
+
+                return;
+            }
+
+
+            /* SEARCH ONLY PAGE CONTENT */
+
+            const searchableContainer =
+                document.querySelector(
+                    ".linux-learning-container"
+                );
+
+
+            const searchableContent =
+                searchableContainer.innerText.toLowerCase();
+
+
+            /* RESULT FOUND */
+
+            if (searchableContent.includes(query)) {
+
+                linuxSearchResult.style.display = "block";
+
+                linuxSearchResult.textContent =
+                    "Result found for: " +
+                    linuxSearchInput.value;
+
+
+                /*
+                 * Find the first section/card containing
+                 * the searched keyword and scroll to it.
+                 */
+
+                const cards =
+                    document.querySelectorAll(
+                        ".linux-card"
+                    );
+
+
+                let foundCard = null;
+
+
+                cards.forEach(card => {
+
+                    if (
+                        !foundCard &&
+                        card.innerText
+                            .toLowerCase()
+                            .includes(query)
+                    ) {
+
+                        foundCard = card;
+
+                    }
+
+                });
+
+
+                if (foundCard) {
+
+                    foundCard.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+
+                    /* Temporary visual indication */
+
+                    foundCard.style.borderColor =
+                        "rgba(103, 232, 249, 0.65)";
+
+
+                    foundCard.style.boxShadow =
+                        "0 0 30px rgba(103, 232, 249, 0.12)";
+
+
+                    setTimeout(() => {
+
+                        foundCard.style.borderColor =
+                            "rgba(103, 232, 249, 0.16)";
+
+                        foundCard.style.boxShadow =
+                            "0 15px 40px rgba(0, 0, 0, 0.28)";
+
+                    }, 1800);
+
+                }
+
+            }
+
+
+            /* RESULT NOT FOUND */
+
+            else {
+
+                linuxSearchResult.style.display = "block";
+
+                linuxSearchResult.textContent =
+                    "No result found for: " +
+                    linuxSearchInput.value;
+
+            }
+
+        }
+
+
+        /* ENTER KEY SEARCH */
+
+        linuxSearchInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    searchLinuxLogs();
+
+                }
+
+            }
+        );
+
+
+    </script>
+
+    <!-- =====================================================
+         MOBILE SWEEP
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards = document.querySelectorAll(
+            ".linux-card, .linux-user-card, .linux-command-card"
+        );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+
+                return;
+
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove("mobile-sweep");
+
+                void card.offsetWidth;
+
+                card.classList.add("mobile-sweep");
+
+            });
+
+
+            clearTimeout(sweepTimeout);
+
+
+            sweepTimeout = setTimeout(() => {
+
+                sweepCards.forEach(card => {
+
+                    card.classList.remove("mobile-sweep");
+
+                });
+
+            }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            { passive: true }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            { passive: true }
+        );
+    </script>
+</body>
+
+</html>

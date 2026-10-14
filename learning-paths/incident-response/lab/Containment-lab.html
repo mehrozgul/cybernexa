@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Containment Practical Lab | CyberNexa</title>
+
+<meta name="description"
+      content="Practice cybersecurity incident containment through an interactive CyberNexa practical lab.">
+
+<link rel="stylesheet"
+      href="../../../css/base.css">
+
+<link rel="stylesheet"
+      href="../../../css/navbar.css">
+
+<link rel="stylesheet"
+      href="../../../css/footer.css">
+
+<style>
+
+/* =========================================================
+   CYBERNEXA CONTAINMENT LAB
+   ========================================================= */
+
+:root {
+
+    --cl-bg: #080d14;
+    --cl-panel: #0d141d;
+    --cl-panel-2: #111b26;
+
+    --cl-red: #ff4d5a;
+    --cl-orange: #ff9f43;
+    --cl-yellow: #ffd166;
+    --cl-green: #43d19e;
+    --cl-blue: #42a5ff;
+
+    --cl-text: #edf5fb;
+    --cl-muted: #91a4b5;
+
+    --cl-border: #20303e;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(255, 77, 90, 0.09),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(255, 159, 67, 0.07),
+            transparent 28%
+        ),
+        var(--cl-bg);
+
+    color: var(--cl-text);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.cl-container {
+
+    width: min(1150px, 92%);
+
+    margin: auto;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.cl-hero {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 75px 0 60px;
+
+    border-bottom:
+        1px solid var(--cl-border);
+}
+
+.cl-breadcrumb {
+
+    color:
+        var(--cl-orange);
+
+    font-size: 13px;
+
+    margin-bottom: 20px;
+}
+
+.cl-hero h1 {
+
+    margin: 0 0 15px;
+
+    font-size:
+        clamp(36px, 5vw, 58px);
+
+    line-height: 1.05;
+}
+
+.cl-hero h1 span {
+    color: var(--cl-red);
+}
+
+.cl-description {
+
+    max-width: 760px;
+
+    color:
+        var(--cl-muted);
+
+    font-size: 16px;
+
+    line-height: 1.8;
+}
+
+.cl-alert {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 13px;
+
+    margin-bottom: 18px;
+
+    border:
+        1px solid
+        rgba(255, 77, 90, 0.35);
+
+    border-radius: 4px;
+
+    background:
+        rgba(255, 77, 90, 0.06);
+
+    color:
+        var(--cl-red);
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.cl-pulse {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+        var(--cl-red);
+
+    box-shadow:
+        0 0 12px
+        rgba(255, 77, 90, 0.8);
+}
+
+
+/* =========================================================
+   LAB PANEL
+   ========================================================= */
+
+.cl-lab {
+
+    padding: 35px 0 70px;
+}
+
+.cl-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 20px;
+}
+
+.cl-card {
+
+    padding: 25px;
+
+    border:
+        1px solid var(--cl-border);
+
+    border-radius: 7px;
+
+    background:
+        var(--cl-panel);
+}
+
+.cl-card h2 {
+
+    margin:
+        0 0 10px;
+
+    font-size: 22px;
+}
+
+.cl-card-description {
+
+    margin:
+        0 0 20px;
+
+    color:
+        var(--cl-muted);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   FORM ELEMENTS
+   ========================================================= */
+
+.cl-label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color:
+        var(--cl-text);
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+.cl-select {
+
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border:
+        1px solid var(--cl-border);
+
+    border-radius: 5px;
+
+    background:
+        #091019;
+
+    color:
+        var(--cl-text);
+
+    outline: none;
+
+    font-size: 14px;
+}
+
+.cl-select:focus {
+
+    border-color:
+        rgba(255, 77, 90, 0.55);
+}
+
+.cl-action-list {
+
+    display: grid;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.cl-action {
+
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border:
+        1px solid var(--cl-border);
+
+    border-radius: 5px;
+
+    background:
+        #091019;
+
+    color:
+        var(--cl-muted);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        0.2s ease;
+
+    font-size: 13px;
+}
+
+.cl-action:hover {
+
+    border-color:
+        rgba(255, 77, 90, 0.45);
+
+    color:
+        var(--cl-text);
+}
+
+.cl-action.active {
+
+    border-color:
+        var(--cl-red);
+
+    background:
+        rgba(255, 77, 90, 0.08);
+
+    color:
+        var(--cl-red);
+}
+
+
+/* =========================================================
+   RUN BUTTON
+   ========================================================= */
+
+.cl-run {
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 14px;
+
+    border:
+        1px solid
+        rgba(255, 77, 90, 0.5);
+
+    border-radius: 5px;
+
+    background:
+        rgba(255, 77, 90, 0.08);
+
+    color:
+        var(--cl-red);
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        0.2s ease;
+}
+
+.cl-run:hover {
+
+    background:
+        rgba(255, 77, 90, 0.15);
+}
+
+
+/* =========================================================
+   OUTPUT
+   ========================================================= */
+
+.cl-output {
+
+    min-height: 240px;
+
+    padding: 20px;
+
+    border:
+        1px solid var(--cl-border);
+
+    border-radius: 6px;
+
+    background:
+        #070b10;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    color:
+        var(--cl-muted);
+
+    white-space: pre-line;
+}
+
+.cl-output .success {
+    color:
+        var(--cl-green);
+}
+
+.cl-output .warning {
+    color:
+        var(--cl-orange);
+}
+
+.cl-output .danger {
+    color:
+        var(--cl-red);
+}
+
+.cl-output .info {
+    color:
+        var(--cl-blue);
+}
+
+
+/* =========================================================
+   CONTAINMENT CHECKLIST
+   ========================================================= */
+
+.cl-checklist {
+
+    display: grid;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.cl-check {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    border:
+        1px solid var(--cl-border);
+
+    border-radius: 5px;
+
+    background:
+        var(--cl-panel-2);
+
+    color:
+        var(--cl-muted);
+
+    font-size: 13px;
+}
+
+.cl-check input {
+    accent-color:
+        var(--cl-red);
+}
+
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+.cl-progress-box {
+
+    margin-top: 20px;
+
+    padding: 18px;
+
+    border:
+        1px solid var(--cl-border);
+
+    border-radius: 6px;
+
+    background:
+        var(--cl-panel-2);
+}
+
+.cl-progress-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+
+    font-size: 12px;
+}
+
+.cl-progress-header span:last-child {
+    color: var(--cl-red);
+}
+
+.cl-progress {
+
+    width: 100%;
+
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background:
+        #18222c;
+}
+
+.cl-progress-bar {
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        var(--cl-red);
+
+    transition:
+        width 0.3s ease;
+}
+
+
+/* =========================================================
+   HOW TO
+   ========================================================= */
+
+.cl-how {
+
+    margin-top: 20px;
+
+    padding: 22px;
+
+    border:
+        1px solid
+        rgba(66, 165, 255, 0.2);
+
+    border-radius: 6px;
+
+    background:
+        rgba(66, 165, 255, 0.035);
+}
+
+.cl-how h3 {
+
+    margin:
+        0 0 12px;
+
+    color:
+        var(--cl-blue);
+
+    font-size: 16px;
+}
+
+.cl-how ol {
+
+    margin: 0;
+
+    padding-left: 20px;
+
+    color:
+        var(--cl-muted);
+
+    line-height: 1.8;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.cl-topic-nav {
+
+    display: flex;
+
+    justify-content: flex-end;
+    gap: 15px;
+
+    margin-top: 35px;
+}
+
+.cl-nav {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 12px 17px;
+
+    border:
+        1px solid var(--cl-border);
+
+    border-radius: 5px;
+
+    color:
+        var(--cl-muted);
+
+    font-size: 13px;
+
+    transition:
+        0.2s ease;
+}
+
+.cl-nav:hover {
+
+    color:
+        var(--cl-red);
+
+    border-color:
+        rgba(255, 77, 90, 0.4);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .cl-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .cl-topic-nav {
+
+        flex-direction: column;
+    }
+
+    .cl-nav {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .cl-hero {
+
+        padding:
+            55px 0 45px;
+    }
+
+    .cl-lab {
+
+        padding:
+            35px 0 50px;
+    }
+
+    .cl-card {
+
+        padding: 20px;
+    }
+
+    .cl-hero h1 {
+
+        font-size:
+            clamp(32px, 10vw, 46px);
+    }
+
+    .cl-description {
+
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .cl-container {
+        width: 94%;
+    }
+
+    .cl-hero h1 {
+        font-size: 31px;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="../../../index.html"
+   class="brand">
+
+<div class="brand-logo">
+
+<svg viewBox="0 0 50 60">
+
+<path
+d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+fill="none"
+stroke="currentColor"
+stroke-width="3"
+/>
+
+<rect
+x="18"
+y="25"
+width="14"
+height="14"
+rx="2"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<path
+d="M20 25 V20 C20 16 30 16 30 20 V25"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<circle
+cx="25"
+cy="31"
+r="2"
+fill="currentColor"
+/>
+
+<path
+d="M25 33 V36"
+stroke="currentColor"
+stroke-width="2"
+/>
+
+</svg>
+
+</div>
+
+
+<div class="brand-text">
+
+<div class="brand-name">
+Cyber<span>Nexa</span>
+</div>
+
+<div class="brand-tagline">
+Cybersecurity &amp; IT Learning
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="cl-hero">
+
+<div class="cl-container">
+
+<div class="cl-breadcrumb">
+
+CyberNexa / Incident Response / Practical Lab
+
+</div>
+
+
+<div class="cl-alert">
+
+<span class="cl-pulse"></span>
+
+Containment Practical Lab
+
+</div>
+
+
+<h1>
+
+Incident <span>Containment Lab</span>
+
+</h1>
+
+
+<p class="cl-description">
+
+Practice identifying an affected resource and applying
+an appropriate containment action. This simulation helps
+you understand how security teams limit the impact of
+an active incident.
+
+</p>
+
+</div>
+
+</header>
+
+
+<main>
+
+<section class="cl-lab">
+
+<div class="cl-container">
+
+<div class="cl-grid">
+
+
+<!-- =====================================================
+     LEFT CARD
+====================================================== -->
+
+<div class="cl-card">
+
+<h2>Containment Scenario</h2>
+
+<p class="cl-card-description">
+
+Select the affected resource and choose the containment
+action you think is appropriate.
+
+</p>
+
+
+<label class="cl-label"
+       for="resource">
+
+Affected Resource
+
+</label>
+
+
+<select id="resource"
+        class="cl-select">
+
+<option value="workstation">
+Compromised Workstation
+</option>
+
+<option value="account">
+Compromised User Account
+</option>
+
+<option value="server">
+Affected Server
+</option>
+
+<option value="network">
+Suspicious Network Segment
+</option>
+
+</select>
+
+
+<div class="cl-action-list">
+
+<button class="cl-action"
+        data-action="isolate">
+
+Isolate the affected resource
+
+</button>
+
+
+<button class="cl-action"
+        data-action="disable">
+
+Disable or restrict the affected account
+
+</button>
+
+
+<button class="cl-action"
+        data-action="block">
+
+Block suspicious network communication
+
+</button>
+
+
+<button class="cl-action"
+        data-action="monitor">
+
+Increase monitoring and collect evidence
+
+</button>
+
+</div>
+
+
+<button id="runBtn"
+        class="cl-run">
+
+Run Containment Simulation
+
+</button>
+
+
+<div class="cl-progress-box">
+
+<div class="cl-progress-header">
+
+<span>
+Containment Progress
+</span>
+
+<span id="progressText">
+0%
+</span>
+
+</div>
+
+
+<div class="cl-progress">
+
+<div id="progressBar"
+     class="cl-progress-bar">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     RIGHT CARD
+====================================================== -->
+
+<div class="cl-card">
+
+<h2>Simulation Output</h2>
+
+<p class="cl-card-description">
+
+The simulated security response will appear below.
+
+</p>
+
+
+<div id="output"
+     class="cl-output">
+
+[ SYSTEM READY ]
+
+Waiting for containment scenario...
+
+Select an affected resource,
+choose a containment action,
+then run the simulation.
+
+</div>
+
+
+<div class="cl-checklist">
+
+<label class="cl-check">
+
+<input type="checkbox"
+       class="check">
+
+Identify affected resource
+
+</label>
+
+
+<label class="cl-check">
+
+<input type="checkbox"
+       class="check">
+
+Assess incident impact
+
+</label>
+
+
+<label class="cl-check">
+
+<input type="checkbox"
+       class="check">
+
+Apply containment
+
+</label>
+
+
+<label class="cl-check">
+
+<input type="checkbox"
+       class="check">
+
+Monitor affected resource
+
+</label>
+
+
+<label class="cl-check">
+
+<input type="checkbox"
+       class="check">
+
+Prepare for remediation
+
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     HOW TO USE
+====================================================== -->
+
+<div class="cl-how">
+
+<h3>
+How to Complete This Lab
+</h3>
+
+<ol>
+
+<li>
+Select an affected resource.
+</li>
+
+<li>
+Choose a suitable containment action.
+</li>
+
+<li>
+Click "Run Containment Simulation".
+</li>
+
+<li>
+Read the simulated security response.
+</li>
+
+<li>
+Complete the containment checklist.
+</li>
+
+</ol>
+
+</div>
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<div class="cl-topic-nav">
+
+<a href="../theory/eradication.html"
+   class="cl-nav">
+
+Next Theory: Eradication →
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div>
+
+<div class="footer-brand">
+
+Cyber<span>Nexa</span>
+
+</div>
+
+<p>
+Cybersecurity &amp; IT Learning
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="../../../index.html">
+Home
+</a>
+
+<a href="../../../footer/about.html">
+About
+</a>
+
+<a href="../../../footer/contact.html">
+Contact
+</a>
+
+<a href="../../../footer/privacy-policy.html">
+Privacy Policy
+</a>
+
+<a href="../../../footer/disclaimer.html">
+Disclaimer
+</a>
+
+</div>
+
+</div>
+
+
+<div class="copyright">
+
+© 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   CONTAINMENT LAB JAVASCRIPT
+   ========================================================= */
+
+const actions =
+    document.querySelectorAll(".cl-action");
+
+const runBtn =
+    document.getElementById("runBtn");
+
+const output =
+    document.getElementById("output");
+
+const resource =
+    document.getElementById("resource");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const progressText =
+    document.getElementById("progressText");
+
+let selectedAction = "";
+
+
+/* =========================================================
+   ACTION SELECTION
+   ========================================================= */
+
+actions.forEach(action => {
+
+    action.addEventListener("click", () => {
+
+        actions.forEach(item => {
+
+            item.classList.remove("active");
+
+        });
+
+        action.classList.add("active");
+
+        selectedAction =
+            action.dataset.action;
+
+    });
+
+});
+
+
+/* =========================================================
+   CHECKLIST PROGRESS
+   ========================================================= */
+
+const checks =
+    document.querySelectorAll(".check");
+
+function updateProgress() {
+
+    const completed =
+        [...checks].filter(
+            check => check.checked
+        ).length;
+
+    const percentage =
+        Math.round(
+            (completed / checks.length) * 100
+        );
+
+    progressBar.style.width =
+        percentage + "%";
+
+    progressText.textContent =
+        percentage + "%";
+}
+
+checks.forEach(check => {
+
+    check.addEventListener(
+        "change",
+        updateProgress
+    );
+
+});
+
+
+/* =========================================================
+   SIMULATION
+   ========================================================= */
+
+runBtn.addEventListener("click", () => {
+
+    if (!selectedAction) {
+
+        output.innerHTML =
+`
+<span class="danger">
+[ WARNING ]
+</span>
+
+No containment action selected.
+
+Select an appropriate containment
+action before running the simulation.
+`;
+
+        return;
+    }
+
+
+    const selectedResource =
+        resource.options[
+            resource.selectedIndex
+        ].text;
+
+
+    let result = "";
+
+
+    if (selectedAction === "isolate") {
+
+        result =
+`
+<span class="info">
+[ CONTAINMENT STARTED ]
+</span>
+
+Affected Resource:
+${selectedResource}
+
+Action:
+Network Isolation
+
+Result:
+The affected resource has been
+isolated from normal network
+communication.
+
+Objective:
+Prevent further spread while
+preserving the resource for
+investigation.
+
+Status:
+<span class="success">
+CONTAINED
+</span>
+`;
+
+    }
+
+
+    else if (selectedAction === "disable") {
+
+        result =
+`
+<span class="info">
+[ CONTAINMENT STARTED ]
+</span>
+
+Affected Resource:
+${selectedResource}
+
+Action:
+Account Restriction
+
+Result:
+Access associated with the
+affected account has been
+restricted.
+
+Objective:
+Prevent unauthorized access
+while the incident is investigated.
+
+Status:
+<span class="success">
+CONTAINED
+</span>
+`;
+
+    }
+
+
+    else if (selectedAction === "block") {
+
+        result =
+`
+<span class="info">
+[ CONTAINMENT STARTED ]
+</span>
+
+Affected Resource:
+${selectedResource}
+
+Action:
+Network Communication Block
+
+Result:
+Suspicious communication has
+been blocked.
+
+Objective:
+Limit communication between
+the threat and affected resources.
+
+Status:
+<span class="success">
+CONTAINED
+</span>
+`;
+
+    }
+
+
+    else if (selectedAction === "monitor") {
+
+        result =
+`
+<span class="warning">
+[ MONITORING ENABLED ]
+</span>
+
+Affected Resource:
+${selectedResource}
+
+Action:
+Enhanced Monitoring
+
+Result:
+Additional monitoring and
+evidence collection have been
+enabled.
+
+Objective:
+Observe the incident and collect
+information before further
+containment decisions.
+
+Status:
+<span class="warning">
+UNDER INVESTIGATION
+</span>
+`;
+
+    }
+
+
+    output.innerHTML = result;
+
+});
+
+</script>
+
+</body>
+
+</html>

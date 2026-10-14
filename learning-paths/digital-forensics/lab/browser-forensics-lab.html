@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Browser Forensics Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 60px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(116, 88, 255, 0.07),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(0, 191, 255, 0.05),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #05060d,
+                    #080a13,
+                    #05060d
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1080px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           LAB HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            padding: 30px;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid rgba(139, 120, 255, 0.18);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(15, 16, 29, 0.98),
+                    rgba(8, 10, 19, 0.98)
+                );
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .lab-header::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #7966ff,
+                    #00bfff,
+                    #59e6a5
+                );
+        }
+
+        .lab-label {
+
+            color: #59e6a5;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 10px;
+        }
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 35px;
+        }
+
+        .lab-header h1 span {
+
+            color: #9b8cff;
+        }
+
+        .lab-header p {
+
+            max-width: 760px;
+
+            margin: 12px 0 0;
+
+            color: #8c95a8;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           OBJECTIVE
+        ====================================================== */
+
+        .objective {
+
+            padding: 18px;
+
+            margin-bottom: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .objective-title {
+
+            color: #00bfff;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 7px;
+        }
+
+        .objective p {
+
+            margin: 0;
+
+            color: #8993a7;
+
+            font-size: 11px;
+
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           EVIDENCE TABLE
+        ====================================================== */
+
+        .evidence-card {
+
+            padding: 23px;
+
+            margin-bottom: 16px;
+
+            border:
+                1px solid rgba(139, 120, 255, 0.10);
+
+            border-radius: 12px;
+
+            background:
+                rgba(10, 12, 22, 0.97);
+        }
+
+        .section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+        .section-title span {
+
+            color: #9b8cff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+        }
+
+        .evidence-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            overflow: hidden;
+        }
+
+        .evidence-table th {
+
+            padding: 11px;
+
+            color: #9b8cff;
+
+            background:
+                rgba(139, 120, 255, 0.05);
+
+            border-bottom:
+                1px solid rgba(139, 120, 255, 0.12);
+
+            font-size: 9px;
+
+            text-align: left;
+
+            text-transform: uppercase;
+        }
+
+        .evidence-table td {
+
+            padding: 11px;
+
+            color: #8993a7;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.035);
+
+            font-size: 10.5px;
+        }
+
+        .evidence-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .evidence-table .time {
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+        }
+
+        .evidence-table .artifact {
+
+            color: #dce2ee;
+        }
+
+        /* =====================================================
+           QUESTIONS
+        ====================================================== */
+
+        .question-card {
+
+            padding: 20px;
+
+            margin-bottom: 12px;
+
+            border:
+                1px solid rgba(139, 120, 255, 0.09);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(14, 16, 28, 0.97),
+                    rgba(8, 10, 18, 0.97)
+                );
+        }
+
+        .question-number {
+
+            color: #59e6a5;
+
+            font-family: Consolas, monospace;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 7px;
+        }
+
+        .question {
+
+            color: #e3e6ee;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            margin-bottom: 13px;
+        }
+
+        .options {
+
+            display: grid;
+
+            gap: 7px;
+        }
+
+        .option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 10px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.07);
+
+            border-radius: 7px;
+
+            color: #7f899c;
+
+            background:
+                rgba(0, 191, 255, 0.015);
+
+            cursor: pointer;
+
+            font-size: 10.5px;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(139, 120, 255, 0.25);
+
+            background:
+                rgba(139, 120, 255, 0.035);
+        }
+
+        .option input {
+            accent-color: #8e7cff;
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result-panel {
+
+            margin-top: 18px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(89, 230, 165, 0.12);
+
+            border-radius: 10px;
+
+            background:
+                rgba(89, 230, 165, 0.018);
+        }
+
+        .result-panel h2 {
+
+            margin: 0 0 7px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+        #result {
+
+            margin: 0 0 15px;
+
+            color: #7f899c;
+
+            font-size: 11px;
+        }
+
+        .check-button {
+
+            border:
+                1px solid rgba(89, 230, 165, 0.30);
+
+            border-radius: 7px;
+
+            padding: 11px 20px;
+
+            color: #bff8df;
+
+            background:
+                rgba(89, 230, 165, 0.045);
+
+            font-size: 10.5px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .check-button:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(89, 230, 165, 0.60);
+        }
+
+        /* =====================================================
+           PRACTICAL ACTIVITY
+        ====================================================== */
+
+        .activity-box {
+
+            margin-top: 16px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(139, 120, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(139, 120, 255, 0.018);
+        }
+
+        .activity-title {
+
+            color: #9b8cff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 9px;
+        }
+
+        .activity-box p {
+
+            margin: 0 0 10px;
+
+            color: #8791a5;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+        .activity-list {
+
+            margin: 0;
+
+            padding-left: 20px;
+
+            color: #7d879a;
+
+            font-size: 10.5px;
+
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+.lab-navigation {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-top: 22px;
+}
+
+.lab-navigation a {
+
+    flex: 0 0 auto;
+
+    min-width: 220px;
+
+    padding: 13px 18px;
+
+    border:
+        1px solid rgba(139, 120, 255, 0.08);
+
+    border-radius: 8px;
+
+    color: #7b8598;
+
+    background:
+        rgba(139, 120, 255, 0.018);
+
+    text-align: center;
+
+    text-decoration: none;
+
+    font-size: 10.5px;
+
+    font-weight: 700;
+}
+
+.lab-navigation a:hover {
+
+    color: #ffffff;
+
+    border-color:
+        rgba(139, 120, 255, 0.28);
+}
+
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+                padding: 45px 12px 60px;
+            }
+
+            .lab-header {
+                padding: 24px 19px;
+            }
+
+            .lab-header h1 {
+                font-size: 28px;
+            }
+
+            .evidence-card {
+                padding: 17px;
+                overflow-x: auto;
+            }
+
+            .evidence-table {
+                min-width: 650px;
+            }
+
+            .lab-navigation {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.lab-navigation a {
+    width: 100%;
+}
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     LAB
+====================================================== -->
+
+<main class="lab-page">
+
+    <div class="lab-container">
+
+
+        <section class="lab-header">
+
+            <div class="lab-label">
+                DIGITAL FORENSICS / PRACTICAL LAB
+            </div>
+
+            <h1>
+                Browser <span>Forensics</span> Investigation
+            </h1>
+
+            <p>
+
+                Analyze a simulated browser evidence set, identify relevant
+                artifacts and reconstruct the sequence of activity. This
+                laboratory uses fictional evidence for educational purposes.
+
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             OBJECTIVE
+        ================================================== -->
+
+        <section class="objective">
+
+            <div class="objective-title">
+                Investigation Objective
+            </div>
+
+            <p>
+
+                Review the simulated browser artifacts below and determine
+                what activity occurred, which artifacts support each event,
+                and how the evidence can be organized into a timeline.
+
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             EVIDENCE
+        ================================================== -->
+
+        <section class="evidence-card">
+
+            <div class="section-title">
+
+                <span>
+                    EVIDENCE
+                </span>
+
+                Browser Artifact Dataset
+
+            </div>
+
+
+            <table class="evidence-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Time
+                        </th>
+
+                        <th>
+                            Artifact
+                        </th>
+
+                        <th>
+                            Source
+                        </th>
+
+                        <th>
+                            Observation
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td class="time">
+                            09:10
+                        </td>
+
+                        <td class="artifact">
+                            History
+                        </td>
+
+                        <td>
+                            Browser
+                        </td>
+
+                        <td>
+                            cybernexa.local/login
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="time">
+                            09:13
+                        </td>
+
+                        <td class="artifact">
+                            Download
+                        </td>
+
+                        <td>
+                            Browser
+                        </td>
+
+                        <td>
+                            security-report.pdf
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="time">
+                            09:16
+                        </td>
+
+                        <td class="artifact">
+                            History
+                        </td>
+
+                        <td>
+                            Browser
+                        </td>
+
+                        <td>
+                            cybernexa.local/resources
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="time">
+                            09:18
+                        </td>
+
+                        <td class="artifact">
+                            Cookie
+                        </td>
+
+                        <td>
+                            Browser
+                        </td>
+
+                        <td>
+                            cybernexa.local
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="time">
+                            09:21
+                        </td>
+
+                        <td class="artifact">
+                            Bookmark
+                        </td>
+
+                        <td>
+                            Browser
+                        </td>
+
+                        <td>
+                            Security Resources
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- =================================================
+             PRACTICAL ACTIVITY
+        ================================================== -->
+
+        <section class="evidence-card">
+
+            <div class="section-title">
+
+                <span>
+                    ACTIVITY
+                </span>
+
+                Evidence Reconstruction
+
+            </div>
+
+            <div class="activity-box">
+
+                <div class="activity-title">
+                    Investigator Task
+                </div>
+
+                <p>
+
+                    Using the evidence table, reconstruct the most logical
+                    sequence of browser activity.
+
+                </p>
+
+                <ul class="activity-list">
+
+                    <li>
+                        Identify the first recorded browser event.
+                    </li>
+
+                    <li>
+                        Identify the downloaded file.
+                    </li>
+
+                    <li>
+                        Identify the resource page visited afterward.
+                    </li>
+
+                    <li>
+                        Identify the browser artifact associated with stored
+                        website state.
+                    </li>
+
+                    <li>
+                        Identify the saved resource represented by the
+                        bookmark.
+                    </li>
+
+                    <li>
+                        Explain why timestamps should be correlated with
+                        other evidence.
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MCQS
+        ================================================== -->
+
+        <section class="evidence-card">
+
+            <div class="section-title">
+
+                <span>
+                    CHECKPOINT
+                </span>
+
+                Investigation Quiz
+
+            </div>
+
+
+            <!-- QUESTION 1 -->
+
+            <div class="question-card">
+
+                <div class="question-number">
+                    QUESTION 01
+                </div>
+
+                <div class="question">
+                    Which browser artifact primarily records previously
+                    visited web pages?
+                </div>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="a"
+                        >
+                        A. Cache
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="b"
+                        >
+                        B. History
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="c"
+                        >
+                        C. Bookmark
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="d"
+                        >
+                        D. Download folder
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUESTION 2 -->
+
+            <div class="question-card">
+
+                <div class="question-number">
+                    QUESTION 02
+                </div>
+
+                <div class="question">
+                    Which artifact can help connect a downloaded file
+                    with browser activity?
+                </div>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="a"
+                        >
+                        A. Download record
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="b"
+                        >
+                        B. Monitor brightness
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="c"
+                        >
+                        C. Keyboard layout
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="d"
+                        >
+                        D. Screen resolution
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUESTION 3 -->
+
+            <div class="question-card">
+
+                <div class="question-number">
+                    QUESTION 03
+                </div>
+
+                <div class="question">
+                    Why are timestamps useful in browser forensics?
+                </div>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="a"
+                        >
+                        A. They change the browser theme
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="b"
+                        >
+                        B. They help establish chronological activity
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="c"
+                        >
+                        C. They encrypt the browser
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="d"
+                        >
+                        D. They delete history
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUESTION 4 -->
+
+            <div class="question-card">
+
+                <div class="question-number">
+                    QUESTION 04
+                </div>
+
+                <div class="question">
+                    What should an investigator do before drawing a
+                    conclusion from a single browser artifact?
+                </div>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="a"
+                        >
+                        A. Delete it
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="b"
+                        >
+                        B. Correlate it with other evidence
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="c"
+                        >
+                        C. Modify its timestamp
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="d"
+                        >
+                        D. Ignore the artifact
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUESTION 5 -->
+
+            <div class="question-card">
+
+                <div class="question-number">
+                    QUESTION 05
+                </div>
+
+                <div class="question">
+                    Which browser artifact represents a saved web resource?
+                </div>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="a"
+                        >
+                        A. Bookmark
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="b"
+                        >
+                        B. Cache
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="c"
+                        >
+                        C. Cookie
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="d"
+                        >
+                        D. Temporary memory
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RESULT
+            ================================================== -->
+
+            <div class="result-panel">
+
+                <h2>
+                    Investigation Result
+                </h2>
+
+                <p id="result">
+                    Complete all five questions to check your result.
+                </p>
+
+                <button
+                    class="check-button"
+                    onclick="checkQuiz()"
+                >
+                    Check Investigation
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             NAVIGATION
+        ================================================== -->
+
+        <div class="lab-navigation">
+
+            <a href="linux-forensics-lab.html">
+                ← Lab: Linux Forensics
+            </a>
+
+            <a href="../theory/log-analysis.html">
+                Next Theory: Log Analysis →
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<script src="../../../js/navbar.js"></script>
+
+
+<script>
+
+function checkQuiz() {
+
+    const answers = {
+
+        q1: "b",
+        q2: "a",
+        q3: "b",
+        q4: "b",
+        q5: "a"
+
+    };
+
+    let score = 0;
+
+    let answered = 0;
+
+    Object.keys(answers).forEach(function(question) {
+
+        const selected =
+            document.querySelector(
+                'input[name="' + question + '"]:checked'
+            );
+
+        if (selected) {
+
+            answered++;
+
+            if (selected.value === answers[question]) {
+
+                score++;
+
+            }
+
+        }
+
+    });
+
+
+    const result =
+        document.getElementById("result");
+
+
+    if (answered < 5) {
+
+        result.textContent =
+            "Please answer all 5 investigation questions first.";
+
+        result.style.color = "#ffc86b";
+
+        return;
+    }
+
+
+    if (score === 5) {
+
+        result.textContent =
+            "Excellent investigation. Score: 5/5 — Browser Forensics cleared.";
+
+        result.style.color = "#59e6a5";
+
+    }
+
+    else if (score >= 3) {
+
+        result.textContent =
+            "Good work. Score: " +
+            score +
+            "/5 — Review the missed concepts and try again.";
+
+        result.style.color = "#00bfff";
+
+    }
+
+    else {
+
+        result.textContent =
+            "Score: " +
+            score +
+            "/5 — Review the Browser Forensics theory and repeat the lab.";
+
+        result.style.color = "#ffc86b";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

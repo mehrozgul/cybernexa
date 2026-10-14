@@ -1,0 +1,2070 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Router & Switch | CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .network-lab-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            padding: 55px 15px 65px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(14, 165, 233, 0.13),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .network-lab-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .network-lab-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .network-lab-category {
+            display: inline-block;
+            margin-bottom: 12px;
+
+            color: #22d3ee;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .network-lab-header h1 {
+            margin: 0;
+            color: #f8fafc;
+            font-size: 42px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        .network-lab-header h1 span {
+            color: #38bdf8;
+        }
+
+        .network-lab-intro {
+            max-width: 720px;
+            margin: 14px auto 0;
+
+            color: #aebbc5;
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           LAB INFO
+        ===================================================== */
+
+        .network-lab-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .network-info-card {
+            padding: 14px;
+
+            border: 1px solid rgba(34, 211, 238, 0.15);
+            border-radius: 9px;
+
+            background: rgba(34, 211, 238, 0.035);
+        }
+
+        .network-info-icon {
+            margin-bottom: 7px;
+            color: #22d3ee;
+            font-size: 17px;
+        }
+
+        .network-info-label {
+            margin-bottom: 3px;
+
+            color: #71808c;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .network-info-value {
+            color: #e2e8f0;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .network-lab-progress {
+            margin-bottom: 25px;
+            padding: 14px 16px;
+
+            border: 1px solid rgba(34, 211, 238, 0.16);
+            border-radius: 10px;
+
+            background: rgba(34, 211, 238, 0.035);
+        }
+
+        .network-progress-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 9px;
+        }
+
+        .network-progress-title {
+            color: #f8fafc;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .network-progress-count {
+            color: #22d3ee;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .network-progress-track {
+            width: 100%;
+            height: 4px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(34, 211, 238, 0.10);
+        }
+
+        .network-progress-bar {
+            width: 33.33%;
+            height: 100%;
+
+            background: linear-gradient(
+                90deg,
+                #22d3ee,
+                #38bdf8
+            );
+        }
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .network-section {
+            margin-bottom: 18px;
+            padding: 20px;
+
+            border: 1px solid rgba(34, 211, 238, 0.15);
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+        }
+
+        .network-section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            margin-bottom: 12px;
+
+            color: #f8fafc;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .network-section-icon {
+            color: #22d3ee;
+            font-size: 18px;
+        }
+
+        .network-section p {
+            margin: 0 0 12px;
+
+            color: #aebbc5;
+            font-size: 10px;
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           DIAGRAM
+        ===================================================== */
+
+        .network-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 10px;
+            margin: 20px 0;
+
+            flex-wrap: wrap;
+        }
+
+        .network-node {
+            min-width: 110px;
+            padding: 13px 10px;
+
+            border: 1px solid rgba(34, 211, 238, 0.20);
+            border-radius: 8px;
+
+            text-align: center;
+
+            background: rgba(34, 211, 238, 0.045);
+        }
+
+        .network-node-icon {
+            margin-bottom: 5px;
+            color: #22d3ee;
+            font-size: 20px;
+        }
+
+        .network-node-title {
+            color: #f8fafc;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .network-node-text {
+            margin-top: 3px;
+            color: #7f909d;
+            font-size: 8px;
+        }
+
+        .network-arrow {
+            color: #38bdf8;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           TASK
+        ===================================================== */
+
+        .network-task {
+            margin-top: 12px;
+            padding: 14px;
+
+            border-left: 3px solid #22d3ee;
+            border-radius: 7px;
+
+            background: rgba(34, 211, 238, 0.045);
+        }
+
+        .network-task-title {
+            margin-bottom: 7px;
+            color: #67e8f9;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .network-task p {
+            margin: 0;
+            color: #aebbc5;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           COMMAND BLOCK
+        ===================================================== */
+
+        .network-command {
+            position: relative;
+
+            margin: 12px 0;
+            padding: 15px;
+
+            border: 1px solid rgba(34, 211, 238, 0.13);
+            border-radius: 8px;
+
+            background: #010508;
+
+            overflow-x: auto;
+        }
+
+        .network-command-label {
+            margin-bottom: 8px;
+
+            color: #22d3ee;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+        }
+
+        .network-command code {
+            color: #dbeafe;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 10px;
+            line-height: 1.8;
+
+            white-space: pre;
+        }
+
+        .network-copy {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+
+            padding: 5px 8px;
+
+            border: 1px solid rgba(34, 211, 238, 0.18);
+            border-radius: 5px;
+
+            color: #67e8f9;
+            background: rgba(34, 211, 238, 0.05);
+
+            font-size: 8px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .network-copy:hover {
+            border-color: rgba(34, 211, 238, 0.55);
+            background: rgba(34, 211, 238, 0.09);
+        }
+
+        /* =====================================================
+           OUTPUT
+        ===================================================== */
+
+        .network-output {
+            margin-top: 10px;
+            padding: 14px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 8px;
+
+            background: #010508;
+
+            overflow-x: auto;
+        }
+
+        .network-output-title {
+            margin-bottom: 7px;
+
+            color: #60a5fa;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .network-output pre {
+            margin: 0;
+
+            color: #94a3b8;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 9px;
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+        /* =====================================================
+           CHECKLIST
+        ===================================================== */
+
+        .network-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .network-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+
+            padding: 10px;
+
+            border: 1px solid rgba(34, 211, 238, 0.10);
+            border-radius: 7px;
+
+            background: rgba(34, 211, 238, 0.025);
+        }
+
+        .network-check input {
+            margin-top: 2px;
+            accent-color: #22d3ee;
+            cursor: pointer;
+        }
+
+        .network-check label {
+            color: #aebbc5;
+            font-size: 10px;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           KEY CONCEPTS
+        ===================================================== */
+
+        .network-concepts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .network-concept {
+            padding: 12px;
+
+            border: 1px solid rgba(34, 211, 238, 0.12);
+            border-radius: 8px;
+
+            background: rgba(34, 211, 238, 0.025);
+        }
+
+        .network-concept strong {
+            display: block;
+            margin-bottom: 5px;
+
+            color: #67e8f9;
+            font-size: 10px;
+        }
+
+        .network-concept span {
+            color: #8999a5;
+            font-size: 9px;
+            line-height: 1.55;
+        }
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .network-table-wrap {
+            margin-top: 12px;
+            overflow-x: auto;
+            border: 1px solid rgba(34, 211, 238, 0.10);
+            border-radius: 8px;
+        }
+
+        .network-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+            background: #010508;
+        }
+
+        .network-table th,
+        .network-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(34, 211, 238, 0.08);
+            text-align: left;
+            font-size: 9px;
+        }
+
+        .network-table th {
+            color: #67e8f9;
+            background: rgba(34, 211, 238, 0.045);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .network-table td {
+            color: #aebbc5;
+        }
+
+        .network-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* =====================================================
+           SAFETY
+        ===================================================== */
+
+        .network-safety {
+            margin-top: 18px;
+            padding: 17px;
+
+            border: 1px solid rgba(96, 165, 250, 0.18);
+            border-radius: 9px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .network-safety h2 {
+            margin: 0 0 8px;
+            color: #f8fafc;
+            font-size: 13px;
+        }
+
+        .network-safety p {
+            margin: 0;
+            color: #aebbc5;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .network-navigation {
+            display: flex;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .network-button {
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid rgba(34, 211, 238, 0.16);
+            border-radius: 8px;
+
+            color: #dbeafe;
+            background: rgba(34, 211, 238, 0.035);
+
+            text-decoration: none;
+            text-align: center;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .network-button:hover {
+            border-color: rgba(34, 211, 238, 0.55);
+            background: rgba(34, 211, 238, 0.08);
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+            .network-lab-page {
+                padding: 45px 10px 55px;
+            }
+
+            .network-lab-header h1 {
+                font-size: 30px;
+            }
+
+            .network-lab-intro {
+                font-size: 11px;
+            }
+
+            .network-lab-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .network-concepts {
+                grid-template-columns: 1fr;
+            }
+
+            .network-diagram {
+                flex-direction: column;
+            }
+
+            .network-arrow {
+                transform: rotate(90deg);
+            }
+
+            .network-navigation {
+                flex-direction: column;
+            }
+
+            .network-button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .network-lab-info {
+                grid-template-columns: 1fr;
+            }
+
+            .network-section {
+                padding: 15px;
+            }
+
+            .network-lab-header h1 {
+                font-size: 27px;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+
+<main class="network-lab-page">
+
+<div class="network-lab-container">
+
+<header class="network-lab-header">
+
+    <div class="network-lab-category">
+        🌐 NETWORKING PRACTICAL LAB
+    </div>
+
+    <h1>
+        <span>VLANs</span> Practical Lab
+    </h1>
+
+    <p class="network-lab-intro">
+        Create VLANs in Cisco Packet Tracer, assign switch ports,
+        configure an 802.1Q trunk and enable communication between
+        VLANs using router-on-a-stick.
+    </p>
+
+</header>
+
+
+<!-- =====================================================
+     INFO
+====================================================== -->
+
+<div class="network-lab-info">
+
+    <div class="network-info-card">
+        <div class="network-info-icon">🌐</div>
+        <div class="network-info-label">Category</div>
+        <div class="network-info-value">Networking</div>
+    </div>
+
+    <div class="network-info-card">
+        <div class="network-info-icon">🔀</div>
+        <div class="network-info-label">Topic</div>
+        <div class="network-info-value">VLANs</div>
+    </div>
+
+    <div class="network-info-card">
+        <div class="network-info-icon">🧪</div>
+        <div class="network-info-label">Environment</div>
+        <div class="network-info-value">Cisco Packet Tracer</div>
+    </div>
+
+    <div class="network-info-card">
+        <div class="network-info-icon">📊</div>
+        <div class="network-info-label">Level</div>
+        <div class="network-info-value">Beginner</div>
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PROGRESS
+====================================================== -->
+
+<div class="network-lab-progress">
+
+    <div class="network-progress-top">
+
+        <div class="network-progress-title">
+            Networking Practical Path
+        </div>
+
+        <div class="network-progress-count">
+            VLAN Lab
+        </div>
+
+    </div>
+
+    <div class="network-progress-track">
+
+        <div
+            class="network-progress-bar"
+            style="width: 50%;"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     OBJECTIVE
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🎯
+        </span>
+
+        Lab Objective
+
+    </div>
+
+    <p>
+        In this practical lab, you will divide one physical switch
+        into three logical networks using VLAN 10, VLAN 20 and VLAN 30.
+    </p>
+
+    <p>
+        You will assign switch ports to the correct VLANs, configure
+        a trunk connection to the router and use router-on-a-stick
+        to allow controlled communication between the VLANs.
+    </p>
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 What You Will Learn
+        </div>
+
+        <p>
+            You will practice VLAN creation, access ports, trunk ports,
+            802.1Q tagging, router subinterfaces, inter-VLAN routing
+            and basic VLAN verification.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TOPOLOGY
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🔗
+        </span>
+
+        Network Topology
+
+    </div>
+
+    <p>
+        Build the following topology in Cisco Packet Tracer.
+        Use one switch, one router and six PCs.
+    </p>
+
+    <div class="network-diagram">
+
+        <div class="network-node">
+            <div class="network-node-icon">💻</div>
+            <div class="network-node-title">PCs</div>
+            <div class="network-node-text">
+                VLAN 10 / 20 / 30
+            </div>
+        </div>
+
+        <div class="network-arrow">
+            →
+        </div>
+
+        <div class="network-node">
+            <div class="network-node-icon">🔀</div>
+            <div class="network-node-title">Switch SW1</div>
+            <div class="network-node-text">
+                Access + Trunk
+            </div>
+        </div>
+
+        <div class="network-arrow">
+            →
+        </div>
+
+        <div class="network-node">
+            <div class="network-node-icon">📡</div>
+            <div class="network-node-title">Router R1</div>
+            <div class="network-node-text">
+                Router-on-a-Stick
+            </div>
+        </div>
+
+    </div>
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧩 VLAN Plan
+        </div>
+
+        <p>
+            VLAN 10 = HR &nbsp; | &nbsp;
+            VLAN 20 = Finance &nbsp; | &nbsp;
+            VLAN 30 = IT
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     IP ADDRESSING
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📋
+        </span>
+
+        IP Addressing Plan
+
+    </div>
+
+    <p>
+        Use the following example addressing scheme for the Packet
+        Tracer lab.
+    </p>
+
+    <div class="network-table-wrap">
+
+        <table class="network-table">
+
+            <thead>
+
+                <tr>
+                    <th>VLAN</th>
+                    <th>Department</th>
+                    <th>Network</th>
+                    <th>Gateway</th>
+                    <th>Example PC</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>10</td>
+                    <td>HR</td>
+                    <td>192.168.10.0/24</td>
+                    <td>192.168.10.1</td>
+                    <td>192.168.10.10</td>
+                </tr>
+
+                <tr>
+                    <td>20</td>
+                    <td>Finance</td>
+                    <td>192.168.20.0/24</td>
+                    <td>192.168.20.1</td>
+                    <td>192.168.20.10</td>
+                </tr>
+
+                <tr>
+                    <td>30</td>
+                    <td>IT</td>
+                    <td>192.168.30.0/24</td>
+                    <td>192.168.30.1</td>
+                    <td>192.168.30.10</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 01
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            01
+        </span>
+
+        Create the VLANs
+
+    </div>
+
+    <p>
+        Open the CLI of SW1 and create the three VLANs with meaningful
+        names.
+    </p>
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Cisco IOS — SW1
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`enable
+configure terminal
+vlan 10
+name HR
+vlan 20
+name FINANCE
+vlan 30
+name IT
+end`, this)"
+        >
+            Copy
+        </button>
+
+        <code>enable
+configure terminal
+vlan 10
+name HR
+vlan 20
+name FINANCE
+vlan 30
+name IT
+end</code>
+
+    </div>
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Verification
+        </div>
+
+        <pre>show vlan brief
+
+10   HR
+20   FINANCE
+30   IT</pre>
+
+    </div>
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 Understand the Result
+        </div>
+
+        <p>
+            The switch now has three logical VLANs. Each VLAN represents
+            a separate Layer 2 broadcast domain.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 02
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            02
+        </span>
+
+        Configure Access Ports
+
+    </div>
+
+    <p>
+        Assign end-device ports to their respective VLANs. In this
+        example, Fa0/1–Fa0/2 belong to HR, Fa0/3–Fa0/4 belong to
+        Finance and Fa0/5–Fa0/6 belong to IT.
+    </p>
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Cisco IOS — SW1
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`enable
+configure terminal
+interface range fa0/1 - 2
+switchport mode access
+switchport access vlan 10
+exit
+interface range fa0/3 - 4
+switchport mode access
+switchport access vlan 20
+exit
+interface range fa0/5 - 6
+switchport mode access
+switchport access vlan 30
+end`, this)"
+        >
+            Copy
+        </button>
+
+        <code>enable
+configure terminal
+interface range fa0/1 - 2
+switchport mode access
+switchport access vlan 10
+exit
+interface range fa0/3 - 4
+switchport mode access
+switchport access vlan 20
+exit
+interface range fa0/5 - 6
+switchport mode access
+switchport access vlan 30
+end</code>
+
+    </div>
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 Important
+        </div>
+
+        <p>
+            An access port normally carries traffic for one VLAN.
+            End devices such as PCs are commonly connected through
+            access ports.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 03
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            03
+        </span>
+
+        Configure the Trunk Port
+
+    </div>
+
+    <p>
+        Configure Fa0/24 as the trunk link between SW1 and R1.
+        The trunk carries VLAN 10, 20 and 30 traffic.
+    </p>
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Cisco IOS — SW1
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`enable
+configure terminal
+interface fa0/24
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30
+end`, this)"
+        >
+            Copy
+        </button>
+
+        <code>enable
+configure terminal
+interface fa0/24
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30
+end</code>
+
+    </div>
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Verification
+        </div>
+
+        <pre>show interfaces trunk
+
+Port        Mode        Status
+Fa0/24      trunk       trunking
+
+Vlans allowed on trunk
+10,20,30</pre>
+
+    </div>
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔗 Why a Trunk?
+        </div>
+
+        <p>
+            A trunk can carry traffic for multiple VLANs over one
+            physical link. VLAN information is commonly identified
+            with IEEE 802.1Q tagging.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 04
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            04
+        </span>
+
+        Configure Router-on-a-Stick
+
+    </div>
+
+    <p>
+        Configure router subinterfaces on R1. Each subinterface acts
+        as the Layer 3 gateway for one VLAN.
+    </p>
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Cisco IOS — R1
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`enable
+configure terminal
+interface g0/0
+no shutdown
+exit
+interface g0/0.10
+encapsulation dot1q 10
+ip address 192.168.10.1 255.255.255.0
+exit
+interface g0/0.20
+encapsulation dot1q 20
+ip address 192.168.20.1 255.255.255.0
+exit
+interface g0/0.30
+encapsulation dot1q 30
+ip address 192.168.30.1 255.255.255.0
+end`, this)"
+        >
+            Copy
+        </button>
+
+        <code>enable
+configure terminal
+interface g0/0
+no shutdown
+exit
+interface g0/0.10
+encapsulation dot1q 10
+ip address 192.168.10.1 255.255.255.0
+exit
+interface g0/0.20
+encapsulation dot1q 20
+ip address 192.168.20.1 255.255.255.0
+exit
+interface g0/0.30
+encapsulation dot1q 30
+ip address 192.168.30.1 255.255.255.0
+end</code>
+
+    </div>
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Verification
+        </div>
+
+        <pre>show ip interface brief
+
+GigabitEthernet0/0.10   192.168.10.1   up   up
+GigabitEthernet0/0.20   192.168.20.1   up   up
+GigabitEthernet0/0.30   192.168.30.1   up   up</pre>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 05
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            05
+        </span>
+
+        Configure PC IP Addresses
+
+    </div>
+
+    <p>
+        Configure each PC with an IP address from the correct VLAN
+        network and use the router subinterface as the default gateway.
+    </p>
+
+    <div class="network-table-wrap">
+
+        <table class="network-table">
+
+            <thead>
+
+                <tr>
+                    <th>PC</th>
+                    <th>VLAN</th>
+                    <th>IP Address</th>
+                    <th>Subnet Mask</th>
+                    <th>Gateway</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>PC1</td>
+                    <td>10</td>
+                    <td>192.168.10.10</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.10.1</td>
+                </tr>
+
+                <tr>
+                    <td>PC2</td>
+                    <td>10</td>
+                    <td>192.168.10.11</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.10.1</td>
+                </tr>
+
+                <tr>
+                    <td>PC3</td>
+                    <td>20</td>
+                    <td>192.168.20.10</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.20.1</td>
+                </tr>
+
+                <tr>
+                    <td>PC4</td>
+                    <td>20</td>
+                    <td>192.168.20.11</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.20.1</td>
+                </tr>
+
+                <tr>
+                    <td>PC5</td>
+                    <td>30</td>
+                    <td>192.168.30.10</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.30.1</td>
+                </tr>
+
+                <tr>
+                    <td>PC6</td>
+                    <td>30</td>
+                    <td>192.168.30.11</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.30.1</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 Packet Tracer
+        </div>
+
+        <p>
+            On each PC, open Desktop → IP Configuration and enter
+            the corresponding IP address, subnet mask and default gateway.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 06
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            06
+        </span>
+
+        Verify VLAN Configuration
+
+    </div>
+
+    <p>
+        Use the following commands on SW1 to verify VLAN membership
+        and trunk configuration.
+    </p>
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Cisco IOS — SW1
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`show vlan brief
+show interfaces trunk`, this)"
+        >
+            Copy
+        </button>
+
+        <code>show vlan brief
+show interfaces trunk</code>
+
+    </div>
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            What to Check
+        </div>
+
+        <pre>VLAN 10 → Fa0/1, Fa0/2
+VLAN 20 → Fa0/3, Fa0/4
+VLAN 30 → Fa0/5, Fa0/6
+
+Trunk → Fa0/24
+Allowed VLANs → 10,20,30</pre>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 07
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            07
+        </span>
+
+        Test Connectivity
+
+    </div>
+
+    <p>
+        First test communication between PCs in the same VLAN.
+        Then test communication between different VLANs.
+    </p>
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            PC Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`ping 192.168.10.11
+ping 192.168.20.10
+ping 192.168.30.10`, this)"
+        >
+            Copy
+        </button>
+
+        <code>ping 192.168.10.11
+ping 192.168.20.10
+ping 192.168.30.10</code>
+
+    </div>
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Expected Result
+        </div>
+
+        <pre>Reply from 192.168.10.11: bytes=32 time&lt;1ms TTL=128
+Reply from 192.168.20.10: bytes=32 time&lt;1ms TTL=128
+Reply from 192.168.30.10: bytes=32 time&lt;1ms TTL=128</pre>
+
+    </div>
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 Understand the Result
+        </div>
+
+        <p>
+            Successful cross-VLAN ping shows that the switch trunk,
+            router subinterfaces, IP addressing and inter-VLAN routing
+            are working together.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TROUBLESHOOTING
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🛠️
+        </span>
+
+        Common Troubleshooting
+
+    </div>
+
+    <div class="network-concepts">
+
+        <div class="network-concept">
+            <strong>Wrong VLAN</strong>
+            <span>
+                Check that the PC switch port is assigned to the
+                correct VLAN.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Trunk Problem</strong>
+            <span>
+                Check that Fa0/24 is configured as a trunk and allows
+                VLANs 10, 20 and 30.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Gateway Problem</strong>
+            <span>
+                Check that each PC uses the gateway for its own VLAN.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Router Interface</strong>
+            <span>
+                Check that G0/0 is enabled and the subinterfaces are
+                up with correct 802.1Q VLAN IDs.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>IP Address</strong>
+            <span>
+                Confirm that the PC IP address belongs to the correct
+                VLAN subnet.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Verification</strong>
+            <span>
+                Use show vlan brief, show interfaces trunk and
+                show ip interface brief.
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CYBERSECURITY IMPORTANCE
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🛡️
+        </span>
+
+        Why VLANs Matter in Cybersecurity
+
+    </div>
+
+    <p>
+        VLANs are commonly used as part of network segmentation.
+        Segmentation can help separate users, servers, guest systems
+        and security-sensitive resources.
+    </p>
+
+    <div class="network-concepts">
+
+        <div class="network-concept">
+            <strong>Segmentation</strong>
+            <span>
+                Separates groups of devices into different logical
+                broadcast domains.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Access Control</strong>
+            <span>
+                Inter-VLAN traffic can be controlled with Layer 3
+                security policies and ACLs.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Reduced Broadcast Scope</strong>
+            <span>
+                Broadcast traffic stays within its VLAN unless
+                Layer 3 forwarding is used.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Guest Isolation</strong>
+            <span>
+                Guest devices can be placed in a separate VLAN from
+                internal resources.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Monitoring</strong>
+            <span>
+                Segmented networks can make traffic boundaries easier
+                to understand during security monitoring.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Layer 2 Security</strong>
+            <span>
+                VLAN configuration is one part of a broader switch
+                security strategy.
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     COMPLETION CHECKLIST
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            ✓
+        </span>
+
+        Lab Completion Checklist
+
+    </div>
+
+    <div class="network-checklist">
+
+        <div class="network-check">
+            <input type="checkbox" id="check1">
+            <label for="check1">
+                I created VLAN 10, VLAN 20 and VLAN 30.
+            </label>
+        </div>
+
+        <div class="network-check">
+            <input type="checkbox" id="check2">
+            <label for="check2">
+                I assigned the correct switch ports to each VLAN.
+            </label>
+        </div>
+
+        <div class="network-check">
+            <input type="checkbox" id="check3">
+            <label for="check3">
+                I configured Fa0/24 as an 802.1Q trunk.
+            </label>
+        </div>
+
+        <div class="network-check">
+            <input type="checkbox" id="check4">
+            <label for="check4">
+                I configured router subinterfaces for VLAN 10, 20 and 30.
+            </label>
+        </div>
+
+        <div class="network-check">
+            <input type="checkbox" id="check5">
+            <label for="check5">
+                I configured the correct IP address and gateway on each PC.
+            </label>
+        </div>
+
+        <div class="network-check">
+            <input type="checkbox" id="check6">
+            <label for="check6">
+                I verified VLAN membership with show vlan brief.
+            </label>
+        </div>
+
+        <div class="network-check">
+            <input type="checkbox" id="check7">
+            <label for="check7">
+                I verified the trunk with show interfaces trunk.
+            </label>
+        </div>
+
+        <div class="network-check">
+            <input type="checkbox" id="check8">
+            <label for="check8">
+                I successfully tested same-VLAN and inter-VLAN connectivity.
+            </label>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🧠
+        </span>
+
+        Key Concepts
+
+    </div>
+
+    <div class="network-concepts">
+
+        <div class="network-concept">
+            <strong>VLAN</strong>
+            <span>
+                A logical network created inside a physical switching
+                infrastructure.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>VLAN ID</strong>
+            <span>
+                A numerical identifier used to distinguish VLANs.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Access Port</strong>
+            <span>
+                A switch port normally assigned to one VLAN for an
+                end device.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Trunk Port</strong>
+            <span>
+                A link that carries traffic for multiple VLANs.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>802.1Q</strong>
+            <span>
+                A standard commonly used to identify VLAN traffic
+                across trunk links.
+            </span>
+        </div>
+
+        <div class="network-concept">
+            <strong>Inter-VLAN Routing</strong>
+            <span>
+                Layer 3 forwarding that allows devices in different
+                VLANs to communicate.
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📘
+        </span>
+
+        Practical Lab Summary
+
+    </div>
+
+    <p>
+        In this lab, you created three logical networks using VLAN 10,
+        VLAN 20 and VLAN 30 on a Cisco switch.
+    </p>
+
+    <p>
+        You assigned access ports, configured a trunk link and created
+        router subinterfaces using 802.1Q encapsulation.
+    </p>
+
+    <p>
+        You then configured IP addressing and verified same-VLAN and
+        inter-VLAN connectivity using show commands and ping.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     SAFETY
+====================================================== -->
+
+<section class="network-safety">
+
+    <h2>
+        🧪 Learning Safety
+    </h2>
+
+    <p>
+        Perform these configurations only in your own Cisco Packet
+        Tracer lab or on network devices you are explicitly authorized
+        to administer. Use the commands for legitimate networking,
+        administration and cybersecurity learning.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<div class="network-navigation">
+
+    <a
+        href="lab19.html"
+        class="network-button"
+    >
+        Previous: Lab 
+    </a>
+
+    <a
+        href="../theory/routing.html"
+        class="network-button"
+    >
+        ☰ Routing
+    </a>
+
+    <!-- <a
+        href="routing-practical-lab.html"
+        class="network-button"
+    >
+        Next Topic →
+    </a> -->
+
+</div>
+
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="../../../js/navbar.js"></script>
+
+
+<script>
+
+function copyCommand(command) {
+
+    navigator.clipboard.writeText(command);
+
+    const buttons =
+        document.querySelectorAll(".network-copy");
+
+    buttons.forEach(button => {
+
+        if (button.innerText === "Copy") {
+
+            button.innerText = "Copied";
+
+            setTimeout(() => {
+
+                button.innerText = "Copy";
+
+            }, 1200);
+
+        }
+
+    });
+
+}
+
+</script>
+
+
+</body>
+
+</html>

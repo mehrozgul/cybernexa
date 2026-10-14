@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>What is SOC? | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn what a Security Operations Center is, how SOC teams work, their core functions, technologies, roles and career path.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        :root {
+            --soc-bg: #050a10;
+            --soc-panel: #0a111a;
+            --soc-panel-2: #0e1823;
+            --soc-blue: #2997ff;
+            --soc-cyan: #35d9ff;
+            --soc-green: #35d49a;
+            --soc-purple: #8b7cff;
+
+            --soc-text: #edf6ff;
+            --soc-muted: #91a5b8;
+
+            --soc-border: #1b2b3a;
+            --soc-border-blue: rgba(41, 151, 255, 0.30);
+        }
+
+
+        /* =========================================================
+   BASE
+   ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+
+            background:
+                radial-gradient(circle at 12% 10%,
+                    rgba(41, 151, 255, 0.10),
+                    transparent 30%),
+                radial-gradient(circle at 88% 20%,
+                    rgba(53, 217, 255, 0.07),
+                    transparent 28%),
+                var(--soc-bg);
+
+            color: var(--soc-text);
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .soc-container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+        /* =========================================================
+   SOC HERO
+   ========================================================= */
+
+        .soc-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 75px 0 65px;
+
+            border-bottom: 1px solid var(--soc-border);
+        }
+
+        .soc-hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 520px;
+            height: 520px;
+
+            right: -250px;
+            top: -220px;
+
+            border: 1px solid rgba(41, 151, 255, 0.12);
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 45px rgba(41, 151, 255, 0.025),
+                0 0 0 90px rgba(41, 151, 255, 0.015);
+        }
+
+        .soc-breadcrumb {
+            margin-bottom: 20px;
+
+            color: var(--soc-cyan);
+
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        .soc-hero-grid {
+            display: grid;
+
+            grid-template-columns: 1.25fr 0.75fr;
+
+            gap: 45px;
+
+            align-items: center;
+        }
+
+        .soc-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 13px;
+            margin-bottom: 18px;
+
+            border:
+                1px solid rgba(53, 217, 255, 0.28);
+
+            border-radius: 4px;
+
+            background:
+                rgba(53, 217, 255, 0.05);
+
+            color: var(--soc-cyan);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .soc-status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--soc-green);
+
+            box-shadow:
+                0 0 12px rgba(53, 212, 154, 0.85);
+        }
+
+        .soc-hero h1 {
+            margin: 0 0 18px;
+
+            font-size: clamp(40px, 5vw, 64px);
+
+            line-height: 1.05;
+
+            letter-spacing: -1.5px;
+        }
+
+        .soc-hero h1 span {
+            color: var(--soc-blue);
+        }
+
+        .soc-description {
+            max-width: 720px;
+
+            color: var(--soc-muted);
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+   SOC OPERATIONS PANEL
+   ========================================================= */
+
+        .soc-console {
+            position: relative;
+
+            padding: 24px;
+
+            border:
+                1px solid var(--soc-border);
+
+            border-top:
+                2px solid var(--soc-blue);
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(14, 24, 35, 0.98),
+                    rgba(7, 13, 20, 0.98));
+
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.30);
+        }
+
+        .soc-console-head {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+        .soc-console-title {
+            font-size: 12px;
+
+            letter-spacing: 1.2px;
+        }
+
+        .soc-online {
+            color: var(--soc-green);
+
+            font-size: 10px;
+
+            letter-spacing: 0.5px;
+        }
+
+        .soc-line {
+            height: 1px;
+
+            background: var(--soc-border);
+
+            margin: 15px 0;
+        }
+
+        .soc-metric {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 10px 0;
+
+            color: var(--soc-muted);
+
+            font-size: 13px;
+        }
+
+        .soc-metric strong {
+            color: var(--soc-text);
+
+            font-weight: normal;
+        }
+
+        .soc-active {
+            color: var(--soc-green) !important;
+        }
+
+        .soc-blue-value {
+            color: var(--soc-cyan) !important;
+        }
+
+
+        /* =========================================================
+   SECTION
+   ========================================================= */
+
+        .soc-section {
+            padding: 70px 0;
+        }
+
+        .soc-section-heading {
+            margin-bottom: 28px;
+        }
+
+        .soc-section-heading h2 {
+            margin: 0 0 10px;
+
+            font-size: 32px;
+        }
+
+        .soc-section-heading p {
+            margin: 0;
+
+            max-width: 760px;
+
+            color: var(--soc-muted);
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+   DEFINITION
+   ========================================================= */
+
+        .soc-definition {
+            padding: 30px;
+
+            border:
+                1px solid rgba(41, 151, 255, 0.25);
+
+            border-left:
+                3px solid var(--soc-blue);
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(41, 151, 255, 0.07),
+                    rgba(53, 217, 255, 0.025));
+        }
+
+        .soc-definition-label {
+            margin-bottom: 13px;
+
+            color: var(--soc-cyan);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .soc-definition p {
+            margin: 0;
+
+            color: var(--soc-text);
+
+            font-size: 18px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+   HOW SOC WORKS
+   ========================================================= */
+
+        .soc-process {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+        }
+
+        .soc-process-card {
+            position: relative;
+
+            padding: 24px;
+
+            min-height: 190px;
+
+            border:
+                1px solid var(--soc-border);
+
+            border-radius: 8px;
+
+            background: var(--soc-panel);
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .soc-process-card:hover {
+            transform: translateY(-4px);
+
+            border-color:
+                var(--soc-border-blue);
+        }
+
+        .soc-process-number {
+            display: inline-block;
+
+            margin-bottom: 18px;
+
+            color: var(--soc-blue);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+        }
+
+        .soc-process-card h3 {
+            margin: 0 0 10px;
+
+            font-size: 17px;
+        }
+
+        .soc-process-card p {
+            margin: 0;
+
+            color: var(--soc-muted);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+   CORE FUNCTIONS
+   ========================================================= */
+
+        .soc-function-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 16px;
+        }
+
+        .soc-function {
+            padding: 23px;
+
+            border:
+                1px solid var(--soc-border);
+
+            border-radius: 8px;
+
+            background: var(--soc-panel);
+        }
+
+        .soc-function-tag {
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: var(--soc-cyan);
+
+            font-size: 10px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+        }
+
+        .soc-function h3 {
+            margin: 0 0 9px;
+
+            font-size: 17px;
+        }
+
+        .soc-function p {
+            margin: 0;
+
+            color: var(--soc-muted);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+   SOC TEAM
+   ========================================================= */
+
+        .soc-team {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .soc-role {
+            padding: 25px;
+
+            border:
+                1px solid var(--soc-border);
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(145deg,
+                    var(--soc-panel-2),
+                    var(--soc-panel));
+        }
+
+        .soc-role-level {
+            margin-bottom: 15px;
+
+            color: var(--soc-purple);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+        }
+
+        .soc-role h3 {
+            margin: 0 0 10px;
+
+            font-size: 18px;
+        }
+
+        .soc-role p {
+            margin: 0;
+
+            color: var(--soc-muted);
+
+            line-height: 1.7;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   TECHNOLOGIES
+   ========================================================= */
+
+        .soc-tech {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+        }
+
+        .soc-tech span {
+            padding: 10px 14px;
+
+            border:
+                1px solid var(--soc-border);
+
+            border-radius: 5px;
+
+            background: var(--soc-panel);
+
+            color: var(--soc-muted);
+
+            font-size: 13px;
+        }
+
+        .soc-tech span:hover {
+            border-color:
+                rgba(53, 217, 255, 0.35);
+
+            color: var(--soc-cyan);
+        }
+
+
+        /* =========================================================
+   REAL WORLD EXAMPLE
+   ========================================================= */
+
+        .soc-example {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 18px;
+        }
+
+        .soc-example-box {
+            padding: 26px;
+
+            border:
+                1px solid var(--soc-border);
+
+            border-radius: 8px;
+
+            background: var(--soc-panel);
+        }
+
+        .soc-example-box h3 {
+            margin: 0 0 13px;
+
+            font-size: 18px;
+        }
+
+        .soc-example-box p {
+            margin: 0;
+
+            color: var(--soc-muted);
+
+            line-height: 1.75;
+
+            font-size: 14px;
+        }
+
+        .soc-detection {
+            border-top:
+                2px solid var(--soc-blue);
+        }
+
+        .soc-response {
+            border-top:
+                2px solid var(--soc-green);
+        }
+
+
+        /* =========================================================
+   KEY CONCEPTS
+   ========================================================= */
+
+        .soc-key-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .soc-key {
+            padding: 17px 20px;
+
+            border:
+                1px solid var(--soc-border);
+
+            border-radius: 6px;
+
+            background: var(--soc-panel);
+
+            line-height: 1.7;
+        }
+
+        .soc-key strong {
+            color: var(--soc-text);
+        }
+
+        .soc-key span {
+            color: var(--soc-muted);
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   CAREER PATH
+   ========================================================= */
+
+        .soc-career {
+            padding: 30px;
+
+            border:
+                1px solid rgba(139, 124, 255, 0.25);
+
+            border-radius: 8px;
+
+            background:
+                rgba(139, 124, 255, 0.035);
+        }
+
+        .soc-career h2 {
+            margin-top: 0;
+
+            color: var(--soc-purple);
+        }
+
+        .soc-career p {
+            margin: 0;
+
+            color: var(--soc-muted);
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+   SUMMARY
+   ========================================================= */
+
+        .soc-summary {
+            padding: 30px;
+
+            border:
+                1px solid rgba(53, 212, 154, 0.25);
+
+            border-radius: 8px;
+
+            background:
+                rgba(53, 212, 154, 0.035);
+        }
+
+        .soc-summary h2 {
+            margin-top: 0;
+
+            color: var(--soc-green);
+        }
+
+        .soc-summary p {
+            margin: 0;
+
+            color: var(--soc-muted);
+
+            line-height: 1.8;
+        }
+
+        /* =========================================================
+   PRACTICAL LAB CTA
+   ========================================================= */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+
+            margin-top: 35px;
+            padding: 24px 26px;
+
+            border: 1px solid rgba(66, 165, 255, 0.22);
+            border-left: 3px solid var(--aa-blue);
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 208, 0.025));
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.20);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* Top scanning line */
+
+        .lab-area::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(66, 165, 255, 0.7),
+                    rgba(53, 214, 208, 0.6),
+                    transparent);
+        }
+
+
+        /* Lab text */
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 0;
+        }
+
+
+        .lab-text strong {
+            color: var(--aa-text);
+
+            font-size: 16px;
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .lab-text span {
+            color: var(--aa-muted);
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* Lab button */
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            min-width: 155px;
+
+            padding: 12px 20px;
+
+            border: 1px solid rgba(66, 165, 255, 0.40);
+            border-radius: 5px;
+
+            color: var(--aa-blue);
+
+            background:
+                rgba(66, 165, 255, 0.07);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            text-decoration: none;
+
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        /* Hover */
+
+        .lab-button:hover {
+            color: #ffffff;
+
+            border-color: rgba(66, 165, 255, 0.75);
+
+            background:
+                rgba(66, 165, 255, 0.14);
+
+            box-shadow:
+                0 0 18px rgba(66, 165, 255, 0.16);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* Active */
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* =========================================================
+   LAB CTA RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .lab-area {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 18px;
+
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+        }
+
+        /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 950px) {
+
+            .soc-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .soc-process {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .soc-function-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .soc-team {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .soc-example {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 768px) {
+
+            .nav-container {
+                width: 94%;
+                min-height: 64px;
+            }
+
+            .soc-hero {
+                padding: 65px 0 55px;
+            }
+
+            .soc-section {
+                padding: 58px 0;
+            }
+
+            .soc-process,
+            .soc-function-grid,
+            .soc-team {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .nav-container {
+                width: 92%;
+            }
+
+            .soc-container {
+                width: 92%;
+            }
+
+            .soc-hero {
+                padding: 52px 0 45px;
+            }
+
+            .soc-breadcrumb {
+                font-size: 11px;
+            }
+
+            .soc-hero h1 {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .soc-description {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+
+            .soc-console {
+                padding: 20px;
+            }
+
+            .soc-section {
+                padding: 48px 0;
+            }
+
+            .soc-section-heading h2 {
+                font-size: 26px;
+            }
+
+            .soc-definition {
+                padding: 22px;
+            }
+
+            .soc-definition p {
+                font-size: 16px;
+            }
+
+            .soc-process,
+            .soc-function-grid,
+            .soc-team,
+            .soc-key-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .soc-process-card {
+                min-height: auto;
+            }
+
+            .soc-example {
+                grid-template-columns: 1fr;
+            }
+
+            .soc-topic-nav {
+                flex-direction: column;
+            }
+
+            .soc-nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+
+        @media (max-width: 380px) {
+
+            .soc-container {
+                width: 94%;
+            }
+
+            .soc-hero h1 {
+                font-size: 32px;
+            }
+
+            .soc-tech span {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <header class="soc-hero">
+
+        <div class="soc-container">
+
+            <div class="soc-breadcrumb">
+                CyberNexa / SOC / Blue Team / Theory
+            </div>
+
+
+            <div class="soc-hero-grid">
+
+
+                <div>
+
+                    <div class="soc-kicker">
+
+                        <span class="soc-status-dot"></span>
+
+                        Security Operations Center
+
+                    </div>
+
+
+                    <h1>
+                        What is <span>SOC?</span>
+                    </h1>
+
+
+                    <p class="soc-description">
+
+                        A Security Operations Center (SOC) is a centralized
+                        security function that continuously monitors, detects,
+                        investigates and responds to cybersecurity threats
+                        across an organization's systems and network.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="soc-console">
+
+                    <div class="soc-console-head">
+
+                        <strong class="soc-console-title">
+                            SOC OPERATIONS
+                        </strong>
+
+                        <span class="soc-online">
+                            ● OPERATIONAL
+                        </span>
+
+                    </div>
+
+
+                    <div class="soc-line"></div>
+
+
+                    <div class="soc-metric">
+                        <span>Monitoring</span>
+                        <strong class="soc-active">
+                            ACTIVE
+                        </strong>
+                    </div>
+
+
+                    <div class="soc-metric">
+                        <span>Threat Visibility</span>
+                        <strong class="soc-blue-value">
+                            CENTRALIZED
+                        </strong>
+                    </div>
+
+
+                    <div class="soc-metric">
+                        <span>Security Function</span>
+                        <strong>
+                            DEFENSIVE
+                        </strong>
+                    </div>
+
+
+                    <div class="soc-metric">
+                        <span>Primary Goal</span>
+                        <strong>
+                            DETECT &amp; RESPOND
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <main>
+
+
+        <!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-heading">
+
+                    <h2>Definition</h2>
+
+                    <p>
+                        Understand the basic purpose of a Security Operations Center.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-definition">
+
+                    <div class="soc-definition-label">
+                        Core Definition
+                    </div>
+
+                    <p>
+
+                        A Security Operations Center (SOC) is a centralized
+                        team or function responsible for continuously monitoring
+                        security activity, detecting suspicious behavior,
+                        investigating alerts and coordinating responses to
+                        cybersecurity threats.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+     HOW SOC WORKS
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-heading">
+
+                    <h2>How a SOC Works</h2>
+
+                    <p>
+                        A SOC follows a continuous security monitoring and response
+                        process instead of handling threats randomly.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-process">
+
+
+                    <div class="soc-process-card">
+
+                        <span class="soc-process-number">
+                            01 — COLLECT
+                        </span>
+
+                        <h3>Security Data</h3>
+
+                        <p>
+                            Logs, network traffic, endpoint events and security
+                            telemetry are collected from different systems.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-process-card">
+
+                        <span class="soc-process-number">
+                            02 — MONITOR
+                        </span>
+
+                        <h3>Continuous Monitoring</h3>
+
+                        <p>
+                            Security analysts monitor incoming events to identify
+                            unusual or suspicious activity.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-process-card">
+
+                        <span class="soc-process-number">
+                            03 — ANALYZE
+                        </span>
+
+                        <h3>Alert Analysis</h3>
+
+                        <p>
+                            Important alerts are investigated to determine whether
+                            they represent a genuine security threat.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-process-card">
+
+                        <span class="soc-process-number">
+                            04 — RESPOND
+                        </span>
+
+                        <h3>Security Response</h3>
+
+                        <p>
+                            Confirmed incidents are escalated and appropriate
+                            defensive actions are coordinated.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+     CORE FUNCTIONS
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-heading">
+
+                    <h2>Core SOC Functions</h2>
+
+                    <p>
+                        The major activities performed by a Security Operations Center.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-function-grid">
+
+
+                    <div class="soc-function">
+
+                        <span class="soc-function-tag">
+                            FUNCTION 01
+                        </span>
+
+                        <h3>Security Monitoring</h3>
+
+                        <p>
+                            Continuously observe systems, endpoints, networks and
+                            security events for suspicious activity.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-function">
+
+                        <span class="soc-function-tag">
+                            FUNCTION 02
+                        </span>
+
+                        <h3>Threat Detection</h3>
+
+                        <p>
+                            Identify patterns and activities that may indicate
+                            malware, intrusion or unauthorized access.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-function">
+
+                        <span class="soc-function-tag">
+                            FUNCTION 03
+                        </span>
+
+                        <h3>Alert Analysis</h3>
+
+                        <p>
+                            Investigate alerts and determine their relevance,
+                            severity and possible security impact.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-function">
+
+                        <span class="soc-function-tag">
+                            FUNCTION 04
+                        </span>
+
+                        <h3>Incident Response</h3>
+
+                        <p>
+                            Support the investigation, containment and recovery
+                            of confirmed security incidents.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-function">
+
+                        <span class="soc-function-tag">
+                            FUNCTION 05
+                        </span>
+
+                        <h3>Threat Intelligence</h3>
+
+                        <p>
+                            Use information about threats, attackers and indicators
+                            to improve detection and defensive decisions.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-function">
+
+                        <span class="soc-function-tag">
+                            FUNCTION 06
+                        </span>
+
+                        <h3>Threat Hunting</h3>
+
+                        <p>
+                            Proactively search security data for suspicious behavior
+                            that automated detection may have missed.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+     SOC TEAM
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-heading">
+
+                    <h2>SOC Team Structure</h2>
+
+                    <p>
+                        SOC teams can contain analysts with different levels of
+                        responsibility and expertise.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-team">
+
+
+                    <div class="soc-role">
+
+                        <div class="soc-role-level">
+                            LEVEL 1
+                        </div>
+
+                        <h3>SOC Analyst</h3>
+
+                        <p>
+                            Monitors alerts, performs initial investigation,
+                            prioritizes events and escalates suspicious activity.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-role">
+
+                        <div class="soc-role-level">
+                            LEVEL 2
+                        </div>
+
+                        <h3>Security Analyst</h3>
+
+                        <p>
+                            Performs deeper investigation, correlates events and
+                            analyzes potentially malicious activity.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-role">
+
+                        <div class="soc-role-level">
+                            LEVEL 3
+                        </div>
+
+                        <h3>Senior / Threat Hunter</h3>
+
+                        <p>
+                            Handles advanced investigations, threat hunting,
+                            detection improvement and complex incidents.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+     TECHNOLOGIES
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-heading">
+
+                    <h2>SOC Technologies</h2>
+
+                    <p>
+                        A modern SOC uses multiple technologies to collect,
+                        analyze and respond to security events.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-tech">
+
+                    <span>SIEM</span>
+                    <span>EDR</span>
+                    <span>NDR</span>
+                    <span>Firewalls</span>
+                    <span>IDS / IPS</span>
+                    <span>Log Management</span>
+                    <span>Threat Intelligence</span>
+                    <span>SOAR</span>
+                    <span>Detection Rules</span>
+                    <span>Network Monitoring</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+     REAL WORLD EXAMPLE
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-heading">
+
+                    <h2>Real-World SOC Example</h2>
+
+                    <p>
+                        See how a SOC may handle suspicious login activity.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-example">
+
+
+                    <div class="soc-example-box soc-detection">
+
+                        <h3>
+                            Security Event
+                        </h3>
+
+                        <p>
+
+                            A monitoring system detects multiple failed login
+                            attempts followed by a successful login from an
+                            unusual location.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-example-box soc-response">
+
+                        <h3>
+                            SOC Investigation
+                        </h3>
+
+                        <p>
+
+                            The analyst reviews authentication logs, checks the
+                            source IP, compares related events and determines
+                            whether the activity represents a potential compromise.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-heading">
+
+                    <h2>Key Concepts</h2>
+
+                    <p>
+                        Important terms to remember from this topic.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-key-grid">
+
+
+                    <div class="soc-key">
+
+                        <strong>SOC:</strong>
+
+                        <span>
+                            Security Operations Center responsible for centralized
+                            security monitoring and response.
+                        </span>
+
+                    </div>
+
+
+                    <div class="soc-key">
+
+                        <strong>Blue Team:</strong>
+
+                        <span>
+                            Defensive security team focused on protecting systems
+                            and detecting threats.
+                        </span>
+
+                    </div>
+
+
+                    <div class="soc-key">
+
+                        <strong>Alert:</strong>
+
+                        <span>
+                            A notification generated when activity matches a
+                            security condition or detection rule.
+                        </span>
+
+                    </div>
+
+
+                    <div class="soc-key">
+
+                        <strong>SIEM:</strong>
+
+                        <span>
+                            A platform used to collect, correlate and analyze
+                            security-related logs and events.
+                        </span>
+
+                    </div>
+
+
+                    <div class="soc-key">
+
+                        <strong>IOC:</strong>
+
+                        <span>
+                            An indicator that may provide evidence of malicious
+                            or suspicious activity.
+                        </span>
+
+                    </div>
+
+
+                    <div class="soc-key">
+
+                        <strong>Threat Hunting:</strong>
+
+                        <span>
+                            Proactive investigation for threats that may not have
+                            triggered an existing alert.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+     CAREER PATH
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-career">
+
+                    <h2>SOC as a Cybersecurity Career</h2>
+
+                    <p>
+
+                        SOC is one of the common entry points into a cybersecurity
+                        career. A beginner can develop skills in networking,
+                        Linux, Windows, log analysis, SIEM platforms, threat
+                        detection and incident response. With experience, SOC
+                        analysts can move toward areas such as threat hunting,
+                        detection engineering, digital forensics and security
+                        engineering.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-summary">
+
+                    <h2>Summary</h2>
+
+                    <p>
+
+                        A Security Operations Center is a centralized defensive
+                        security function that continuously monitors systems,
+                        analyzes security events, detects threats and supports
+                        incident response. SOC teams use technologies such as
+                        SIEM, EDR, network monitoring and threat intelligence
+                        to improve visibility and protect organizational systems.
+                        For cybersecurity professionals, SOC work also provides
+                        a strong foundation for advanced Blue Team careers.
+
+                    </p>
+
+                </div>
+                <!-- =====================================================
+     LESSON COMPLETION
+====================================================== -->
+
+<section class="soc-section" id="lesson-completion">
+
+    <div class="soc-container">
+
+        <div class="soc-summary">
+
+            <h2>Lesson Completion</h2>
+
+            <p>
+                You have completed the What is SOC? lesson.
+                Review the key concepts and mark this lesson
+                as completed to track your learning progress.
+            </p>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="what-is-soc"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/what-is-soc.html"
+                data-status-id="whatIsSocCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="whatIsSocCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+                <div class="lab-area">
+
+                    <div class="lab-text">
+                        <strong>Ready for the Practical Lab?</strong>
+
+                        <span>
+                            Test your understanding through an
+                            authorized SOC security-training simulation.
+                        </span>
+                    </div>
+
+                    <a href="../lab/what-is-soc-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

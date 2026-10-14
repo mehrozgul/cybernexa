@@ -1,0 +1,2129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Networking Practical Labs - CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL PAGE CONTROL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           NAVBAR SEARCH
+        ====================================================== */
+
+        .lab-nav-search {
+
+            position: relative;
+            margin-left: auto;
+            width: 245px;
+            flex-shrink: 0;
+        }
+
+
+        .lab-nav-search input {
+
+            width: 100%;
+            height: 40px;
+
+            padding: 0 40px 0 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.20);
+            border-radius: 9px;
+
+            outline: none;
+
+            color: #dbeafe;
+            background: rgba(0, 191, 255, 0.045);
+
+            font-family: inherit;
+            font-size: 12px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .lab-nav-search input::placeholder {
+            color: #8193aa;
+        }
+
+
+        .lab-nav-search input:focus {
+
+            border-color: rgba(0, 191, 255, 0.55);
+
+            background: rgba(0, 191, 255, 0.065);
+
+            box-shadow:
+                0 0 18px rgba(0, 191, 255, 0.08);
+        }
+
+
+        .lab-search-icon {
+
+            position: absolute;
+
+            top: 50%;
+            right: 13px;
+
+            transform: translateY(-50%);
+
+            color: #00bfff;
+
+            font-size: 16px;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%
+                ),
+
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%
+                ),
+
+                #020714;
+        }
+
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1100px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+
+        .lab-label {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 44px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .lab-header h1 span {
+
+            color: #00bfff;
+        }
+
+
+        .lab-intro {
+
+            max-width: 780px;
+
+            margin: 18px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB OVERVIEW
+        ====================================================== */
+
+        .lab-overview {
+
+            width: 100%;
+
+            margin-bottom: 30px;
+
+            padding: 24px 26px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 14px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.24);
+        }
+
+
+        .lab-overview h2 {
+
+            margin: 0 0 9px;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+
+        .lab-overview p {
+
+            margin: 0;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB GRID
+        ====================================================== */
+
+        .labs-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 16px;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            position: relative;
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 0;
+
+            min-height: 265px;
+
+            padding: 22px;
+
+            overflow: hidden;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 13px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.20);
+
+            text-decoration: none;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           LIGHT SWEEP
+        ====================================================== */
+
+        .lab-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 70%;
+            height: 100%;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(0, 191, 255, 0.13),
+                    transparent
+                );
+
+            transform: skewX(-20deg);
+
+            pointer-events: none;
+        }
+
+
+        .lab-card:hover::before {
+
+            animation:
+                labCardLightSweep 0.75s ease;
+        }
+
+
+        @keyframes labCardLightSweep {
+
+            0% {
+                left: -120%;
+            }
+
+            100% {
+                left: 150%;
+            }
+        }
+
+
+        .lab-card:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.40);
+
+            box-shadow:
+
+                0 17px 38px rgba(0, 0, 0, 0.28),
+
+                0 0 24px
+                rgba(0, 191, 255, 0.05);
+
+            transform:
+                translateY(-3px);
+        }
+
+
+        /* =====================================================
+           LAB NUMBER
+        ====================================================== */
+
+        .lab-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 36px;
+            height: 36px;
+
+            margin-bottom: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.24);
+
+            border-radius: 8px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.06);
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            flex-shrink: 0;
+        }
+
+
+        /* =====================================================
+           LAB TYPE
+        ====================================================== */
+
+        .lab-type {
+
+            display: inline-block;
+
+            width: fit-content;
+
+            margin-bottom: 9px;
+
+            padding: 5px 8px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.13);
+
+            border-radius: 6px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           LAB TITLE
+        ====================================================== */
+
+        .lab-card h2 {
+
+            margin: 0 0 9px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+
+            line-height: 1.4;
+
+            font-weight: 750;
+        }
+
+
+        /* =====================================================
+           LAB DESCRIPTION
+        ====================================================== */
+
+        .lab-card p {
+
+            margin: 0;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            flex: 1;
+        }
+
+
+        /* =====================================================
+           LAB ACTION
+        ====================================================== */
+
+        .lab-action {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-top: 18px;
+
+            padding-top: 13px;
+
+            border-top:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            color: #bfeaff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        .lab-action span {
+
+            color: #00bfff;
+
+            font-size: 17px;
+
+            transition:
+                transform 0.2s ease;
+        }
+
+
+        .lab-card:hover .lab-action span {
+
+            transform:
+                translateX(4px);
+        }
+
+
+        /* =====================================================
+           LAB SEARCH HIDDEN
+        ====================================================== */
+
+        .lab-card.search-hidden {
+
+            display: none;
+        }
+
+
+        /* =====================================================
+           NO RESULTS
+        ====================================================== */
+
+        .lab-no-results {
+
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 10px;
+
+            color: #91a4bd;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           END NOTE
+        ====================================================== */
+
+        .lab-end {
+
+            margin-top: 30px;
+
+            padding: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.13);
+
+            border-radius: 13px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+        }
+
+
+        .lab-end strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+
+        .lab-end p {
+
+            max-width: 700px;
+
+            margin: 0 auto;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 900px) {
+
+            .labs-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+
+        /* =====================================================
+           SEARCH RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .lab-nav-search {
+
+                width: 190px;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 55px;
+            }
+
+
+            .lab-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .lab-label {
+
+                font-size: 10px;
+
+                letter-spacing: 1.7px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .lab-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .lab-overview {
+
+                padding: 20px 18px;
+
+                margin-bottom: 20px;
+            }
+
+
+            .lab-overview h2 {
+
+                font-size: 17px;
+            }
+
+
+            .lab-overview p {
+
+                font-size: 12px;
+            }
+
+
+            .labs-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 11px;
+            }
+
+
+            .lab-card {
+
+                min-height: 0;
+
+                padding: 20px;
+
+                border-radius: 12px;
+            }
+
+
+            .lab-number {
+
+                width: 32px;
+                height: 32px;
+
+                margin-bottom: 13px;
+            }
+
+
+            .lab-card h2 {
+
+                font-size: 17px;
+            }
+
+
+            .lab-card p {
+
+                font-size: 12px;
+
+                line-height: 1.75;
+            }
+
+
+            .lab-action {
+
+                margin-top: 16px;
+            }
+
+
+            .lab-end {
+
+                margin-top: 20px;
+
+                padding: 19px 16px;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 520px) {
+
+            .lab-nav-search {
+
+                width: 145px;
+            }
+
+
+            .lab-nav-search input {
+
+                height: 37px;
+
+                padding-left: 11px;
+
+                padding-right: 35px;
+
+                font-size: 11px;
+            }
+
+        }
+
+
+        @media (max-width: 380px) {
+
+            .lab-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .lab-card {
+
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+
+            <a href="../../../index.html" class="brand">
+
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <!-- LAB SEARCH -->
+
+            <div class="lab-nav-search">
+
+                <input
+                    type="search"
+                    id="labSearch"
+                    placeholder="Search practical labs..."
+                    aria-label="Search practical labs"
+                    autocomplete="off"
+                >
+
+                <span class="lab-search-icon">
+                    ⌕
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PRACTICAL LAB PAGE
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="lab-header">
+
+                <div class="lab-label">
+                    PRACTICAL LABS
+                </div>
+
+                <h1>
+                    <span>Networking</span> Practical Labs
+                </h1>
+
+                <p class="lab-intro">
+
+                    Practice networking concepts through
+                    hands-on labs. Follow the labs in order
+                    and apply each networking concept in a
+                    practical environment.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 OVERVIEW
+            ================================================== -->
+
+            <section class="lab-overview">
+
+                <h2>
+                    Networking Practical Lab Path
+                </h2>
+
+                <p>
+
+                    These practical labs correspond to the
+                    Networking Fundamentals learning path.
+                    Complete each lab after studying its
+                    related theory topic.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LABS
+            ================================================== -->
+
+            <div class="labs-grid">
+
+
+                <!-- =================================================
+                     LAB 01
+                ================================================= -->
+
+                <a
+                    href="lab01.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        01
+                    </div>
+
+                    <div class="lab-type">
+                        BASIC NETWORKING
+                    </div>
+
+                    <h2>
+                        Build a Basic Network
+                    </h2>
+
+                    <p>
+
+                        Create a simple network using PCs,
+                        a switch and Ethernet connections.
+                        Test basic device-to-device communication.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 02
+                ================================================== -->
+
+                <a
+                    href="lab02.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        02
+                    </div>
+
+                    <div class="lab-type">
+                        OSI MODEL
+                    </div>
+
+                    <h2>
+                        Analyze OSI Model Communication
+                    </h2>
+
+                    <p>
+
+                        Explore how data moves through the
+                        seven OSI layers during network
+                        communication.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 03
+                ================================================== -->
+
+                <a
+                    href="lab03.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        03
+                    </div>
+
+                    <div class="lab-type">
+                        TCP/IP
+                    </div>
+
+                    <h2>
+                        Explore TCP/IP Communication
+                    </h2>
+
+                    <p>
+
+                        Observe TCP/IP communication and
+                        identify the functions of its
+                        networking layers.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 04
+                ================================================== -->
+
+                <a
+                    href="lab04.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        04
+                    </div>
+
+                    <div class="lab-type">
+                        IP ADDRESSING
+                    </div>
+
+                    <h2>
+                        Configure IP Addresses
+                    </h2>
+
+                    <p>
+
+                        Configure IPv4 addresses on network
+                        devices and test communication between
+                        different hosts.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 05
+                ================================================== -->
+
+                <a
+                    href="lab05-ipv4.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        05
+                    </div>
+
+                    <div class="lab-type">
+                        IPv4 &amp; IPv6
+                    </div>
+
+                    <h2>
+                        Configure IPv4 and IPv6
+                    </h2>
+
+                    <p>
+
+                        Configure IPv4 and IPv6 addresses
+                        and compare communication using
+                        both addressing systems.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 06
+                ================================================== -->
+
+                <a
+                    href="lab06-ipv6.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        06
+                    </div>
+
+                    <div class="lab-type">
+                        MAC ADDRESS
+                    </div>
+
+                    <h2>
+                        Identify MAC Addresses
+                    </h2>
+
+                    <p>
+
+                        Examine device MAC addresses and
+                        observe their role in local network
+                        communication.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 07
+                ================================================== -->
+
+                <a
+                    href="lab07.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        07
+                    </div>
+
+                    <div class="lab-type">
+                        SUBNETTING
+                    </div>
+
+                    <h2>
+                        Create Subnets
+                    </h2>
+
+                    <p>
+
+                        Divide a network into smaller subnets
+                        and assign appropriate IP addresses
+                        to different network segments.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 08
+                ================================================== -->
+
+                <a
+                    href="lab08.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        08
+                    </div>
+
+                    <div class="lab-type">
+                        DNS
+                    </div>
+
+                    <h2>
+                        Configure DNS
+                    </h2>
+
+                    <p>
+
+                        Configure a DNS server and resolve
+                        a domain name to an IP address
+                        inside a practical network.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 09
+                ================================================== -->
+
+                <a
+                    href="lab09.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        09
+                    </div>
+
+                    <div class="lab-type">
+                        DHCP
+                    </div>
+
+                    <h2>
+                        Configure DHCP
+                    </h2>
+
+                    <p>
+
+                        Configure DHCP to automatically assign
+                        IP addresses and network configuration
+                        to client devices.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 10
+                ================================================== -->
+
+                <a
+                    href="lab10.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        10
+                    </div>
+
+                    <div class="lab-type">
+                        NAT
+                    </div>
+
+                    <h2>
+                        Configure NAT
+                    </h2>
+
+                    <p>
+
+                        Configure Network Address Translation
+                        and observe how private addresses are
+                        translated for external communication.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 11
+                ================================================== -->
+
+                <a
+                    href="lab11.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        11
+                    </div>
+
+                    <div class="lab-type">
+                        ARP
+                    </div>
+
+                    <h2>
+                        Analyze ARP
+                    </h2>
+
+                    <p>
+
+                        Observe how ARP resolves an IP address
+                        to a MAC address inside a local
+                        network.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 12
+                ================================================== -->
+
+                <a
+                    href="lab12.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        12
+                    </div>
+
+                    <div class="lab-type">
+                        ICMP
+                    </div>
+
+                    <h2>
+                        Test Connectivity with Ping
+                    </h2>
+
+                    <p>
+
+                        Use ICMP and ping to test connectivity
+                        between network devices and identify
+                        communication problems.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 13
+                ================================================== -->
+
+                <a
+                    href="lab13.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        13
+                    </div>
+
+                    <div class="lab-type">
+                        TCP / UDP
+                    </div>
+
+                    <h2>
+                        Compare TCP and UDP
+                    </h2>
+
+                    <p>
+
+                        Observe the differences between TCP
+                        and UDP communication using practical
+                        network traffic examples.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 14
+                ================================================== -->
+
+                <a
+                    href="lab14.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        14
+                    </div>
+
+                    <div class="lab-type">
+                        PORTS
+                    </div>
+
+                    <h2>
+                        Explore Ports and Protocols
+                    </h2>
+
+                    <p>
+
+                        Identify common network ports and
+                        understand which services use them
+                        during communication.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 15
+                ================================================== -->
+
+                <a
+                    href="lab15.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        15
+                    </div>
+
+                    <div class="lab-type">
+                        NETWORK DEVICES
+                    </div>
+
+                    <h2>
+                        Configure Router and Switch
+                    </h2>
+
+                    <p>
+
+                        Build a network using a router and
+                        switch and configure basic device
+                        connectivity.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 16
+                ================================================== -->
+
+                <a
+                    href="lab16.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        16
+                    </div>
+
+                    <div class="lab-type">
+                        FIREWALL
+                    </div>
+
+                    <h2>
+                        Configure Basic Firewall Rules
+                    </h2>
+
+                    <p>
+
+                        Create basic traffic-control rules
+                        and observe how a firewall allows or
+                        blocks network communication.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 17
+                ================================================== -->
+
+                <a
+                    href="lab17.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        17
+                    </div>
+
+                    <div class="lab-type">
+                        VPN
+                    </div>
+
+                    <h2>
+                        Explore VPN Communication
+                    </h2>
+
+                    <p>
+
+                        Build a basic VPN scenario and
+                        understand how protected communication
+                        can be established between networks.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 18
+                ================================================== -->
+
+                <a
+                    href="lab18.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        18
+                    </div>
+
+                    <div class="lab-type">
+                        PROXY
+                    </div>
+
+                    <h2>
+                        Configure a Proxy Scenario
+                    </h2>
+
+                    <p>
+
+                        Examine how a proxy acts as an
+                        intermediary between a client and
+                        a destination service.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 19
+                ================================================== -->
+
+                <a
+                    href="lab19.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        19
+                    </div>
+
+                    <div class="lab-type">
+                        VLAN
+                    </div>
+
+                    <h2>
+                        Configure VLANs
+                    </h2>
+
+                    <p>
+
+                        Create multiple VLANs on a switch
+                        and logically separate devices into
+                        different network segments.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 20
+                ================================================== -->
+
+                <a
+                    href="lab20.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        20
+                    </div>
+
+                    <div class="lab-type">
+                        ROUTING
+                    </div>
+
+                    <h2>
+                        Configure Basic Routing
+                    </h2>
+
+                    <p>
+
+                        Configure routing between different
+                        networks and verify packet forwarding
+                        between routers.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     LAB 21
+                ================================================== -->
+
+                <a
+                    href="lab22.html"
+                    class="lab-card"
+                >
+
+                    <div class="lab-number">
+                        21
+                    </div>
+
+                    <div class="lab-type">
+                        TROUBLESHOOTING
+                    </div>
+
+                    <h2>
+                        Network Troubleshooting
+                    </h2>
+
+                    <p>
+
+                        Diagnose common network problems using
+                        ping, IP configuration, DNS checks,
+                        routing verification and other
+                        troubleshooting techniques.
+
+                    </p>
+
+                    <div class="lab-action">
+
+                        Perform Lab
+
+                        <span>
+                            →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 NO RESULTS
+            ================================================== -->
+
+            <div
+                class="lab-no-results"
+                id="labNoResults"
+            >
+
+                No practical lab found.
+                Try a different search.
+
+            </div>
+
+
+
+            <!-- =================================================
+                 END NOTE
+            ================================================== -->
+
+            <div class="lab-end">
+
+                <strong>
+                    Complete the Networking Practical Path
+                </strong>
+
+                <p>
+
+                    Study each networking topic first and then
+                    perform its corresponding practical lab.
+                    These hands-on exercises are designed to
+                    strengthen your understanding through
+                    practical implementation.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+    <script>
+
+        /* =====================================================
+           PRACTICAL LAB SEARCH
+        ====================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const searchInput =
+                    document.getElementById("labSearch");
+
+                const labCards =
+                    document.querySelectorAll(".lab-card");
+
+                const noResults =
+                    document.getElementById("labNoResults");
+
+
+                if (!searchInput || !labCards.length) {
+                    return;
+                }
+
+
+                searchInput.addEventListener(
+                    "input",
+                    function () {
+
+                        const query =
+                            this.value
+                                .trim()
+                                .toLowerCase();
+
+
+                        let visibleCount = 0;
+
+
+                        labCards.forEach(
+                            function (card) {
+
+                                const title =
+                                    card.querySelector("h2");
+
+                                const description =
+                                    card.querySelector("p");
+
+                                const type =
+                                    card.querySelector(".lab-type");
+
+
+                                const searchableText = (
+
+                                    (title
+                                        ? title.textContent
+                                        : "") +
+
+                                    " " +
+
+                                    (description
+                                        ? description.textContent
+                                        : "") +
+
+                                    " " +
+
+                                    (type
+                                        ? type.textContent
+                                        : "")
+
+                                ).toLowerCase();
+
+
+                                const matches =
+                                    query === "" ||
+                                    searchableText.includes(query);
+
+
+                                card.classList.toggle(
+                                    "search-hidden",
+                                    !matches
+                                );
+
+
+                                if (matches) {
+                                    visibleCount++;
+                                }
+
+                            }
+                        );
+
+
+                        noResults.style.display =
+                            visibleCount === 0
+                                ? "block"
+                                : "none";
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

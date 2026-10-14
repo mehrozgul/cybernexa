@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Detection Rules | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn what Detection Rules are, how SOC teams use them, rule conditions, severity, examples and practical detection engineering concepts.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        :root {
+            --dr-bg: #070c12;
+            --dr-panel: #0d151e;
+            --dr-panel-2: #111c27;
+
+            --dr-blue: #42a5ff;
+            --dr-cyan: #35d6ff;
+            --dr-purple: #9b7cff;
+
+            --dr-red: #ff4d5a;
+            --dr-orange: #ff9f43;
+            --dr-green: #43d19e;
+
+            --dr-text: #edf5fb;
+            --dr-muted: #91a4b5;
+            --dr-border: #20303e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 12% 15%,
+                    rgba(66, 165, 255, 0.09),
+                    transparent 30%),
+                radial-gradient(circle at 88% 25%,
+                    rgba(155, 124, 255, 0.07),
+                    transparent 30%),
+                var(--dr-bg);
+
+            color: var(--dr-text);
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .dr-container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+
+
+        /* =========================================================
+   NAVBAR
+========================================================= */
+
+        .navbar {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .nav-container {
+            width: min(1150px, 92%);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            min-height: 70px;
+        }
+
+        .brand {
+            max-width: 100%;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .brand-logo {
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-name,
+        .brand-tagline {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+
+        /* =========================================================
+   HERO
+========================================================= */
+
+        .dr-hero {
+            position: relative;
+            overflow: hidden;
+            padding: 85px 0 70px;
+            border-bottom: 1px solid var(--dr-border);
+        }
+
+        .dr-hero::after {
+            content: "";
+            position: absolute;
+
+            width: 420px;
+            height: 420px;
+
+            right: -180px;
+            top: -180px;
+
+            border: 1px solid rgba(66, 165, 255, 0.12);
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 40px rgba(66, 165, 255, 0.025),
+                0 0 0 80px rgba(66, 165, 255, 0.015);
+        }
+
+        .dr-breadcrumb {
+            color: var(--dr-cyan);
+            font-size: 13px;
+            margin-bottom: 22px;
+            letter-spacing: 0.4px;
+        }
+
+        .dr-hero-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 0.65fr;
+            gap: 45px;
+            align-items: center;
+        }
+
+        .dr-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 13px;
+            margin-bottom: 18px;
+
+            border: 1px solid rgba(66, 165, 255, 0.35);
+            border-radius: 4px;
+
+            background: rgba(66, 165, 255, 0.06);
+            color: var(--dr-blue);
+
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .dr-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+
+            background: var(--dr-blue);
+
+            box-shadow:
+                0 0 12px rgba(66, 165, 255, 0.8);
+        }
+
+        .dr-hero h1 {
+            margin: 0 0 18px;
+
+            font-size: clamp(38px, 5vw, 62px);
+            line-height: 1.05;
+            letter-spacing: -1px;
+        }
+
+        .dr-hero h1 span {
+            color: var(--dr-blue);
+        }
+
+        .dr-description {
+            max-width: 720px;
+
+            color: var(--dr-muted);
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+   DETECTION ENGINE PANEL
+========================================================= */
+
+        .dr-engine {
+            padding: 24px;
+
+            border: 1px solid var(--dr-border);
+            border-top: 2px solid var(--dr-blue);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(17, 28, 39, 0.98),
+                    rgba(8, 13, 20, 0.98));
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .dr-engine-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+        .dr-engine-header strong {
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .dr-active {
+            color: var(--dr-green);
+            font-size: 11px;
+        }
+
+        .dr-line {
+            height: 1px;
+            background: var(--dr-border);
+            margin: 15px 0;
+        }
+
+        .dr-status {
+            display: flex;
+            justify-content: space-between;
+
+            padding: 8px 0;
+
+            color: var(--dr-muted);
+            font-size: 13px;
+        }
+
+        .dr-status strong {
+            color: var(--dr-text);
+            font-weight: normal;
+        }
+
+        .dr-status .blue {
+            color: var(--dr-blue);
+        }
+
+
+        /* =========================================================
+   CONTENT
+========================================================= */
+
+        .dr-section {
+            padding: 70px 0;
+        }
+
+        .dr-section-title {
+            margin-bottom: 28px;
+        }
+
+        .dr-section-title h2 {
+            margin: 0 0 10px;
+            font-size: 32px;
+        }
+
+        .dr-section-title p {
+            color: var(--dr-muted);
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+   DEFINITION
+========================================================= */
+
+        .dr-definition {
+            padding: 28px;
+
+            border: 1px solid rgba(66, 165, 255, 0.25);
+            border-left: 3px solid var(--dr-blue);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 255, 0.025));
+        }
+
+        .dr-label {
+            margin-bottom: 12px;
+
+            color: var(--dr-cyan);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .dr-definition p {
+            margin: 0;
+
+            color: var(--dr-text);
+            font-size: 18px;
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+   CORE EXPLANATION
+========================================================= */
+
+        .dr-content-card {
+            padding: 30px;
+
+            border: 1px solid var(--dr-border);
+            border-left: 3px solid var(--dr-blue);
+
+            border-radius: 7px;
+            background: var(--dr-panel);
+        }
+
+        .dr-content-card p {
+            margin: 0 0 16px;
+
+            color: var(--dr-muted);
+            line-height: 1.85;
+            font-size: 15px;
+        }
+
+        .dr-content-card p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================================
+   RULE COMPONENTS
+========================================================= */
+
+        .dr-rule-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .dr-rule-card {
+            padding: 23px;
+
+            border: 1px solid var(--dr-border);
+            border-radius: 7px;
+
+            background: var(--dr-panel);
+        }
+
+        .dr-rule-card .number {
+            display: block;
+
+            margin-bottom: 13px;
+
+            color: var(--dr-blue);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .dr-rule-card h3 {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        .dr-rule-card p {
+            margin: 0;
+
+            color: var(--dr-muted);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+
+        /* =========================================================
+   RULE EXAMPLE
+========================================================= */
+
+        .dr-code-box {
+            overflow-x: auto;
+
+            padding: 24px;
+
+            border: 1px solid var(--dr-border);
+            border-radius: 7px;
+
+            background: #060a0f;
+        }
+
+        .dr-code-box pre {
+            margin: 0;
+
+            color: #9fe8ff;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+   WHY RULES MATTER
+========================================================= */
+
+        .dr-reason-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .dr-reason {
+            padding: 24px;
+
+            border: 1px solid var(--dr-border);
+            border-radius: 7px;
+
+            background: var(--dr-panel);
+        }
+
+        .dr-reason-number {
+            display: block;
+
+            margin-bottom: 15px;
+
+            color: var(--dr-purple);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .dr-reason h3 {
+            margin: 0 0 10px;
+            font-size: 17px;
+        }
+
+        .dr-reason p {
+            margin: 0;
+
+            color: var(--dr-muted);
+            line-height: 1.65;
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   EXAMPLE
+========================================================= */
+
+        .dr-example {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .dr-example-box {
+            padding: 25px;
+
+            border: 1px solid var(--dr-border);
+            border-radius: 7px;
+
+            background: var(--dr-panel);
+        }
+
+        .dr-example-box h3 {
+            margin: 0 0 15px;
+            font-size: 17px;
+        }
+
+        .dr-example-box p {
+            margin: 0;
+
+            color: var(--dr-muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .dr-example-box.alert-box {
+            border-top: 2px solid var(--dr-red);
+        }
+
+        .dr-example-box.response-box {
+            border-top: 2px solid var(--dr-green);
+        }
+
+
+        /* =========================================================
+   KEY CONCEPTS
+========================================================= */
+
+        .dr-key-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .dr-key {
+            padding: 17px 20px;
+
+            border: 1px solid var(--dr-border);
+            border-radius: 6px;
+
+            background: var(--dr-panel);
+        }
+
+        .dr-key strong {
+            color: var(--dr-text);
+        }
+
+        .dr-key span {
+            color: var(--dr-muted);
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   SUMMARY
+========================================================= */
+
+        .dr-summary {
+            padding: 30px;
+
+            border: 1px solid rgba(67, 209, 158, 0.25);
+            border-radius: 7px;
+
+            background: rgba(67, 209, 158, 0.035);
+        }
+
+        .dr-summary h2 {
+            margin-top: 0;
+            color: var(--dr-green);
+        }
+
+        .dr-summary p {
+            margin: 0;
+
+            color: var(--dr-muted);
+            line-height: 1.8;
+        }
+
+        /* =========================================================
+   PRACTICAL LAB CTA
+   ========================================================= */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+
+            margin-top: 35px;
+            padding: 24px 26px;
+
+            border: 1px solid rgba(66, 165, 255, 0.22);
+            border-left: 3px solid var(--aa-blue);
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 208, 0.025));
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.20);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* Top scanning line */
+
+        .lab-area::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(66, 165, 255, 0.7),
+                    rgba(53, 214, 208, 0.6),
+                    transparent);
+        }
+
+
+        /* Lab text */
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 0;
+        }
+
+
+        .lab-text strong {
+            color: var(--aa-text);
+
+            font-size: 16px;
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .lab-text span {
+            color: var(--aa-muted);
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* Lab button */
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            min-width: 155px;
+
+            padding: 12px 20px;
+
+            border: 1px solid rgba(66, 165, 255, 0.40);
+            border-radius: 5px;
+
+            color: var(--aa-blue);
+
+            background:
+                rgba(66, 165, 255, 0.07);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            text-decoration: none;
+
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        /* Hover */
+
+        .lab-button:hover {
+            color: #ffffff;
+
+            border-color: rgba(66, 165, 255, 0.75);
+
+            background:
+                rgba(66, 165, 255, 0.14);
+
+            box-shadow:
+                0 0 18px rgba(66, 165, 255, 0.16);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* Active */
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* =========================================================
+   LAB CTA RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .lab-area {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 18px;
+
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+        }
+
+        /* =========================================================
+   RESPONSIVE
+========================================================= */
+
+        @media (max-width: 950px) {
+
+            .dr-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dr-rule-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dr-reason-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dr-example {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 768px) {
+
+            .nav-container {
+                width: 94%;
+                min-height: 64px;
+                padding: 8px 0;
+            }
+
+            .dr-hero {
+                padding: 70px 0 55px;
+            }
+
+            .dr-section {
+                padding: 60px 0;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .nav-container {
+                width: 92%;
+                min-height: 62px;
+                padding: 7px 0;
+            }
+
+            .brand-logo svg {
+                width: 34px;
+                height: 42px;
+            }
+
+            .brand-name {
+                font-size: 17px;
+            }
+
+            .brand-tagline {
+                font-size: 8px;
+            }
+
+            .dr-hero {
+                padding: 55px 0 45px;
+            }
+
+            .dr-hero h1 {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .dr-description {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+
+            .dr-engine {
+                padding: 20px;
+            }
+
+            .dr-section {
+                padding: 50px 0;
+            }
+
+            .dr-section-title h2 {
+                font-size: 26px;
+            }
+
+            .dr-definition {
+                padding: 22px;
+            }
+
+            .dr-definition p {
+                font-size: 16px;
+            }
+
+            .dr-content-card {
+                padding: 22px;
+            }
+
+            .dr-rule-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dr-reason-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dr-key-list {
+                grid-template-columns: 1fr;
+            }
+
+            .dr-topic-nav {
+                flex-direction: column;
+            }
+
+            .dr-nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+
+        @media (max-width: 380px) {
+
+            .dr-container {
+                width: 94%;
+            }
+
+            .dr-hero h1 {
+                font-size: 32px;
+            }
+        }
+    
+
+        /* =========================================================
+           PAGE-LOCAL RESPONSIVE NAVBAR FIX
+           Keeps the shared navbar files unchanged.
+        ========================================================= */
+
+        .navbar {
+            overflow: visible !important;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        @media (max-width: 1000px) {
+            .nav-container {
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: center;
+                column-gap: 12px;
+                position: relative;
+                overflow: visible !important;
+            }
+
+            .nav-container > .brand {
+                grid-column: 1;
+                grid-row: 1;
+                min-width: 0;
+                max-width: 100%;
+            }
+
+            .nav-container > .menu-toggle {
+                grid-column: 2;
+                grid-row: 1;
+            }
+
+            .nav-container > .menu-button {
+                grid-column: 2;
+                grid-row: 1;
+                justify-self: end;
+                align-self: center;
+                z-index: 1003;
+                cursor: pointer;
+            }
+
+            .nav-container > .navigation {
+                display: none !important;
+                position: absolute !important;
+                top: 100% !important;
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%);
+                width: 100vw !important;
+                max-width: 100vw !important;
+                max-height: calc(100dvh - 64px);
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                box-sizing: border-box;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0 !important;
+                padding: 12px 5% 18px !important;
+                margin: 0 !important;
+                background: #070c12 !important;
+                border-top: 1px solid #20303e;
+                box-shadow: 0 16px 28px rgba(0, 0, 0, 0.42);
+                z-index: 1002;
+            }
+
+            .nav-container > .menu-toggle:checked ~ .navigation {
+                display: flex !important;
+            }
+
+            .nav-container > .navigation a,
+            .nav-container > .navigation .nav-item {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .nav-container > #profileNav {
+                grid-column: 1 / -1;
+                grid-row: 2;
+                width: 100%;
+                min-width: 0;
+            }
+
+            .nav-container > .menu-toggle:checked ~ #profileNav {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-container {
+                width: 92%;
+                min-height: 62px;
+                padding: 7px 0;
+            }
+
+            .nav-container > .navigation {
+                padding-left: 4% !important;
+                padding-right: 4% !important;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .nav-container {
+                width: 94%;
+                column-gap: 8px;
+            }
+
+            .brand-name {
+                font-size: 16px;
+            }
+
+            .brand-tagline {
+                font-size: 7px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <header class="dr-hero">
+
+        <div class="dr-container">
+
+            <div class="dr-breadcrumb">
+                CyberNexa / SOC / Blue Team / Detection Rules
+            </div>
+
+
+            <div class="dr-hero-grid">
+
+                <div>
+
+                    <div class="dr-badge">
+
+                        <span class="dr-dot"></span>
+
+                        Detection Engineering
+
+                    </div>
+
+
+                    <h1>
+                        Detection <span>Rules</span>
+                    </h1>
+
+
+                    <p class="dr-description">
+
+                        Detection Rules are structured conditions used by
+                        security monitoring systems to identify suspicious
+                        or potentially malicious activity from logs and
+                        security events.
+
+                    </p>
+
+                </div>
+
+
+                <div class="dr-engine">
+
+                    <div class="dr-engine-header">
+
+                        <strong>
+                            DETECTION ENGINE
+                        </strong>
+
+                        <span class="dr-active">
+                            ● ACTIVE
+                        </span>
+
+                    </div>
+
+                    <div class="dr-line"></div>
+
+
+                    <div class="dr-status">
+                        <span>Input</span>
+                        <strong>Security Logs</strong>
+                    </div>
+
+                    <div class="dr-status">
+                        <span>Analysis</span>
+                        <strong>Rule Matching</strong>
+                    </div>
+
+                    <div class="dr-status">
+                        <span>Output</span>
+                        <strong class="blue">Security Alert</strong>
+                    </div>
+
+                    <div class="dr-status">
+                        <span>Priority</span>
+                        <strong>Based on Severity</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+        <section class="dr-section">
+
+            <div class="dr-container">
+
+                <div class="dr-section-title">
+
+                    <h2>Definition</h2>
+
+                    <p>
+                        First, understand what a Detection Rule actually does.
+                    </p>
+
+                </div>
+
+
+                <div class="dr-definition">
+
+                    <div class="dr-label">
+                        Core Definition
+                    </div>
+
+                    <p>
+
+                        A Detection Rule is a predefined set of conditions
+                        used to identify suspicious, abnormal or potentially
+                        malicious activity in security data and generate an
+                        alert when those conditions are matched.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     HOW IT WORKS
+====================================================== -->
+
+        <section class="dr-section">
+
+            <div class="dr-container">
+
+                <div class="dr-section-title">
+
+                    <h2>How Detection Rules Work</h2>
+
+                    <p>
+                        A detection rule converts raw security events into
+                        meaningful security alerts.
+                    </p>
+
+                </div>
+
+
+                <div class="dr-content-card">
+
+                    <p>
+
+                        Security devices and applications continuously generate
+                        logs such as login events, process activity, network
+                        connections and authentication failures.
+
+                    </p>
+
+                    <p>
+
+                        A detection rule examines these events and checks whether
+                        specific conditions are satisfied.
+
+                    </p>
+
+                    <p>
+
+                        For example, a rule may look for many failed login
+                        attempts from the same source IP address within a
+                        short period of time.
+
+                    </p>
+
+                    <p>
+
+                        When the required conditions are matched, the monitoring
+                        system can generate an alert for a SOC analyst to investigate.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     RULE COMPONENTS
+====================================================== -->
+
+        <section class="dr-section">
+
+            <div class="dr-container">
+
+                <div class="dr-section-title">
+
+                    <h2>Main Components of a Detection Rule</h2>
+
+                    <p>
+                        A useful detection rule normally contains several
+                        important elements.
+                    </p>
+
+                </div>
+
+
+                <div class="dr-rule-grid">
+
+                    <div class="dr-rule-card">
+
+                        <span class="number">
+                            01
+                        </span>
+
+                        <h3>Event Source</h3>
+
+                        <p>
+                            Defines where the security data comes from, such as
+                            Windows logs, firewall logs, authentication logs or
+                            endpoint telemetry.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dr-rule-card">
+
+                        <span class="number">
+                            02
+                        </span>
+
+                        <h3>Condition</h3>
+
+                        <p>
+                            Defines the suspicious behavior that should trigger
+                            the detection.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dr-rule-card">
+
+                        <span class="number">
+                            03
+                        </span>
+
+                        <h3>Threshold</h3>
+
+                        <p>
+                            Defines how often or how many times an event must occur
+                            before an alert is generated.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dr-rule-card">
+
+                        <span class="number">
+                            04
+                        </span>
+
+                        <h3>Severity</h3>
+
+                        <p>
+                            Defines the priority of the generated alert based on
+                            its potential security impact.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     RULE EXAMPLE
+====================================================== -->
+
+        <section class="dr-section">
+
+            <div class="dr-container">
+
+                <div class="dr-section-title">
+
+                    <h2>Example Detection Rule</h2>
+
+                    <p>
+                        Consider a brute-force login detection scenario.
+                    </p>
+
+                </div>
+
+
+                <div class="dr-code-box">
+
+                    <pre>
+Rule Name: Multiple Failed Logins
+
+Event:
+    Authentication Failure
+
+Condition:
+    failed_login_count >= 5
+
+Time Window:
+    5 minutes
+
+Source:
+    Same IP address
+
+Severity:
+    Medium
+
+Action:
+    Generate SOC Alert
+</pre>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     WHY IMPORTANT
+====================================================== -->
+
+        <section class="dr-section">
+
+            <div class="dr-container">
+
+                <div class="dr-section-title">
+
+                    <h2>Why Detection Rules Matter</h2>
+
+                    <p>
+                        Detection rules form an important part of SOC monitoring
+                        and security operations.
+                    </p>
+
+                </div>
+
+
+                <div class="dr-reason-grid">
+
+                    <div class="dr-reason">
+
+                        <span class="dr-reason-number">
+                            REASON 01
+                        </span>
+
+                        <h3>Automated Detection</h3>
+
+                        <p>
+                            Rules allow security systems to automatically identify
+                            known suspicious patterns instead of requiring analysts
+                            to inspect every event manually.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dr-reason">
+
+                        <span class="dr-reason-number">
+                            REASON 02
+                        </span>
+
+                        <h3>Faster Response</h3>
+
+                        <p>
+                            A well-designed rule can generate an alert quickly,
+                            allowing SOC analysts to investigate suspicious activity
+                            earlier.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dr-reason">
+
+                        <span class="dr-reason-number">
+                            REASON 03
+                        </span>
+
+                        <h3>Consistent Monitoring</h3>
+
+                        <p>
+                            Rules provide repeatable detection logic that can be
+                            applied consistently across large volumes of security data.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SIMPLE EXAMPLE
+====================================================== -->
+
+        <section class="dr-section">
+
+            <div class="dr-container">
+
+                <div class="dr-section-title">
+
+                    <h2>Simple Example</h2>
+
+                    <p>
+                        A simple SOC detection scenario.
+                    </p>
+
+                </div>
+
+
+                <div class="dr-example">
+
+                    <div class="dr-example-box alert-box">
+
+                        <h3>🚨 Suspicious Activity</h3>
+
+                        <p>
+
+                            An authentication server records eight failed login
+                            attempts from the same IP address within two minutes.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="dr-example-box response-box">
+
+                        <h3>✓ Detection Result</h3>
+
+                        <p>
+
+                            The detection rule matches the threshold and generates
+                            an alert for the SOC analyst to investigate possible
+                            brute-force activity.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+        <section class="dr-section">
+
+            <div class="dr-container">
+
+                <div class="dr-section-title">
+
+                    <h2>Key Concepts</h2>
+
+                    <p>
+                        Important concepts to remember.
+                    </p>
+
+                </div>
+
+
+                <div class="dr-key-list">
+
+                    <div class="dr-key">
+
+                        <strong>Detection Rule:</strong>
+
+                        <span>
+                            Logic used to identify suspicious activity.
+                        </span>
+
+                    </div>
+
+
+                    <div class="dr-key">
+
+                        <strong>Condition:</strong>
+
+                        <span>
+                            The event pattern that the rule looks for.
+                        </span>
+
+                    </div>
+
+
+                    <div class="dr-key">
+
+                        <strong>Threshold:</strong>
+
+                        <span>
+                            The required number or frequency of events.
+                        </span>
+
+                    </div>
+
+
+                    <div class="dr-key">
+
+                        <strong>Alert:</strong>
+
+                        <span>
+                            A notification generated when rule conditions are met.
+                        </span>
+
+                    </div>
+
+
+                    <div class="dr-key">
+
+                        <strong>Severity:</strong>
+
+                        <span>
+                            Indicates the potential priority or impact of an alert.
+                        </span>
+
+                    </div>
+
+
+                    <div class="dr-key">
+
+                        <strong>False Positive:</strong>
+
+                        <span>
+                            An alert that looks suspicious but is actually legitimate.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+        <section class="dr-section">
+
+            <div class="dr-container">
+
+                <div class="dr-summary">
+
+                    <h2>Summary</h2>
+
+                    <p>
+
+                        Detection Rules are predefined security conditions used
+                        to identify suspicious activity from security data.
+                        They can examine authentication events, network traffic,
+                        endpoint activity and other logs. When the defined
+                        conditions are satisfied, the system generates an alert
+                        that can be investigated by a SOC analyst. Effective
+                        detection rules help organizations identify threats faster,
+                        automate monitoring and improve security visibility.
+
+                    </p>
+
+                </div>
+                <!-- LESSON COMPLETION -->
+<section class="dr-section" id="lesson-completion">
+    <div class="dr-container">
+        <div class="dr-content-card">
+            <div class="dr-section-title">
+                <h2>Lesson Completion</h2>
+                <p>
+                    You have completed the Detection Rules lesson.
+                    Review the key concepts and mark this lesson as completed.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="detection-rules"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/detection-rules.html"
+                data-status-id="detectionrulesCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="detectionrulesCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+        </div>
+    </div>
+</section>
+                <div class="lab-area">
+
+                    <div class="lab-text">
+                        <strong>Ready for the Practical Lab?</strong>
+
+                        <span>
+                            Test your understanding through an
+                            authorized SOC security-training simulation.
+                        </span>
+                    </div>
+
+                    <a href="../lab/detection-rules-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

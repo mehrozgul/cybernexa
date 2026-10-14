@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+    <title>Python Exceptions | CyberNexa</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at top right,
+                    rgba(0, 202, 255, 0.08),
+                    transparent 30%),
+                #030b16;
+
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
+            background: #030c19;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 16px 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #00caff;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            color: #7f94aa;
+            font-size: 10px;
+        }
+
+        .article-page {
+            max-width: 1000px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        .article-breadcrumb {
+            color: #6f849a;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .article-breadcrumb span {
+            color: #00caff;
+            padding: 0 7px;
+        }
+
+        .article-header {
+            padding: 28px;
+
+            border: 1px solid rgba(0, 230, 138, 0.3);
+            border-left: 4px solid #00e68a;
+            border-radius: 9px;
+
+            background: rgba(0, 230, 138, 0.04);
+        }
+
+        .article-label {
+            color: #00e68a;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .article-header h1 {
+            color: white;
+            font-size: 32px;
+            margin: 9px 0;
+        }
+
+        .article-header p {
+            color: #9fb1c5;
+            font-size: 13px;
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        .article-section {
+            margin-top: 22px;
+            padding: 24px;
+
+            border: 1px solid rgba(0, 202, 255, 0.18);
+            border-radius: 9px;
+
+            background: #041221;
+        }
+
+        .article-section h2 {
+            color: white;
+            font-size: 20px;
+            margin-top: 0;
+        }
+
+        .article-section h3 {
+            color: #00caff;
+        }
+
+        .article-section p {
+            color: #aabbd0;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .code-block {
+            margin-top: 15px;
+            padding: 18px;
+
+            background: #020810;
+            border: 1px solid rgba(0, 202, 255, 0.2);
+            border-radius: 7px;
+
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #7ee7ff;
+
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .output-box {
+            margin-top: 12px;
+            padding: 14px;
+
+            border-left: 3px solid #00e68a;
+            border-radius: 5px;
+
+            background: rgba(0, 230, 138, 0.05);
+            color: #7fffc0;
+
+            font-family: Consolas, monospace;
+            font-size: 12px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .concept-card {
+            padding: 18px;
+
+            border: 1px solid rgba(0, 202, 255, 0.16);
+            border-radius: 8px;
+
+            background: rgba(0, 202, 255, 0.03);
+        }
+
+        .concept-card h3 {
+            margin-top: 0;
+            font-size: 15px;
+        }
+
+        .concept-card p {
+            margin-bottom: 0;
+        }
+
+        .article-list {
+            color: #aabbd0;
+            font-size: 13px;
+            line-height: 1.9;
+            padding-left: 20px;
+        }
+
+        .article-list li {
+            margin-bottom: 7px;
+        }
+
+        .summary-box {
+            border-left: 4px solid #00e68a;
+        }
+
+        .article-lab {
+            margin-top: 25px;
+            padding: 22px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+
+            border: 1px solid rgba(0, 230, 138, 0.25);
+            border-radius: 9px;
+
+            background: rgba(0, 230, 138, 0.04);
+        }
+
+        .article-lab h2 {
+            color: white;
+            margin: 8px 0;
+        }
+
+        .article-lab p {
+            color: #9fb1c5;
+            font-size: 13px;
+        }
+
+        .article-lab a {
+            display: inline-block;
+
+            padding: 11px 20px;
+
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+
+            color: #00e68a;
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        .article-lab a:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+
+        #lesson-completion .lab-button {
+            padding: 11px 20px;
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+            background: transparent;
+            color: #00e68a;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #lesson-completion .lab-button:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+
+        .footer {
+            border-top: 1px solid rgba(0, 202, 255, 0.15);
+            background: #020914;
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            max-width: 1000px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #6f849a;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            max-width: 1000px;
+            margin: 25px auto 0;
+
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+            text-align: center;
+
+            color: #52667b;
+            font-size: 10px;
+        }
+
+        @media (max-width: 700px) {
+
+            .article-page {
+                padding: 25px 15px 55px;
+            }
+
+            .article-header {
+                padding: 22px;
+            }
+
+            .article-header h1 {
+                font-size: 27px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-lab {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .article-lab a {
+                width: 100%;
+                text-align: center;
+            }
+
+            .article-navigation {
+                flex-direction: column;
+            }
+
+            .article-navigation a {
+                width: 100%;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SHARED CYBERNEXA NAVBAR -->
+    <div id="navbar-placeholder" data-navbar-path="../../../components/navbar.html" data-root-path="../../../">
+    </div>
+
+    <!-- =====================================================
+     EXCEPTIONS THEORY
+===================================================== -->
+
+    <main class="article-page">
+
+
+        <div class="article-breadcrumb">
+
+            Python for Cybersecurity
+
+            <span>›</span>
+
+            Exceptions
+
+        </div>
+
+
+        <section class="article-header">
+
+            <div class="article-label">
+                PYTHON FOR CYBERSECURITY
+            </div>
+
+            <h1>
+                Python Exceptions
+            </h1>
+
+            <p>
+                Learn how Python handles errors and how exception handling
+                helps cybersecurity scripts continue running safely.
+            </p>
+
+        </section>
+
+
+        <!-- DEFINITION -->
+
+        <section class="article-section">
+
+            <h2>What is an Exception?</h2>
+
+            <p>
+                An exception is an error that occurs while a Python program
+                is running. If the exception is not handled, the program
+                may stop unexpectedly.
+            </p>
+
+            <div class="code-block">
+
+                <pre><code>number = 10
+result = number / 0
+
+print(result)</code></pre>
+
+            </div>
+
+            <p>
+                The program generates a
+                <strong>ZeroDivisionError</strong> because division by zero
+                is not allowed.
+            </p>
+
+        </section>
+
+
+        <!-- WHY IMPORTANT -->
+
+        <section class="article-section">
+
+            <h2>Why are Exceptions Important in Cybersecurity?</h2>
+
+            <p>
+                Cybersecurity scripts often work with files, networks,
+                websites and external systems. These operations can fail.
+                Exception handling allows the program to handle errors
+                instead of stopping unexpectedly.
+            </p>
+
+            <div class="concept-grid">
+
+                <div class="concept-card">
+
+                    <h3>File Errors</h3>
+
+                    <p>
+                        A security log file may not exist or may be inaccessible.
+                    </p>
+
+                </div>
+
+                <div class="concept-card">
+
+                    <h3>Network Errors</h3>
+
+                    <p>
+                        A connection may fail or a server may be unavailable.
+                    </p>
+
+                </div>
+
+                <div class="concept-card">
+
+                    <h3>Invalid Input</h3>
+
+                    <p>
+                        A user may provide an incorrect port or IP address.
+                    </p>
+
+                </div>
+
+                <div class="concept-card">
+
+                    <h3>Security Scripts</h3>
+
+                    <p>
+                        Error handling keeps automation scripts running safely.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TRY EXCEPT -->
+
+        <section class="article-section">
+
+            <h2>try and except</h2>
+
+            <p>
+                Python uses the <strong>try</strong> block for code that may
+                generate an exception and the <strong>except</strong> block
+                to handle that exception.
+            </p>
+
+            <div class="code-block">
+
+                <pre><code>try:
+    result = 10 / 0
+
+except ZeroDivisionError:
+    print("Cannot divide by zero.")</code></pre>
+
+            </div>
+
+            <div class="output-box">
+                Cannot divide by zero.
+            </div>
+
+        </section>
+
+
+        <!-- MULTIPLE EXCEPTIONS -->
+
+        <section class="article-section">
+
+            <h2>Handling Different Exceptions</h2>
+
+            <p>
+                Different operations can produce different types of errors.
+                Python allows us to handle specific exceptions separately.
+            </p>
+
+            <div class="code-block">
+
+                <pre><code>try:
+    number = int("abc")
+
+except ValueError:
+    print("Invalid number.")</code></pre>
+
+            </div>
+
+            <div class="output-box">
+                Invalid number.
+            </div>
+
+        </section>
+
+
+        <!-- COMMON EXCEPTIONS -->
+
+        <section class="article-section">
+
+            <h2>Common Python Exceptions</h2>
+
+            <div class="concept-grid">
+
+                <div class="concept-card">
+
+                    <h3>ValueError</h3>
+
+                    <p>
+                        Occurs when a value has an inappropriate format.
+                    </p>
+
+                </div>
+
+                <div class="concept-card">
+
+                    <h3>FileNotFoundError</h3>
+
+                    <p>
+                        Occurs when Python cannot find a requested file.
+                    </p>
+
+                </div>
+
+                <div class="concept-card">
+
+                    <h3>ZeroDivisionError</h3>
+
+                    <p>
+                        Occurs when a number is divided by zero.
+                    </p>
+
+                </div>
+
+                <div class="concept-card">
+
+                    <h3>ConnectionError</h3>
+
+                    <p>
+                        Can occur when a network connection fails.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ELSE -->
+
+        <section class="article-section">
+
+            <h2>Using else</h2>
+
+            <p>
+                The <strong>else</strong> block runs when no exception
+                occurs in the try block.
+            </p>
+
+            <div class="code-block">
+
+                <pre><code>try:
+    port = int("443")
+
+except ValueError:
+    print("Invalid port.")
+
+else:
+    print("Port:", port)</code></pre>
+
+            </div>
+
+            <div class="output-box">
+                Port: 443
+            </div>
+
+        </section>
+
+
+        <!-- FINALLY -->
+
+        <section class="article-section">
+
+            <h2>Using finally</h2>
+
+            <p>
+                The <strong>finally</strong> block runs whether an exception
+                occurs or not. It is useful for cleanup operations.
+            </p>
+
+            <div class="code-block">
+
+                <pre><code>try:
+    print("Security scan started.")
+
+except Exception:
+    print("Scan error.")
+
+finally:
+    print("Scan process finished.")</code></pre>
+
+            </div>
+
+            <div class="output-box">
+                Security scan started.<br>
+                Scan process finished.
+            </div>
+
+        </section>
+
+
+        <!-- CYBERSECURITY EXAMPLE -->
+
+        <section class="article-section">
+
+            <h2>Cybersecurity Example</h2>
+
+            <p>
+                A security script may try to read a log file. If the file
+                does not exist, the program can handle the error safely.
+            </p>
+
+            <div class="code-block">
+
+                <pre><code>try:
+
+    with open("security.log", "r") as file:
+        logs = file.read()
+
+    print("Security log loaded.")
+
+except FileNotFoundError:
+
+    print("Security log file was not found.")</code></pre>
+
+            </div>
+
+        </section>
+
+
+        <!-- SUMMARY -->
+
+        <section class="article-section summary-box">
+
+            <h2>Summary</h2>
+
+            <ul class="article-list">
+
+                <li>An exception is an error that occurs during program execution.</li>
+
+                <li>try contains code that may generate an exception.</li>
+
+                <li>except handles the exception.</li>
+
+                <li>else runs when no exception occurs.</li>
+
+                <li>finally runs whether an exception occurs or not.</li>
+
+                <li>Exception handling is useful for reliable cybersecurity automation.</li>
+
+            </ul>
+
+        </section>
+        <!-- =====================================================
+     LESSON COMPLETION
+====================================================== -->
+
+        <section class="article-section" id="lesson-completion">
+
+            <h2>Lesson Completion</h2>
+
+            <p>
+                You have completed the Python Exceptions lesson.
+                Review the key concepts and mark this lesson as completed
+                to track your learning progress.
+            </p>
+
+            <button type="button" class="lab-button" data-lesson-progress data-course-id="python"
+                data-lesson-id="exceptions"
+                data-dashboard-url="../learning-paths/python/theory/exceptions.html"
+                data-status-id="exceptionsCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p id="exceptionsCompletionStatus" role="status" aria-live="polite" style="margin-top: 12px;">
+            </p>
+
+        </section>
+        <!-- LAB BUTTON -->
+
+        <section class="article-lab">
+
+            <div>
+
+                <span class="article-label">
+                    PRACTICAL LAB
+                </span>
+
+                <h2>
+                    Practice Python Exceptions
+                </h2>
+
+                <p>
+                    Handle invalid security input and prevent a Python
+                    cybersecurity script from stopping unexpectedly.
+                </p>
+
+            </div>
+
+            <a href="../lab/exceptions-lab.html">
+                Open Lab →
+            </a>
+
+        </section>
+    </main>
+
+
+    <!-- =====================================================
+     FOOTER
+===================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../js/supabase-client.js"></script>
+    <script src="../../../js/lesson-progress.js"></script>
+    <script src="../../../js/navbar-loader.js"></script>
+    <script src="../../../js/navbar.js"></script>
+    <script src="../../../js/session.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>File Metadata - CyberNexa</title>
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+    }
+
+    body {
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    /* =====================================================
+       DIGITAL FORENSICS PAGE
+    ===================================================== */
+
+    .df-page {
+
+        min-height: calc(100vh - 80px);
+
+        padding: 65px 20px 90px;
+
+        background:
+            radial-gradient(
+                circle at 8% 12%,
+                rgba(120, 160, 255, 0.08),
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 92% 20%,
+                rgba(0, 210, 190, 0.06),
+                transparent 30%
+            ),
+            linear-gradient(
+                180deg,
+                #060b13 0%,
+                #08101b 52%,
+                #050a12 100%
+            );
+    }
+
+    .df-container {
+
+        width: 100%;
+        max-width: 1080px;
+        margin: auto;
+    }
+
+    /* =====================================================
+       FORENSIC HEADER
+    ===================================================== */
+
+    .forensic-header {
+
+        position: relative;
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1.45fr)
+            minmax(260px, .8fr);
+
+        gap: 35px;
+
+        padding: 38px;
+
+        margin-bottom: 20px;
+
+        border: 1px solid rgba(130, 160, 200, .16);
+
+        border-radius: 5px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(13, 23, 37, .98),
+                rgba(7, 14, 24, .98)
+            );
+
+        box-shadow:
+            0 18px 45px rgba(0, 0, 0, .25);
+
+        overflow: hidden;
+    }
+
+    .forensic-header::after {
+
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+        bottom: 0;
+
+        width: 100%;
+        height: 2px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #6f8fb5,
+                #00c9b7,
+                #6f8fb5
+            );
+    }
+
+    .case-label {
+
+        display: inline-block;
+
+        margin-bottom: 13px;
+
+        color: #7f9ab9;
+
+        font-family:
+            Consolas,
+            monospace;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        letter-spacing: 2px;
+
+        text-transform: uppercase;
+    }
+
+    .case-label span {
+
+        color: #00c9b7;
+    }
+
+    .forensic-header h1 {
+
+        margin: 0;
+
+        color: #f1f6fb;
+
+        font-size: 43px;
+
+        line-height: 1.15;
+
+        letter-spacing: -.8px;
+    }
+
+    .forensic-header h1 span {
+
+        color: #00c9b7;
+    }
+
+    .header-description {
+
+        max-width: 720px;
+
+        margin: 16px 0 0;
+
+        color: #8798ab;
+
+        font-size: 13px;
+
+        line-height: 1.9;
+    }
+
+    /* =====================================================
+       EVIDENCE PANEL
+    ===================================================== */
+
+    .evidence-panel {
+
+        padding: 19px;
+
+        border:
+            1px solid rgba(120, 160, 200, .15);
+
+        background:
+            rgba(3, 8, 15, .65);
+
+        border-radius: 4px;
+    }
+
+    .evidence-top {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        padding-bottom: 12px;
+
+        margin-bottom: 14px;
+
+        border-bottom:
+            1px solid rgba(120, 160, 200, .10);
+    }
+
+    .evidence-top span {
+
+        color: #60758e;
+
+        font-family: monospace;
+
+        font-size: 9px;
+
+        letter-spacing: 1px;
+    }
+
+    .evidence-status {
+
+        color: #00c9b7 !important;
+    }
+
+    .evidence-row {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+        padding: 8px 0;
+
+        color: #71869c;
+
+        font-family: monospace;
+
+        font-size: 10px;
+    }
+
+    .evidence-row strong {
+
+        color: #c8d6e4;
+
+        font-weight: 600;
+    }
+
+    /* =====================================================
+       METADATA STRIP
+    ===================================================== */
+
+    .metadata-strip {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 9px;
+
+        margin-bottom: 20px;
+    }
+
+    .metadata-cell {
+
+        padding: 14px;
+
+        border:
+            1px solid rgba(120, 160, 200, .11);
+
+        border-radius: 4px;
+
+        background:
+            rgba(120, 160, 200, .025);
+    }
+
+    .metadata-cell small {
+
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: #586c82;
+
+        font-size: 8px;
+
+        letter-spacing: 1.4px;
+
+        text-transform: uppercase;
+    }
+
+    .metadata-cell strong {
+
+        color: #cbd9e7;
+
+        font-size: 11px;
+    }
+
+    /* =====================================================
+       FORENSIC CONTENT
+    ===================================================== */
+
+    .forensic-card {
+
+        margin-bottom: 17px;
+
+        padding: 27px;
+
+        border:
+            1px solid rgba(120, 160, 200, .12);
+
+        border-radius: 5px;
+
+        background:
+            rgba(9, 18, 30, .92);
+    }
+
+    .section-heading {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        margin-bottom: 15px;
+    }
+
+    .section-marker {
+
+        width: 31px;
+        height: 31px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        color: #00c9b7;
+
+        border:
+            1px solid rgba(0, 201, 183, .20);
+
+        background:
+            rgba(0, 201, 183, .045);
+
+        font-family: monospace;
+
+        font-size: 10px;
+
+        font-weight: 800;
+    }
+
+    .section-heading h2 {
+
+        margin: 0;
+
+        color: #edf4fa;
+
+        font-size: 19px;
+    }
+
+    .forensic-card p {
+
+        margin: 0 0 12px;
+
+        color: #8798ab;
+
+        font-size: 13px;
+
+        line-height: 1.9;
+    }
+
+    .forensic-card p:last-child {
+
+        margin-bottom: 0;
+    }
+
+    /* =====================================================
+       DEFINITION
+    ===================================================== */
+
+    .definition-box {
+
+        padding: 20px;
+
+        border-left:
+            3px solid #00c9b7;
+
+        background:
+            rgba(0, 201, 183, .035);
+    }
+
+    .definition-box small {
+
+        display: block;
+
+        margin-bottom: 8px;
+
+        color: #00c9b7;
+
+        font-size: 9px;
+
+        font-weight: 800;
+
+        letter-spacing: 1.5px;
+
+        text-transform: uppercase;
+    }
+
+    .definition-box p {
+
+        margin: 0;
+
+        color: #c4d9dc;
+
+        font-size: 14px;
+    }
+
+    /* =====================================================
+       METADATA TYPES
+    ===================================================== */
+
+    .metadata-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 10px;
+
+        margin-top: 17px;
+    }
+
+    .metadata-item {
+
+        padding: 17px;
+
+        border:
+            1px solid rgba(120, 160, 200, .10);
+
+        background:
+            rgba(120, 160, 200, .025);
+    }
+
+    .metadata-item h3 {
+
+        margin: 0 0 7px;
+
+        color: #dce8f3;
+
+        font-size: 13px;
+    }
+
+    .metadata-item p {
+
+        margin: 0;
+
+        color: #71869b;
+
+        font-size: 11px;
+
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       FORENSIC TABLE
+    ===================================================== */
+
+    .metadata-table {
+
+        width: 100%;
+
+        margin-top: 17px;
+
+        border-collapse: collapse;
+
+        overflow: hidden;
+    }
+
+    .metadata-table th,
+    .metadata-table td {
+
+        padding: 12px;
+
+        border:
+            1px solid rgba(120, 160, 200, .09);
+
+        text-align: left;
+    }
+
+    .metadata-table th {
+
+        color: #00c9b7;
+
+        background:
+            rgba(0, 201, 183, .035);
+
+        font-size: 10px;
+
+        letter-spacing: 1px;
+
+        text-transform: uppercase;
+    }
+
+    .metadata-table td {
+
+        color: #8798ab;
+
+        background:
+            rgba(120, 160, 200, .015);
+
+        font-size: 11px;
+    }
+
+    /* =====================================================
+       INVESTIGATOR NOTE
+    ===================================================== */
+
+    .investigator-note {
+
+        padding: 19px;
+
+        margin-top: 17px;
+
+        border:
+            1px solid rgba(255, 190, 80, .16);
+
+        background:
+            rgba(255, 190, 80, .025);
+    }
+
+    .investigator-note strong {
+
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #e9c36d;
+
+        font-size: 12px;
+    }
+
+    .investigator-note p {
+
+        margin: 0;
+
+        color: #8d9bad;
+
+        font-size: 11px;
+    }
+
+    /* =====================================================
+       WORKFLOW
+    ===================================================== */
+
+    .workflow {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 9px;
+
+        margin-top: 17px;
+    }
+
+    .workflow-step {
+
+        padding: 15px;
+
+        border-top:
+            2px solid #49637e;
+
+        background:
+            rgba(120, 160, 200, .025);
+    }
+
+    .workflow-step span {
+
+        color: #00c9b7;
+
+        font-family: monospace;
+
+        font-size: 9px;
+    }
+
+    .workflow-step strong {
+
+        display: block;
+
+        margin-top: 8px;
+
+        color: #d6e2ed;
+
+        font-size: 11px;
+    }
+
+    /* =====================================================
+       SUMMARY
+    ===================================================== */
+
+    .summary-card {
+
+        padding: 25px;
+
+        text-align: center;
+
+        border:
+            1px solid rgba(0, 201, 183, .14);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(0, 201, 183, .035),
+                rgba(100, 140, 180, .025)
+            );
+    }
+
+    .summary-card small {
+
+        color: #00c9b7;
+
+        font-size: 9px;
+
+        font-weight: 800;
+
+        letter-spacing: 2px;
+
+        text-transform: uppercase;
+    }
+
+    .summary-card h2 {
+
+        margin: 9px 0;
+
+        color: #edf4fa;
+
+        font-size: 19px;
+    }
+
+    .summary-card p {
+
+        max-width: 760px;
+
+        margin: auto;
+
+        color: #7d90a5;
+
+        font-size: 12px;
+
+        line-height: 1.85;
+    }
+
+    /* =====================================================
+       LAB CTA
+    ===================================================== */
+
+    .lab-link {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+        margin-top: 20px;
+
+        padding: 20px;
+
+        border:
+            1px solid rgba(0, 201, 183, .15);
+
+        background:
+            rgba(0, 201, 183, .025);
+    }
+
+    .lab-link strong {
+
+        display: block;
+
+        color: #e4edf5;
+
+        font-size: 13px;
+
+        margin-bottom: 5px;
+    }
+
+    .lab-link span {
+
+        color: #70849a;
+
+        font-size: 11px;
+    }
+
+    .lab-button {
+
+        padding: 11px 18px;
+
+        color: #c9eeea;
+
+        border:
+            1px solid rgba(0, 201, 183, .30);
+
+        background:
+            rgba(0, 201, 183, .05);
+
+        text-decoration: none;
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        white-space: nowrap;
+    }
+
+    .lab-button:hover {
+
+        background:
+            rgba(0, 201, 183, .10);
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 800px) {
+
+        .forensic-header {
+
+            grid-template-columns: 1fr;
+
+        }
+
+        .metadata-strip {
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+        }
+
+        .workflow {
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .df-page {
+
+            padding: 45px 12px 60px;
+
+        }
+
+        .forensic-header {
+
+            padding: 25px 20px;
+
+        }
+
+        .forensic-header h1 {
+
+            font-size: 31px;
+
+        }
+
+        .forensic-card {
+
+            padding: 20px;
+
+        }
+
+        .metadata-grid {
+
+            grid-template-columns: 1fr;
+
+        }
+
+        .metadata-table {
+
+            display: block;
+
+            overflow-x: auto;
+
+        }
+
+        .workflow {
+
+            grid-template-columns: 1fr;
+
+        }
+
+        .lab-link {
+
+            flex-direction: column;
+
+            text-align: center;
+
+        }
+
+        .lab-button {
+
+            width: 100%;
+
+            text-align: center;
+
+        }
+
+        .topic-navigation {
+
+            grid-template-columns: 1fr;
+
+        }
+
+    }
+
+</style>
+</head>
+
+<body>
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<main class="df-page">
+
+<div class="df-container">
+
+<!-- HEADER -->
+
+<section class="forensic-header">
+
+    <div>
+
+        <div class="case-label">
+            DIGITAL FORENSICS / <span>03</span>
+        </div>
+
+        <h1>
+            File <span>Metadata</span>
+        </h1>
+
+        <p class="header-description">
+            Learn how digital investigators examine metadata associated
+            with files to understand their origin, history, properties
+            and context during a forensic investigation.
+        </p>
+
+    </div>
+
+
+    <div class="evidence-panel">
+
+        <div class="evidence-top">
+
+            <span>FORENSIC RECORD</span>
+
+            <span class="evidence-status">
+                ANALYSIS READY
+            </span>
+
+        </div>
+
+        <div class="evidence-row">
+            File:
+            <strong>evidence.jpg</strong>
+        </div>
+
+        <div class="evidence-row">
+            Type:
+            <strong>IMAGE</strong>
+        </div>
+
+        <div class="evidence-row">
+            Metadata:
+            <strong>AVAILABLE</strong>
+        </div>
+
+        <div class="evidence-row">
+            Integrity:
+            <strong>VERIFY</strong>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- META -->
+
+<div class="metadata-strip">
+
+    <div class="metadata-cell">
+
+        <small>Category</small>
+
+        <strong>Digital Forensics</strong>
+
+    </div>
+
+    <div class="metadata-cell">
+
+        <small>Level</small>
+
+        <strong>Beginner</strong>
+
+    </div>
+
+    <div class="metadata-cell">
+
+        <small>Evidence Type</small>
+
+        <strong>File-Based</strong>
+
+    </div>
+
+    <div class="metadata-cell">
+
+        <small>Focus</small>
+
+        <strong>Metadata Analysis</strong>
+
+    </div>
+
+</div>
+
+
+<!-- 01 -->
+
+<section class="forensic-card">
+
+    <div class="section-heading">
+
+        <div class="section-marker">01</div>
+
+        <h2>What is File Metadata?</h2>
+
+    </div>
+
+    <div class="definition-box">
+
+        <small>Forensic Definition</small>
+
+        <p>
+            File metadata is information about a digital file that
+            describes its properties, characteristics, creation or
+            modification history, and sometimes information about
+            the environment in which it was produced.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- 02 -->
+
+<section class="forensic-card">
+
+    <div class="section-heading">
+
+        <div class="section-marker">02</div>
+
+        <h2>Why Metadata Matters in Digital Forensics</h2>
+
+    </div>
+
+    <p>
+        Metadata can provide useful investigative context without
+        changing the actual content of a file. Investigators may
+        examine metadata to understand when a file was created,
+        modified, accessed, or processed.
+    </p>
+
+    <p>
+        Metadata is therefore treated as a potential source of
+        evidence and must be interpreted carefully alongside other
+        forensic artifacts.
+    </p>
+
+    <div class="metadata-grid">
+
+        <div class="metadata-item">
+
+            <h3>Timeline Clues</h3>
+
+            <p>
+                Date and time information can help investigators
+                establish or verify events in an investigation timeline.
+            </p>
+
+        </div>
+
+        <div class="metadata-item">
+
+            <h3>File Identification</h3>
+
+            <p>
+                File type, size, extension and related properties can
+                help identify the nature of an artifact.
+            </p>
+
+        </div>
+
+        <div class="metadata-item">
+
+            <h3>Origin Indicators</h3>
+
+            <p>
+                Some formats may contain information about the software,
+                device or environment associated with a file.
+            </p>
+
+        </div>
+
+        <div class="metadata-item">
+
+            <h3>Investigative Context</h3>
+
+            <p>
+                Metadata can be correlated with logs, browser artifacts,
+                system records and other evidence.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 03 -->
+
+<section class="forensic-card">
+
+    <div class="section-heading">
+
+        <div class="section-marker">03</div>
+
+        <h2>Common Metadata Fields</h2>
+
+    </div>
+
+    <table class="metadata-table">
+
+        <thead>
+
+            <tr>
+                <th>Field</th>
+                <th>What It Can Indicate</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>File Name</td>
+                <td>The name assigned to the file.</td>
+            </tr>
+
+            <tr>
+                <td>File Size</td>
+                <td>The amount of storage space occupied by the file.</td>
+            </tr>
+
+            <tr>
+                <td>Created Time</td>
+                <td>Time associated with file creation on a particular system or filesystem.</td>
+            </tr>
+
+            <tr>
+                <td>Modified Time</td>
+                <td>Time associated with the most recent modification.</td>
+            </tr>
+
+            <tr>
+                <td>Access Time</td>
+                <td>Time associated with an access event where supported.</td>
+            </tr>
+
+            <tr>
+                <td>File Type</td>
+                <td>The format or type of the digital artifact.</td>
+            </tr>
+
+            <tr>
+                <td>Hash Value</td>
+                <td>A calculated value that can help verify file integrity.</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</section>
+
+
+<!-- 04 -->
+
+<section class="forensic-card">
+
+    <div class="section-heading">
+
+        <div class="section-marker">04</div>
+
+        <h2>Metadata Depends on File Type</h2>
+
+    </div>
+
+    <p>
+        Different file formats can store different types of metadata.
+        An image may contain camera information, while a document may
+        contain author or application information.
+    </p>
+
+    <div class="metadata-grid">
+
+        <div class="metadata-item">
+
+            <h3>Images</h3>
+
+            <p>
+                EXIF-related information may include camera model,
+                timestamps, orientation and sometimes location data.
+            </p>
+
+        </div>
+
+        <div class="metadata-item">
+
+            <h3>Documents</h3>
+
+            <p>
+                Documents may contain author, application, revision
+                and document-property information.
+            </p>
+
+        </div>
+
+        <div class="metadata-item">
+
+            <h3>PDF Files</h3>
+
+            <p>
+                PDF properties can include creator application,
+                producer, creation date and modification information.
+            </p>
+
+        </div>
+
+        <div class="metadata-item">
+
+            <h3>Archives</h3>
+
+            <p>
+                Archive structures can provide information about
+                contained files, timestamps and compression properties.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 05 -->
+
+<section class="forensic-card">
+
+    <div class="section-heading">
+
+        <div class="section-marker">05</div>
+
+        <h2>Metadata Analysis Workflow</h2>
+
+    </div>
+
+    <p>
+        A basic forensic metadata workflow should preserve the original
+        evidence and analyze a forensic copy whenever possible.
+    </p>
+
+    <div class="workflow">
+
+        <div class="workflow-step">
+            <span>STEP 01</span>
+            <strong>Acquire</strong>
+        </div>
+
+        <div class="workflow-step">
+            <span>STEP 02</span>
+            <strong>Preserve</strong>
+        </div>
+
+        <div class="workflow-step">
+            <span>STEP 03</span>
+            <strong>Extract</strong>
+        </div>
+
+        <div class="workflow-step">
+            <span>STEP 04</span>
+            <strong>Correlate</strong>
+        </div>
+
+    </div>
+
+    <div class="investigator-note">
+
+        <strong>INVESTIGATOR NOTE</strong>
+
+        <p>
+            Metadata should not automatically be treated as absolute
+            proof of an event. Timestamps and other fields can change
+            through file copying, editing, conversion, synchronization
+            or system behavior. Investigators should correlate metadata
+            with independent evidence.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- 06 -->
+
+<section class="forensic-card">
+
+    <div class="section-heading">
+
+        <div class="section-marker">06</div>
+
+        <h2>Forensic Example</h2>
+
+    </div>
+
+    <p>
+        Suppose investigators receive an image as part of an authorized
+        investigation. The image itself shows an object of interest,
+        but its metadata contains additional properties such as the
+        file type, timestamps and camera information.
+    </p>
+
+    <div class="investigator-note">
+
+        <strong>FORENSIC INTERPRETATION</strong>
+
+        <p>
+            The investigator records the available metadata, verifies
+            the integrity of the evidence, and compares the metadata
+            with other artifacts such as system timestamps, logs or
+            related files. The metadata becomes one part of the overall
+            evidence picture rather than the sole basis for a conclusion.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- 07 -->
+
+<section class="summary-card">
+
+    <small>Forensic Summary</small>
+
+    <h2>
+        Metadata Provides Context — Correlation Provides Confidence
+    </h2>
+
+    <p>
+        File metadata can reveal valuable information about digital
+        artifacts, including timestamps, file properties, application
+        details and format-specific information. A professional
+        investigator preserves evidence, extracts metadata carefully
+        and correlates it with independent forensic artifacts.
+    </p>
+
+</section>
+<!-- LESSON COMPLETION -->
+
+<section class="forensic-card" id="lessonCompletion">
+
+    <div class="section-heading">
+
+        <div class="section-marker">08</div>
+
+        <h2>Complete This Lesson</h2>
+
+    </div>
+
+    <p>
+        You have learned about file metadata, common metadata fields,
+        metadata types, forensic analysis workflows and the importance
+        of correlating metadata with independent evidence.
+    </p>
+
+    <p>
+        Review the key concepts, then mark this lesson as complete
+        to track your learning progress.
+    </p>
+
+    <div style="text-align: center; margin-top: 20px;">
+
+        <button
+            type="button"
+            class="lab-button"
+            data-lesson-progress
+            data-course-id="digital-forensics"
+            data-lesson-id="file-metadata"
+            data-dashboard-url="../learning-paths/digital-forensics/theory/file-metadata.html"
+            data-status-id="lessonCompletionStatus">
+            ✓ Mark Lesson Complete
+        </button>
+
+    </div>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite"
+        style="text-align: center; margin-top: 15px;">
+    </p>
+
+</section>
+
+<!-- LAB -->
+
+<div class="lab-link">
+
+    <div>
+
+        <strong>
+            Ready for the File Metadata Lab?
+        </strong>
+
+        <span>
+            Test your forensic knowledge with an authorized
+            digital-forensics assessment.
+        </span>
+
+    </div>
+
+    <a
+        href="../lab/file-metadata-lab.html"
+        class="lab-button"
+    >
+        Open Lab →
+    </a>
+</div>
+</div>
+</main>
+<footer class="footer">
+<div class="footer-container">
+
+    <div>
+
+        <div class="footer-brand">
+            Cyber<span>Nexa</span>
+        </div>
+
+        <p>
+            Cybersecurity &amp; IT Learning
+        </p>
+
+    </div>
+
+    <div class="footer-links">
+
+        <a href="../../../index.html">Home</a>
+
+        <a href="../../../footer/about.html">About</a>
+
+        <a href="../../../footer/contact.html">Contact</a>
+
+        <a href="../../../footer/privacy-policy.html">Privacy Policy</a>
+        <a href="../../../footer/disclaimer.html">Disclaimer</a>
+    </div>
+</div>
+<div class="copyright">
+    © 2026 CyberNexa. All rights reserved.
+</div>
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

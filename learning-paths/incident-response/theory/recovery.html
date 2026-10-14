@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What is Recovery? | CyberNexa</title>
+
+<meta name="description"
+      content="Learn what Recovery is in Incident Response, why it matters, recovery steps, examples and key cybersecurity concepts.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+    :root {
+        --ir-bg: #080d14;
+        --ir-panel: #0d141d;
+        --ir-panel-2: #111b26;
+
+        --ir-red: #ff4d5a;
+        --ir-orange: #ff9f43;
+        --ir-yellow: #ffd166;
+        --ir-green: #43d19e;
+
+        --ir-blue: #42a5ff;
+
+        --ir-text: #edf5fb;
+        --ir-muted: #91a4b5;
+
+        --ir-border: #20303e;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        overflow-x: hidden;
+    }
+
+    body {
+        margin: 0;
+
+        background:
+            radial-gradient(
+                circle at 15% 15%,
+                rgba(67, 209, 158, 0.09),
+                transparent 30%
+            ),
+            radial-gradient(
+                circle at 85% 25%,
+                rgba(66, 165, 255, 0.07),
+                transparent 28%
+            ),
+            var(--ir-bg);
+
+        color: var(--ir-text);
+        font-family: Arial, Helvetica, sans-serif;
+
+        overflow-x: hidden;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .ir-container {
+        width: min(1150px, 92%);
+        margin: auto;
+    }
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .ir-hero {
+        position: relative;
+        overflow: hidden;
+
+        padding: 85px 0 70px;
+
+        border-bottom: 1px solid var(--ir-border);
+    }
+
+    .ir-hero::after {
+        content: "";
+
+        position: absolute;
+
+        width: 420px;
+        height: 420px;
+
+        right: -180px;
+        top: -180px;
+
+        border: 1px solid rgba(67, 209, 158, 0.12);
+
+        border-radius: 50%;
+
+        box-shadow:
+            0 0 0 40px rgba(67, 209, 158, 0.025),
+            0 0 0 80px rgba(67, 209, 158, 0.015);
+    }
+
+    .ir-breadcrumb {
+        color: var(--ir-orange);
+
+        font-size: 13px;
+
+        margin-bottom: 22px;
+
+        letter-spacing: 0.4px;
+    }
+
+    .ir-hero-grid {
+        display: grid;
+
+        grid-template-columns: 1.35fr 0.65fr;
+
+        gap: 45px;
+
+        align-items: center;
+    }
+
+    .ir-alert {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+        padding: 8px 13px;
+
+        margin-bottom: 18px;
+
+        border: 1px solid rgba(67, 209, 158, 0.35);
+
+        border-radius: 4px;
+
+        background: rgba(67, 209, 158, 0.06);
+
+        color: var(--ir-green);
+
+        font-size: 12px;
+
+        font-weight: bold;
+
+        letter-spacing: 1px;
+
+        text-transform: uppercase;
+    }
+
+    .ir-pulse {
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: var(--ir-green);
+
+        box-shadow:
+            0 0 12px rgba(67, 209, 158, 0.8);
+    }
+
+    .ir-hero h1 {
+        margin: 0 0 18px;
+
+        font-size: clamp(38px, 5vw, 62px);
+
+        line-height: 1.05;
+
+        letter-spacing: -1px;
+    }
+
+    .ir-hero h1 span {
+        color: var(--ir-green);
+    }
+
+    .ir-hero-description {
+        max-width: 720px;
+
+        color: var(--ir-muted);
+
+        font-size: 17px;
+
+        line-height: 1.8;
+    }
+
+
+    /* =========================================================
+       RECOVERY STATUS PANEL
+       ========================================================= */
+
+    .ir-status-panel {
+        padding: 24px;
+
+        border: 1px solid var(--ir-border);
+
+        border-top: 2px solid var(--ir-green);
+
+        border-radius: 7px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17, 27, 38, 0.98),
+                rgba(9, 14, 21, 0.98)
+            );
+
+        box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.28);
+    }
+
+    .ir-status-header {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        margin-bottom: 18px;
+    }
+
+    .ir-status-header strong {
+        font-size: 13px;
+
+        letter-spacing: 1px;
+    }
+
+    .ir-live {
+        color: var(--ir-green);
+
+        font-size: 11px;
+    }
+
+    .ir-divider {
+        height: 1px;
+
+        background: var(--ir-border);
+
+        margin: 15px 0;
+    }
+
+    .ir-status-row {
+        display: flex;
+
+        justify-content: space-between;
+
+        padding: 8px 0;
+
+        color: var(--ir-muted);
+
+        font-size: 13px;
+    }
+
+    .ir-status-row strong {
+        color: var(--ir-text);
+
+        font-weight: normal;
+    }
+
+    .ir-severity {
+        color: var(--ir-green) !important;
+    }
+
+
+    /* =========================================================
+       CONTENT
+       ========================================================= */
+
+    .ir-section {
+        padding: 70px 0;
+    }
+
+    .ir-section-title {
+        margin-bottom: 28px;
+    }
+
+    .ir-section-title h2 {
+        margin: 0 0 10px;
+
+        font-size: 32px;
+    }
+
+    .ir-section-title p {
+        color: var(--ir-muted);
+
+        line-height: 1.7;
+    }
+
+    .ir-content-card {
+        padding: 30px;
+
+        border: 1px solid var(--ir-border);
+
+        border-left: 3px solid var(--ir-green);
+
+        border-radius: 7px;
+
+        background: var(--ir-panel);
+    }
+
+    .ir-content-card p {
+        margin: 0 0 16px;
+
+        color: var(--ir-muted);
+
+        line-height: 1.85;
+
+        font-size: 15px;
+    }
+
+    .ir-content-card p:last-child {
+        margin-bottom: 0;
+    }
+
+
+    /* =========================================================
+       DEFINITION
+       ========================================================= */
+
+    .ir-definition {
+        padding: 28px;
+
+        border: 1px solid rgba(67, 209, 158, 0.25);
+
+        border-radius: 7px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(67, 209, 158, 0.07),
+                rgba(66, 165, 255, 0.025)
+            );
+    }
+
+    .ir-definition-label {
+        margin-bottom: 12px;
+
+        color: var(--ir-green);
+
+        font-size: 12px;
+
+        font-weight: bold;
+
+        letter-spacing: 1px;
+
+        text-transform: uppercase;
+    }
+
+    .ir-definition p {
+        margin: 0;
+
+        color: var(--ir-text);
+
+        font-size: 18px;
+
+        line-height: 1.75;
+    }
+
+
+    /* =========================================================
+       WHY IMPORTANT
+       ========================================================= */
+
+    .ir-reason-grid {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 18px;
+    }
+
+    .ir-reason {
+        padding: 24px;
+
+        border: 1px solid var(--ir-border);
+
+        border-radius: 7px;
+
+        background: var(--ir-panel);
+    }
+
+    .ir-reason-number {
+        display: block;
+
+        margin-bottom: 15px;
+
+        color: var(--ir-green);
+
+        font-size: 12px;
+
+        font-weight: bold;
+    }
+
+    .ir-reason h3 {
+        margin: 0 0 10px;
+
+        font-size: 17px;
+    }
+
+    .ir-reason p {
+        margin: 0;
+
+        color: var(--ir-muted);
+
+        line-height: 1.65;
+
+        font-size: 14px;
+    }
+
+
+    /* =========================================================
+       RECOVERY FLOW
+       ========================================================= */
+
+    .ir-flow {
+        display: grid;
+
+        grid-template-columns: repeat(6, 1fr);
+
+        gap: 10px;
+
+        margin-top: 30px;
+    }
+
+    .ir-flow-step {
+        position: relative;
+
+        min-height: 120px;
+
+        padding: 18px 12px;
+
+        border: 1px solid var(--ir-border);
+
+        border-radius: 6px;
+
+        background: var(--ir-panel);
+
+        text-align: center;
+    }
+
+    .ir-flow-step::after {
+        content: "→";
+
+        position: absolute;
+
+        right: -15px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        color: var(--ir-green);
+
+        z-index: 2;
+    }
+
+    .ir-flow-step:last-child::after {
+        display: none;
+    }
+
+    .ir-flow-number {
+        display: block;
+
+        margin-bottom: 12px;
+
+        color: var(--ir-green);
+
+        font-size: 12px;
+
+        font-weight: bold;
+    }
+
+    .ir-flow-step strong {
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+       EXAMPLE
+       ========================================================= */
+
+    .ir-example {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 20px;
+    }
+
+    .ir-example-box {
+        padding: 25px;
+
+        border: 1px solid var(--ir-border);
+
+        border-radius: 7px;
+
+        background: var(--ir-panel);
+    }
+
+    .ir-example-box h3 {
+        margin: 0 0 15px;
+
+        font-size: 17px;
+    }
+
+    .ir-example-box p {
+        margin: 0;
+
+        color: var(--ir-muted);
+
+        line-height: 1.7;
+
+        font-size: 14px;
+    }
+
+    .ir-example-box.alert-box {
+        border-top: 2px solid var(--ir-orange);
+    }
+
+    .ir-example-box.response-box {
+        border-top: 2px solid var(--ir-green);
+    }
+
+
+    /* =========================================================
+       KEY CONCEPTS
+       ========================================================= */
+
+    .ir-key-list {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 12px;
+    }
+
+    .ir-key {
+        padding: 17px 20px;
+
+        border: 1px solid var(--ir-border);
+
+        border-radius: 6px;
+
+        background: var(--ir-panel);
+    }
+
+    .ir-key strong {
+        color: var(--ir-text);
+    }
+
+    .ir-key span {
+        color: var(--ir-muted);
+
+        font-size: 14px;
+    }
+
+
+    /* =========================================================
+       SUMMARY
+       ========================================================= */
+
+    .ir-summary {
+        padding: 30px;
+
+        border: 1px solid rgba(67, 209, 158, 0.25);
+
+        border-radius: 7px;
+
+        background: rgba(67, 209, 158, 0.035);
+    }
+
+    .ir-summary h2 {
+        margin-top: 0;
+
+        color: var(--ir-green);
+    }
+
+    .ir-summary p {
+        margin: 0;
+
+        color: var(--ir-muted);
+
+        line-height: 1.8;
+    }
+
+/* =========================================================
+   CYBERNEXA — PRACTICAL LAB CTA
+========================================================= */
+
+.lab-cta-section {
+    width: 100%;
+    margin-top: 35px;
+}
+
+
+/* =========================================================
+   LAB CTA CONTAINER
+========================================================= */
+
+.lab-cta {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    width: 100%;
+
+    padding: 30px;
+
+    border: 1px solid rgba(255, 83, 100, 0.28);
+    border-left: 4px solid #ff5364;
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 83, 100, 0.045),
+            rgba(5, 10, 16, 0.96)
+        );
+
+    box-shadow:
+        0 0 0 1px rgba(255, 83, 100, 0.025),
+        0 18px 45px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   LIGHT RED TOP LINE
+========================================================= */
+
+.lab-cta::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 83, 100, 0.15) 15%,
+            rgba(255, 83, 100, 0.85) 50%,
+            rgba(255, 83, 100, 0.15) 85%,
+            transparent 100%
+        );
+
+    box-shadow:
+        0 0 12px rgba(255, 83, 100, 0.25);
+
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.lab-cta-content {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+.lab-cta-content h3 {
+
+    margin: 0 0 8px;
+
+    color: #ffffff;
+
+    font-size: 19px;
+
+    line-height: 1.4;
+
+    font-weight: 700;
+
+}
+
+
+.lab-cta-content p {
+
+    margin: 0;
+
+    max-width: 750px;
+
+    color: #8fa4b5;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   LAUNCH LAB BUTTON
+========================================================= */
+
+.lab-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    min-width: 165px;
+
+    padding: 13px 20px;
+
+    border: 1px solid rgba(255, 83, 100, 0.45);
+
+    border-radius: 9px;
+
+    background:
+        rgba(255, 83, 100, 0.055);
+
+    color: #edf6fc;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 0 0 1px rgba(255, 83, 100, 0.025),
+        0 8px 22px rgba(0, 0, 0, 0.22);
+
+    transition:
+        color 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+
+}
+
+
+/* =========================================================
+   BUTTON HOVER
+========================================================= */
+
+.lab-button:hover {
+
+    color: #ffffff;
+
+    border-color:
+        rgba(255, 83, 100, 0.85);
+
+    background:
+        rgba(255, 83, 100, 0.10);
+
+    box-shadow:
+        0 0 16px rgba(255, 83, 100, 0.12),
+        0 10px 25px rgba(0, 0, 0, 0.28);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
+   BUTTON ACTIVE
+========================================================= */
+
+.lab-button:active {
+
+    transform:
+        translateY(0);
+
+    box-shadow:
+        0 0 10px rgba(255, 83, 100, 0.10);
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .lab-cta {
+
+        padding: 25px;
+
+        gap: 22px;
+
+    }
+
+
+    .lab-cta-content h3 {
+
+        font-size: 18px;
+
+    }
+
+
+    .lab-cta-content p {
+
+        font-size: 13px;
+
+    }
+
+
+    .lab-button {
+
+        min-width: 150px;
+
+        padding: 12px 17px;
+
+        font-size: 13px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .lab-cta {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 20px;
+
+        padding: 24px;
+
+    }
+
+
+    .lab-cta-content h3 {
+
+        font-size: 18px;
+
+    }
+
+
+    .lab-cta-content p {
+
+        font-size: 13px;
+
+    }
+
+
+    .lab-button {
+
+        width: 100%;
+
+        min-width: 0;
+
+        box-sizing: border-box;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+
+    .lab-cta {
+
+        padding: 20px;
+
+        border-radius: 12px;
+
+    }
+
+
+    .lab-cta-content h3 {
+
+        font-size: 17px;
+
+    }
+
+
+    .lab-cta-content p {
+
+        font-size: 12px;
+
+        line-height: 1.65;
+
+    }
+
+
+    .lab-button {
+
+        padding: 12px 15px;
+
+        font-size: 13px;
+
+        border-radius: 8px;
+
+    }
+
+}
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @media (max-width: 950px) {
+
+        .nav-container {
+            width: 92%;
+
+            min-height: 68px;
+        }
+
+        .brand-logo svg {
+            width: 42px;
+            height: 50px;
+        }
+
+        .ir-hero-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .ir-reason-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .ir-flow {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .ir-flow-step::after {
+            display: none;
+        }
+
+        .ir-example {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    @media (max-width: 768px) {
+
+        .nav-container {
+            width: 94%;
+
+            min-height: 64px;
+
+            padding: 8px 0;
+        }
+
+        .brand {
+            gap: 8px;
+        }
+
+        .brand-logo {
+            flex-shrink: 0;
+        }
+
+        .brand-logo svg {
+            width: 38px;
+            height: 46px;
+        }
+
+        .brand-name {
+            font-size: 19px;
+        }
+
+        .brand-tagline {
+            font-size: 9px;
+        }
+
+        .ir-hero {
+            padding: 70px 0 55px;
+        }
+
+        .ir-hero-grid {
+            gap: 30px;
+        }
+
+        .ir-status-panel {
+            width: 100%;
+        }
+
+        .ir-section {
+            padding: 60px 0;
+        }
+
+        .ir-flow {
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .ir-flow-step {
+            min-height: 105px;
+        }
+
+        .footer {
+            width: 100%;
+
+            overflow: hidden;
+        }
+
+        .footer-container {
+            width: 92%;
+
+            margin: 0 auto;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 25px;
+        }
+
+        .footer-links {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px 18px;
+        }
+
+        .footer-links a {
+            white-space: nowrap;
+        }
+
+        .copyright {
+            width: 92%;
+
+            margin-left: auto;
+            margin-right: auto;
+
+            line-height: 1.6;
+        }
+    }
+
+
+    @media (max-width: 600px) {
+
+        .nav-container {
+            width: 92%;
+
+            min-height: 62px;
+
+            padding: 7px 0;
+        }
+
+        .brand {
+            gap: 7px;
+
+            max-width: 100%;
+        }
+
+        .brand-logo svg {
+            width: 34px;
+            height: 42px;
+        }
+
+        .brand-name {
+            font-size: 17px;
+
+            letter-spacing: 0;
+        }
+
+        .brand-tagline {
+            font-size: 8px;
+
+            letter-spacing: 0;
+        }
+
+        .ir-hero {
+            padding: 55px 0 45px;
+        }
+
+        .ir-breadcrumb {
+            font-size: 11px;
+
+            line-height: 1.6;
+
+            margin-bottom: 18px;
+        }
+
+        .ir-alert {
+            font-size: 10px;
+
+            padding: 7px 10px;
+        }
+
+        .ir-hero h1 {
+            font-size: clamp(34px, 10vw, 48px);
+
+            letter-spacing: -0.5px;
+        }
+
+        .ir-hero-description {
+            font-size: 15px;
+
+            line-height: 1.7;
+        }
+
+        .ir-status-panel {
+            padding: 20px;
+        }
+
+        .ir-status-header strong {
+            font-size: 11px;
+        }
+
+        .ir-live {
+            font-size: 9px;
+        }
+
+        .ir-status-row {
+            font-size: 12px;
+
+            gap: 15px;
+        }
+
+        .ir-status-row strong {
+            text-align: right;
+        }
+
+        .ir-section {
+            padding: 50px 0;
+        }
+
+        .ir-section-title {
+            margin-bottom: 22px;
+        }
+
+        .ir-section-title h2 {
+            font-size: 26px;
+        }
+
+        .ir-section-title p {
+            font-size: 14px;
+        }
+
+        .ir-content-card {
+            padding: 22px;
+        }
+
+        .ir-content-card p {
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+        .ir-definition {
+            padding: 22px;
+        }
+
+        .ir-definition p {
+            font-size: 16px;
+
+            line-height: 1.7;
+        }
+
+        .ir-reason-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .ir-reason {
+            padding: 21px;
+        }
+
+        .ir-flow {
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+        }
+
+        .ir-flow-step {
+            min-height: 95px;
+
+            padding: 15px 8px;
+        }
+
+        .ir-flow-step strong {
+            font-size: 12px;
+        }
+
+        .ir-example {
+            grid-template-columns: 1fr;
+
+            gap: 15px;
+        }
+
+        .ir-example-box {
+            padding: 21px;
+        }
+
+        .ir-key-list {
+            grid-template-columns: 1fr;
+        }
+
+        .ir-key {
+            padding: 16px;
+        }
+
+        .ir-key span {
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .ir-summary {
+            padding: 22px;
+        }
+
+        .ir-summary p {
+            font-size: 14px;
+
+            line-height: 1.75;
+        }
+
+        .ir-topic-nav {
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+        .ir-nav-button {
+            width: 100%;
+
+            justify-content: center;
+
+            text-align: center;
+        }
+
+        .footer-container {
+            width: 92%;
+
+            gap: 22px;
+        }
+
+        .footer-brand {
+            font-size: 22px;
+        }
+
+        .footer-container p {
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 12px 18px;
+        }
+
+        .footer-links a {
+            font-size: 13px;
+
+            white-space: normal;
+        }
+
+        .copyright {
+            width: 92%;
+
+            padding: 18px 0;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+            text-align: center;
+        }
+    }
+
+
+    @media (max-width: 380px) {
+
+        .nav-container {
+            width: 94%;
+        }
+
+        .brand-logo svg {
+            width: 30px;
+            height: 38px;
+        }
+
+        .brand-name {
+            font-size: 15px;
+        }
+
+        .brand-tagline {
+            font-size: 7px;
+        }
+
+        .ir-container {
+            width: 94%;
+        }
+
+        .ir-hero h1 {
+            font-size: 32px;
+        }
+
+        .ir-flow {
+            grid-template-columns: 1fr;
+        }
+
+        .footer-links {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>
+</head>
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<header class="ir-hero">
+
+<div class="ir-container">
+
+    <div class="ir-breadcrumb">
+        CyberNexa / Incident Response / Recovery
+    </div>
+
+    <div class="ir-hero-grid">
+
+        <div>
+
+            <div class="ir-alert">
+
+                <span class="ir-pulse"></span>
+
+                Incident Recovery Training
+
+            </div>
+
+            <h1>
+                What is <span>Recovery?</span>
+            </h1>
+
+            <p class="ir-hero-description">
+                Recovery is the Incident Response phase in which
+                affected systems, services and data are restored
+                to normal and secure operation after a cybersecurity
+                incident.
+            </p>
+
+        </div>
+
+
+        <div class="ir-status-panel">
+
+            <div class="ir-status-header">
+
+                <strong>
+                    RECOVERY COMMAND
+                </strong>
+
+                <span class="ir-live">
+                    ● RESTORING
+                </span>
+
+            </div>
+
+            <div class="ir-divider"></div>
+
+            <div class="ir-status-row">
+                <span>Status</span>
+                <strong>Restoration</strong>
+            </div>
+
+            <div class="ir-status-row">
+                <span>Category</span>
+                <strong>Incident Response</strong>
+            </div>
+
+            <div class="ir-status-row">
+                <span>Priority</span>
+                <strong class="ir-severity">
+                    Business Continuity
+                </strong>
+            </div>
+
+            <div class="ir-status-row">
+                <span>Goal</span>
+                <strong>Normal Operation</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+<section class="ir-section">
+
+<div class="ir-container">
+
+    <div class="ir-section-title">
+
+        <h2>Definition</h2>
+
+        <p>
+            First, understand the core meaning of Recovery
+            in Incident Response.
+        </p>
+
+    </div>
+
+
+    <div class="ir-definition">
+
+        <div class="ir-definition-label">
+            Core Definition
+        </div>
+
+        <p>
+            Recovery is the process of restoring affected systems,
+            applications, networks and data to normal and secure
+            operation after a cybersecurity incident.
+        </p>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CORE EXPLANATION
+====================================================== -->
+
+<section class="ir-section">
+
+<div class="ir-container">
+
+    <div class="ir-section-title">
+
+        <h2>How Recovery Works</h2>
+
+        <p>
+            Recovery focuses on safely returning affected
+            systems and services to normal operation.
+        </p>
+
+    </div>
+
+
+    <div class="ir-content-card">
+
+        <p>
+            After the threat has been removed during eradication,
+            security teams must restore the affected systems and
+            services.
+        </p>
+
+        <p>
+            The recovery process may involve restoring data from
+            clean backups, rebuilding compromised systems,
+            reinstalling applications and reconnecting systems
+            to the network.
+        </p>
+
+        <p>
+            Before returning a system to normal operation,
+            security teams verify that the original threat has
+            been removed and that the system is functioning safely.
+        </p>
+
+        <p>
+            Recovery also includes monitoring restored systems
+            for signs of repeated or related malicious activity.
+        </p>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     WHY IMPORTANT
+====================================================== -->
+
+<section class="ir-section">
+
+<div class="ir-container">
+
+    <div class="ir-section-title">
+
+        <h2>Why Recovery Matters</h2>
+
+        <p>
+            Proper recovery helps organizations safely resume
+            normal business and IT operations.
+        </p>
+
+    </div>
+
+
+    <div class="ir-reason-grid">
+
+
+        <div class="ir-reason">
+
+            <span class="ir-reason-number">
+                REASON 01
+            </span>
+
+            <h3>Restore Services</h3>
+
+            <p>
+                Recovery helps return affected applications,
+                systems and services to normal operation.
+            </p>
+
+        </div>
+
+
+        <div class="ir-reason">
+
+            <span class="ir-reason-number">
+                REASON 02
+            </span>
+
+            <h3>Restore Data</h3>
+
+            <p>
+                Clean and verified backups can be used to recover
+                important data affected by an incident.
+            </p>
+
+        </div>
+
+
+        <div class="ir-reason">
+
+            <span class="ir-reason-number">
+                REASON 03
+            </span>
+
+            <h3>Prevent Repeated Impact</h3>
+
+            <p>
+                Monitoring and validation help ensure that restored
+                systems remain secure after recovery.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     RECOVERY FLOW
+====================================================== -->
+
+<section class="ir-section">
+
+<div class="ir-container">
+
+    <div class="ir-section-title">
+
+        <h2>Recovery Flow</h2>
+
+        <p>
+            A simplified representation of a typical recovery process.
+        </p>
+
+    </div>
+
+
+    <div class="ir-flow">
+
+
+        <div class="ir-flow-step">
+
+            <span class="ir-flow-number">
+                01
+            </span>
+
+            <strong>
+                Assess
+            </strong>
+
+        </div>
+
+
+        <div class="ir-flow-step">
+
+            <span class="ir-flow-number">
+                02
+            </span>
+
+            <strong>
+                Backup
+            </strong>
+
+        </div>
+
+
+        <div class="ir-flow-step">
+
+            <span class="ir-flow-number">
+                03
+            </span>
+
+            <strong>
+                Restore
+            </strong>
+
+        </div>
+
+
+        <div class="ir-flow-step">
+
+            <span class="ir-flow-number">
+                04
+            </span>
+
+            <strong>
+                Validate
+            </strong>
+
+        </div>
+
+
+        <div class="ir-flow-step">
+
+            <span class="ir-flow-number">
+                05
+            </span>
+
+            <strong>
+                Reconnect
+            </strong>
+
+        </div>
+
+
+        <div class="ir-flow-step">
+
+            <span class="ir-flow-number">
+                06
+            </span>
+
+            <strong>
+                Monitor
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SIMPLE EXAMPLE
+====================================================== -->
+
+<section class="ir-section">
+
+<div class="ir-container">
+
+    <div class="ir-section-title">
+
+        <h2>Simple Example</h2>
+
+        <p>
+            Consider a compromised server as an example.
+        </p>
+
+    </div>
+
+
+    <div class="ir-example">
+
+
+        <div class="ir-example-box alert-box">
+
+            <h3>⚠️ Affected System</h3>
+
+            <p>
+                A server was compromised during a cybersecurity
+                incident. The malicious software has already been
+                removed and the system is ready for restoration.
+            </p>
+
+        </div>
+
+
+        <div class="ir-example-box response-box">
+
+            <h3>✓ Recovery</h3>
+
+            <p>
+                The security team restores the server from a clean
+                backup, verifies its configuration, reconnects it
+                carefully and monitors the system for suspicious
+                activity.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+<section class="ir-section">
+
+<div class="ir-container">
+
+    <div class="ir-section-title">
+
+        <h2>Key Concepts</h2>
+
+        <p>
+            Important terms to remember for this topic.
+        </p>
+
+    </div>
+
+
+    <div class="ir-key-list">
+
+
+        <div class="ir-key">
+
+            <strong>Restoration:</strong>
+
+            <span>
+                Returning affected systems or services
+                to operational condition.
+            </span>
+
+        </div>
+
+
+        <div class="ir-key">
+
+            <strong>Backup:</strong>
+
+            <span>
+                A stored copy of data used to restore
+                information when needed.
+            </span>
+
+        </div>
+
+
+        <div class="ir-key">
+
+            <strong>Validation:</strong>
+
+            <span>
+                Checking that a restored system is working
+                correctly and securely.
+            </span>
+
+        </div>
+
+
+        <div class="ir-key">
+
+            <strong>Reconnection:</strong>
+
+            <span>
+                Carefully returning a recovered system
+                to the production network.
+            </span>
+
+        </div>
+
+
+        <div class="ir-key">
+
+            <strong>Monitoring:</strong>
+
+            <span>
+                Observing restored systems for suspicious
+                or abnormal activity.
+            </span>
+
+        </div>
+
+
+        <div class="ir-key">
+
+            <strong>Business Continuity:</strong>
+
+            <span>
+                Maintaining or restoring important business
+                operations after disruption.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+<section class="ir-section">
+
+<div class="ir-container">
+
+    <div class="ir-summary">
+
+        <h2>Summary</h2>
+
+        <p>
+            Recovery is the Incident Response phase that focuses
+            on restoring affected systems, services and data to
+            normal and secure operation. It may involve restoring
+            clean backups, rebuilding systems, validating their
+            security, reconnecting them to the network and
+            continuously monitoring them. The main goal of
+            Recovery is to safely resume normal operations while
+            reducing the chance of another incident.
+        </p>
+
+    </div>
+    <!-- =====================================================
+     LESSON COMPLETION
+====================================================== -->
+
+<section class="ir-section" id="lessonCompletion">
+
+    <div class="ir-container">
+
+        <div class="ir-summary">
+
+            <h2>Lesson Completion</h2>
+
+            <p>
+                You have completed the Recovery lesson.
+                Mark this lesson as complete to save your
+                learning progress to your CyberNexa account.
+            </p>
+
+            <div style="margin-top: 22px; text-align: center;">
+
+                <button
+                    type="button"
+                    class="lab-button"
+                    data-lesson-progress
+                    data-course-id="incident-response"
+                    data-lesson-id="recovery"
+                    data-dashboard-url="../learning-paths/incident-response/theory/recovery.html"
+                    data-status-id="recoveryCompletionStatus">
+
+                    ✓ Mark Lesson Complete
+
+                </button>
+
+                <p
+                    id="recoveryCompletionStatus"
+                    role="status"
+                    aria-live="polite"
+                    style="margin-top: 15px; font-size: 14px;">
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+    <!-- =========================================================
+     PRACTICAL LAB CTA
+========================================================= -->
+
+<section class="lab-cta-section">
+
+    <div class="lab-cta">
+
+        <div class="lab-cta-content">
+
+            <h3>
+                Ready for the Practical Lab?
+            </h3>
+
+            <p>
+                Test your understanding in an authorized
+                cybersecurity training environment.
+            </p>
+
+        </div>
+
+
+        <a
+            href="../lab/recovery-lab.html"
+            class="lab-button">
+
+            🧪 Launch Lab →
+
+        </a>
+
+    </div>
+
+</section>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+    <div>
+
+        <div class="footer-brand">
+            Cyber<span>Nexa</span>
+        </div>
+
+        <p>
+            Cybersecurity &amp; IT Learning
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="../../../index.html">
+            Home
+        </a>
+
+        <a href="../../../footer/about.html">
+            About
+        </a>
+
+        <a href="../../../footer/contact.html">
+            Contact
+        </a>
+
+        <a href="../../../footer/privacy-policy.html">
+            Privacy Policy
+        </a>
+
+        <a href="../../../footer/disclaimer.html">
+            Disclaimer
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="copyright">
+
+    © 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

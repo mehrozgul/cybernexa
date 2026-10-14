@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Network Attacks Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 255, 170, 0.055),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 42px 35px;
+
+            margin-bottom: 25px;
+
+            border:
+                1px solid rgba(0, 255, 170, 0.15);
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 23, 30, 0.98),
+                    rgba(2, 12, 23, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00ffb0,
+                    #00bfff,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00ffb0;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-kicker::before {
+
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00ffb0;
+
+            box-shadow:
+                0 0 12px rgba(0, 255, 176, 0.65);
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 42px;
+
+            line-height: 1.15;
+        }
+
+        .lab-hero h1 span {
+
+            color: #00ffb0;
+        }
+
+        .lab-description {
+
+            max-width: 780px;
+
+            margin: 16px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           LAB META
+        ====================================================== */
+
+        .lab-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .meta-value.green {
+
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           INSTRUCTION CARD
+        ====================================================== */
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 27px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .card-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.22);
+
+            border-radius: 7px;
+
+            color: #00ffb0;
+
+            background:
+                rgba(0, 255, 176, 0.045);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .card-heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+        .lab-card p {
+
+            margin: 0;
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           AUTHORIZATION
+        ====================================================== */
+
+        .authorization-box {
+
+            margin-top: 17px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.17);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .authorization-title {
+
+            margin-bottom: 8px;
+
+            color: #ffc44d;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .authorization-box p {
+
+            color: #899bad;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           QUESTION
+        ====================================================== */
+
+        .question {
+
+            margin-bottom: 15px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .question:last-child {
+
+            margin-bottom: 0;
+        }
+
+        .question-number {
+
+            margin-bottom: 9px;
+
+            color: #00ffb0;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .question-text {
+
+            margin-bottom: 14px;
+
+            color: #dce9f4;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           OPTIONS
+        ====================================================== */
+
+        .options {
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .option {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 12px 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 8px;
+
+            color: #7890a4;
+
+            background:
+                rgba(0, 0, 0, 0.16);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .option:hover {
+
+            color: #ccefe5;
+
+            border-color:
+                rgba(0, 255, 176, 0.22);
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        .option input {
+
+            accent-color: #00ffb0;
+
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result-box {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.20);
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            background:
+                rgba(0, 255, 176, 0.035);
+        }
+
+        .result-box h2 {
+
+            margin: 0 0 8px;
+
+            color: #00ffb0;
+
+            font-size: 18px;
+        }
+
+        .result-box p {
+
+            margin: 0;
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           BUTTON
+        ====================================================== */
+
+        .lab-actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .lab-button {
+
+            padding: 13px 25px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.30);
+
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .lab-button:hover {
+
+            transform: translateY(-2px);
+
+            background:
+                rgba(0, 255, 176, 0.09);
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.topic-navigation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 18px;
+
+    border: 1px solid rgba(0, 191, 255, 0.09);
+    border-radius: 9px;
+
+    color: #71879b;
+    background: rgba(0, 191, 255, 0.02);
+
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.topic-navigation a:hover {
+    color: #ccefe5;
+    border-color: rgba(0, 255, 176, 0.25);
+    background: rgba(0, 255, 176, 0.035);
+}
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .lab-page {
+
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+
+                padding: 28px 20px;
+            }
+
+            .lab-hero h1 {
+
+                font-size: 31px;
+            }
+
+            .lab-meta {
+
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .lab-card {
+
+                padding: 20px;
+            }
+
+           .topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.topic-navigation a {
+    flex: 0 1 auto;
+    max-width: 48%;
+    padding: 12px 10px;
+}
+
+            .lab-actions {
+
+                flex-direction: column;
+            }
+
+            .lab-button {
+
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="lab-hero">
+
+                <div class="lab-kicker">
+                    ETHICAL HACKING / PRACTICAL LAB
+                </div>
+
+                <h1>
+                    <span>Network Attacks</span> Lab
+                </h1>
+
+                <p class="lab-description">
+                    Test your understanding of network attack concepts,
+                    security impact and defensive controls through this
+                    authorized cybersecurity knowledge lab.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 META
+            ================================================== -->
+
+            <div class="lab-meta">
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Lab Type
+                    </span>
+
+                    <span class="meta-value">
+                        MCQ Assessment
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Questions
+                    </span>
+
+                    <span class="meta-value">
+                        10
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Environment
+                    </span>
+
+                    <span class="meta-value green">
+                        Authorized
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Focus
+                    </span>
+
+                    <span class="meta-value">
+                        Network Security
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 INSTRUCTIONS
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        01
+                    </div>
+
+                    <h2>
+                        Lab Instructions
+                    </h2>
+
+                </div>
+
+                <p>
+                    Answer all questions based on the Network Attacks
+                    theory. Select one answer for each question and submit
+                    the assessment when you are finished.
+                </p>
+
+
+                <div class="authorization-box">
+
+                    <div class="authorization-title">
+                        ⚠ AUTHORIZED LEARNING ENVIRONMENT
+                    </div>
+
+                    <p>
+                        This lab is designed for cybersecurity education.
+                        Practical network testing should only be performed
+                        against systems you own or systems for which you
+                        have explicit authorization.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUESTIONS
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        02
+                    </div>
+
+                    <h2>
+                        Network Attacks Assessment
+                    </h2>
+
+                </div>
+
+
+                <!-- QUESTION 1 -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 01
+                    </div>
+
+                    <div class="question-text">
+                        What is the primary goal of a Denial-of-Service
+                        attack?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="a"
+                            >
+                            Encrypt network traffic
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="b"
+                            >
+                            Make a service unavailable
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="c"
+                            >
+                            Improve authentication
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="d"
+                            >
+                            Create a firewall rule
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUESTION 2 -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 02
+                    </div>
+
+                    <div class="question-text">
+                        What does a Man-in-the-Middle attack attempt to do?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="a"
+                            >
+                            Position between communicating parties
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="b"
+                            >
+                            Physically destroy a server
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="c"
+                            >
+                            Install a firewall
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="d"
+                            >
+                            Improve network speed
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUESTION 3 -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 03
+                    </div>
+
+                    <div class="question-text">
+                        What is spoofing?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="a"
+                            >
+                            Creating a secure backup
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="b"
+                            >
+                            Impersonating a trusted identity or source
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="c"
+                            >
+                            Encrypting a database
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="d"
+                            >
+                            Updating an operating system
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUESTION 4 -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 04
+                    </div>
+
+                    <div class="question-text">
+                        Which security property is primarily affected when
+                        a service becomes unavailable?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="a"
+                            >
+                            Availability
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="b"
+                            >
+                            Confidentiality
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="c"
+                            >
+                            Authentication
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="d"
+                            >
+                            Encryption
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUESTION 5 -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 05
+                    </div>
+
+                    <div class="question-text">
+                        Which control helps regulate network traffic based
+                        on defined security rules?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="a"
+                            >
+                            Firewall
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="b"
+                            >
+                            Text editor
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="c"
+                            >
+                            Compiler
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="d"
+                            >
+                            Spreadsheet
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUESTION 6 -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 06
+                    </div>
+
+                    <div class="question-text">
+                        Why is encryption important for network
+                        communication?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="a"
+                            >
+                            It protects information from unauthorized
+                            understanding
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="b"
+                            >
+                            It removes all network devices
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="c"
+                            >
+                            It disables authentication
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="d"
+                            >
+                            It increases physical storage
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUESTION 7 -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 07
+                    </div>
+
+                    <div class="question-text">
+                        What is the purpose of network segmentation?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="a"
+                            >
+                            To divide a network into logical security zones
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="b"
+                            >
+                            To remove all security controls
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="c"
+                            >
+                            To disable network monitoring
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="d"
+                            >
+                            To make every device publicly accessible
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUESTION 8 -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 08
+                    </div>
+
+                    <div class="question-text">
+                        What does an Intrusion Detection System primarily
+                        do?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="a"
+                            >
+                            Detect and alert on suspicious activity
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="b"
+                            >
+                            Replace every network device
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="c"
+                            >
+                            Create user passwords automatically
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="d"
+                            >
+                            Physically secure a server room
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUESTION 9 -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 09
+                    </div>
+
+                    <div class="question-text">
+                        Which approach is appropriate when practicing
+                        network security attacks?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="a"
+                            >
+                            Test any public network without permission
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="b"
+                            >
+                            Use an authorized laboratory environment
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="c"
+                            >
+                            Test random websites
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="d"
+                            >
+                            Attack production systems for practice
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUESTION 10 -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 10
+                    </div>
+
+                    <div class="question-text">
+                        Which principle is most important before performing
+                        an ethical hacking activity?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="a"
+                            >
+                            Authorization
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="b"
+                            >
+                            Anonymity
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="c"
+                            >
+                            Random targeting
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="d"
+                            >
+                            Public scanning
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="lab-actions">
+
+                    <button
+                        class="lab-button"
+                        onclick="checkAnswers()"
+                    >
+                        Submit Assessment →
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="result-box"
+                    id="resultBox"
+                >
+
+                    <h2 id="resultTitle">
+                        Assessment Complete
+                    </h2>
+
+                    <p id="resultText"></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="topic-navigation">
+
+                <a href="password-attacks-lab.html">
+                    ← Lab: Password Attack
+                </a>
+                <a href="../theory/web-attacks.html">
+                    Next Theory: Web Attacks →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <script>
+
+        function checkAnswers() {
+
+            const answers = {
+
+                q1: "b",
+                q2: "a",
+                q3: "b",
+                q4: "a",
+                q5: "a",
+                q6: "a",
+                q7: "a",
+                q8: "a",
+                q9: "b",
+                q10: "a"
+
+            };
+
+            let score = 0;
+
+            let answered = 0;
+
+            Object.keys(answers).forEach(function(question) {
+
+                const selected =
+                    document.querySelector(
+                        'input[name="' + question + '"]:checked'
+                    );
+
+                if (selected) {
+
+                    answered++;
+
+                    if (selected.value === answers[question]) {
+
+                        score++;
+
+                    }
+
+                }
+
+            });
+
+
+            const resultBox =
+                document.getElementById("resultBox");
+
+            const resultTitle =
+                document.getElementById("resultTitle");
+
+            const resultText =
+                document.getElementById("resultText");
+
+
+            resultBox.style.display = "block";
+
+
+            if (answered < 10) {
+
+                resultTitle.textContent =
+                    "Complete All Questions";
+
+                resultText.textContent =
+                    "You answered " +
+                    answered +
+                    " out of 10 questions. Please answer every question before completing the lab.";
+
+                resultBox.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+                return;
+
+            }
+
+
+            const percentage =
+                Math.round((score / 10) * 100);
+
+
+            resultTitle.textContent =
+                "Score: " + score + "/10";
+
+
+            resultText.textContent =
+                "You achieved " +
+                percentage +
+                "%. Review the Network Attacks theory and repeat the lab if you want to improve your understanding.";
+
+
+            resultBox.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    </script>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

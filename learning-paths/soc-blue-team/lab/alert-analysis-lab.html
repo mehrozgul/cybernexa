@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Alert Analysis Lab | CyberNexa</title>
+
+<meta name="description"
+      content="Practice analyzing a SOC security alert by reviewing evidence, validating activity, determining severity and making an analyst decision.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+/* =========================================================
+   CYBERNEXA SOC / BLUE TEAM
+   PRACTICAL LAB: ALERT ANALYSIS
+   ========================================================= */
+
+:root {
+    --al-bg: #070d13;
+    --al-panel: #0c141d;
+    --al-panel-2: #111c27;
+
+    --al-blue: #42a5ff;
+    --al-cyan: #35d6d0;
+    --al-red: #ff5263;
+    --al-orange: #ffad4d;
+    --al-yellow: #ffd166;
+    --al-green: #43d19e;
+
+    --al-text: #edf5fb;
+    --al-muted: #91a4b5;
+    --al-border: #1e303f;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(66, 165, 255, 0.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(53, 214, 208, 0.07),
+            transparent 28%
+        ),
+        var(--al-bg);
+
+    color: var(--al-text);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.al-container {
+    width: min(1150px, 92%);
+    margin: auto;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+    width: 100%;
+    overflow: hidden;
+}
+
+.nav-container {
+    width: min(1150px, 92%);
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 70px;
+}
+
+.brand {
+    max-width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+}
+
+.brand-logo {
+    flex-shrink: 0;
+}
+
+.brand-text {
+    min-width: 0;
+}
+
+.brand-name,
+.brand-tagline {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   LAB HERO
+========================================================= */
+
+.al-hero {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 78px 0 65px;
+
+    border-bottom: 1px solid var(--al-border);
+}
+
+.al-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 440px;
+    height: 440px;
+
+    right: -220px;
+    top: -210px;
+
+    border: 1px solid rgba(66, 165, 255, 0.13);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 45px rgba(66, 165, 255, 0.025),
+        0 0 0 90px rgba(66, 165, 255, 0.015);
+}
+
+.al-breadcrumb {
+    margin-bottom: 20px;
+
+    color: var(--al-cyan);
+
+    font-size: 13px;
+}
+
+.al-hero-grid {
+    display: grid;
+
+    grid-template-columns: 1.35fr 0.65fr;
+
+    gap: 45px;
+
+    align-items: center;
+}
+
+.al-lab-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 13px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid rgba(66, 165, 255, 0.35);
+
+    border-radius: 4px;
+
+    background: rgba(66, 165, 255, 0.06);
+
+    color: var(--al-blue);
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.al-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--al-blue);
+
+    box-shadow:
+        0 0 12px rgba(66, 165, 255, 0.85);
+}
+
+.al-hero h1 {
+    margin: 0 0 18px;
+
+    font-size: clamp(38px, 5vw, 60px);
+
+    line-height: 1.05;
+
+    letter-spacing: -1px;
+}
+
+.al-hero h1 span {
+    color: var(--al-blue);
+}
+
+.al-description {
+    max-width: 720px;
+
+    color: var(--al-muted);
+
+    font-size: 17px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   LAB STATUS
+========================================================= */
+
+.al-status {
+    padding: 24px;
+
+    border: 1px solid var(--al-border);
+
+    border-top: 2px solid var(--al-blue);
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 28, 39, 0.98),
+            rgba(8, 14, 21, 0.98)
+        );
+}
+
+.al-status-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.al-status-header strong {
+    font-size: 13px;
+
+    letter-spacing: 1px;
+}
+
+.al-training {
+    color: var(--al-green);
+
+    font-size: 11px;
+}
+
+.al-divider {
+    height: 1px;
+
+    margin: 15px 0;
+
+    background: var(--al-border);
+}
+
+.al-status-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 8px 0;
+
+    color: var(--al-muted);
+
+    font-size: 13px;
+}
+
+.al-status-row strong {
+    color: var(--al-text);
+
+    font-weight: normal;
+
+    text-align: right;
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.al-section {
+    padding: 65px 0;
+}
+
+.al-title {
+    margin-bottom: 25px;
+}
+
+.al-title h2 {
+    margin: 0 0 10px;
+
+    font-size: 30px;
+}
+
+.al-title p {
+    margin: 0;
+
+    color: var(--al-muted);
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   OBJECTIVE
+========================================================= */
+
+.al-objective {
+    padding: 27px;
+
+    border: 1px solid rgba(66, 165, 255, 0.25);
+
+    border-left: 3px solid var(--al-blue);
+
+    border-radius: 7px;
+
+    background: var(--al-panel);
+}
+
+.al-objective p {
+    margin: 0;
+
+    color: var(--al-muted);
+
+    line-height: 1.8;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   ALERT DATA
+========================================================= */
+
+.al-alert {
+    padding: 25px;
+
+    border: 1px solid var(--al-border);
+
+    border-top: 2px solid var(--al-red);
+
+    border-radius: 7px;
+
+    background: var(--al-panel);
+}
+
+.al-alert-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.al-alert-header h3 {
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.al-risk {
+    padding: 6px 10px;
+
+    border: 1px solid rgba(255, 82, 99, 0.35);
+
+    border-radius: 4px;
+
+    color: var(--al-red);
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+.al-data-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 12px;
+}
+
+.al-data {
+    padding: 15px;
+
+    border: 1px solid var(--al-border);
+
+    border-radius: 5px;
+
+    background: var(--al-panel-2);
+}
+
+.al-data strong {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--al-text);
+
+    font-size: 12px;
+}
+
+.al-data span {
+    color: var(--al-muted);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   INVESTIGATION TERMINAL
+========================================================= */
+
+.al-terminal {
+    overflow: hidden;
+
+    border: 1px solid var(--al-border);
+
+    border-radius: 7px;
+
+    background: #060b10;
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.25);
+}
+
+.al-terminal-head {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 12px 15px;
+
+    border-bottom: 1px solid var(--al-border);
+
+    background: #0b1219;
+}
+
+.al-terminal-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+}
+
+.al-terminal-dot.red {
+    background: var(--al-red);
+}
+
+.al-terminal-dot.yellow {
+    background: var(--al-yellow);
+}
+
+.al-terminal-dot.green {
+    background: var(--al-green);
+}
+
+.al-terminal-title {
+    margin-left: 7px;
+
+    color: var(--al-muted);
+
+    font-size: 11px;
+}
+
+.al-terminal-body {
+    padding: 22px;
+
+    overflow-x: auto;
+}
+
+.al-terminal-body code {
+    color: var(--al-green);
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    white-space: pre-wrap;
+}
+
+
+/* =========================================================
+   INVESTIGATION CHECKLIST
+========================================================= */
+
+.al-checklist {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+.al-check {
+    display: flex;
+
+    gap: 12px;
+
+    align-items: flex-start;
+
+    padding: 17px;
+
+    border: 1px solid var(--al-border);
+
+    border-radius: 6px;
+
+    background: var(--al-panel);
+}
+
+.al-check-number {
+    flex-shrink: 0;
+
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(66, 165, 255, 0.10);
+
+    color: var(--al-blue);
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+.al-check strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 14px;
+}
+
+.al-check span {
+    color: var(--al-muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FINDINGS
+========================================================= */
+
+.al-findings {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+.al-finding {
+    padding: 22px;
+
+    border: 1px solid var(--al-border);
+
+    border-radius: 7px;
+
+    background: var(--al-panel);
+}
+
+.al-finding-label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--al-cyan);
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+.al-finding strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 15px;
+}
+
+.al-finding p {
+    margin: 0;
+
+    color: var(--al-muted);
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   ANALYST DECISION
+========================================================= */
+
+.al-decision {
+    padding: 28px;
+
+    border: 1px solid rgba(255, 173, 77, 0.25);
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 173, 77, 0.07),
+            rgba(66, 165, 255, 0.025)
+        );
+}
+
+.al-decision h3 {
+    margin-top: 0;
+
+    color: var(--al-orange);
+}
+
+.al-decision p {
+    margin: 0;
+
+    color: var(--al-muted);
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   COMPLETION
+========================================================= */
+
+.al-complete {
+    padding: 30px;
+
+    border: 1px solid rgba(67, 209, 158, 0.25);
+
+    border-radius: 7px;
+
+    background: rgba(67, 209, 158, 0.035);
+}
+
+.al-complete h2 {
+    margin-top: 0;
+
+    color: var(--al-green);
+}
+
+.al-complete p {
+    margin: 0;
+
+    color: var(--al-muted);
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.al-nav {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 30px;
+}
+
+.al-nav-button {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 12px 17px;
+
+    border: 1px solid var(--al-border);
+
+    border-radius: 5px;
+
+    color: var(--al-muted);
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+.al-nav-button:hover {
+    color: var(--al-blue);
+
+    border-color: rgba(66, 165, 255, 0.4);
+}
+
+.al-theory {
+    border-color: rgba(66, 165, 255, 0.35);
+
+    color: var(--al-blue);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .nav-container {
+        width: 92%;
+    }
+
+    .al-hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .al-data-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .al-findings {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .nav-container {
+        width: 94%;
+        min-height: 64px;
+    }
+
+    .brand-logo svg {
+        width: 38px;
+        height: 46px;
+    }
+
+    .al-hero {
+        padding: 68px 0 52px;
+    }
+
+    .al-section {
+        padding: 55px 0;
+    }
+
+    .al-checklist {
+        grid-template-columns: 1fr;
+    }
+
+    .al-data-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .nav-container {
+        width: 92%;
+        min-height: 62px;
+    }
+
+    .brand-logo svg {
+        width: 34px;
+        height: 42px;
+    }
+
+    .brand-name {
+        font-size: 17px;
+    }
+
+    .brand-tagline {
+        font-size: 8px;
+    }
+
+    .al-hero {
+        padding: 55px 0 45px;
+    }
+
+    .al-breadcrumb {
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .al-lab-label {
+        font-size: 10px;
+    }
+
+    .al-hero h1 {
+        font-size: clamp(34px, 10vw, 48px);
+    }
+
+    .al-description {
+        font-size: 15px;
+    }
+
+    .al-status {
+        padding: 20px;
+    }
+
+    .al-section {
+        padding: 48px 0;
+    }
+
+    .al-title h2 {
+        font-size: 26px;
+    }
+
+    .al-title p {
+        font-size: 14px;
+    }
+
+    .al-objective {
+        padding: 22px;
+    }
+
+    .al-data-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .al-alert {
+        padding: 21px;
+    }
+
+    .al-alert-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .al-findings {
+        grid-template-columns: 1fr;
+    }
+
+    .al-terminal-body {
+        padding: 18px;
+    }
+
+    .al-terminal-body code {
+        font-size: 12px;
+    }
+
+    .al-decision {
+        padding: 22px;
+    }
+
+    .al-complete {
+        padding: 22px;
+    }
+
+    .al-nav {
+        flex-direction: column;
+    }
+
+    .al-nav-button {
+        width: 100%;
+
+        justify-content: center;
+
+        text-align: center;
+    }
+}
+
+
+@media (max-width: 380px) {
+
+    .al-container {
+        width: 94%;
+    }
+
+    .brand-name {
+        font-size: 15px;
+    }
+
+    .brand-tagline {
+        font-size: 7px;
+    }
+
+    .al-hero h1 {
+        font-size: 32px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="../../../index.html" class="brand">
+
+<div class="brand-logo">
+
+<svg viewBox="0 0 50 60">
+
+<path
+d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+fill="none"
+stroke="currentColor"
+stroke-width="3"
+/>
+
+<rect
+x="18"
+y="25"
+width="14"
+height="14"
+rx="2"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<path
+d="M20 25 V20 C20 16 30 16 30 20 V25"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<circle
+cx="25"
+cy="31"
+r="2"
+fill="currentColor"
+/>
+
+<path
+d="M25 33 V36"
+stroke="currentColor"
+stroke-width="2"
+/>
+
+</svg>
+
+</div>
+
+<div class="brand-text">
+
+<div class="brand-name">
+Cyber<span>Nexa</span>
+</div>
+
+<div class="brand-tagline">
+Cybersecurity &amp; IT Learning
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="al-hero">
+
+<div class="al-container">
+
+<div class="al-breadcrumb">
+CyberNexa / SOC / Blue Team / Alert Analysis / Practical Lab
+</div>
+
+<div class="al-hero-grid">
+
+<div>
+
+<div class="al-lab-label">
+
+<span class="al-dot"></span>
+
+Practical SOC Lab
+
+</div>
+
+<h1>
+Alert <span>Analysis Lab</span>
+</h1>
+
+<p class="al-description">
+
+Practice the basic SOC workflow by examining a security
+alert, reviewing evidence, validating the activity,
+determining its priority and making an analyst decision.
+
+</p>
+
+</div>
+
+
+<div class="al-status">
+
+<div class="al-status-header">
+
+<strong>
+SOC LAB CONSOLE
+</strong>
+
+<span class="al-training">
+● TRAINING
+</span>
+
+</div>
+
+<div class="al-divider"></div>
+
+<div class="al-status-row">
+<span>Lab Type</span>
+<strong>Alert Investigation</strong>
+</div>
+
+<div class="al-status-row">
+<span>Difficulty</span>
+<strong>Beginner</strong>
+</div>
+
+<div class="al-status-row">
+<span>Focus</span>
+<strong>Alert Validation</strong>
+</div>
+
+<div class="al-status-row">
+<span>Output</span>
+<strong>Analyst Decision</strong>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     OBJECTIVE
+====================================================== -->
+
+<section class="al-section">
+
+<div class="al-container">
+
+<div class="al-title">
+
+<h2>Lab Objective</h2>
+
+<p>
+Understand how a SOC analyst examines and validates a
+security alert.
+</p>
+
+</div>
+
+
+<div class="al-objective">
+
+<p>
+
+In this lab, you will investigate a simulated authentication
+alert. You will review the available alert information,
+identify suspicious indicators, examine supporting evidence,
+determine whether the alert should be treated as suspicious
+and select an appropriate analyst action.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SECURITY ALERT
+====================================================== -->
+
+<section class="al-section">
+
+<div class="al-container">
+
+<div class="al-title">
+
+<h2>Security Alert</h2>
+
+<p>
+The monitoring system has generated the following alert.
+</p>
+
+</div>
+
+
+<div class="al-alert">
+
+<div class="al-alert-header">
+
+<h3>
+🚨 Suspicious Authentication Activity
+</h3>
+
+<span class="al-risk">
+HIGH PRIORITY
+</span>
+
+</div>
+
+
+<div class="al-data-grid">
+
+<div class="al-data">
+
+<strong>Alert ID</strong>
+
+<span>
+SOC-AL-1042
+</span>
+
+</div>
+
+
+<div class="al-data">
+
+<strong>Source IP</strong>
+
+<span>
+185.XX.XX.42
+</span>
+
+</div>
+
+
+<div class="al-data">
+
+<strong>Destination</strong>
+
+<span>
+10.10.20.15
+</span>
+
+</div>
+
+
+<div class="al-data">
+
+<strong>Username</strong>
+
+<span>
+admin
+</span>
+
+</div>
+
+
+<div class="al-data">
+
+<strong>Event</strong>
+
+<span>
+Multiple failed logins
+</span>
+
+</div>
+
+
+<div class="al-data">
+
+<strong>Timestamp</strong>
+
+<span>
+02:14:31 UTC
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     EVIDENCE
+====================================================== -->
+
+<section class="al-section">
+
+<div class="al-container">
+
+<div class="al-title">
+
+<h2>Evidence Review</h2>
+
+<p>
+Review the simulated authentication events associated with
+the alert.
+</p>
+
+</div>
+
+
+<div class="al-terminal">
+
+<div class="al-terminal-head">
+
+<span class="al-terminal-dot red"></span>
+<span class="al-terminal-dot yellow"></span>
+<span class="al-terminal-dot green"></span>
+
+<span class="al-terminal-title">
+authentication.log
+</span>
+
+</div>
+
+
+<div class="al-terminal-body">
+
+<code>
+[02:13:42] FAILED LOGIN
+user=admin
+src_ip=185.XX.XX.42
+
+[02:13:47] FAILED LOGIN
+user=admin
+src_ip=185.XX.XX.42
+
+[02:13:53] FAILED LOGIN
+user=admin
+src_ip=185.XX.XX.42
+
+[02:14:01] FAILED LOGIN
+user=admin
+src_ip=185.XX.XX.42
+
+[02:14:08] SUCCESSFUL LOGIN
+user=admin
+src_ip=185.XX.XX.42
+
+[02:14:31] PRIVILEGED SESSION CREATED
+user=admin
+src_ip=185.XX.XX.42
+</code>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     INVESTIGATION CHECKLIST
+====================================================== -->
+
+<section class="al-section">
+
+<div class="al-container">
+
+<div class="al-title">
+
+<h2>Investigation Checklist</h2>
+
+<p>
+Use these questions to analyze the alert like a SOC analyst.
+</p>
+
+</div>
+
+
+<div class="al-checklist">
+
+<div class="al-check">
+
+<div class="al-check-number">
+01
+</div>
+
+<div>
+
+<strong>Identify the Source</strong>
+
+<span>
+Which IP address generated the suspicious activity?
+</span>
+
+</div>
+
+</div>
+
+
+<div class="al-check">
+
+<div class="al-check-number">
+02
+</div>
+
+<div>
+
+<strong>Check the Account</strong>
+
+<span>
+Which account was targeted by the authentication attempts?
+</span>
+
+</div>
+
+</div>
+
+
+<div class="al-check">
+
+<div class="al-check-number">
+03
+</div>
+
+<div>
+
+<strong>Review the Sequence</strong>
+
+<span>
+Were failed authentication attempts followed by a successful login?
+</span>
+
+</div>
+
+</div>
+
+
+<div class="al-check">
+
+<div class="al-check-number">
+04
+</div>
+
+<div>
+
+<strong>Check Privileges</strong>
+
+<span>
+Was a privileged session created after authentication?
+</span>
+
+</div>
+
+</div>
+
+
+<div class="al-check">
+
+<div class="al-check-number">
+05
+</div>
+
+<div>
+
+<strong>Determine Risk</strong>
+
+<span>
+Could this activity indicate unauthorized account access?
+</span>
+
+</div>
+
+</div>
+
+
+<div class="al-check">
+
+<div class="al-check-number">
+06
+</div>
+
+<div>
+
+<strong>Choose an Action</strong>
+
+<span>
+Should the alert be closed, investigated or escalated?
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     FINDINGS
+====================================================== -->
+
+<section class="al-section">
+
+<div class="al-container">
+
+<div class="al-title">
+
+<h2>Analyst Findings</h2>
+
+<p>
+Based on the supplied evidence, identify the important
+observations.
+</p>
+
+</div>
+
+
+<div class="al-findings">
+
+<div class="al-finding">
+
+<span class="al-finding-label">
+Finding 01
+</span>
+
+<strong>Repeated Authentication Failures</strong>
+
+<p>
+Multiple failed login attempts were recorded against the
+same administrative account.
+</p>
+
+</div>
+
+
+<div class="al-finding">
+
+<span class="al-finding-label">
+Finding 02
+</span>
+
+<strong>Successful Authentication</strong>
+
+<p>
+The failed attempts were followed by a successful login
+from the same external source.
+</p>
+
+</div>
+
+
+<div class="al-finding">
+
+<span class="al-finding-label">
+Finding 03
+</span>
+
+<strong>Privileged Session</strong>
+
+<p>
+A privileged session was created immediately after the
+successful authentication.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ANALYST DECISION
+====================================================== -->
+
+<section class="al-section">
+
+<div class="al-container">
+
+<div class="al-title">
+
+<h2>Analyst Decision</h2>
+
+<p>
+Determine the appropriate action based on the available evidence.
+</p>
+
+</div>
+
+
+<div class="al-decision">
+
+<h3>
+⚠ Suspicious Activity — Escalate for Investigation
+</h3>
+
+<p>
+
+The alert should not be immediately closed because the available
+evidence shows repeated failed authentication attempts followed
+by a successful login and creation of a privileged session.
+A SOC analyst should investigate the account activity, verify
+whether the login was authorized and follow the organization's
+incident-handling process if unauthorized access is confirmed.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     COMPLETION
+====================================================== -->
+
+<section class="al-section">
+
+<div class="al-container">
+
+<div class="al-complete">
+
+<h2>
+Lab Completed
+</h2>
+
+<p>
+
+You have practiced the basic Alert Analysis workflow:
+reviewing an alert, examining evidence, identifying suspicious
+patterns, assessing risk and selecting an appropriate analyst
+action. These skills form an important part of the day-to-day
+work performed by SOC analysts.
+
+</p>
+
+</div>
+
+
+<div class="al-nav">
+
+<a href="log-monitoring-lab.html"
+   class="al-nav-button al-theory">
+← Lab: Log Monitoring
+</a>
+
+<a href="ioc-lab.html"
+   class="al-nav-button">
+Next Theory: IOC →
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div>
+
+<div class="footer-brand">
+Cyber<span>Nexa</span>
+</div>
+
+<p>
+Cybersecurity &amp; IT Learning
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="../../../index.html">
+Home
+</a>
+
+<a href="../../../footer/about.html">
+About
+</a>
+
+<a href="../../../footer/contact.html">
+Contact
+</a>
+
+<a href="../../../footer/privacy-policy.html">
+Privacy Policy
+</a>
+
+<a href="../../../footer/disclaimer.html">
+Disclaimer
+</a>
+
+</div>
+
+</div>
+
+
+<div class="copyright">
+
+© 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OpenSSL Lab | CyberNexa</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 202, 255, 0.09),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 230, 138, 0.05),
+                    transparent 30%
+                ),
+                #030b16;
+
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            width: 100%;
+            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
+            background: #030c19;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 15px 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #00caff;
+            flex-shrink: 0;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            color: #7f94aa;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .lab-page {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        .breadcrumb {
+            color: #71869c;
+            font-size: 12px;
+            margin-bottom: 22px;
+            overflow-wrap: anywhere;
+        }
+
+        .breadcrumb span {
+            color: #00caff;
+            padding: 0 7px;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .lab-header {
+            padding: 32px;
+
+            border: 1px solid rgba(0, 202, 255, 0.25);
+            border-left: 4px solid #00e68a;
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 230, 138, 0.07),
+                    rgba(0, 202, 255, 0.025)
+                );
+        }
+
+        .lab-label {
+            color: #00e68a;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .lab-header h1 {
+            margin: 9px 0;
+            color: white;
+            font-size: 35px;
+        }
+
+        .lab-header h1 span {
+            color: #00caff;
+        }
+
+        .lab-header p {
+            margin: 0;
+            color: #9eb1c5;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           LAB BOX
+        ===================================================== */
+
+        .lab-box {
+            margin-top: 22px;
+            padding: 24px;
+
+            border: 1px solid rgba(0, 202, 255, 0.17);
+            border-radius: 9px;
+
+            background: #041221;
+        }
+
+        .lab-box h2 {
+            margin-top: 0;
+            color: white;
+            font-size: 20px;
+        }
+
+        .lab-box h2::before {
+            content: "openssl > ";
+            color: #00e68a;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+        }
+
+        .instructions {
+            color: #aabbd0;
+            font-size: 13px;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 7px;
+        }
+
+        /* =====================================================
+           COMMAND CARD
+        ===================================================== */
+
+        .command-card {
+            margin-top: 16px;
+            padding: 17px;
+
+            border: 1px solid rgba(0, 202, 255, 0.15);
+            border-radius: 7px;
+
+            background: #020810;
+        }
+
+        .command-title {
+            margin-bottom: 8px;
+            color: #00caff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .command-card pre {
+            margin: 0;
+
+            color: #7fffc0;
+
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 12px;
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* =====================================================
+           OUTPUT
+        ===================================================== */
+
+        .output-title {
+            margin-top: 22px;
+            color: #00caff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .output {
+            min-height: 125px;
+            margin-top: 8px;
+            padding: 16px;
+
+            border: 1px solid rgba(0, 230, 138, 0.18);
+            border-radius: 7px;
+
+            background: #020810;
+
+            color: #7fffc0;
+
+            font-family: Consolas, monospace;
+            font-size: 12px;
+
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 17px;
+        }
+
+        button {
+            padding: 10px 20px;
+
+            border-radius: 22px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .run-btn {
+            border: 1px solid #00e68a;
+            background: rgba(0, 230, 138, 0.08);
+            color: #00e68a;
+        }
+
+        .run-btn:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+
+        .clear-btn {
+            border: 1px solid rgba(0, 202, 255, 0.4);
+            background: rgba(0, 202, 255, 0.06);
+            color: #00caff;
+        }
+
+        .clear-btn:hover {
+            background: rgba(0, 202, 255, 0.15);
+        }
+
+        /* =====================================================
+           CHALLENGE
+        ===================================================== */
+
+        .challenge {
+            margin-top: 22px;
+            padding: 21px;
+
+            border: 1px solid rgba(255, 189, 0, 0.25);
+            border-left: 4px solid #ffbd00;
+            border-radius: 8px;
+
+            background: rgba(255, 189, 0, 0.04);
+        }
+
+        .challenge h3 {
+            margin-top: 0;
+            color: #ffbd00;
+        }
+
+        .challenge p,
+        .challenge li {
+            color: #aabbd0;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .topic-navigation {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .topic-navigation a {
+            flex: 1;
+            min-width: 0;
+
+            padding: 12px 15px;
+
+            border: 1px solid rgba(0, 202, 255, 0.18);
+            border-radius: 7px;
+
+            background: #041221;
+            color: #8da6bc;
+
+            text-align: center;
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .topic-navigation a:hover {
+            border-color: #00caff;
+            color: #00caff;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            width: 100%;
+            border-top: 1px solid rgba(0, 202, 255, 0.15);
+            background: #020914;
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #6f849a;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            width: 100%;
+            max-width: 1050px;
+            margin: 25px auto 0;
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255,255,255,0.05);
+
+            text-align: center;
+            color: #52667b;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 650px) {
+
+            .lab-page {
+                padding: 25px 14px 55px;
+            }
+
+            .lab-header {
+                padding: 24px 18px;
+            }
+
+            .lab-header h1 {
+                font-size: 28px;
+            }
+
+            .lab-box {
+                padding: 20px 16px;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .topic-navigation {
+                flex-direction: column;
+            }
+
+            .topic-navigation a {
+                width: 100%;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58
+                        C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+
+    <div class="breadcrumb">
+
+        Cybersecurity Tools
+
+        <span>›</span>
+
+        OpenSSL
+
+        <span>›</span>
+
+        Practical Lab
+
+    </div>
+
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <section class="lab-header">
+
+        <div class="lab-label">
+            CRYPTOGRAPHY PRACTICAL LAB
+        </div>
+
+        <h1>
+            Open<span>SSL</span> Lab
+        </h1>
+
+        <p>
+            Practice OpenSSL commands for key generation,
+            certificates, certificate inspection and hashing
+            in a controlled local environment.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         LAB OBJECTIVES
+    ===================================================== -->
+
+    <section class="lab-box">
+
+        <h2>Lab Objectives</h2>
+
+        <ol class="instructions">
+
+            <li>
+                Check whether OpenSSL is installed.
+            </li>
+
+            <li>
+                Generate a local RSA private key.
+            </li>
+
+            <li>
+                Create a self-signed test certificate.
+            </li>
+
+            <li>
+                Inspect the certificate information.
+            </li>
+
+            <li>
+                Generate a SHA-256 digest for a test file.
+            </li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- =====================================================
+         STEP 01
+    ===================================================== -->
+
+    <section class="lab-box">
+
+        <h2>Step 01 — Check OpenSSL</h2>
+
+        <div class="command-card">
+
+            <div class="command-title">
+                TERMINAL COMMAND
+            </div>
+
+<pre>openssl version</pre>
+
+        </div>
+
+        <div class="output-title">
+            EXPECTED OUTPUT
+        </div>
+
+        <div class="output">
+OpenSSL 3.x.x ...
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         STEP 02
+    ===================================================== -->
+
+    <section class="lab-box">
+
+        <h2>Step 02 — Generate RSA Private Key</h2>
+
+        <div class="command-card">
+
+            <div class="command-title">
+                TERMINAL COMMAND
+            </div>
+
+<pre>openssl genrsa -out private.key 2048</pre>
+
+        </div>
+
+        <div class="output-title">
+            RESULT
+        </div>
+
+        <div class="output">
+A private key file named:
+
+private.key
+
+will be created in the current directory.
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         STEP 03
+    ===================================================== -->
+
+    <section class="lab-box">
+
+        <h2>Step 03 — Create Test Certificate</h2>
+
+        <div class="command-card">
+
+            <div class="command-title">
+                TERMINAL COMMAND
+            </div>
+
+<pre>openssl req -new -x509 \
+-key private.key \
+-out certificate.crt \
+-days 365</pre>
+
+        </div>
+
+        <div class="output-title">
+            RESULT
+        </div>
+
+        <div class="output">
+A self-signed certificate named:
+
+certificate.crt
+
+will be generated for the local learning environment.
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         STEP 04
+    ===================================================== -->
+
+    <section class="lab-box">
+
+        <h2>Step 04 — Inspect Certificate</h2>
+
+        <div class="command-card">
+
+            <div class="command-title">
+                TERMINAL COMMAND
+            </div>
+
+<pre>openssl x509 -in certificate.crt -text -noout</pre>
+
+        </div>
+
+        <div class="output-title">
+            INFORMATION TO OBSERVE
+        </div>
+
+        <div class="output">
+Subject
+Issuer
+Validity
+Public Key
+Signature Algorithm
+Certificate Extensions
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         STEP 05
+    ===================================================== -->
+
+    <section class="lab-box">
+
+        <h2>Step 05 — Create Test File</h2>
+
+        <div class="command-card">
+
+            <div class="command-title">
+                LINUX COMMAND
+            </div>
+
+<pre>echo "CyberNexa OpenSSL Lab" > test.txt</pre>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         STEP 06
+    ===================================================== -->
+
+    <section class="lab-box">
+
+        <h2>Step 06 — Generate SHA-256 Digest</h2>
+
+        <div class="command-card">
+
+            <div class="command-title">
+                TERMINAL COMMAND
+            </div>
+
+<pre>openssl dgst -sha256 test.txt</pre>
+
+        </div>
+
+        <div class="output-title">
+            EXPECTED FORMAT
+        </div>
+
+        <div class="output">
+SHA2-256(test.txt)=
+[64 hexadecimal characters]
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PRACTICE TASK
+    ===================================================== -->
+
+    <section class="lab-box">
+
+        <h2>Practice Task</h2>
+
+        <ol class="instructions">
+
+            <li>
+                Generate a new RSA private key named
+                <strong>cybernexa.key</strong>.
+            </li>
+
+            <li>
+                Create a certificate named
+                <strong>cybernexa.crt</strong>.
+            </li>
+
+            <li>
+                Inspect the certificate.
+            </li>
+
+            <li>
+                Create a text file called
+                <strong>message.txt</strong>.
+            </li>
+
+            <li>
+                Generate its SHA-256 digest.
+            </li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- =====================================================
+         CHALLENGE
+    ===================================================== -->
+
+    <section class="lab-box">
+
+        <h2>Advanced Challenge</h2>
+
+        <ol class="instructions">
+
+            <li>
+                Generate another SHA-256 digest after changing
+                the contents of the test file.
+            </li>
+
+            <li>
+                Compare the two digests.
+            </li>
+
+            <li>
+                Explain why the digest changes when the file
+                contents change.
+            </li>
+
+            <li>
+                Inspect the certificate and identify its
+                subject, issuer and validity period.
+            </li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- =====================================================
+         LAB NAVIGATION
+    ===================================================== -->
+
+    <div class="topic-navigation">
+
+        <a href="hashcat-lab.html">
+            ← Previous
+        </a>
+
+        <a href="cyber-tools-lab.html">
+            All Tools
+        </a>
+
+        <a href="../theory/cyber-tools.html">
+            Theory
+        </a>
+
+    </div>
+
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+    const runButtons =
+        document.querySelectorAll(".command-card");
+
+    /*
+     * OpenSSL commands are intended to be executed
+     * in the learner's local Linux/Python environment.
+     *
+     * The browser does not execute shell commands.
+     */
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SOC Analyst Practical Lab | CyberNexa</title>
+
+<meta name="description"
+      content="Practice SOC Analyst alert investigation using security logs, suspicious IP analysis and incident triage.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+/* =========================================================
+   CYBERNEXA — SOC ANALYST PRACTICAL LAB
+   ========================================================= */
+
+:root {
+    --lab-bg: #070d14;
+    --lab-panel: #0c151f;
+    --lab-panel-2: #101c28;
+
+    --lab-blue: #42a5ff;
+    --lab-cyan: #35d9ff;
+    --lab-purple: #8b7cff;
+
+    --lab-green: #43d19e;
+    --lab-yellow: #ffd166;
+    --lab-red: #ff5964;
+
+    --lab-text: #edf6fc;
+    --lab-muted: #91a5b6;
+    --lab-border: #1e3343;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(66,165,255,0.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 25%,
+            rgba(53,217,255,0.06),
+            transparent 28%
+        ),
+        var(--lab-bg);
+
+    color: var(--lab-text);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.lab-container {
+    width: min(1150px, 92%);
+    margin: auto;
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+    width: 100%;
+    overflow: hidden;
+}
+
+.nav-container {
+    width: min(1150px, 92%);
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 70px;
+}
+
+.brand {
+    max-width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+}
+
+.brand-logo {
+    flex-shrink: 0;
+}
+
+.brand-text {
+    min-width: 0;
+}
+
+.brand-name,
+.brand-tagline {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+/* =========================================================
+   LAB HERO
+   ========================================================= */
+
+.lab-hero {
+    position: relative;
+    overflow: hidden;
+
+    padding: 80px 0 65px;
+
+    border-bottom: 1px solid var(--lab-border);
+}
+
+.lab-breadcrumb {
+    margin-bottom: 20px;
+
+    color: var(--lab-cyan);
+
+    font-size: 13px;
+
+    letter-spacing: 0.5px;
+}
+
+.lab-hero-grid {
+    display: grid;
+
+    grid-template-columns: 1.3fr 0.7fr;
+
+    gap: 40px;
+
+    align-items: center;
+}
+
+.lab-badge {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 9px;
+
+    padding: 8px 13px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid rgba(66,165,255,0.35);
+
+    border-radius: 4px;
+
+    background: rgba(66,165,255,0.06);
+
+    color: var(--lab-blue);
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.lab-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--lab-green);
+
+    box-shadow:
+        0 0 12px rgba(67,209,158,0.8);
+}
+
+.lab-hero h1 {
+    margin: 0 0 16px;
+
+    font-size: clamp(36px, 5vw, 58px);
+
+    line-height: 1.05;
+}
+
+.lab-hero h1 span {
+    color: var(--lab-cyan);
+}
+
+.lab-description {
+    max-width: 700px;
+
+    color: var(--lab-muted);
+
+    font-size: 16px;
+
+    line-height: 1.8;
+}
+
+/* =========================================================
+   MISSION PANEL
+   ========================================================= */
+
+.lab-mission {
+    padding: 23px;
+
+    border: 1px solid var(--lab-border);
+
+    border-top: 2px solid var(--lab-blue);
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16,28,40,0.98),
+            rgba(8,14,21,0.98)
+        );
+}
+
+.lab-mission-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 16px;
+}
+
+.lab-mission-header strong {
+    font-size: 12px;
+
+    letter-spacing: 1px;
+}
+
+.lab-status {
+    color: var(--lab-green);
+
+    font-size: 10px;
+}
+
+.lab-line {
+    height: 1px;
+
+    background: var(--lab-border);
+
+    margin: 14px 0;
+}
+
+.lab-status-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 7px 0;
+
+    color: var(--lab-muted);
+
+    font-size: 12px;
+}
+
+.lab-status-row strong {
+    color: var(--lab-text);
+
+    font-weight: normal;
+}
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.lab-section {
+    padding: 65px 0;
+}
+
+.lab-title {
+    margin-bottom: 25px;
+}
+
+.lab-title h2 {
+    margin: 0 0 9px;
+
+    font-size: 30px;
+}
+
+.lab-title p {
+    color: var(--lab-muted);
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   OBJECTIVE
+   ========================================================= */
+
+.lab-objective {
+    padding: 26px;
+
+    border: 1px solid rgba(53,217,255,0.25);
+
+    border-left: 3px solid var(--lab-cyan);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+}
+
+.lab-objective p {
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    line-height: 1.8;
+
+    font-size: 15px;
+}
+
+/* =========================================================
+   ALERT
+   ========================================================= */
+
+.alert-card {
+    padding: 24px;
+
+    border: 1px solid rgba(255,89,100,0.30);
+
+    border-left: 3px solid var(--lab-red);
+
+    border-radius: 7px;
+
+    background:
+        rgba(255,89,100,0.045);
+}
+
+.alert-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 17px;
+}
+
+.alert-header strong {
+    color: var(--lab-red);
+
+    font-size: 14px;
+}
+
+.alert-severity {
+    padding: 5px 9px;
+
+    border: 1px solid rgba(255,209,102,0.3);
+
+    border-radius: 4px;
+
+    color: var(--lab-yellow);
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.5px;
+}
+
+.alert-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 9px 0;
+
+    border-bottom: 1px solid rgba(30,51,67,0.65);
+
+    color: var(--lab-muted);
+
+    font-size: 13px;
+}
+
+.alert-row:last-child {
+    border-bottom: none;
+}
+
+.alert-row strong {
+    color: var(--lab-text);
+
+    font-weight: normal;
+
+    text-align: right;
+}
+
+/* =========================================================
+   TERMINAL
+   ========================================================= */
+
+.terminal {
+    overflow: hidden;
+
+    border: 1px solid var(--lab-border);
+
+    border-radius: 7px;
+
+    background: #05090d;
+
+    box-shadow:
+        0 18px 45px rgba(0,0,0,0.25);
+}
+
+.terminal-top {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 11px 14px;
+
+    border-bottom: 1px solid var(--lab-border);
+
+    background: #0a1118;
+}
+
+.terminal-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: var(--lab-blue);
+}
+
+.terminal-title {
+    margin-left: 7px;
+
+    color: var(--lab-muted);
+
+    font-size: 11px;
+}
+
+.terminal-body {
+    padding: 20px;
+
+    overflow-x: auto;
+
+    color: #b9f5ff;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+.terminal-body .prompt {
+    color: var(--lab-green);
+}
+
+.terminal-body .command {
+    color: var(--lab-cyan);
+}
+
+.terminal-body .warning {
+    color: var(--lab-yellow);
+}
+
+.terminal-body .danger {
+    color: var(--lab-red);
+}
+
+/* =========================================================
+   INVESTIGATION TASKS
+   ========================================================= */
+
+.task-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 15px;
+}
+
+.task {
+    padding: 21px;
+
+    border: 1px solid var(--lab-border);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+}
+
+.task-number {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--lab-blue);
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+.task h3 {
+    margin: 0 0 9px;
+
+    font-size: 16px;
+}
+
+.task p {
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    line-height: 1.65;
+
+    font-size: 13px;
+}
+
+/* =========================================================
+   CHECKLIST
+   ========================================================= */
+
+.checklist {
+    display: grid;
+
+    gap: 10px;
+}
+
+.check-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 16px;
+
+    border: 1px solid var(--lab-border);
+
+    border-radius: 6px;
+
+    background: var(--lab-panel);
+}
+
+.check-item input {
+    width: 16px;
+    height: 16px;
+
+    accent-color: var(--lab-cyan);
+}
+
+.check-item label {
+    color: var(--lab-muted);
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   RESULT
+   ========================================================= */
+
+.result-card {
+    padding: 25px;
+
+    border: 1px solid rgba(67,209,158,0.25);
+
+    border-radius: 7px;
+
+    background:
+        rgba(67,209,158,0.035);
+}
+
+.result-card h3 {
+    margin-top: 0;
+
+    color: var(--lab-green);
+}
+
+.result-card p {
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    line-height: 1.75;
+
+    font-size: 14px;
+}
+
+/* =========================================================
+   COMPLETION
+   ========================================================= */
+
+.completion {
+    margin-top: 25px;
+
+    padding: 25px;
+
+    border: 1px solid rgba(66,165,255,0.3);
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(66,165,255,0.06),
+            rgba(53,217,255,0.025)
+        );
+
+    text-align: center;
+}
+
+.completion h2 {
+    margin: 0 0 10px;
+
+    color: var(--lab-cyan);
+
+    font-size: 23px;
+}
+
+.completion p {
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    line-height: 1.7;
+
+    font-size: 14px;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.lab-nav {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+.lab-nav a {
+    display: inline-flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 12px 17px;
+
+    border: 1px solid var(--lab-border);
+
+    border-radius: 5px;
+
+    color: var(--lab-muted);
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+.lab-nav a:hover {
+    color: var(--lab-cyan);
+
+    border-color: rgba(53,217,255,0.4);
+}
+
+.lab-nav .primary {
+    color: var(--lab-blue);
+
+    border-color: rgba(66,165,255,0.35);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .lab-hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .task-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .nav-container {
+        width: 94%;
+        min-height: 64px;
+        padding: 8px 0;
+    }
+
+    .brand-logo svg {
+        width: 38px;
+        height: 46px;
+    }
+
+    .brand-name {
+        font-size: 19px;
+    }
+
+    .brand-tagline {
+        font-size: 9px;
+    }
+
+    .lab-hero {
+        padding: 65px 0 55px;
+    }
+
+    .lab-section {
+        padding: 55px 0;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .nav-container {
+        width: 92%;
+    }
+
+    .brand-logo svg {
+        width: 34px;
+        height: 42px;
+    }
+
+    .brand-name {
+        font-size: 17px;
+    }
+
+    .brand-tagline {
+        font-size: 8px;
+    }
+
+    .lab-hero {
+        padding: 52px 0 45px;
+    }
+
+    .lab-hero h1 {
+        font-size: clamp(33px, 10vw, 47px);
+    }
+
+    .lab-description {
+        font-size: 15px;
+    }
+
+    .lab-section {
+        padding: 48px 0;
+    }
+
+    .lab-title h2 {
+        font-size: 25px;
+    }
+
+    .alert-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .alert-row strong {
+        text-align: left;
+    }
+
+    .task-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lab-nav {
+        flex-direction: column;
+    }
+
+    .lab-nav a {
+        width: 100%;
+    }
+
+    .footer-container {
+        width: 92%;
+        gap: 22px;
+    }
+
+    .footer-links {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 12px 18px;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .lab-container {
+        width: 94%;
+    }
+
+    .brand-logo svg {
+        width: 30px;
+        height: 38px;
+    }
+
+    .brand-name {
+        font-size: 15px;
+    }
+
+    .brand-tagline {
+        font-size: 7px;
+    }
+
+    .footer-links {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="../../../index.html" class="brand">
+
+<div class="brand-logo">
+
+<svg viewBox="0 0 50 60">
+
+<path
+d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+fill="none"
+stroke="currentColor"
+stroke-width="3"
+/>
+
+<rect
+x="18"
+y="25"
+width="14"
+height="14"
+rx="2"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<path
+d="M20 25 V20 C20 16 30 16 30 20 V25"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<circle
+cx="25"
+cy="31"
+r="2"
+fill="currentColor"
+/>
+
+<path
+d="M25 33 V36"
+stroke="currentColor"
+stroke-width="2"
+/>
+
+</svg>
+
+</div>
+
+<div class="brand-text">
+
+<div class="brand-name">
+Cyber<span>Nexa</span>
+</div>
+
+<div class="brand-tagline">
+Cybersecurity &amp; IT Learning
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="lab-hero">
+
+<div class="lab-container">
+
+<div class="lab-breadcrumb">
+CyberNexa / SOC / Blue Team / SOC Analyst / Practical Lab
+</div>
+
+<div class="lab-hero-grid">
+
+<div>
+
+<div class="lab-badge">
+
+<span class="lab-dot"></span>
+
+SOC Analyst Practical Lab
+
+</div>
+
+<h1>
+SOC Analyst <span>Investigation</span>
+</h1>
+
+<p class="lab-description">
+Practice the basic workflow of a SOC Analyst by
+investigating suspicious login activity, reviewing
+security logs, identifying indicators and deciding
+whether an alert requires escalation.
+</p>
+
+</div>
+
+
+<div class="lab-mission">
+
+<div class="lab-mission-header">
+
+<strong>
+ANALYST MISSION
+</strong>
+
+<span class="lab-status">
+● LAB READY
+</span>
+
+</div>
+
+<div class="lab-line"></div>
+
+<div class="lab-status-row">
+<span>Role</span>
+<strong>SOC Analyst</strong>
+</div>
+
+<div class="lab-status-row">
+<span>Scenario</span>
+<strong>Suspicious Login</strong>
+</div>
+
+<div class="lab-status-row">
+<span>Difficulty</span>
+<strong>Beginner</strong>
+</div>
+
+<div class="lab-status-row">
+<span>Objective</span>
+<strong>Investigate Alert</strong>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     OBJECTIVE
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-title">
+
+<h2>Lab Objective</h2>
+
+<p>
+Your task is to investigate a suspicious login alert
+as a SOC Analyst.
+</p>
+
+</div>
+
+<div class="lab-objective">
+
+<p>
+Analyze the provided security logs, identify the suspicious
+source IP address and affected account, determine what happened,
+and decide whether the event should be escalated for further
+incident response.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ALERT
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-title">
+
+<h2>Security Alert</h2>
+
+<p>
+The SOC monitoring system has generated the following alert.
+</p>
+
+</div>
+
+<div class="alert-card">
+
+<div class="alert-header">
+
+<strong>
+⚠ SUSPICIOUS AUTHENTICATION ACTIVITY
+</strong>
+
+<span class="alert-severity">
+MEDIUM
+</span>
+
+</div>
+
+<div class="alert-row">
+<span>Alert ID</span>
+<strong>SOC-2026-014</strong>
+</div>
+
+<div class="alert-row">
+<span>Account</span>
+<strong>admin</strong>
+</div>
+
+<div class="alert-row">
+<span>Source IP</span>
+<strong>185.72.44.19</strong>
+</div>
+
+<div class="alert-row">
+<span>Failed Attempts</span>
+<strong>5</strong>
+</div>
+
+<div class="alert-row">
+<span>Successful Login</span>
+<strong>YES</strong>
+</div>
+
+<div class="alert-row">
+<span>Location</span>
+<strong>Unknown / Unusual</strong>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     LOG TERMINAL
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-title">
+
+<h2>Step 1 — Review Security Logs</h2>
+
+<p>
+Start the investigation by examining the authentication
+events available to the SOC Analyst.
+</p>
+
+</div>
+
+
+<div class="terminal">
+
+<div class="terminal-top">
+
+<span class="terminal-dot"></span>
+<span class="terminal-dot"></span>
+<span class="terminal-dot"></span>
+
+<span class="terminal-title">
+soc-authentication.log
+</span>
+
+</div>
+
+
+<div class="terminal-body">
+
+<span class="prompt">$</span>
+<span class="command">cat soc-authentication.log</span>
+<br><br>
+
+2026-09-26 09:41:22 INFO login_failed user=admin ip=185.72.44.19
+<br>
+
+2026-09-26 09:41:29 INFO login_failed user=admin ip=185.72.44.19
+<br>
+
+2026-09-26 09:41:37 INFO login_failed user=admin ip=185.72.44.19
+<br>
+
+2026-09-26 09:41:45 INFO login_failed user=admin ip=185.72.44.19
+<br>
+
+2026-09-26 09:41:53 INFO login_failed user=admin ip=185.72.44.19
+<br>
+
+<span class="warning">
+2026-09-26 09:42:11 WARN login_success user=admin ip=185.72.44.19
+</span>
+
+<br>
+
+2026-09-26 09:42:15 INFO session_created user=admin
+ip=185.72.44.19
+
+<br><br>
+
+<span class="prompt">$</span>
+<span class="command">grep "185.72.44.19" soc-authentication.log</span>
+
+<br><br>
+
+<span class="danger">
+5 failed authentication events
+</span>
+
+<br>
+
+<span class="warning">
+1 successful authentication event
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     INVESTIGATION TASKS
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-title">
+
+<h2>Step 2 — Investigate the Alert</h2>
+
+<p>
+Use the evidence from the logs to answer the following
+investigation questions.
+</p>
+
+</div>
+
+
+<div class="task-grid">
+
+<div class="task">
+
+<span class="task-number">
+TASK 01
+</span>
+
+<h3>Identify the Account</h3>
+
+<p>
+Which user account was targeted during the suspicious
+authentication activity?
+</p>
+
+</div>
+
+
+<div class="task">
+
+<span class="task-number">
+TASK 02
+</span>
+
+<h3>Identify the Source</h3>
+
+<p>
+Which IP address generated the suspicious authentication
+events?
+</p>
+
+</div>
+
+
+<div class="task">
+
+<span class="task-number">
+TASK 03
+</span>
+
+<h3>Analyze the Pattern</h3>
+
+<p>
+What happened before the successful login?
+Look for repeated failed authentication attempts.
+</p>
+
+</div>
+
+
+<div class="task">
+
+<span class="task-number">
+TASK 04
+</span>
+
+<h3>Determine the Risk</h3>
+
+<p>
+Does a successful login after multiple failures require
+additional investigation?
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CHECKLIST
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-title">
+
+<h2>Step 3 — Analyst Checklist</h2>
+
+<p>
+Complete the investigation checklist.
+</p>
+
+</div>
+
+
+<div class="checklist">
+
+<div class="check-item">
+
+<input type="checkbox" id="check1">
+
+<label for="check1">
+I identified the affected user account.
+</label>
+
+</div>
+
+
+<div class="check-item">
+
+<input type="checkbox" id="check2">
+
+<label for="check2">
+I identified the suspicious source IP address.
+</label>
+
+</div>
+
+
+<div class="check-item">
+
+<input type="checkbox" id="check3">
+
+<label for="check3">
+I reviewed the failed login attempts.
+</label>
+
+</div>
+
+
+<div class="check-item">
+
+<input type="checkbox" id="check4">
+
+<label for="check4">
+I confirmed that a successful login occurred.
+</label>
+
+</div>
+
+
+<div class="check-item">
+
+<input type="checkbox" id="check5">
+
+<label for="check5">
+I determined that the event requires further investigation.
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     INVESTIGATION RESULT
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-title">
+
+<h2>Step 4 — Investigation Result</h2>
+
+<p>
+Based on the available evidence, determine the appropriate
+SOC Analyst conclusion.
+</p>
+
+</div>
+
+
+<div class="result-card">
+
+<h3>
+✓ Expected Analyst Finding
+</h3>
+
+<p>
+The logs show five failed login attempts against the
+<strong>admin</strong> account from the same external IP
+address, followed by a successful login from that IP.
+This pattern is suspicious and should be investigated
+further. The analyst should correlate additional logs,
+verify whether the login was legitimate and escalate the
+event according to the organization's incident response
+process if unauthorized access is suspected.
+</p>
+
+</div>
+
+
+<div class="completion">
+
+<h2>
+SOC Analyst Lab Completed
+</h2>
+
+<p>
+You practiced the basic SOC Analyst workflow:
+receiving an alert, reviewing logs, identifying suspicious
+activity, analyzing evidence and determining when an event
+should be escalated.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-nav">
+
+<a href="what-is-soc-lab.html">
+← Lab: What is SOC?
+</a>
+
+<a href="../theory/siem.html">
+Next Theory: SIEM →
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div>
+
+<div class="footer-brand">
+Cyber<span>Nexa</span>
+</div>
+
+<p>
+Cybersecurity &amp; IT Learning
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="../../../index.html">
+Home
+</a>
+
+<a href="../../../footer/about.html">
+About
+</a>
+
+<a href="../../../footer/contact.html">
+Contact
+</a>
+
+<a href="../../../footer/privacy-policy.html">
+Privacy Policy
+</a>
+
+<a href="../../../footer/disclaimer.html">
+Disclaimer
+</a>
+
+</div>
+
+</div>
+
+
+<div class="copyright">
+
+© 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+
+</body>
+</html>

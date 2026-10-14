@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Incident Detection Practical Lab | CyberNexa</title>
+
+<meta name="description"
+      content="Practice identifying suspicious security activity and detecting potential cybersecurity incidents in the CyberNexa Incident Detection practical lab.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+/* =========================================================
+   CYBERNEXA INCIDENT DETECTION LAB
+   ========================================================= */
+
+:root {
+
+    --id-bg: #080d14;
+    --id-panel: #0d141d;
+    --id-panel-2: #111b26;
+
+    --id-red: #ff4d5a;
+    --id-orange: #ff9f43;
+    --id-yellow: #ffd166;
+    --id-green: #43d19e;
+
+    --id-blue: #42a5ff;
+
+    --id-text: #edf5fb;
+    --id-muted: #91a4b5;
+
+    --id-border: #20303e;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(255, 77, 90, 0.09),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(255, 159, 67, 0.07),
+            transparent 28%
+        ),
+        var(--id-bg);
+
+    color: var(--id-text);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.id-container {
+
+    width: min(1150px, 92%);
+
+    margin: auto;
+}
+
+
+/* =========================================================
+   RESPONSIVE NAVBAR
+   ========================================================= */
+
+.navbar {
+    width: 100%;
+    overflow: hidden;
+}
+
+.nav-container {
+
+    width: min(1150px, 92%);
+
+    margin: 0 auto;
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 70px;
+}
+
+.brand {
+
+    max-width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    min-width: 0;
+}
+
+.brand-logo {
+    flex-shrink: 0;
+}
+
+.brand-text {
+    min-width: 0;
+}
+
+.brand-name,
+.brand-tagline {
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   LAB HERO
+   ========================================================= */
+
+.id-lab-hero {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 75px 0 55px;
+
+    border-bottom: 1px solid var(--id-border);
+}
+
+.id-lab-breadcrumb {
+
+    color: var(--id-orange);
+
+    font-size: 13px;
+
+    margin-bottom: 20px;
+}
+
+.id-lab-label {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 13px;
+
+    margin-bottom: 17px;
+
+    border: 1px solid rgba(255, 77, 90, 0.35);
+
+    border-radius: 4px;
+
+    background: rgba(255, 77, 90, 0.06);
+
+    color: var(--id-red);
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.id-pulse {
+
+    width: 7px;
+
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--id-red);
+
+    box-shadow: 0 0 12px rgba(255, 77, 90, 0.8);
+}
+
+.id-lab-hero h1 {
+
+    margin: 0 0 15px;
+
+    font-size: clamp(36px, 5vw, 58px);
+
+    line-height: 1.08;
+}
+
+.id-lab-hero h1 span {
+    color: var(--id-red);
+}
+
+.id-lab-description {
+
+    max-width: 780px;
+
+    color: var(--id-muted);
+
+    font-size: 16px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   LAB PROGRESS
+   ========================================================= */
+
+.id-progress {
+
+    margin-top: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+.id-progress-bar {
+
+    width: 220px;
+
+    height: 5px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: var(--id-border);
+}
+
+.id-progress-fill {
+
+    width: 25%;
+
+    height: 100%;
+
+    background: var(--id-red);
+
+    transition: width 0.3s ease;
+}
+
+.id-progress-text {
+
+    color: var(--id-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   LAB SECTION
+   ========================================================= */
+
+.id-lab-section {
+    padding: 55px 0;
+}
+
+.id-lab-grid {
+
+    display: grid;
+
+    grid-template-columns: 1.25fr 0.75fr;
+
+    gap: 22px;
+
+    align-items: start;
+}
+
+.id-lab-card {
+
+    padding: 28px;
+
+    border: 1px solid var(--id-border);
+
+    border-radius: 7px;
+
+    background: var(--id-panel);
+}
+
+.id-lab-card h2 {
+
+    margin: 0 0 10px;
+
+    font-size: 25px;
+}
+
+.id-lab-card h3 {
+
+    margin: 0 0 10px;
+
+    font-size: 17px;
+}
+
+.id-lab-card-description {
+
+    margin: 0 0 22px;
+
+    color: var(--id-muted);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   INCIDENT LOG
+   ========================================================= */
+
+.id-log {
+
+    overflow-x: auto;
+
+    border: 1px solid var(--id-border);
+
+    border-radius: 6px;
+}
+
+.id-log-header,
+.id-log-row {
+
+    display: grid;
+
+    grid-template-columns: 75px 1.1fr 1fr 1fr;
+
+    min-width: 650px;
+}
+
+.id-log-header {
+
+    background: var(--id-panel-2);
+
+    color: var(--id-orange);
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.5px;
+}
+
+.id-log-row {
+
+    border-top: 1px solid var(--id-border);
+
+    color: var(--id-muted);
+
+    font-size: 12px;
+
+    transition: 0.2s ease;
+}
+
+.id-log-row:hover {
+    background: rgba(255, 77, 90, 0.035);
+}
+
+.id-log-cell {
+
+    padding: 13px 12px;
+}
+
+.id-log-header .id-log-cell {
+    color: var(--id-orange);
+}
+
+
+/* =========================================================
+   EVENT SELECTION
+   ========================================================= */
+
+.id-event-list {
+
+    display: grid;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+.id-event-option {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 14px;
+
+    border: 1px solid var(--id-border);
+
+    border-radius: 6px;
+
+    background: #0a1119;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.id-event-option:hover {
+
+    border-color: rgba(255, 77, 90, 0.35);
+
+    background: rgba(255, 77, 90, 0.035);
+}
+
+.id-event-option input {
+
+    margin-top: 3px;
+
+    accent-color: var(--id-red);
+}
+
+.id-event-text {
+
+    color: var(--id-muted);
+
+    font-size: 13px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   CHECK BUTTON
+   ========================================================= */
+
+.id-check-button {
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 13px 18px;
+
+    border: 1px solid rgba(255, 77, 90, 0.45);
+
+    border-radius: 5px;
+
+    background: rgba(255, 77, 90, 0.08);
+
+    color: var(--id-red);
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.id-check-button:hover {
+
+    background: rgba(255, 77, 90, 0.15);
+
+    border-color: var(--id-red);
+}
+
+
+/* =========================================================
+   RESULT PANEL
+   ========================================================= */
+
+.id-result {
+
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border: 1px solid var(--id-border);
+
+    border-radius: 6px;
+
+    background: #0a1119;
+}
+
+.id-result-title {
+
+    margin-bottom: 10px;
+
+    color: var(--id-orange);
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.id-result-message {
+
+    color: var(--id-muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.id-result-message strong {
+    color: var(--id-text);
+}
+
+
+/* =========================================================
+   SCORE PANEL
+   ========================================================= */
+
+.id-score-panel {
+
+    position: sticky;
+
+    top: 20px;
+}
+
+.id-score {
+
+    padding: 28px;
+
+    border: 1px solid var(--id-border);
+
+    border-top: 2px solid var(--id-red);
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 27, 38, 0.98),
+            rgba(9, 14, 21, 0.98)
+        );
+}
+
+.id-score-label {
+
+    color: var(--id-muted);
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.id-score-number {
+
+    margin: 12px 0;
+
+    color: var(--id-red);
+
+    font-size: 48px;
+
+    font-weight: bold;
+}
+
+.id-score-status {
+
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    border: 1px solid rgba(255, 159, 67, 0.3);
+
+    border-radius: 4px;
+
+    color: var(--id-orange);
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+.id-score-description {
+
+    margin: 18px 0 0;
+
+    color: var(--id-muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   INDICATOR CHECKLIST
+   ========================================================= */
+
+.id-checklist {
+
+    margin-top: 18px;
+
+    display: grid;
+
+    gap: 9px;
+}
+
+.id-check-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    padding: 11px;
+
+    border: 1px solid var(--id-border);
+
+    border-radius: 5px;
+
+    color: var(--id-muted);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.id-check-item input {
+
+    margin-top: 2px;
+
+    accent-color: var(--id-green);
+}
+
+
+/* =========================================================
+   OUTPUT
+   ========================================================= */
+
+.id-output {
+
+    margin-top: 22px;
+
+    padding: 22px;
+
+    border: 1px solid rgba(67, 209, 158, 0.25);
+
+    border-radius: 7px;
+
+    background: rgba(67, 209, 158, 0.035);
+}
+
+.id-output h3 {
+
+    margin: 0 0 12px;
+
+    color: var(--id-green);
+
+    font-size: 17px;
+}
+
+.id-output p {
+
+    margin: 0;
+
+    color: var(--id-muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   HOW TO
+   ========================================================= */
+
+.id-how-to {
+
+    margin-top: 22px;
+
+    padding: 25px;
+
+    border: 1px solid var(--id-border);
+
+    border-left: 3px solid var(--id-orange);
+
+    border-radius: 7px;
+
+    background: var(--id-panel);
+}
+
+.id-how-to h2 {
+
+    margin: 0 0 15px;
+
+    font-size: 22px;
+}
+
+.id-how-to ol {
+
+    margin: 0;
+
+    padding-left: 20px;
+
+    color: var(--id-muted);
+
+    line-height: 1.8;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   COMPLETION
+   ========================================================= */
+
+.id-completion {
+
+    margin-top: 22px;
+
+    padding: 22px;
+
+    border: 1px solid var(--id-border);
+
+    border-radius: 7px;
+
+    background: var(--id-panel);
+}
+
+.id-completion label {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: var(--id-muted);
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.id-completion input {
+    accent-color: var(--id-green);
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.id-lab-nav {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 30px;
+}
+
+.id-nav-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 12px 17px;
+
+    border: 1px solid var(--id-border);
+
+    border-radius: 5px;
+
+    color: var(--id-muted);
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+.id-nav-button:hover {
+
+    color: var(--id-red);
+
+    border-color: rgba(255, 77, 90, 0.4);
+}
+
+.id-next-button {
+
+    border-color: rgba(255, 77, 90, 0.35);
+
+    color: var(--id-red);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .nav-container {
+
+        width: 92%;
+
+        min-height: 68px;
+    }
+
+    .brand-logo svg {
+
+        width: 42px;
+
+        height: 50px;
+    }
+
+    .id-lab-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .id-score-panel {
+
+        position: static;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .nav-container {
+
+        width: 94%;
+
+        min-height: 64px;
+
+        padding: 8px 0;
+    }
+
+    .brand {
+
+        gap: 8px;
+    }
+
+    .brand-logo svg {
+
+        width: 38px;
+
+        height: 46px;
+    }
+
+    .brand-name {
+        font-size: 19px;
+    }
+
+    .brand-tagline {
+        font-size: 9px;
+    }
+
+    .id-lab-hero {
+
+        padding: 65px 0 50px;
+    }
+
+    .id-lab-section {
+        padding: 50px 0;
+    }
+
+    .id-progress {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .id-progress-bar {
+        width: 100%;
+    }
+
+    .id-lab-nav {
+
+        flex-direction: column;
+    }
+
+    .id-nav-button {
+
+        width: 100%;
+
+        justify-content: center;
+
+        text-align: center;
+    }
+
+    .footer {
+
+        width: 100%;
+
+        overflow: hidden;
+    }
+
+    .footer-container {
+
+        width: 92%;
+
+        margin: 0 auto;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 25px;
+    }
+
+    .footer-links {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px 18px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .nav-container {
+
+        width: 92%;
+
+        min-height: 62px;
+
+        padding: 7px 0;
+    }
+
+    .brand {
+
+        gap: 7px;
+    }
+
+    .brand-logo svg {
+
+        width: 34px;
+
+        height: 42px;
+    }
+
+    .brand-name {
+        font-size: 17px;
+    }
+
+    .brand-tagline {
+        font-size: 8px;
+    }
+
+    .id-lab-hero {
+
+        padding: 55px 0 45px;
+    }
+
+    .id-lab-breadcrumb {
+
+        font-size: 11px;
+
+        line-height: 1.6;
+    }
+
+    .id-lab-label {
+        font-size: 10px;
+    }
+
+    .id-lab-hero h1 {
+
+        font-size: clamp(34px, 10vw, 48px);
+    }
+
+    .id-lab-description {
+
+        font-size: 14px;
+
+        line-height: 1.7;
+    }
+
+    .id-lab-card {
+
+        padding: 21px;
+    }
+
+    .id-lab-card h2 {
+        font-size: 22px;
+    }
+
+    .id-score {
+        padding: 22px;
+    }
+
+    .id-score-number {
+        font-size: 42px;
+    }
+
+    .footer-container {
+        width: 92%;
+    }
+
+    .footer-links {
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 12px 18px;
+    }
+
+    .footer-links a {
+
+        font-size: 13px;
+
+        white-space: normal;
+    }
+
+    .copyright {
+
+        width: 92%;
+
+        margin: auto;
+
+        padding: 18px 0;
+
+        font-size: 11px;
+
+        text-align: center;
+
+        line-height: 1.6;
+    }
+}
+
+
+@media (max-width: 380px) {
+
+    .nav-container {
+        width: 94%;
+    }
+
+    .brand-logo svg {
+
+        width: 30px;
+
+        height: 38px;
+    }
+
+    .brand-name {
+        font-size: 15px;
+    }
+
+    .brand-tagline {
+        font-size: 7px;
+    }
+
+    .id-container {
+        width: 94%;
+    }
+
+    .id-lab-hero h1 {
+        font-size: 32px;
+    }
+
+    .id-log-header,
+    .id-log-row {
+        min-width: 600px;
+    }
+
+    .footer-links {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+    <a href="../../../index.html" class="brand">
+
+        <div class="brand-logo">
+
+            <svg viewBox="0 0 50 60">
+
+                <path
+                    d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                />
+
+                <rect
+                    x="18"
+                    y="25"
+                    width="14"
+                    height="14"
+                    rx="2"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                />
+
+                <path
+                    d="M20 25 V20 C20 16 30 16 30 20 V25"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                />
+
+                <circle
+                    cx="25"
+                    cy="31"
+                    r="2"
+                    fill="currentColor"
+                />
+
+                <path
+                    d="M25 33 V36"
+                    stroke="currentColor"
+                    stroke-width="2"
+                />
+
+            </svg>
+
+        </div>
+
+
+        <div class="brand-text">
+
+            <div class="brand-name">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <div class="brand-tagline">
+                Cybersecurity &amp; IT Learning
+            </div>
+
+        </div>
+
+    </a>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="id-lab-hero">
+
+<div class="id-container">
+
+    <div class="id-lab-breadcrumb">
+
+        CyberNexa / Incident Response / Practical Lab
+
+    </div>
+
+
+    <div class="id-lab-label">
+
+        <span class="id-pulse"></span>
+
+        Incident Detection Lab
+
+    </div>
+
+
+    <h1>
+        Detect the <span>Security Incident</span>
+    </h1>
+
+
+    <p class="id-lab-description">
+
+        In this practical lab, analyze security events,
+        identify suspicious indicators and determine whether
+        the observed activity should be treated as a potential
+        cybersecurity incident.
+
+    </p>
+
+
+    <div class="id-progress">
+
+        <div class="id-progress-bar">
+
+            <div
+                class="id-progress-fill"
+                id="progressFill">
+            </div>
+
+        </div>
+
+        <span
+            class="id-progress-text"
+            id="progressText">
+
+            0% Complete
+
+        </span>
+
+    </div>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     LAB
+====================================================== -->
+
+<section class="id-lab-section">
+
+<div class="id-container">
+
+
+<div class="id-lab-grid">
+
+
+<!-- =====================================================
+     MAIN LAB PANEL
+====================================================== -->
+
+<div class="id-lab-card">
+
+    <h2>
+        Security Event Investigation
+    </h2>
+
+    <p class="id-lab-card-description">
+
+        Review the following security events. Select the
+        indicators that you believe provide evidence of
+        suspicious activity.
+
+    </p>
+
+
+    <!-- EVENT LOG -->
+
+    <h3>
+        Security Event Log
+    </h3>
+
+
+    <div class="id-log">
+
+        <div class="id-log-header">
+
+            <div class="id-log-cell">
+                ID
+            </div>
+
+            <div class="id-log-cell">
+                Event
+            </div>
+
+            <div class="id-log-cell">
+                Source
+            </div>
+
+            <div class="id-log-cell">
+                Observation
+            </div>
+
+        </div>
+
+
+        <div class="id-log-row">
+
+            <div class="id-log-cell">
+                E01
+            </div>
+
+            <div class="id-log-cell">
+                Login Attempts
+            </div>
+
+            <div class="id-log-cell">
+                Authentication Log
+            </div>
+
+            <div class="id-log-cell">
+                18 failed attempts
+            </div>
+
+        </div>
+
+
+        <div class="id-log-row">
+
+            <div class="id-log-cell">
+                E02
+            </div>
+
+            <div class="id-log-cell">
+                Successful Login
+            </div>
+
+            <div class="id-log-cell">
+                Authentication Log
+            </div>
+
+            <div class="id-log-cell">
+                Unusual location
+            </div>
+
+        </div>
+
+
+        <div class="id-log-row">
+
+            <div class="id-log-cell">
+                E03
+            </div>
+
+            <div class="id-log-cell">
+                Network Connection
+            </div>
+
+            <div class="id-log-cell">
+                Network Monitor
+            </div>
+
+            <div class="id-log-cell">
+                Unknown external host
+            </div>
+
+        </div>
+
+
+        <div class="id-log-row">
+
+            <div class="id-log-cell">
+                E04
+            </div>
+
+            <div class="id-log-cell">
+                Process Activity
+            </div>
+
+            <div class="id-log-cell">
+                Endpoint
+            </div>
+
+            <div class="id-log-cell">
+                Unknown process
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- INDICATOR SELECTION -->
+
+    <h3 style="margin-top:28px;">
+
+        Select Suspicious Indicators
+
+    </h3>
+
+
+    <div class="id-event-list">
+
+
+        <label class="id-event-option">
+
+            <input
+                type="checkbox"
+                class="indicator-check"
+                value="login">
+
+            <span class="id-event-text">
+
+                Multiple failed login attempts against
+                the same account.
+
+            </span>
+
+        </label>
+
+
+        <label class="id-event-option">
+
+            <input
+                type="checkbox"
+                class="indicator-check"
+                value="location">
+
+            <span class="id-event-text">
+
+                Successful login from an unusual
+                geographic location.
+
+            </span>
+
+        </label>
+
+
+        <label class="id-event-option">
+
+            <input
+                type="checkbox"
+                class="indicator-check"
+                value="network">
+
+            <span class="id-event-text">
+
+                Connection to an unknown external host.
+
+            </span>
+
+        </label>
+
+
+        <label class="id-event-option">
+
+            <input
+                type="checkbox"
+                class="indicator-check"
+                value="process">
+
+            <span class="id-event-text">
+
+                An unknown process running on an endpoint.
+
+            </span>
+
+        </label>
+
+
+        <label class="id-event-option">
+
+            <input
+                type="checkbox"
+                class="indicator-check"
+                value="normal">
+
+            <span class="id-event-text">
+
+                A normal successful login from the
+                user's usual location.
+
+            </span>
+
+        </label>
+
+
+    </div>
+
+
+    <button
+        class="id-check-button"
+        onclick="analyzeIncident()">
+
+        Analyze Security Events
+
+    </button>
+
+
+    <!-- RESULT -->
+
+    <div class="id-result">
+
+        <div class="id-result-title">
+
+            Detection Result
+
+        </div>
+
+
+        <div
+            class="id-result-message"
+            id="resultMessage">
+
+            Select the suspicious indicators and click
+            <strong>Analyze Security Events</strong>
+            to generate the detection result.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SCORE / CHECKLIST PANEL
+====================================================== -->
+
+<div class="id-score-panel">
+
+
+<div class="id-score">
+
+    <div class="id-score-label">
+
+        Detection Confidence
+
+    </div>
+
+
+    <div
+        class="id-score-number"
+        id="scoreNumber">
+
+        0%
+
+    </div>
+
+
+    <span
+        class="id-score-status"
+        id="scoreStatus">
+
+        NOT ANALYZED
+
+    </span>
+
+
+    <p class="id-score-description">
+
+        Detection confidence increases when multiple
+        independent indicators support the same security
+        hypothesis.
+
+    </p>
+
+
+    <div class="id-checklist">
+
+
+        <label class="id-check-item">
+
+            <input
+                type="checkbox"
+                class="learn-check">
+
+            <span>
+                I identified suspicious authentication activity.
+            </span>
+
+        </label>
+
+
+        <label class="id-check-item">
+
+            <input
+                type="checkbox"
+                class="learn-check">
+
+            <span>
+                I checked the source of the security event.
+            </span>
+
+        </label>
+
+
+        <label class="id-check-item">
+
+            <input
+                type="checkbox"
+                class="learn-check">
+
+            <span>
+                I looked for multiple related indicators.
+            </span>
+
+        </label>
+
+
+        <label class="id-check-item">
+
+            <input
+                type="checkbox"
+                class="learn-check">
+
+            <span>
+                I understand that an alert requires investigation.
+            </span>
+
+        </label>
+
+
+    </div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     OUTPUT
+====================================================== -->
+
+<div class="id-output">
+
+    <h3>
+        Expected Learning Outcome
+    </h3>
+
+    <p>
+
+        After completing this lab, you should be able to
+        recognize common indicators of suspicious activity,
+        examine security events and understand how analysts
+        determine whether activity requires further
+        investigation.
+
+    </p>
+
+</div>
+
+
+<!-- =====================================================
+     HOW TO
+====================================================== -->
+
+<div class="id-how-to">
+
+    <h2>
+        How to Complete This Lab
+    </h2>
+
+
+    <ol>
+
+        <li>
+            Read the security event log carefully.
+        </li>
+
+        <li>
+            Identify events that appear unusual or suspicious.
+        </li>
+
+        <li>
+            Select the indicators that support your decision.
+        </li>
+
+        <li>
+            Click <strong>Analyze Security Events</strong>.
+        </li>
+
+        <li>
+            Review the detection confidence and result.
+        </li>
+
+        <li>
+            Complete the learning checklist.
+        </li>
+
+    </ol>
+
+</div>
+
+
+<!-- =====================================================
+     COMPLETION
+====================================================== -->
+
+<div class="id-completion">
+
+    <label>
+
+        <input
+            type="checkbox"
+            id="completionCheck"
+            onchange="updateProgress()">
+
+        I have completed the Incident Detection practical lab.
+
+    </label>
+
+</div>
+
+
+<!-- =====================================================
+     LAB NAVIGATION
+====================================================== -->
+
+<div class="id-lab-nav">
+    <a
+        href="what-is-incident-response-lab.html"
+        class="id-nav-button">
+        ← Lab: Incident Response
+
+    </a>
+    <a
+        href="../theory/triage.html"
+        class="id-nav-button id-next-button">
+        Next Theory: Triage →
+
+    </a>
+
+
+</div>
+
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+
+    <div>
+
+        <div class="footer-brand">
+
+            Cyber<span>Nexa</span>
+
+        </div>
+
+        <p>
+            Cybersecurity &amp; IT Learning
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="../../../index.html">
+            Home
+        </a>
+
+        <a href="../../../footer/about.html">
+            About
+        </a>
+
+        <a href="../../../footer/contact.html">
+            Contact
+        </a>
+
+        <a href="../../../footer/privacy-policy.html">
+            Privacy Policy
+        </a>
+
+        <a href="../../../footer/disclaimer.html">
+            Disclaimer
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="copyright">
+
+    © 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   INCIDENT DETECTION LAB LOGIC
+   ========================================================= */
+
+function analyzeIncident() {
+
+    const checks =
+        document.querySelectorAll(".indicator-check");
+
+    let selected = [];
+
+    checks.forEach(function(check) {
+
+        if (check.checked) {
+
+            selected.push(check.value);
+
+        }
+
+    });
+
+
+    const scoreNumber =
+        document.getElementById("scoreNumber");
+
+    const scoreStatus =
+        document.getElementById("scoreStatus");
+
+    const resultMessage =
+        document.getElementById("resultMessage");
+
+
+    const correctIndicators = [
+        "login",
+        "location",
+        "network",
+        "process"
+    ];
+
+
+    let correct = 0;
+
+    selected.forEach(function(item) {
+
+        if (correctIndicators.includes(item)) {
+
+            correct++;
+
+        }
+
+    });
+
+
+    /* Penalize the normal event if selected */
+
+    if (selected.includes("normal")) {
+
+        correct--;
+
+    }
+
+
+    if (correct < 0) {
+        correct = 0;
+    }
+
+
+    let score =
+        Math.round(
+            (correct / correctIndicators.length) * 100
+        );
+
+
+    scoreNumber.textContent =
+        score + "%";
+
+
+    if (score >= 75) {
+
+        scoreStatus.textContent =
+            "HIGH CONFIDENCE";
+
+        scoreStatus.style.color =
+            "var(--id-green)";
+
+        scoreStatus.style.borderColor =
+            "rgba(67, 209, 158, 0.35)";
+
+
+        resultMessage.innerHTML =
+
+            "<strong>Potential Security Incident Detected.</strong><br><br>" +
+
+            "Multiple suspicious indicators were identified. " +
+
+            "The observed activity should be investigated further " +
+
+            "to determine its actual cause, scope and impact.";
+
+    }
+
+    else if (score >= 50) {
+
+        scoreStatus.textContent =
+            "MEDIUM CONFIDENCE";
+
+        scoreStatus.style.color =
+            "var(--id-orange)";
+
+        scoreStatus.style.borderColor =
+            "rgba(255, 159, 67, 0.35)";
+
+
+        resultMessage.innerHTML =
+
+            "<strong>Suspicious Activity Requires Investigation.</strong><br><br>" +
+
+            "Some indicators suggest abnormal behavior. " +
+
+            "Additional evidence should be collected before " +
+
+            "confirming the activity as a security incident.";
+
+    }
+
+    else {
+
+        scoreStatus.textContent =
+            "LOW CONFIDENCE";
+
+        scoreStatus.style.color =
+            "var(--id-red)";
+
+        scoreStatus.style.borderColor =
+            "rgba(255, 77, 90, 0.35)";
+
+
+        resultMessage.innerHTML =
+
+            "<strong>Insufficient Evidence.</strong><br><br>" +
+
+            "The selected indicators do not provide enough " +
+
+            "evidence to confidently identify a potential " +
+
+            "security incident. Review the event data again.";
+
+    }
+
+
+    updateProgress();
+
+}
+
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+function updateProgress() {
+
+    const completion =
+        document.getElementById("completionCheck").checked;
+
+
+    const learningChecks =
+        document.querySelectorAll(".learn-check");
+
+
+    let completed =
+        completion ? 1 : 0;
+
+
+    learningChecks.forEach(function(check) {
+
+        if (check.checked) {
+
+            completed++;
+
+        }
+
+    });
+
+
+    const total =
+        learningChecks.length + 1;
+
+
+    const percentage =
+        Math.round(
+            (completed / total) * 100
+        );
+
+
+    document.getElementById("progressFill")
+        .style.width = percentage + "%";
+
+
+    document.getElementById("progressText")
+        .textContent = percentage + "% Complete";
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+document
+    .querySelectorAll(".learn-check")
+    .forEach(function(check) {
+
+        check.addEventListener(
+            "change",
+            updateProgress
+        );
+
+    });
+
+
+updateProgress();
+
+</script>
+
+
+</body>
+</html>

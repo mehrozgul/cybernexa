@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Metasploit Lab | CyberNexa</title>
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(255, 45, 45, 0.10),
+            transparent 30%
+        ),
+        #050505;
+
+    color: #dce8f5;
+
+    font-family: Arial, sans-serif;
+}
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+
+    background: #080808;
+
+    border-bottom:
+        1px solid
+        rgba(255, 48, 48, 0.20);
+}
+
+.nav-container {
+
+    width: min(1150px, 100%);
+
+    margin: auto;
+
+    padding: 15px 20px;
+}
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    color: white;
+
+    text-decoration: none;
+}
+
+.brand-logo {
+
+    width: 38px;
+    height: 45px;
+
+    color: #ff3030;
+
+    flex-shrink: 0;
+}
+
+.brand-logo svg {
+
+    width: 100%;
+    height: 100%;
+}
+
+.brand-name {
+
+    font-size: 21px;
+
+    font-weight: 900;
+}
+
+.brand-name span {
+
+    color: #ff3030;
+}
+
+.brand-tagline {
+
+    color: #777;
+
+    font-size: 10px;
+}
+
+/* =========================================================
+   LAB PAGE
+========================================================= */
+
+.lab-page {
+
+    width: min(1000px, 100%);
+
+    margin: auto;
+
+    padding: 35px 20px 70px;
+}
+
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.breadcrumb {
+
+    color: #777;
+
+    font-size: 12px;
+
+    margin-bottom: 20px;
+}
+
+.breadcrumb span {
+
+    color: #ff3030;
+
+    padding: 0 7px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.lab-header {
+
+    padding: 30px;
+
+    border:
+        1px solid
+        rgba(255, 48, 48, 0.35);
+
+    border-left:
+        4px solid
+        #ff3030;
+
+    border-radius: 9px;
+
+    background:
+        rgba(255, 48, 48, 0.045);
+}
+
+.lab-label {
+
+    color: #ff3030;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.lab-header h1 {
+
+    color: white;
+
+    font-size: clamp(28px, 5vw, 38px);
+
+    margin: 9px 0;
+}
+
+.lab-header p {
+
+    color: #999;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    margin: 0;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress-area {
+
+    margin-top: 20px;
+
+    padding: 17px;
+
+    border:
+        1px solid
+        #222;
+
+    border-radius: 8px;
+
+    background: #0b0b0b;
+}
+
+.progress-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    color: #777;
+
+    font-size: 11px;
+}
+
+.progress-bar {
+
+    height: 6px;
+
+    margin-top: 10px;
+
+    background: #1c1c1c;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.progress-fill {
+
+    width: 0%;
+
+    height: 100%;
+
+    background: #ff3030;
+
+    transition: width .3s ease;
+}
+
+/* =========================================================
+   LAB BOX
+========================================================= */
+
+.lab-box {
+
+    margin-top: 22px;
+
+    padding: 22px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    border-radius: 9px;
+
+    background: #0b0b0b;
+}
+
+.lab-box h2 {
+
+    margin-top: 0;
+
+    color: white;
+
+    font-size: 19px;
+}
+
+.instructions {
+
+    padding-left: 20px;
+}
+
+.instructions li {
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    margin-bottom: 7px;
+}
+
+/* =========================================================
+   COMMAND TERMINAL
+========================================================= */
+
+.terminal {
+
+    margin-top: 18px;
+
+    border:
+        1px solid
+        #252525;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    background: #050505;
+}
+
+.terminal-head {
+
+    padding: 10px 14px;
+
+    background: #111;
+
+    color: #777;
+
+    font-size: 11px;
+
+    border-bottom:
+        1px solid
+        #252525;
+}
+
+.terminal-body {
+
+    padding: 18px;
+
+    min-height: 180px;
+
+    font-family: Consolas, monospace;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+    color: #ff6666;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   COMMAND OPTIONS
+========================================================= */
+
+.command-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+.command-card {
+
+    padding: 17px;
+
+    border:
+        1px solid
+        rgba(255,48,48,0.16);
+
+    border-radius: 8px;
+
+    background: #101010;
+}
+
+.command-card h3 {
+
+    margin-top: 0;
+
+    color: #ff4040;
+
+    font-size: 14px;
+}
+
+.command-card code {
+
+    display: block;
+
+    padding: 10px;
+
+    background: #050505;
+
+    border-radius: 5px;
+
+    color: #ff8585;
+
+    font-family: Consolas, monospace;
+
+    font-size: 11px;
+
+    overflow-wrap: anywhere;
+}
+
+.command-card p {
+
+    color: #888;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+    margin-bottom: 0;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.button-row {
+
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin-top: 18px;
+}
+
+button {
+
+    border-radius: 22px;
+
+    padding: 10px 19px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+.run {
+
+    border:
+        1px solid
+        #ff3030;
+
+    background:
+        rgba(255,48,48,0.07);
+
+    color: #ff4040;
+}
+
+.run:hover {
+
+    background: #ff3030;
+
+    color: #080808;
+}
+
+.clear {
+
+    border:
+        1px solid
+        #333;
+
+    background: #111;
+
+    color: #999;
+}
+
+/* =========================================================
+   CHECKLIST
+========================================================= */
+
+.checklist {
+
+    margin-top: 20px;
+}
+
+.check-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+
+    color: #aaa;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.check-item input {
+
+    margin-top: 3px;
+
+    accent-color: #ff3030;
+}
+
+/* =========================================================
+   OUTPUT
+========================================================= */
+
+.output-title {
+
+    margin-top: 20px;
+
+    color: #ff4040;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.output {
+
+    min-height: 150px;
+
+    margin-top: 8px;
+
+    padding: 16px;
+
+    border:
+        1px solid
+        rgba(255,48,48,0.15);
+
+    border-radius: 7px;
+
+    background: #030303;
+
+    color: #ff8888;
+
+    font-family: Consolas, monospace;
+
+    font-size: 11px;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   WARNING
+========================================================= */
+
+.warning {
+
+    margin-top: 22px;
+
+    padding: 18px;
+
+    border-left:
+        4px solid
+        #ff3030;
+
+    border-radius: 7px;
+
+    background:
+        rgba(255,48,48,0.05);
+}
+
+.warning h3 {
+
+    margin-top: 0;
+
+    color: #ff4040;
+}
+
+.warning p {
+
+    margin-bottom: 0;
+
+    color: #999;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.topic-navigation {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr;
+
+    gap: 10px;
+
+    margin-top: 28px;
+}
+
+.topic-navigation a {
+
+    padding: 12px;
+
+    border:
+        1px solid
+        #222;
+
+    border-radius: 7px;
+
+    color: #888;
+
+    text-decoration: none;
+
+    text-align: center;
+
+    font-size: 11px;
+}
+
+.topic-navigation a:hover {
+
+    color: #ff4040;
+
+    border-color: #ff3030;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+
+    border-top:
+        1px solid
+        rgba(255,48,48,0.15);
+
+    background: #050505;
+
+    padding: 35px 20px 20px;
+}
+
+.footer-container {
+
+    width: min(1000px, 100%);
+
+    margin: auto;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.footer-brand {
+
+    color: white;
+
+    font-size: 20px;
+
+    font-weight: 900;
+}
+
+.footer-brand span {
+
+    color: #ff3030;
+}
+
+.footer-container p {
+
+    color: #666;
+
+    font-size: 11px;
+}
+
+.footer-links {
+
+    display: flex;
+
+    gap: 18px;
+
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+
+    color: #777;
+
+    text-decoration: none;
+
+    font-size: 11px;
+}
+
+.footer-links a:hover {
+
+    color: #ff3030;
+}
+
+.copyright {
+
+    width: min(1000px, 100%);
+
+    margin: 25px auto 0;
+
+    padding-top: 15px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,0.05);
+
+    text-align: center;
+
+    color: #444;
+
+    font-size: 10px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .lab-page {
+
+        padding:
+            25px 15px 55px;
+    }
+
+    .lab-header {
+
+        padding: 22px;
+    }
+
+    .command-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .topic-navigation {
+
+        grid-template-columns: 1fr;
+    }
+
+    .footer-container {
+
+        flex-direction: column;
+    }
+
+    .button-row {
+
+        flex-direction: column;
+    }
+
+    button {
+
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .nav-container {
+
+        padding: 13px 14px;
+    }
+
+    .brand-name {
+
+        font-size: 18px;
+    }
+
+    .brand-tagline {
+
+        font-size: 9px;
+    }
+
+    .lab-box {
+
+        padding: 17px;
+    }
+
+    .terminal-body {
+
+        padding: 13px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58
+                        C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN LAB
+===================================================== -->
+
+<main class="lab-page">
+
+    <div class="breadcrumb">
+
+        Cybersecurity Tools
+        <span>›</span>
+        Metasploit
+        <span>›</span>
+        Practical Lab
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <section class="lab-header">
+
+        <div class="lab-label">
+            METASPLOIT PRACTICAL LAB
+        </div>
+
+        <h1>
+            Metasploit Framework Lab
+        </h1>
+
+        <p>
+            Learn the Metasploit console, module discovery and basic
+            authorized penetration-testing workflow through a safe
+            simulated environment.
+        </p>
+
+    </section>
+
+
+    <!-- PROGRESS -->
+
+    <div class="progress-area">
+
+        <div class="progress-top">
+
+            <span>
+                Lab Progress
+            </span>
+
+            <span id="progressText">
+                0%
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- OBJECTIVES -->
+
+    <section class="lab-box">
+
+        <h2>
+            Lab Objectives
+        </h2>
+
+        <ol class="instructions">
+
+            <li>
+                Understand the Metasploit console workflow.
+            </li>
+
+            <li>
+                Learn how Metasploit modules are discovered.
+            </li>
+
+            <li>
+                Practice basic module-information commands.
+            </li>
+
+            <li>
+                Understand the difference between exploit and
+                auxiliary modules.
+            </li>
+
+            <li>
+                Work only inside an authorized training environment.
+            </li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- COMMAND TERMINAL -->
+
+    <section class="lab-box">
+
+        <h2>
+            Metasploit Console Simulation
+        </h2>
+
+        <div class="terminal">
+
+            <div class="terminal-head">
+                msfconsole — CyberNexa Training Environment
+            </div>
+
+            <div
+                class="terminal-body"
+                id="terminalOutput"
+            >
+msf6 &gt; _
+            </div>
+
+        </div>
+
+
+        <div class="button-row">
+
+            <button
+                class="run"
+                id="consoleButton"
+            >
+                ▶ Start Lab
+            </button>
+
+            <button
+                class="clear"
+                id="clearButton"
+            >
+                Clear
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- COMMANDS -->
+
+    <section class="lab-box">
+
+        <h2>
+            Step-by-Step Commands
+        </h2>
+
+        <div class="command-grid">
+
+            <div class="command-card">
+
+                <h3>
+                    Step 01
+                </h3>
+
+                <code>
+                    msfconsole
+                </code>
+
+                <p>
+                    Starts the Metasploit interactive console.
+                </p>
+
+            </div>
+
+
+            <div class="command-card">
+
+                <h3>
+                    Step 02
+                </h3>
+
+                <code>
+                    help
+                </code>
+
+                <p>
+                    Displays available console commands.
+                </p>
+
+            </div>
+
+
+            <div class="command-card">
+
+                <h3>
+                    Step 03
+                </h3>
+
+                <code>
+                    search type:auxiliary
+                </code>
+
+                <p>
+                    Searches the module database for auxiliary modules.
+                </p>
+
+            </div>
+
+
+            <div class="command-card">
+
+                <h3>
+                    Step 04
+                </h3>
+
+                <code>
+                    show options
+                </code>
+
+                <p>
+                    Displays configuration options for a selected module.
+                </p>
+
+            </div>
+
+
+            <div class="command-card">
+
+                <h3>
+                    Step 05
+                </h3>
+
+                <code>
+                    info &lt;module&gt;
+                </code>
+
+                <p>
+                    Displays information about a selected module.
+                </p>
+
+            </div>
+
+
+            <div class="command-card">
+
+                <h3>
+                    Step 06
+                </h3>
+
+                <code>
+                    back
+                </code>
+
+                <p>
+                    Returns to the previous console context.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHECKLIST -->
+
+    <section class="lab-box">
+
+        <h2>
+            Lab Checklist
+        </h2>
+
+        <div class="checklist">
+
+            <label class="check-item">
+
+                <input
+                    type="checkbox"
+                    class="task"
+                >
+
+                <span>
+                    I understand what Metasploit is.
+                </span>
+
+            </label>
+
+
+            <label class="check-item">
+
+                <input
+                    type="checkbox"
+                    class="task"
+                >
+
+                <span>
+                    I understand what an auxiliary module is.
+                </span>
+
+            </label>
+
+
+            <label class="check-item">
+
+                <input
+                    type="checkbox"
+                    class="task"
+                >
+
+                <span>
+                    I understand how module search works.
+                </span>
+
+            </label>
+
+
+            <label class="check-item">
+
+                <input
+                    type="checkbox"
+                    class="task"
+                >
+
+                <span>
+                    I understand the purpose of show options.
+                </span>
+
+            </label>
+
+
+            <label class="check-item">
+
+                <input
+                    type="checkbox"
+                    class="task"
+                >
+
+                <span>
+                    I will practice only on authorized systems.
+                </span>
+
+            </label>
+
+        </div>
+
+    </section>
+
+
+    <!-- OUTPUT -->
+
+    <section class="lab-box">
+
+        <div class="output-title">
+            LAB OUTPUT
+        </div>
+
+        <div
+            class="output"
+            id="outputBox"
+        >
+Click "Start Lab" to begin the Metasploit simulation.
+        </div>
+
+    </section>
+
+
+    <!-- WARNING -->
+
+    <div class="warning">
+
+        <h3>
+            Authorized Training Environment
+        </h3>
+
+        <p>
+            Metasploit is a legitimate security-testing framework,
+            but its exploitation capabilities can affect real systems.
+            Use this lab only with localhost, intentionally vulnerable
+            virtual machines, CTF targets, or systems for which you
+            have explicit authorization.
+        </p>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="topic-navigation">
+
+        <a href="burp-suite-lab.html">
+            ← Previous
+        </a>
+
+        <a href="cyber-tools-lab.html">
+            All Tools
+        </a>
+
+        <a href="../theory/linux-tools.html">
+            Next →
+        </a>
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+/* =========================================================
+   METASPLOIT LAB SIMULATION
+========================================================= */
+
+const terminalOutput =
+    document.getElementById("terminalOutput");
+
+const outputBox =
+    document.getElementById("outputBox");
+
+const consoleButton =
+    document.getElementById("consoleButton");
+
+const clearButton =
+    document.getElementById("clearButton");
+
+const tasks =
+    document.querySelectorAll(".task");
+
+const progressFill =
+    document.getElementById("progressFill");
+
+const progressText =
+    document.getElementById("progressText");
+
+
+/* =========================================================
+   START LAB
+========================================================= */
+
+consoleButton.addEventListener(
+    "click",
+    function () {
+
+        terminalOutput.textContent =
+`msf6 > help
+
+Core Commands
+=============
+
+    help
+    search
+    info
+    show
+    back
+
+msf6 > search type:auxiliary
+
+Matching Modules
+================
+
+auxiliary/scanner/
+auxiliary/gather/
+auxiliary/analyze/
+
+msf6 > show options
+
+Module options displayed.
+
+msf6 > info
+
+Module information displayed.
+
+msf6 > back
+
+msf6 > _`;
+
+
+        outputBox.textContent =
+`Metasploit training environment started.
+
+✓ Console initialized
+✓ Help command reviewed
+✓ Auxiliary modules searched
+✓ Module options reviewed
+✓ Module information reviewed
+
+Lab status:
+SAFE TRAINING SIMULATION COMPLETE
+
+No external target was contacted.`;
+
+    }
+);
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+clearButton.addEventListener(
+    "click",
+    function () {
+
+        terminalOutput.textContent =
+`msf6 > _`;
+
+        outputBox.textContent =
+`Lab reset.
+
+Click "Start Lab" to begin again.`;
+
+    }
+);
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+tasks.forEach(
+    function (task) {
+
+        task.addEventListener(
+            "change",
+            updateProgress
+        );
+
+    }
+);
+
+
+function updateProgress() {
+
+    let completed = 0;
+
+    tasks.forEach(
+        function (task) {
+
+            if (task.checked) {
+
+                completed++;
+
+            }
+
+        }
+    );
+
+
+    const percentage =
+        Math.round(
+            (completed / tasks.length) * 100
+        );
+
+
+    progressFill.style.width =
+        percentage + "%";
+
+    progressText.textContent =
+        percentage + "%";
+
+}
+
+</script>
+
+</body>
+</html>

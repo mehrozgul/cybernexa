@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+    <title>Understanding IP Addresses | CyberNexa</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 202, 255, 0.08),
+                    transparent 32%
+                ),
+                #020914;
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            width: 100%;
+            background: #030c19;
+            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
+        }
+
+        .nav-container {
+            width: min(1200px, 100%);
+            margin: auto;
+            padding: 15px 24px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 48px;
+            color: #00caff;
+            flex-shrink: 0;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            color: white;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            color: #7890a8;
+            font-size: 10px;
+        }
+
+        /* ================= PAGE ================= */
+
+        .page {
+            width: min(1050px, calc(100% - 32px));
+            margin: auto;
+            padding: 42px 0 70px;
+        }
+
+        .breadcrumb {
+            color: #72879c;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .breadcrumb span {
+            color: #00caff;
+            margin: 0 7px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .article-header {
+            padding: 34px;
+            border: 1px solid rgba(0, 202, 255, 0.24);
+            border-left: 4px solid #00caff;
+            border-radius: 12px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 202, 255, 0.07),
+                    rgba(0, 202, 255, 0.015)
+                );
+            margin-bottom: 25px;
+        }
+
+        .label {
+            color: #00caff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            color: white;
+            font-size: clamp(30px, 5vw, 48px);
+            line-height: 1.15;
+            margin: 10px 0 15px;
+        }
+
+        .intro {
+            color: #a9bdd1;
+            font-size: 16px;
+            max-width: 850px;
+            margin: 0;
+        }
+
+        /* ================= SECTIONS ================= */
+
+        .section {
+            margin-top: 22px;
+            padding: 28px;
+            background: #041221;
+            border: 1px solid rgba(0, 202, 255, 0.14);
+            border-radius: 11px;
+        }
+
+        .section h2 {
+            color: white;
+            font-size: clamp(21px, 3vw, 27px);
+            line-height: 1.3;
+            margin: 0 0 13px;
+        }
+
+        .section h3 {
+            color: #00caff;
+            font-size: 18px;
+            margin: 22px 0 8px;
+        }
+
+        .section p {
+            color: #aebfd0;
+            font-size: 15px;
+            margin: 9px 0;
+        }
+
+        .section strong {
+            color: white;
+        }
+
+        /* ================= INFO GRID ================= */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .info-card {
+            min-width: 0;
+            padding: 19px;
+            border: 1px solid rgba(0, 202, 255, 0.16);
+            border-radius: 9px;
+            background: #020b15;
+        }
+
+        .info-card h3 {
+            margin-top: 0;
+            color: #00caff;
+        }
+
+        .info-card p {
+            font-size: 13px;
+        }
+
+        /* ================= CODE ================= */
+
+        .code-title {
+            color: #00e68a;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin: 20px 0 7px;
+        }
+
+        .code {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            padding: 18px;
+            border-radius: 8px;
+            background: #01060c;
+            border: 1px solid rgba(0, 202, 255, 0.16);
+            color: #7ee7ff;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        th {
+            color: #00caff;
+            background: #020a13;
+        }
+
+        td {
+            color: #b3c3d3;
+            font-size: 14px;
+        }
+
+        /* ================= LIST ================= */
+
+        .list {
+            padding-left: 20px;
+        }
+
+        .list li {
+            color: #aebfd0;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        /* ================= TIP ================= */
+
+        .tip {
+            margin-top: 18px;
+            padding: 18px;
+            border-left: 4px solid #00e68a;
+            border-radius: 7px;
+            background: rgba(0, 230, 138, 0.04);
+        }
+
+        .tip strong {
+            color: #00e68a;
+        }
+
+        /* ================= WARNING ================= */
+
+        .warning {
+            margin-top: 18px;
+            padding: 18px;
+            border-left: 4px solid #ffbd00;
+            border-radius: 7px;
+            background: rgba(255, 189, 0, 0.04);
+        }
+
+        .warning strong {
+            color: #ffbd00;
+        }
+
+        /* ================= LAB ================= */
+
+        .lab-box {
+            margin-top: 25px;
+            padding: 27px;
+            border: 1px solid rgba(0, 230, 138, 0.25);
+            border-left: 4px solid #00e68a;
+            border-radius: 11px;
+            background: rgba(0, 230, 138, 0.035);
+        }
+
+        .lab-box h2 {
+            color: #00e68a;
+            margin-top: 0;
+        }
+
+        .lab-button {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 20px;
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+            color: #00e68a;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .lab-button:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+
+        /* ================= NAVIGATION ================= */
+
+        .article-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .article-navigation a {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border: 1px solid rgba(0, 202, 255, 0.2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #9eb2c7;
+            font-size: 13px;
+        }
+
+        .article-navigation a:hover {
+            color: #00caff;
+            border-color: #00caff;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            border-top: 1px solid rgba(0, 202, 255, 0.15);
+            background: #020914;
+            padding: 38px 20px 20px;
+        }
+
+        .footer-container {
+            width: min(1050px, 100%);
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #71869c;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            width: min(1050px, 100%);
+            margin: 25px auto 0;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            color: #52667b;
+            font-size: 10px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            .page {
+                width: min(100% - 24px, 1050px);
+                padding-top: 28px;
+            }
+
+            .nav-container {
+                padding: 13px 15px;
+            }
+
+            .article-header,
+            .section,
+            .lab-box {
+                padding: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-navigation {
+                flex-direction: column;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                gap: 12px;
+            }
+
+            .code {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../components/navbar.html"
+    data-root-path="../../">
+</div>
+
+<main class="page">
+
+    <div class="breadcrumb">
+        Tutorials
+        <span>›</span>
+        Networking
+        <span>›</span>
+        Understanding IP Addresses
+    </div>
+
+
+    <section class="article-header">
+
+        <div class="label">
+            NETWORKING TUTORIAL
+        </div>
+
+        <h1>
+            Understanding IP Addresses
+        </h1>
+
+        <p class="intro">
+            Learn how IP addresses identify devices on networks,
+            how IPv4 addresses work, the difference between public
+            and private addresses, subnet masks, CIDR, gateways,
+            DNS, NAT and the role of IP addressing in cybersecurity.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>What is an IP Address?</h2>
+
+        <p>
+            An <strong>IP address</strong> is a logical address used
+            to identify a device or network interface on an IP network.
+            It allows network traffic to identify where data should
+            come from and where it should go.
+        </p>
+
+        <p>
+            In simple words, an IP address works like a network
+            address for a device. When one device communicates with
+            another device, IP addressing helps the network determine
+            the destination.
+        </p>
+
+        <div class="tip">
+            <strong>Remember:</strong>
+            MAC addresses identify network interfaces at the local
+            data-link level, while IP addresses provide logical
+            addressing used for routing between networks.
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>IPv4 Address</h2>
+
+        <p>
+            IPv4 is the most commonly encountered IP addressing
+            system in introductory networking. An IPv4 address
+            contains <strong>32 bits</strong>.
+        </p>
+
+        <p>
+            These 32 bits are normally represented as four decimal
+            octets separated by dots.
+        </p>
+
+        <div class="code">
+192.168.1.10
+        </div>
+
+        <p>
+            Each octet can contain a value from
+            <strong>0 to 255</strong>.
+        </p>
+
+        <div class="code">
+192  .  168  .  1  .  10
+ ↑       ↑       ↑      ↑
+octet  octet   octet  octet
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>IPv4 Binary Representation</h2>
+
+        <p>
+            Computers ultimately process IP addresses as binary
+            values. Every IPv4 address contains 32 binary bits.
+        </p>
+
+        <div class="code">
+192.168.1.10
+
+192 = 11000000
+168 = 10101000
+1   = 00000001
+10  = 00001010
+
+Complete:
+
+11000000.10101000.00000001.00001010
+        </div>
+
+        <p>
+            Understanding binary becomes particularly important
+            when learning subnetting and CIDR.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Private vs Public IP Addresses</h2>
+
+        <div class="info-grid">
+
+            <div class="info-card">
+                <h3>Private IP</h3>
+
+                <p>
+                    Used inside local networks such as home,
+                    university and office networks.
+                </p>
+
+                <p>
+                    Private addresses are not directly routable
+                    across the public Internet.
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>Public IP</h3>
+
+                <p>
+                    Used for communication across the public Internet.
+                </p>
+
+                <p>
+                    A public IP may identify a router or other
+                    Internet-connected service from outside the
+                    local network.
+                </p>
+            </div>
+
+        </div>
+
+        <h3>Common Private IPv4 Ranges</h3>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <tr>
+                    <th>Range</th>
+                    <th>Address Block</th>
+                </tr>
+
+                <tr>
+                    <td>10.0.0.0/8</td>
+                    <td>10.0.0.0 – 10.255.255.255</td>
+                </tr>
+
+                <tr>
+                    <td>172.16.0.0/12</td>
+                    <td>172.16.0.0 – 172.31.255.255</td>
+                </tr>
+
+                <tr>
+                    <td>192.168.0.0/16</td>
+                    <td>192.168.0.0 – 192.168.255.255</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Loopback Address</h2>
+
+        <p>
+            The IPv4 loopback range is used by a computer to
+            communicate with itself.
+        </p>
+
+        <div class="code">
+127.0.0.1
+        </div>
+
+        <p>
+            The name <strong>localhost</strong> commonly refers
+            to the local machine.
+        </p>
+
+        <div class="code">
+ping 127.0.0.1
+        </div>
+
+        <p>
+            This can be useful when testing local networking
+            components without communicating with another host.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Subnet Mask</h2>
+
+        <p>
+            A subnet mask helps determine which portion of an IPv4
+            address represents the network and which portion
+            represents hosts within that network.
+        </p>
+
+        <div class="code">
+IP Address : 192.168.1.10
+Mask       : 255.255.255.0
+CIDR       : /24
+        </div>
+
+        <p>
+            In a typical /24 network, the first 24 bits represent
+            the network portion.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>CIDR Notation</h2>
+
+        <p>
+            CIDR stands for <strong>Classless Inter-Domain Routing</strong>.
+            CIDR notation represents an IP network together with
+            the number of network-prefix bits.
+        </p>
+
+        <div class="code">
+192.168.1.0/24
+        </div>
+
+        <p>
+            The <strong>/24</strong> indicates that the first 24
+            bits form the network prefix.
+        </p>
+
+        <div class="info-grid">
+
+            <div class="info-card">
+                <h3>/24</h3>
+                <p>Common small LAN network.</p>
+            </div>
+
+            <div class="info-card">
+                <h3>/16</h3>
+                <p>Larger network prefix.</p>
+            </div>
+
+            <div class="info-card">
+                <h3>/8</h3>
+                <p>Very large IPv4 address block.</p>
+            </div>
+
+            <div class="info-card">
+                <h3>/32</h3>
+                <p>Represents one IPv4 address.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Default Gateway</h2>
+
+        <p>
+            A default gateway is normally the router that a host
+            uses when it needs to communicate with destinations
+            outside its local network.
+        </p>
+
+        <div class="code">
+Computer:
+192.168.1.20
+
+Default Gateway:
+192.168.1.1
+        </div>
+
+        <p>
+            If a computer wants to reach a remote network, it
+            typically sends the traffic toward its configured
+            gateway.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>DNS and IP Addresses</h2>
+
+        <p>
+            Humans usually prefer domain names such as:
+        </p>
+
+        <div class="code">
+example.com
+        </div>
+
+        <p>
+            Networks communicate using IP addresses. DNS
+            translates domain names into IP addresses so clients
+            can locate services.
+        </p>
+
+        <div class="code">
+Domain Name
+     ↓
+    DNS
+     ↓
+IP Address
+     ↓
+Network Connection
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>NAT and Private IP Addresses</h2>
+
+        <p>
+            Network Address Translation, or NAT, allows private
+            addresses inside a network to communicate through
+            public addressing at a router or gateway.
+        </p>
+
+        <div class="code">
+Laptop
+192.168.1.20
+      ↓
+Router / NAT
+      ↓
+Public Internet
+        </div>
+
+        <p>
+            NAT is commonly used in home and organizational
+            networks where multiple internal devices share
+            Internet connectivity.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Finding Your IP Address</h2>
+
+        <h3>Windows</h3>
+
+        <div class="code">
+ipconfig
+        </div>
+
+        <h3>Linux</h3>
+
+        <div class="code">
+ip addr
+        </div>
+
+        <h3>Linux — concise interface information</h3>
+
+        <div class="code">
+ip -br addr
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>IP Addresses in Cybersecurity</h2>
+
+        <p>
+            IP addressing is fundamental to security monitoring
+            and network analysis.
+        </p>
+
+        <ul class="list">
+
+            <li>
+                Security logs often contain source and destination IPs.
+            </li>
+
+            <li>
+                Firewalls use IP addresses in filtering rules.
+            </li>
+
+            <li>
+                Network monitoring systems observe communication
+                between IP addresses.
+            </li>
+
+            <li>
+                Incident responders investigate suspicious hosts
+                using IP information.
+            </li>
+
+            <li>
+                Network scanners identify hosts and services
+                within authorized environments.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Example: Reading a Security Log</h2>
+
+        <div class="code">
+2026-09-26 10:20
+SRC=192.168.1.20
+DST=192.168.1.1
+ACTION=ALLOW
+PORT=443
+        </div>
+
+        <p>
+            From this record we can identify a source IP,
+            destination IP, action and destination port.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Common Mistakes</h2>
+
+        <ul class="list">
+
+            <li>
+                Assuming every 192.168.x.x address is publicly
+                reachable.
+            </li>
+
+            <li>
+                Confusing an IP address with a MAC address.
+            </li>
+
+            <li>
+                Treating a private IP as a unique Internet-wide address.
+            </li>
+
+            <li>
+                Ignoring subnet masks when analyzing network membership.
+            </li>
+
+            <li>
+                Assuming an IP address permanently identifies a person.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Key Points to Remember</h2>
+
+        <ul class="list">
+
+            <li>IPv4 uses 32 bits.</li>
+            <li>Each IPv4 octet ranges from 0 to 255.</li>
+            <li>Private IP addresses are used inside local networks.</li>
+            <li>Public IP addresses are used for Internet connectivity.</li>
+            <li>127.0.0.1 is the IPv4 loopback address.</li>
+            <li>Subnet masks identify network and host portions.</li>
+            <li>CIDR expresses the network prefix length.</li>
+            <li>Routers commonly act as default gateways.</li>
+            <li>DNS maps domain names to IP addresses.</li>
+            <li>NAT commonly translates private addressing for Internet access.</li>
+
+        </ul>
+
+    </section>
+
+<!-- =================================================
+     LESSON COMPLETION
+================================================== -->
+
+<section class="section" id="lesson-completion">
+
+    <h2>Lesson Completion</h2>
+
+    <p>
+        You have reached the end of the Understanding IP Addresses
+        lesson. Mark this lesson as completed to track your learning
+        progress.
+    </p>
+
+    <button
+        type="button"
+        class="lab-button"
+        data-lesson-progress
+        data-course-id="networking"
+        data-lesson-id="ip-addresses"
+        data-dashboard-url="../Tutorials/ip-addresses/ip-addresses.html"
+        data-status-id="ipAddressesCompletionStatus">
+
+        Mark Lesson as Completed
+
+    </button>
+
+    <p
+        id="ipAddressesCompletionStatus"
+        role="status"
+        aria-live="polite">
+    </p>
+
+</section>
+    <section class="lab-box">
+
+        <h2>Practical Lab</h2>
+
+        <p>
+            Practice identifying local IP configuration and
+            understanding the relationship between IP address,
+            subnet mask and gateway.
+        </p>
+
+        <a class="lab-button"
+           href="ip-addresses-lab.html">
+            Open IP Address Lab →
+        </a>
+
+    </section>
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <a href="../../footer/about.html">About</a>
+            <a href="../../footer/contact.html">Contact</a>
+            <a href="../../footer/privacy-policy.html">Privacy Policy</a>
+            <a href="../../footer/disclaimer.html">Disclaimer</a>
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../js/supabase-client.js"></script>
+<script src="../../js/lesson-progress.js"></script>
+<script src="../../js/navbar-loader.js"></script>
+<script src="../../js/navbar.js"></script>
+<script src="../../js/session.js"></script>
+
+</body>
+</html>

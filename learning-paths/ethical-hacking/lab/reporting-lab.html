@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reporting Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 10%,
+                    rgba(0, 255, 170, 0.055),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 40px 34px;
+
+            margin-bottom: 20px;
+
+            border: 1px solid rgba(0, 255, 170, 0.15);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 23, 30, 0.98),
+                    rgba(2, 12, 23, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00ffb0,
+                    #00bfff,
+                    transparent
+                );
+        }
+
+        .lab-hero-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.5fr)
+                minmax(260px, 0.7fr);
+
+            gap: 35px;
+
+            align-items: center;
+        }
+
+        .lab-kicker {
+
+            margin-bottom: 13px;
+
+            color: #00ffb0;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 42px;
+            line-height: 1.15;
+
+            font-weight: 850;
+        }
+
+        .lab-hero h1 span {
+
+            color: #00ffb0;
+        }
+
+        .lab-description {
+
+            max-width: 680px;
+
+            margin: 15px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           LAB TERMINAL
+        ====================================================== */
+
+        .terminal-panel {
+
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            border-radius: 11px;
+
+            background:
+                rgba(0, 0, 0, 0.34);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        .terminal-top {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.09);
+        }
+
+        .terminal-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #405263;
+        }
+
+        .terminal-title {
+
+            margin-left: auto;
+
+            color: #52687c;
+
+            font-size: 9px;
+
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+
+            margin-bottom: 9px;
+
+            color: #60788d;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+        .green {
+            color: #00ffb0;
+        }
+
+        .blue {
+            color: #00bfff;
+        }
+
+        /* =====================================================
+           INFO STRIP
+        ====================================================== */
+
+        .lab-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .meta-box {
+
+            padding: 14px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            margin-bottom: 15px;
+
+            padding: 24px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .question-header {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 12px;
+
+            margin-bottom: 17px;
+        }
+
+        .question-number {
+
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 255, 176, 0.22);
+
+            border-radius: 7px;
+
+            color: #00ffb0;
+
+            background:
+                rgba(0, 255, 176, 0.045);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .question-header h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 17px;
+
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           OPTIONS
+        ====================================================== */
+
+        .options {
+
+            display: grid;
+
+            gap: 9px;
+        }
+
+        .option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 13px 14px;
+
+            border: 1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 8px;
+
+            color: #8197aa;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .option:hover {
+
+            color: #ccefe5;
+
+            border-color:
+                rgba(0, 255, 176, 0.22);
+
+            background:
+                rgba(0, 255, 176, 0.035);
+        }
+
+        .option input {
+
+            accent-color: #00ffb0;
+
+            flex-shrink: 0;
+        }
+
+        /* =====================================================
+           SCENARIO
+        ====================================================== */
+
+        .scenario {
+
+            margin-bottom: 15px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, 0.20);
+        }
+
+        .scenario-title {
+
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .scenario p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           REPORT INPUT
+        ====================================================== */
+
+        .report-template {
+
+            margin-top: 14px;
+
+            padding: 18px;
+
+            border: 1px solid rgba(0, 255, 176, 0.09);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 0, 0, 0.24);
+
+            font-family:
+                Consolas,
+                monospace;
+        }
+
+        .template-line {
+
+            margin-bottom: 8px;
+
+            color: #71879b;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+        .template-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .template-label {
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           BUTTON
+        ====================================================== */
+
+        .lab-actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .check-button {
+
+            padding: 13px 25px;
+
+            border: 1px solid rgba(0, 255, 176, 0.30);
+
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .check-button:hover {
+
+            transform: translateY(-2px);
+
+            background:
+                rgba(0, 255, 176, 0.10);
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        #result {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 22px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 255, 176, 0.16);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        .result-title {
+
+            margin-bottom: 7px;
+
+            color: #00ffb0;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        #score {
+
+            color: #ffffff;
+
+            font-size: 24px;
+
+            font-weight: 850;
+        }
+
+        #message {
+
+            margin-top: 8px;
+
+            color: #7e94a8;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.topic-navigation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 18px;
+
+    border: 1px solid rgba(0, 191, 255, 0.09);
+    border-radius: 9px;
+
+    color: #71879b;
+    background: rgba(0, 191, 255, 0.02);
+
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.topic-navigation a:hover {
+    color: #ccefe5;
+    border-color: rgba(0, 255, 176, 0.25);
+    background: rgba(0, 255, 176, 0.035);
+}
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-hero-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .lab-meta {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+
+                font-size: 31px;
+            }
+
+            .lab-card {
+
+                padding: 20px;
+            }
+
+            .lab-meta {
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.topic-navigation a {
+    flex: 0 1 auto;
+    max-width: 48%;
+    padding: 12px 10px;
+}
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="lab-hero">
+
+                <div class="lab-hero-grid">
+
+
+                    <div>
+
+                        <div class="lab-kicker">
+                            ETHICAL HACKING / LAB 13
+                        </div>
+
+                        <h1>
+                            <span>Security</span>
+                            Reporting Lab
+                        </h1>
+
+                        <p class="lab-description">
+                            Test your understanding of professional security
+                            reporting. Analyze findings, identify the correct
+                            report components and select appropriate
+                            remediation-focused responses.
+                        </p>
+
+                    </div>
+
+
+                    <div class="terminal-panel">
+
+                        <div class="terminal-top">
+
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+
+                            <span class="terminal-title">
+                                REPORTING LAB
+                            </span>
+
+                        </div>
+
+                        <div class="terminal-line">
+                            <span class="green">
+                                analyst@cybernexa
+                            </span>:~$
+                            <span class="blue">
+                                report-lab --mode training
+                            </span>
+                        </div>
+
+                        <div class="terminal-line">
+                            Environment:
+                            <span class="green">
+                                AUTHORIZED
+                            </span>
+                        </div>
+
+                        <div class="terminal-line">
+                            Assessment:
+                            <span class="blue">
+                                REPORT REVIEW
+                            </span>
+                        </div>
+
+                        <div class="terminal-line">
+                            Status:
+                            <span class="green">
+                                READY
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 META
+            ================================================== -->
+
+            <div class="lab-meta">
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        Lab Type
+                    </span>
+
+                    <span class="meta-value">
+                        MCQ + Scenario
+                    </span>
+
+                </div>
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        Questions
+                    </span>
+
+                    <span class="meta-value">
+                        10
+                    </span>
+
+                </div>
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        Level
+                    </span>
+
+                    <span class="meta-value">
+                        Beginner
+                    </span>
+
+                </div>
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        Environment
+                    </span>
+
+                    <span class="meta-value green">
+                        Authorized
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 Q1
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="question-header">
+
+                    <div class="question-number">
+                        01
+                    </div>
+
+                    <h2>
+                        What is the primary purpose of a security report?
+                    </h2>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="option">
+                        <input type="radio" name="q1" value="0">
+                        To hide security findings from the organization
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q1" value="1">
+                        To document findings, evidence, impact and remediation
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q1" value="0">
+                        To replace all security controls
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q1" value="0">
+                        To publish private system information
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Q2
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="question-header">
+
+                    <div class="question-number">
+                        02
+                    </div>
+
+                    <h2>
+                        Which section gives a high-level overview for
+                        decision-makers?
+                    </h2>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="option">
+                        <input type="radio" name="q2" value="1">
+                        Executive Summary
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q2" value="0">
+                        Raw Evidence
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q2" value="0">
+                        Password List
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q2" value="0">
+                        Tool Configuration
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Q3
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="question-header">
+
+                    <div class="question-number">
+                        03
+                    </div>
+
+                    <h2>
+                        What should the scope section define?
+                    </h2>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="option">
+                        <input type="radio" name="q3" value="0">
+                        The tester's personal information
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q3" value="1">
+                        Authorized systems, applications and testing boundaries
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q3" value="0">
+                        Social media accounts of random users
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q3" value="0">
+                        Unrelated internet systems
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Q4
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="question-header">
+
+                    <div class="question-number">
+                        04
+                    </div>
+
+                    <h2>
+                        Which item explains the possible security consequence
+                        of a finding?
+                    </h2>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="option">
+                        <input type="radio" name="q4" value="0">
+                        Title
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q4" value="1">
+                        Impact
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q4" value="0">
+                        Footer
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q4" value="0">
+                        Navigation
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Q5
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="question-header">
+
+                    <div class="question-number">
+                        05
+                    </div>
+
+                    <h2>
+                        What makes evidence useful in a security report?
+                    </h2>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="option">
+                        <input type="radio" name="q5" value="1">
+                        It supports and validates the reported finding
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q5" value="0">
+                        It contains unrelated information
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q5" value="0">
+                        It hides the affected asset
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q5" value="0">
+                        It replaces remediation
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Q6
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="question-header">
+
+                    <div class="question-number">
+                        06
+                    </div>
+
+                    <h2>
+                        What is remediation in a security report?
+                    </h2>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="option">
+                        <input type="radio" name="q6" value="0">
+                        A description of the tester
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q6" value="1">
+                        A recommended action to address the weakness
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q6" value="0">
+                        A list of unrelated systems
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q6" value="0">
+                        A method for publishing private data
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Q7
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="question-header">
+
+                    <div class="question-number">
+                        07
+                    </div>
+
+                    <h2>
+                        Which report style is most appropriate?
+                    </h2>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="option">
+                        <input type="radio" name="q7" value="1">
+                        Clear, evidence-based and actionable
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q7" value="0">
+                        Unstructured and vague
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q7" value="0">
+                        Based only on assumptions
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q7" value="0">
+                        Without any affected asset information
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Q8
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="question-header">
+
+                    <div class="question-number">
+                        08
+                    </div>
+
+                    <h2>
+                        A report contains sensitive credentials discovered
+                        during an authorized test. What should the tester do?
+                    </h2>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="option">
+                        <input type="radio" name="q8" value="0">
+                        Publish them publicly
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q8" value="1">
+                        Handle them according to the authorized reporting
+                        and disclosure procedure
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q8" value="0">
+                        Share them with random users
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q8" value="0">
+                        Post them on social media
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Q9 SCENARIO
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="question-header">
+
+                    <div class="question-number">
+                        09
+                    </div>
+
+                    <h2>
+                        Scenario: Choose the correct finding structure.
+                    </h2>
+
+                </div>
+
+
+                <div class="scenario">
+
+                    <div class="scenario-title">
+                        Authorized Training Environment
+                    </div>
+
+                    <p>
+                        A tester identifies a weakness in an approved training
+                        application. The finding needs to be documented for
+                        the development team.
+                    </p>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="option">
+                        <input type="radio" name="q9" value="1">
+                        Title → Affected Asset → Evidence → Impact → Remediation
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q9" value="0">
+                        Username → Password → Random Data → Social Media
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q9" value="0">
+                        Tool Name → Tester Name → Personal Opinion
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q9" value="0">
+                        Screenshot only
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Q10
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="question-header">
+
+                    <div class="question-number">
+                        10
+                    </div>
+
+                    <h2>
+                        Which statement best describes professional
+                        security reporting?
+                    </h2>
+
+                </div>
+
+
+                <div class="options">
+
+                    <label class="option">
+                        <input type="radio" name="q10" value="1">
+                        It connects technical findings with evidence,
+                        impact and remediation.
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q10" value="0">
+                        It is only a collection of screenshots.
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q10" value="0">
+                        It should avoid explaining the impact.
+                    </label>
+
+                    <label class="option">
+                        <input type="radio" name="q10" value="0">
+                        It should contain unrelated personal information.
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CHECK
+            ================================================== -->
+
+            <div class="lab-actions">
+
+                <button
+                    class="check-button"
+                    onclick="checkAnswers()"
+                >
+                    ✓ Submit Assessment
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 RESULT
+            ================================================== -->
+
+            <div id="result">
+
+                <div class="result-title">
+                    Lab Result
+                </div>
+
+                <div id="score">
+                    0 / 10
+                </div>
+
+                <div id="message">
+                    Complete the assessment to view your result.
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="topic-navigation">
+
+                <a href="privilege-escalation-lab.html">
+                    ← Lab: Privilege Escalation
+                </a>
+                <a href="../theory/ethical-hacking.html">
+                    Back to Course →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+
+    <!-- =====================================================
+         LAB JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        function checkAnswers() {
+
+            const answers = {
+
+                q1: "1",
+                q2: "1",
+                q3: "1",
+                q4: "1",
+                q5: "1",
+                q6: "1",
+                q7: "1",
+                q8: "1",
+                q9: "1",
+                q10: "1"
+
+            };
+
+            let score = 0;
+
+            for (const question in answers) {
+
+                const selected =
+                    document.querySelector(
+                        `input[name="${question}"]:checked`
+                    );
+
+                if (selected && selected.value === answers[question]) {
+                    score++;
+                }
+
+            }
+
+            const result = document.getElementById("result");
+            const scoreBox = document.getElementById("score");
+            const message = document.getElementById("message");
+
+            result.style.display = "block";
+
+            scoreBox.textContent =
+                `${score} / 10`;
+
+            if (score === 10) {
+
+                message.textContent =
+                    "Excellent! You understand the core principles of professional security reporting.";
+
+            } else if (score >= 8) {
+
+                message.textContent =
+                    "Very good! Your reporting concepts are well understood. Review the missed questions once.";
+
+            } else if (score >= 5) {
+
+                message.textContent =
+                    "Good attempt. Review findings, evidence, impact and remediation before repeating the lab.";
+
+            } else {
+
+                message.textContent =
+                    "Review the Reporting theory page and attempt the lab again.";
+
+            }
+
+            result.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

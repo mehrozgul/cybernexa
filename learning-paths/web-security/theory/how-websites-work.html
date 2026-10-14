@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>How Websites Work - CyberNexa</title>
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+    }
+
+    body {
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    /* =====================================================
+       WEB SECURITY PAGE
+    ====================================================== */
+
+    .ws-page {
+
+        width: 100%;
+        min-height: calc(100vh - 80px);
+
+        padding: 70px 20px 90px;
+
+        background:
+            radial-gradient(
+                circle at 12% 8%,
+                rgba(0, 191, 255, 0.075),
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 88% 15%,
+                rgba(0, 255, 176, 0.055),
+                transparent 30%
+            ),
+            linear-gradient(
+                180deg,
+                #01060c 0%,
+                #020b16 48%,
+                #01050b 100%
+            );
+    }
+
+    .ws-container {
+
+        width: 100%;
+        max-width: 1050px;
+
+        margin: 0 auto;
+    }
+
+    /* =====================================================
+       HERO
+    ====================================================== */
+
+    .ws-hero {
+
+        position: relative;
+
+        padding: 42px 35px;
+
+        margin-bottom: 25px;
+
+        border: 1px solid rgba(0, 191, 255, 0.17);
+
+        border-radius: 16px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(3, 19, 34, 0.98),
+                rgba(2, 10, 21, 0.98)
+            );
+
+        overflow: hidden;
+
+        box-shadow:
+            0 20px 50px rgba(0, 0, 0, 0.28);
+    }
+
+    .ws-hero::before {
+
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 2px;
+
+        background:
+            linear-gradient(
+                90deg,
+                transparent,
+                #00bfff,
+                #00ffb0,
+                transparent
+            );
+    }
+
+    .ws-hero-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1.55fr)
+            minmax(260px, 0.75fr);
+
+        gap: 35px;
+
+        align-items: center;
+    }
+
+    .ws-kicker {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin-bottom: 15px;
+
+        color: #00bfff;
+
+        font-size: 10px;
+        font-weight: 800;
+
+        letter-spacing: 2.5px;
+
+        text-transform: uppercase;
+    }
+
+    .ws-kicker::before {
+
+        content: "";
+
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: #00bfff;
+
+        box-shadow:
+            0 0 12px rgba(0, 191, 255, 0.7);
+    }
+
+    .ws-hero h1 {
+
+        margin: 0;
+
+        color: #ffffff;
+
+        font-size: 46px;
+
+        line-height: 1.12;
+
+        font-weight: 850;
+
+        letter-spacing: -1px;
+    }
+
+    .ws-hero h1 span {
+
+        color: #00bfff;
+    }
+
+    .ws-hero-description {
+
+        max-width: 700px;
+
+        margin: 17px 0 0;
+
+        color: #8fa5bb;
+
+        font-size: 14px;
+
+        line-height: 1.9;
+    }
+
+    /* =====================================================
+       BROWSER TERMINAL
+    ====================================================== */
+
+    .browser-panel {
+
+        padding: 18px;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.16);
+
+        border-radius: 11px;
+
+        background:
+            rgba(0, 0, 0, 0.34);
+
+        font-family:
+            Consolas,
+            "Courier New",
+            monospace;
+
+        box-shadow:
+            inset 0 0 25px rgba(0, 191, 255, 0.025);
+    }
+
+    .browser-top {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        padding-bottom: 13px;
+
+        margin-bottom: 13px;
+
+        border-bottom:
+            1px solid rgba(0, 191, 255, 0.09);
+    }
+
+    .browser-dot {
+
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: #405263;
+    }
+
+    .browser-title {
+
+        margin-left: auto;
+
+        color: #52687c;
+
+        font-size: 9px;
+
+        letter-spacing: 1px;
+    }
+
+    .browser-line {
+
+        margin-bottom: 9px;
+
+        color: #60788d;
+
+        font-size: 11px;
+
+        line-height: 1.5;
+    }
+
+    .browser-line .blue {
+        color: #00bfff;
+    }
+
+    .browser-line .green {
+        color: #00ffb0;
+    }
+
+    /* =====================================================
+       META
+    ====================================================== */
+
+    .ws-meta {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 10px;
+
+        margin-bottom: 25px;
+    }
+
+    .meta-item {
+
+        padding: 15px;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.10);
+
+        border-radius: 10px;
+
+        background:
+            rgba(0, 191, 255, 0.025);
+    }
+
+    .meta-label {
+
+        display: block;
+
+        margin-bottom: 6px;
+
+        color: #536a7f;
+
+        font-size: 9px;
+
+        letter-spacing: 1.5px;
+
+        text-transform: uppercase;
+    }
+
+    .meta-value {
+
+        color: #dce9f4;
+
+        font-size: 11px;
+
+        font-weight: 700;
+    }
+
+    .meta-value.blue {
+        color: #00bfff;
+    }
+
+    /* =====================================================
+       CONTENT CARD
+    ====================================================== */
+
+    .ws-card {
+
+        margin-bottom: 18px;
+
+        padding: 27px;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.11);
+
+        border-radius: 13px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(5, 20, 34, 0.97),
+                rgba(2, 11, 21, 0.97)
+            );
+
+        box-shadow:
+            0 12px 32px rgba(0, 0, 0, 0.18);
+    }
+
+    .card-heading {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        margin-bottom: 15px;
+    }
+
+    .card-number {
+
+        width: 29px;
+        height: 29px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.28);
+
+        border-radius: 7px;
+
+        color: #00bfff;
+
+        background:
+            rgba(0, 191, 255, 0.045);
+
+        font-family:
+            Consolas,
+            monospace;
+
+        font-size: 10px;
+
+        font-weight: 800;
+    }
+
+    .card-heading h2 {
+
+        margin: 0;
+
+        color: #ffffff;
+
+        font-size: 20px;
+
+        font-weight: 800;
+    }
+
+    .ws-card p {
+
+        margin: 0 0 12px;
+
+        color: #8fa5bb;
+
+        font-size: 13px;
+
+        line-height: 1.9;
+    }
+
+    .ws-card p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* =====================================================
+       DEFINITION
+    ====================================================== */
+
+    .definition {
+
+        padding: 21px;
+
+        border-left:
+            3px solid #00bfff;
+
+        border-radius: 9px;
+
+        background:
+            linear-gradient(
+                90deg,
+                rgba(0, 191, 255, 0.055),
+                rgba(0, 191, 255, 0.012)
+            );
+    }
+
+    .definition-label {
+
+        margin-bottom: 8px;
+
+        color: #00bfff;
+
+        font-size: 9px;
+
+        font-weight: 800;
+
+        letter-spacing: 1.5px;
+
+        text-transform: uppercase;
+    }
+
+    .definition p {
+
+        margin: 0;
+
+        color: #d0edf8;
+
+        font-size: 14px;
+
+        line-height: 1.85;
+    }
+
+    /* =====================================================
+       FLOW
+    ====================================================== */
+
+    .flow-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 10px;
+
+        margin-top: 18px;
+    }
+
+    .flow-card {
+
+        padding: 18px;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.10);
+
+        border-radius: 10px;
+
+        background:
+            rgba(0, 191, 255, 0.025);
+    }
+
+    .flow-number {
+
+        color: #00bfff;
+
+        font-family:
+            Consolas,
+            monospace;
+
+        font-size: 10px;
+
+        font-weight: 800;
+    }
+
+    .flow-card h3 {
+
+        margin: 10px 0 7px;
+
+        color: #ffffff;
+
+        font-size: 14px;
+    }
+
+    .flow-card p {
+
+        margin: 0;
+
+        color: #71879b;
+
+        font-size: 11px;
+
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       ARCHITECTURE DIAGRAM
+    ====================================================== */
+
+    .architecture {
+
+        margin-top: 20px;
+
+        padding: 25px;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.13);
+
+        border-radius: 12px;
+
+        background:
+            rgba(0, 0, 0, 0.20);
+
+        overflow-x: auto;
+    }
+
+    .architecture-title {
+
+        margin-bottom: 20px;
+
+        color: #00bfff;
+
+        font-family:
+            Consolas,
+            monospace;
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        letter-spacing: 1.5px;
+
+        text-transform: uppercase;
+
+        text-align: center;
+    }
+
+    .architecture-flow {
+
+        min-width: 760px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 10px;
+    }
+
+    .arch-box {
+
+        min-width: 125px;
+
+        padding: 16px 12px;
+
+        text-align: center;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.22);
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(0, 191, 255, 0.08),
+                rgba(0, 191, 255, 0.025)
+            );
+    }
+
+    .arch-icon {
+
+        margin-bottom: 8px;
+
+        font-size: 20px;
+    }
+
+    .arch-box strong {
+
+        display: block;
+
+        color: #e5f7ff;
+
+        font-size: 12px;
+    }
+
+    .arch-box span {
+
+        display: block;
+
+        margin-top: 5px;
+
+        color: #71879b;
+
+        font-size: 9px;
+
+        line-height: 1.5;
+    }
+
+    .arch-arrow {
+
+        color: #00bfff;
+
+        font-family:
+            Consolas,
+            monospace;
+
+        font-size: 20px;
+
+        flex-shrink: 0;
+    }
+
+    /* =====================================================
+       LAYERS
+    ====================================================== */
+
+    .layer-list {
+
+        display: grid;
+
+        gap: 9px;
+
+        margin-top: 17px;
+    }
+
+    .layer {
+
+        display: grid;
+
+        grid-template-columns: 120px 1fr;
+
+        gap: 15px;
+
+        align-items: center;
+
+        padding: 14px;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.08);
+
+        border-radius: 8px;
+
+        background:
+            rgba(0, 191, 255, 0.018);
+    }
+
+    .layer-name {
+
+        color: #00bfff;
+
+        font-family:
+            Consolas,
+            monospace;
+
+        font-size: 10px;
+
+        font-weight: 800;
+    }
+
+    .layer-description {
+
+        color: #71879b;
+
+        font-size: 11px;
+
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       HTTP REQUEST / RESPONSE
+    ====================================================== */
+
+    .http-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 12px;
+
+        margin-top: 17px;
+    }
+
+    .http-box {
+
+        padding: 18px;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.10);
+
+        border-radius: 10px;
+
+        background:
+            rgba(0, 0, 0, 0.20);
+    }
+
+    .http-label {
+
+        margin-bottom: 10px;
+
+        color: #00bfff;
+
+        font-family:
+            Consolas,
+            monospace;
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        letter-spacing: 1px;
+    }
+
+    .code-line {
+
+        margin-bottom: 6px;
+
+        color: #7f97aa;
+
+        font-family:
+            Consolas,
+            monospace;
+
+        font-size: 10px;
+
+        line-height: 1.7;
+    }
+
+    .code-blue {
+        color: #00bfff;
+    }
+
+    .code-green {
+        color: #00ffb0;
+    }
+
+    /* =====================================================
+       SECURITY CONNECTION
+    ====================================================== */
+
+    .security-box {
+
+        padding: 21px;
+
+        border:
+            1px solid rgba(0, 255, 176, 0.15);
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(0, 255, 176, 0.045),
+                rgba(0, 191, 255, 0.012)
+            );
+    }
+
+    .security-title {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+        margin-bottom: 9px;
+
+        color: #00ffb0;
+
+        font-size: 13px;
+
+        font-weight: 800;
+    }
+
+    .security-box p {
+
+        margin: 0;
+
+        color: #899bad;
+
+        font-size: 12px;
+
+        line-height: 1.8;
+    }
+
+    /* =====================================================
+       KEY TERMS
+    ====================================================== */
+
+    .key-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 11px;
+
+        margin-top: 17px;
+    }
+
+    .key-item {
+
+        padding: 17px;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.09);
+
+        border-radius: 9px;
+
+        background:
+            rgba(0, 191, 255, 0.018);
+    }
+
+    .key-item h3 {
+
+        margin: 0 0 6px;
+
+        color: #ffffff;
+
+        font-size: 13px;
+    }
+
+    .key-item p {
+
+        margin: 0;
+
+        color: #71879b;
+
+        font-size: 11px;
+
+        line-height: 1.7;
+    }
+
+    /* =====================================================
+       SUMMARY
+    ====================================================== */
+
+    .summary {
+
+        padding: 25px;
+
+        text-align: center;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.15);
+
+        border-radius: 13px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(0, 191, 255, 0.035),
+                rgba(0, 255, 176, 0.025)
+            );
+    }
+
+    .summary-title {
+
+        margin-bottom: 9px;
+
+        color: #00bfff;
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        letter-spacing: 2px;
+
+        text-transform: uppercase;
+    }
+
+    .summary h2 {
+
+        margin: 0 0 10px;
+
+        color: #ffffff;
+
+        font-size: 18px;
+    }
+
+    .summary p {
+
+        max-width: 760px;
+
+        margin: 0 auto;
+
+        color: #7e94a8;
+
+        font-size: 12px;
+
+        line-height: 1.85;
+    }
+
+    /* =====================================================
+       LAB CTA
+    ====================================================== */
+
+    .lab-area {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+        margin-top: 25px;
+
+        padding: 21px;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.15);
+
+        border-radius: 12px;
+
+        background:
+            rgba(0, 191, 255, 0.025);
+    }
+
+    .lab-text strong {
+
+        display: block;
+
+        margin-bottom: 5px;
+
+        color: #ffffff;
+
+        font-size: 14px;
+    }
+
+    .lab-text span {
+
+        color: #71879b;
+
+        font-size: 11px;
+    }
+
+    .lab-button {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 9px;
+
+        padding: 12px 20px;
+
+        flex-shrink: 0;
+
+        border:
+            1px solid rgba(0, 191, 255, 0.30);
+
+        border-radius: 8px;
+
+        color: #d5f7ff;
+
+        background:
+            rgba(0, 191, 255, 0.055);
+
+        text-decoration: none;
+
+        font-size: 11px;
+
+        font-weight: 800;
+
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease,
+            border-color 0.2s ease;
+    }
+
+    .lab-button:hover {
+
+        transform: translateY(-2px);
+
+        border-color:
+            rgba(0, 191, 255, 0.55);
+
+        background:
+            rgba(0, 191, 255, 0.09);
+    }
+
+    /* =====================================================
+       MOBILE
+    ====================================================== */
+
+    @media (max-width: 800px) {
+
+        .ws-hero-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .flow-grid {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+
+        .ws-meta {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .ws-page {
+            padding: 45px 12px 60px;
+        }
+
+        .ws-hero {
+            padding: 27px 20px;
+        }
+
+        .ws-hero h1 {
+            font-size: 31px;
+        }
+
+        .ws-hero-description {
+            font-size: 12px;
+        }
+
+        .ws-card {
+            padding: 20px;
+        }
+
+        .flow-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .http-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .key-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .layer {
+            grid-template-columns: 1fr;
+            gap: 6px;
+        }
+
+        .lab-area {
+            flex-direction: column;
+            align-items: stretch;
+            text-align: center;
+        }
+
+        .lab-button {
+            width: 100%;
+        }
+
+        .topic-navigation {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+</head>
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<!-- =====================================================
+     MAIN WEB SECURITY CONTENT
+====================================================== -->
+
+<main class="ws-page">
+
+    <div class="ws-container">
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="ws-hero">
+
+            <div class="ws-hero-grid">
+
+
+                <div>
+
+                    <div class="ws-kicker">
+                        WEB SECURITY / 01
+                    </div>
+
+                    <h1>
+                        <span>How Websites</span>
+                        Work
+                    </h1>
+
+                    <p class="ws-hero-description">
+
+                        Understand how a modern website works from the
+                        user's browser to the web server, application
+                        layer and database. Learn how HTTP requests and
+                        responses move through the architecture and why
+                        each component matters to web security.
+
+                    </p>
+
+                </div>
+
+
+                <div class="browser-panel">
+
+                    <div class="browser-top">
+
+                        <span class="browser-dot"></span>
+                        <span class="browser-dot"></span>
+                        <span class="browser-dot"></span>
+
+                        <span class="browser-title">
+                            WEB SECURITY LAB
+                        </span>
+
+                    </div>
+
+                    <div class="browser-line">
+
+                        <span class="blue">
+                            GET
+                        </span>
+
+                        /index.html
+
+                    </div>
+
+                    <div class="browser-line">
+
+                        Protocol:
+                        <span class="green">
+                            HTTPS
+                        </span>
+
+                    </div>
+
+                    <div class="browser-line">
+
+                        Server:
+                        <span class="blue">
+                            WEB-APP
+                        </span>
+
+                    </div>
+
+                    <div class="browser-line">
+
+                        Status:
+                        <span class="green">
+                            200 OK
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             META
+        ================================================== -->
+
+        <div class="ws-meta">
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Domain
+                </span>
+
+                <span class="meta-value">
+                    Web Security
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Level
+                </span>
+
+                <span class="meta-value">
+                    Beginner
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Environment
+                </span>
+
+                <span class="meta-value blue">
+                    Web Architecture
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Focus
+                </span>
+
+                <span class="meta-value">
+                    Browser → Server
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             01 — DEFINITION
+        ================================================== -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    01
+                </div>
+
+                <h2>
+                    What is a Website?
+                </h2>
+
+            </div>
+
+
+            <div class="definition">
+
+                <div class="definition-label">
+                    Core Definition
+                </div>
+
+                <p>
+
+                    A website is a collection of web resources that
+                    users access through a web browser. These resources
+                    may include HTML documents, CSS stylesheets,
+                    JavaScript files, images, APIs and data generated
+                    by a server-side application.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             02 — BASIC FLOW
+        ================================================== -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    02
+                </div>
+
+                <h2>
+                    Basic Website Request Flow
+                </h2>
+
+            </div>
+
+            <p>
+
+                When a user enters a website address, the browser
+                communicates with different components to retrieve
+                and display the requested content.
+
+            </p>
+
+
+            <div class="flow-grid">
+
+
+                <div class="flow-card">
+
+                    <div class="flow-number">
+                        STEP 01
+                    </div>
+
+                    <h3>
+                        Browser
+                    </h3>
+
+                    <p>
+                        The user enters a URL and the browser prepares
+                        a request for the website.
+                    </p>
+
+                </div>
+
+
+                <div class="flow-card">
+
+                    <div class="flow-number">
+                        STEP 02
+                    </div>
+
+                    <h3>
+                        DNS
+                    </h3>
+
+                    <p>
+                        DNS helps resolve the domain name to an
+                        IP address.
+                    </p>
+
+                </div>
+
+
+                <div class="flow-card">
+
+                    <div class="flow-number">
+                        STEP 03
+                    </div>
+
+                    <h3>
+                        Web Server
+                    </h3>
+
+                    <p>
+                        The server receives the request and determines
+                        how to respond.
+                    </p>
+
+                </div>
+
+
+                <div class="flow-card">
+
+                    <div class="flow-number">
+                        STEP 04
+                    </div>
+
+                    <h3>
+                        Response
+                    </h3>
+
+                    <p>
+                        The browser receives the response and renders
+                        the website for the user.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             03 — MODERN ARCHITECTURE
+        ================================================== -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    03
+                </div>
+
+                <h2>
+                    Modern Website Architecture
+                </h2>
+
+            </div>
+
+            <p>
+
+                Modern websites commonly use multiple layers instead
+                of placing all functionality in a single component.
+                A typical architecture separates the client,
+                networking, application logic and data storage.
+
+            </p>
+
+
+            <div class="architecture">
+
+                <div class="architecture-title">
+                    MODERN WEB APPLICATION ARCHITECTURE
+                </div>
+
+
+                <div class="architecture-flow">
+
+
+                    <div class="arch-box">
+
+                        <div class="arch-icon">
+                            🌐
+                        </div>
+
+                        <strong>
+                            Browser
+                        </strong>
+
+                        <span>
+                            HTML / CSS / JS
+                        </span>
+
+                    </div>
+
+
+                    <div class="arch-arrow">
+                        →
+                    </div>
+
+
+                    <div class="arch-box">
+
+                        <div class="arch-icon">
+                            🔎
+                        </div>
+
+                        <strong>
+                            DNS
+                        </strong>
+
+                        <span>
+                            Domain → IP
+                        </span>
+
+                    </div>
+
+
+                    <div class="arch-arrow">
+                        →
+                    </div>
+
+
+                    <div class="arch-box">
+
+                        <div class="arch-icon">
+                            🛡️
+                        </div>
+
+                        <strong>
+                            Web Server
+                        </strong>
+
+                        <span>
+                            HTTP / HTTPS
+                        </span>
+
+                    </div>
+
+
+                    <div class="arch-arrow">
+                        →
+                    </div>
+
+
+                    <div class="arch-box">
+
+                        <div class="arch-icon">
+                            ⚙️
+                        </div>
+
+                        <strong>
+                            Application
+                        </strong>
+
+                        <span>
+                            Business Logic
+                        </span>
+
+                    </div>
+
+
+                    <div class="arch-arrow">
+                        →
+                    </div>
+
+
+                    <div class="arch-box">
+
+                        <div class="arch-icon">
+                            🗄️
+                        </div>
+
+                        <strong>
+                            Database
+                        </strong>
+
+                        <span>
+                            Application Data
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             04 — ARCHITECTURE COMPONENTS
+        ================================================== -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    04
+                </div>
+
+                <h2>
+                    Role of Architecture Components
+                </h2>
+
+            </div>
+
+
+            <div class="layer-list">
+
+
+                <div class="layer">
+
+                    <div class="layer-name">
+                        CLIENT
+                    </div>
+
+                    <div class="layer-description">
+
+                        The browser runs on the user's device and
+                        interprets HTML, CSS and JavaScript to create
+                        the visible web interface.
+
+                    </div>
+
+                </div>
+
+
+                <div class="layer">
+
+                    <div class="layer-name">
+                        DNS
+                    </div>
+
+                    <div class="layer-description">
+
+                        The Domain Name System translates human-readable
+                        domain names into IP addresses used for network
+                        communication.
+
+                    </div>
+
+                </div>
+
+
+                <div class="layer">
+
+                    <div class="layer-name">
+                        WEB SERVER
+                    </div>
+
+                    <div class="layer-description">
+
+                        Receives HTTP requests and returns static
+                        resources or forwards dynamic requests to
+                        application components.
+
+                    </div>
+
+                </div>
+
+
+                <div class="layer">
+
+                    <div class="layer-name">
+                        APPLICATION
+                    </div>
+
+                    <div class="layer-description">
+
+                        Processes business rules, authentication,
+                        authorization, validation and application
+                        functionality.
+
+                    </div>
+
+                </div>
+
+
+                <div class="layer">
+
+                    <div class="layer-name">
+                        DATABASE
+                    </div>
+
+                    <div class="layer-description">
+
+                        Stores application information such as user
+                        accounts, products, messages and other
+                        persistent data.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             05 — HTTP REQUEST RESPONSE
+        ================================================== -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    05
+                </div>
+
+                <h2>
+                    HTTP Request &amp; Response
+                </h2>
+
+            </div>
+
+            <p>
+
+                HTTP is an application-layer protocol used for
+                communication between a client and a web server.
+                A browser sends an HTTP request and the server returns
+                an HTTP response.
+
+            </p>
+
+
+            <div class="http-grid">
+
+
+                <div class="http-box">
+
+                    <div class="http-label">
+                        CLIENT REQUEST
+                    </div>
+
+                    <div class="code-line">
+                        <span class="code-blue">
+                            GET
+                        </span>
+                        /home
+                    </div>
+
+                    <div class="code-line">
+                        Host: cybernexa.example
+                    </div>
+
+                    <div class="code-line">
+                        Accept: text/html
+                    </div>
+
+                </div>
+
+
+                <div class="http-box">
+
+                    <div class="http-label">
+                        SERVER RESPONSE
+                    </div>
+
+                    <div class="code-line">
+                        <span class="code-green">
+                            HTTP/1.1 200 OK
+                        </span>
+                    </div>
+
+                    <div class="code-line">
+                        Content-Type: text/html
+                    </div>
+
+                    <div class="code-line">
+                        Content-Length: ...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             06 — FRONTEND BACKEND
+        ================================================== -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    06
+                </div>
+
+                <h2>
+                    Frontend vs Backend
+                </h2>
+
+            </div>
+
+            <p>
+
+                Web applications are commonly divided into frontend
+                and backend responsibilities. The frontend is primarily
+                responsible for the user interface, while the backend
+                handles server-side processing and data operations.
+
+            </p>
+
+
+            <div class="http-grid">
+
+
+                <div class="http-box">
+
+                    <div class="http-label">
+                        FRONTEND
+                    </div>
+
+                    <div class="code-line">
+                        HTML → Structure
+                    </div>
+
+                    <div class="code-line">
+                        CSS → Presentation
+                    </div>
+
+                    <div class="code-line">
+                        JavaScript → Interaction
+                    </div>
+
+                </div>
+
+
+                <div class="http-box">
+
+                    <div class="http-label">
+                        BACKEND
+                    </div>
+
+                    <div class="code-line">
+                        Server → Request Processing
+                    </div>
+
+                    <div class="code-line">
+                        Application → Business Logic
+                    </div>
+
+                    <div class="code-line">
+                        Database → Data Storage
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             07 — SECURITY
+        ================================================== -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    07
+                </div>
+
+                <h2>
+                    Why Website Architecture Matters to Security
+                </h2>
+
+            </div>
+
+            <p>
+
+                Every component in a web architecture can introduce
+                security risks. Understanding how data moves between
+                components is therefore fundamental to web security.
+
+            </p>
+
+
+            <div class="security-box">
+
+                <div class="security-title">
+                    🛡 WEB SECURITY CONNECTION
+                </div>
+
+                <p>
+
+                    Security testing examines how browsers, servers,
+                    applications and databases interact. Weak input
+                    validation, insecure authentication, incorrect
+                    authorization or unsafe data handling can create
+                    vulnerabilities across these layers.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             08 — KEY TERMS
+        ================================================== -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    08
+                </div>
+
+                <h2>
+                    Key Terms
+                </h2>
+
+            </div>
+
+
+            <div class="key-grid">
+
+
+                <div class="key-item">
+
+                    <h3>
+                        URL
+                    </h3>
+
+                    <p>
+                        The address used to identify and access a
+                        resource on the web.
+                    </p>
+
+                </div>
+
+
+                <div class="key-item">
+
+                    <h3>
+                        DNS
+                    </h3>
+
+                    <p>
+                        Resolves domain names into IP addresses.
+                    </p>
+
+                </div>
+
+
+                <div class="key-item">
+
+                    <h3>
+                        HTTP
+                    </h3>
+
+                    <p>
+                        Application-layer protocol used for web
+                        communication.
+                    </p>
+
+                </div>
+
+
+                <div class="key-item">
+
+                    <h3>
+                        HTTPS
+                    </h3>
+
+                    <p>
+                        HTTP protected using TLS to provide encrypted
+                        communication.
+                    </p>
+
+                </div>
+
+
+                <div class="key-item">
+
+                    <h3>
+                        Client
+                    </h3>
+
+                    <p>
+                        A device or application that requests a
+                        service or resource.
+                    </p>
+
+                </div>
+
+
+                <div class="key-item">
+
+                    <h3>
+                        Server
+                    </h3>
+
+                    <p>
+                        A system that receives requests and provides
+                        services or resources.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             09 — SUMMARY
+        ================================================== -->
+
+        <section class="summary">
+
+            <div class="summary-title">
+                Module Summary
+            </div>
+
+            <h2>
+                Understand the Architecture. Understand the Attack Surface.
+            </h2>
+
+            <p>
+
+                A modern website is more than a single HTML page.
+                The browser, DNS, web server, application layer and
+                database work together to deliver web functionality.
+                Understanding this architecture provides the foundation
+                for learning HTTP, authentication, SQL injection, XSS,
+                CSRF and other web security concepts.
+
+            </p>
+
+        </section>
+    <!-- =================================================
+         LESSON COMPLETION
+    ================================================== -->
+
+    <section class="ws-card" id="lessonCompletion">
+
+        <div class="card-heading">
+
+            <div class="card-number">
+                ✓
+            </div>
+
+            <h2>
+                Lesson Completion
+            </h2>
+
+        </div>
+
+        <p>
+            You have completed the How Websites Work lesson.
+            Mark this lesson as complete to save your learning
+            progress to your CyberNexa account.
+        </p>
+
+        <div style="margin-top: 22px; text-align: center;">
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="web-security"
+                data-lesson-id="how-websites-work"
+                data-dashboard-url="../learning-paths/web-security/theory/how-websites-work.html"
+                data-status-id="howWebsitesWorkCompletionStatus">
+                ✓ Mark Lesson Complete
+            </button>
+
+            <p
+                id="howWebsitesWorkCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 15px;">
+            </p>
+
+        </div>
+
+    </section>
+
+        <!-- =================================================
+             PRACTICAL LAB CTA
+        ================================================== -->
+
+        <div class="lab-area">
+
+            <div class="lab-text">
+
+                <strong>
+                    Ready for the Practical Lab?
+                </strong>
+
+                <span>
+                    Test your understanding of modern web architecture
+                    in a safe simulated environment.
+                </span>
+
+            </div>
+
+
+            <a
+                href="../lab/how-websites-work-lab.html"
+                class="lab-button"
+            >
+                🧪 Launch Lab →
+            </a>
+
+        </div>
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

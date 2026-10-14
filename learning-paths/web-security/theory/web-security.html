@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Web Security - CyberNexa</title>
+
+    <!-- CyberNexa Common CSS -->
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           WEB SECURITY PAGE
+        ====================================================== */
+
+        .ws-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 8%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 255, 170, 0.055),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .ws-container {
+
+            width: 100%;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .ws-hero {
+
+            position: relative;
+
+            padding: 42px 35px;
+            margin-bottom: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.18);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 35, 0.98),
+                    rgba(2, 10, 21, 0.98)
+                );
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 55px rgba(0, 0, 0, 0.3);
+        }
+
+        .ws-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .ws-hero-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.5fr)
+                minmax(260px, 0.8fr);
+
+            gap: 35px;
+
+            align-items: center;
+        }
+
+        .ws-kicker {
+
+            display: inline-flex;
+
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .ws-kicker::before {
+
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00bfff;
+
+            box-shadow:
+                0 0 12px rgba(0, 191, 255, 0.7);
+        }
+
+        .ws-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 46px;
+            line-height: 1.12;
+
+            font-weight: 850;
+
+            letter-spacing: -1px;
+        }
+
+        .ws-hero h1 span {
+            color: #00bfff;
+        }
+
+        .ws-description {
+
+            max-width: 720px;
+
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           TERMINAL
+        ====================================================== */
+
+        .ws-terminal {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 0, 0, 0.34);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        .terminal-top {
+
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.09);
+        }
+
+        .terminal-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #405263;
+        }
+
+        .terminal-title {
+
+            margin-left: auto;
+
+            color: #52687c;
+
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+
+            margin-bottom: 9px;
+
+            color: #60788d;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .blue {
+            color: #00bfff;
+        }
+
+        .green {
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           META
+        ====================================================== */
+
+        .ws-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           INTRO
+        ====================================================== */
+
+        .ws-intro {
+
+            padding: 27px;
+
+            margin-bottom: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .section-title {
+
+            display: flex;
+
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .section-number {
+
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .section-title h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .ws-intro p {
+
+            margin: 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           TOPIC GRID
+        ====================================================== */
+
+        .topic-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 13px;
+        }
+
+        .topic-card {
+
+            position: relative;
+
+            min-height: 175px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(5, 20, 34, 0.96),
+                    rgba(2, 11, 21, 0.96)
+                );
+
+            text-decoration: none;
+
+            overflow: hidden;
+
+            transition:
+                transform 0.22s ease,
+                border-color 0.22s ease,
+                background 0.22s ease;
+        }
+
+        .topic-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 3px;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #00bfff,
+                    #00ffb0
+                );
+
+            opacity: 0.65;
+        }
+
+        .topic-card:hover {
+
+            transform: translateY(-4px);
+
+            border-color:
+                rgba(0, 191, 255, 0.35);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(6, 27, 44, 0.98),
+                    rgba(2, 14, 26, 0.98)
+                );
+        }
+
+        .topic-number {
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .topic-card h3 {
+
+            margin: 12px 0 8px;
+
+            color: #ffffff;
+
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .topic-card p {
+
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        .topic-link {
+
+            position: absolute;
+
+            right: 18px;
+            bottom: 16px;
+
+            color: #00ffb0;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           LAB CTA
+        ====================================================== */
+
+        .lab-area {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 25px;
+            padding: 21px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.14);
+
+            border-radius: 12px;
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        .lab-text strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .lab-text span {
+
+            color: #71879b;
+
+            font-size: 11px;
+        }
+
+        .lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 12px 20px;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.30);
+
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.055);
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .lab-button:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(0, 255, 176, 0.55);
+
+            background:
+                rgba(0, 255, 176, 0.09);
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 850px) {
+
+            .ws-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topic-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .ws-meta {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .ws-page {
+                padding: 45px 12px 60px;
+            }
+
+            .ws-hero {
+                padding: 27px 20px;
+            }
+
+            .ws-hero h1 {
+                font-size: 31px;
+            }
+
+            .ws-description {
+                font-size: 12px;
+            }
+
+            .topic-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ws-intro {
+                padding: 20px;
+            }
+
+            .lab-area {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                text-align: center;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<main class="ws-page">
+
+    <div class="ws-container">
+
+
+        <!-- HERO -->
+
+        <section class="ws-hero">
+
+            <div class="ws-hero-grid">
+
+                <div>
+
+                    <div class="ws-kicker">
+                        WEB SECURITY / MODULE 06
+                    </div>
+
+                    <h1>
+                        <span>Web Security</span>
+                        Fundamentals
+                    </h1>
+
+                    <p class="ws-description">
+
+                        Explore how modern web applications operate and learn
+                        how common web security weaknesses affect browsers,
+                        servers, sessions, authentication, data and application
+                        logic. Every topic is presented from a defensive and
+                        authorized security-learning perspective.
+
+                    </p>
+
+                </div>
+
+
+                <div class="ws-terminal">
+
+                    <div class="terminal-top">
+
+                        <span class="terminal-dot"></span>
+                        <span class="terminal-dot"></span>
+                        <span class="terminal-dot"></span>
+
+                        <span class="terminal-title">
+                            WEB SECURITY LAB
+                        </span>
+
+                    </div>
+
+                    <div class="terminal-line">
+                        <span class="green">student@cybernexa</span>:~$
+                        <span class="blue">web-security --mode learning</span>
+                    </div>
+
+                    <div class="terminal-line">
+                        Environment:
+                        <span class="green">AUTHORIZED</span>
+                    </div>
+
+                    <div class="terminal-line">
+                        Scope:
+                        <span class="blue">TRAINING APPLICATION</span>
+                    </div>
+
+                    <div class="terminal-line">
+                        Status:
+                        <span class="green">READY</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- META -->
+
+        <div class="ws-meta">
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Domain
+                </span>
+
+                <span class="meta-value">
+                    Web Application Security
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Level
+                </span>
+
+                <span class="meta-value">
+                    Beginner → Intermediate
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Environment
+                </span>
+
+                <span class="meta-value">
+                    Authorized Lab
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Topics
+                </span>
+
+                <span class="meta-value">
+                    15 Core Topics
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- INTRO -->
+
+        <section class="ws-intro">
+
+            <div class="section-title">
+
+                <div class="section-number">
+                    01
+                </div>
+
+                <h2>
+                    Web Security Learning Path
+                </h2>
+
+            </div>
+
+            <p>
+
+                This module begins with the fundamentals of how websites
+                communicate and gradually introduces common web security
+                concepts. Study the theory first, then use the corresponding
+                CyberNexa lab to test your understanding in a controlled
+                environment.
+
+            </p>
+
+        </section>
+
+
+        <!-- TOPICS -->
+
+        <section class="topic-grid">
+
+
+            <a href="how-websites-work.html" class="topic-card">
+
+                <div class="topic-number">01 / CORE</div>
+
+                <h3>How Websites Work</h3>
+
+                <p>
+                    Learn browsers, servers, HTTP requests, responses,
+                    DNS and modern web architecture.
+                </p>
+
+                <span class="topic-link">
+                    OPEN →
+                </span>
+
+            </a>
+
+
+            <a href="http-https.html" class="topic-card">
+
+                <div class="topic-number">02 / CORE</div>
+
+                <h3>HTTP / HTTPS</h3>
+
+                <p>
+                    Understand web requests, responses, methods,
+                    status codes and secure transport.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="cookies.html" class="topic-card">
+
+                <div class="topic-number">03 / CORE</div>
+
+                <h3>Cookies</h3>
+
+                <p>
+                    Understand browser cookies, attributes, sessions
+                    and common security considerations.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="sessions.html" class="topic-card">
+
+                <div class="topic-number">04 / CORE</div>
+
+                <h3>Sessions</h3>
+
+                <p>
+                    Learn how applications maintain state and manage
+                    authenticated user sessions.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="authentication-authorization.html" class="topic-card">
+
+                <div class="topic-number">05 / ACCESS</div>
+
+                <h3>Authentication &amp; Authorization</h3>
+
+                <p>
+                    Learn identity verification, permissions and
+                    access-control concepts.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="sql-injection.html" class="topic-card">
+
+                <div class="topic-number">06 / INPUT</div>
+
+                <h3>SQL Injection</h3>
+
+                <p>
+                    Understand unsafe database input handling and
+                    defensive prevention techniques.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="xss.html" class="topic-card">
+
+                <div class="topic-number">07 / INPUT</div>
+
+                <h3>Cross-Site Scripting (XSS)</h3>
+
+                <p>
+                    Learn how unsafe web input can affect browser-side
+                    application behavior.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="csrf.html" class="topic-card">
+
+                <div class="topic-number">08 / REQUEST</div>
+
+                <h3>CSRF</h3>
+
+                <p>
+                    Understand cross-site request forgery and
+                    defenses such as CSRF tokens.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="idor.html" class="topic-card">
+
+                <div class="topic-number">09 / ACCESS</div>
+
+                <h3>IDOR</h3>
+
+                <p>
+                    Learn insecure direct object references and
+                    proper server-side authorization checks.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="file-upload-vulnerabilities.html" class="topic-card">
+
+                <div class="topic-number">10 / FILES</div>
+
+                <h3>File Upload Vulnerabilities</h3>
+
+                <p>
+                    Understand risks associated with unsafe file
+                    upload functionality.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="command-injection.html" class="topic-card">
+
+                <div class="topic-number">11 / SERVER</div>
+
+                <h3>Command Injection</h3>
+
+                <p>
+                    Learn how unsafe system-command handling can
+                    create application security risks.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="path-traversal.html" class="topic-card">
+
+                <div class="topic-number">12 / FILES</div>
+
+                <h3>Path Traversal</h3>
+
+                <p>
+                    Understand unsafe file path handling and
+                    secure path validation.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="security-headers.html" class="topic-card">
+
+                <div class="topic-number">13 / DEFENSE</div>
+
+                <h3>Security Headers</h3>
+
+                <p>
+                    Learn defensive HTTP headers that help protect
+                    modern web applications.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="owasp-top-10.html" class="topic-card">
+
+                <div class="topic-number">14 / STANDARD</div>
+
+                <h3>OWASP Top 10</h3>
+
+                <p>
+                    Understand major categories of web application
+                    security risks.
+                </p>
+
+                <span class="topic-link">OPEN →</span>
+
+            </a>
+
+
+            <a href="../lab/web-security-lab.html" class="topic-card">
+
+                <div class="topic-number">15 / PRACTICAL</div>
+
+                <h3>Web Security Labs</h3>
+
+                <p>
+                    Test your knowledge with controlled web security
+                    learning exercises and assessments.
+                </p>
+
+                <span class="topic-link">LAUNCH →</span>
+
+            </a>
+
+
+        </section>
+
+
+        <!-- LAB CTA -->
+
+        <div class="lab-area">
+
+            <div class="lab-text">
+
+                <strong>
+                    Ready for the Web Security Lab?
+                </strong>
+
+                <span>
+                    Practice your understanding in an authorized
+                    cybersecurity training environment.
+                </span>
+
+            </div>
+
+            <a
+                href="../lab/web-security-lab.html"
+                class="lab-button"
+            >
+                🧪 Launch Web Security Lab →
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">Home</a>
+
+            <a href="../../../footer/about.html">About</a>
+
+            <a href="../../../footer/contact.html">Contact</a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Shared Supabase Client -->
+<script src="../../../js/supabase-client.js"></script>
+<!-- Shared Navbar Loader -->
+<script src="../../../js/navbar-loader.js"></script>
+<!-- Navbar Functionality -->
+<script src="../../../js/navbar.js"></script>
+<!-- User Session -->
+<script src="../../../js/session.js"></script>
+</body>
+
+</html>

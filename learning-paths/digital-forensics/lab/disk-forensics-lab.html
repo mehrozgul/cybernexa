@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Disk Forensics Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .dfl-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 60px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0,191,255,.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(125,80,255,.06),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #020711,
+                    #030914 55%,
+                    #01050b
+                );
+        }
+
+        .dfl-container {
+
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        /* HERO */
+
+        .dfl-hero {
+
+            padding: 38px;
+            margin-bottom: 22px;
+
+            border: 1px solid rgba(0,191,255,.16);
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5,20,35,.98),
+                    rgba(4,10,21,.98)
+                );
+        }
+
+        .dfl-label {
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+
+            margin-bottom: 13px;
+        }
+
+        .dfl-hero h1 {
+
+            margin: 0;
+
+            color: #fff;
+
+            font-size: 40px;
+        }
+
+        .dfl-hero h1 span {
+            color: #00bfff;
+        }
+
+        .dfl-hero p {
+
+            max-width: 750px;
+
+            margin-top: 14px;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.85;
+        }
+
+        /* PROGRESS */
+
+        .dfl-progress {
+
+            margin-bottom: 20px;
+            padding: 17px;
+
+            border: 1px solid rgba(0,191,255,.10);
+            border-radius: 10px;
+
+            background: rgba(0,191,255,.025);
+        }
+
+        .dfl-progress-top {
+
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 9px;
+        }
+
+        .dfl-progress-top span {
+
+            color: #71879b;
+            font-size: 10px;
+        }
+
+        .dfl-progress-top strong {
+
+            color: #00bfff;
+            font-size: 10px;
+        }
+
+        .dfl-progress-bar {
+
+            height: 5px;
+
+            border-radius: 20px;
+
+            background: #0c1c2b;
+
+            overflow: hidden;
+        }
+
+        .dfl-progress-fill {
+
+            width: 0%;
+
+            height: 100%;
+
+            background: linear-gradient(
+                90deg,
+                #00bfff,
+                #7d50ff
+            );
+
+            transition: width .3s ease;
+        }
+
+        /* CARDS */
+
+        .dfl-card {
+
+            margin-bottom: 16px;
+
+            padding: 25px;
+
+            border: 1px solid rgba(0,191,255,.10);
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5,20,34,.97),
+                    rgba(2,10,20,.97)
+                );
+        }
+
+        .dfl-heading {
+
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            margin-bottom: 17px;
+        }
+
+        .dfl-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background: rgba(0,191,255,.05);
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .dfl-heading h2 {
+
+            margin: 0;
+
+            color: #fff;
+
+            font-size: 19px;
+        }
+
+        .dfl-card p {
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* EVIDENCE TABLE */
+
+        .evidence-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 15px;
+        }
+
+        .evidence-table th,
+        .evidence-table td {
+
+            padding: 11px;
+
+            border-bottom:
+                1px solid rgba(0,191,255,.08);
+
+            text-align: left;
+
+            font-size: 11px;
+        }
+
+        .evidence-table th {
+
+            color: #00bfff;
+
+            font-size: 9px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .evidence-table td {
+
+            color: #8197aa;
+        }
+
+        .evidence-table strong {
+
+            color: #dce9f4;
+        }
+
+        /* BUTTON */
+
+        .dfl-button {
+
+            margin-top: 16px;
+
+            padding: 11px 18px;
+
+            border: 1px solid rgba(0,191,255,.30);
+
+            border-radius: 7px;
+
+            color: #d5f4ff;
+
+            background: rgba(0,191,255,.05);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .dfl-button:hover {
+
+            background: rgba(0,191,255,.10);
+        }
+
+        /* OUTPUT */
+
+        .dfl-output {
+
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 17px;
+
+            border-left: 3px solid #00ffb0;
+
+            border-radius: 8px;
+
+            background: rgba(0,255,176,.025);
+
+            color: #91b6ad;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+        /* FINDINGS */
+
+        .finding {
+
+            display: grid;
+
+            grid-template-columns: 25px 1fr;
+
+            gap: 10px;
+
+            padding: 12px;
+
+            margin-bottom: 8px;
+
+            border:
+                1px solid rgba(125,80,255,.09);
+
+            border-radius: 8px;
+
+            background:
+                rgba(125,80,255,.018);
+        }
+
+        .finding input {
+
+            margin-top: 3px;
+        }
+
+        .finding strong {
+
+            display: block;
+
+            color: #dce9f4;
+
+            font-size: 11px;
+
+            margin-bottom: 3px;
+        }
+
+        .finding span {
+
+            color: #71879b;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+        /* MCQ */
+
+        .question {
+
+            margin-bottom: 20px;
+
+            padding: 16px;
+
+            border:
+                1px solid rgba(0,191,255,.08);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0,191,255,.018);
+        }
+
+        .question strong {
+
+            display: block;
+
+            margin-bottom: 11px;
+
+            color: #dce9f4;
+
+            font-size: 12px;
+        }
+
+        .option {
+
+            display: block;
+
+            padding: 7px 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+
+            cursor: pointer;
+        }
+
+        .option input {
+
+            margin-right: 7px;
+        }
+
+        /* SCORE */
+
+        .dfl-score {
+
+            display: none;
+
+            padding: 22px;
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0,255,176,.15);
+
+            border-radius: 10px;
+
+            background: rgba(0,255,176,.025);
+        }
+
+        .dfl-score h2 {
+
+            margin: 0 0 8px;
+
+            color: #00ffb0;
+
+            font-size: 22px;
+        }
+
+        .dfl-score p {
+
+            margin: 0;
+
+            color: #8298aa;
+
+            font-size: 11px;
+        }
+/* =========================
+   LAB NAVIGATION
+========================= */
+
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 55px;
+    padding-top: 25px;
+    border-top: 1px solid #173553;
+}
+
+.topic-nav {
+    display: inline-block;
+    min-width: 180px;
+    padding: 14px 20px;
+    background: #0a1828;
+    border: 1px solid #183651;
+    border-radius: 7px;
+    color: #bae6fd;
+    text-decoration: none;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.topic-nav:hover {
+    border-color: #2588b3;
+    color: #67e8f9;
+    background: #0c2033;
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+
+    .topic-navigation {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .topic-nav {
+        width: 100%;
+    }
+
+}
+        @media(max-width:600px) {
+
+            .dfl-page {
+                padding: 40px 12px 60px;
+            }
+
+            .dfl-hero {
+                padding: 25px 20px;
+            }
+
+            .dfl-hero h1 {
+                font-size: 30px;
+            }
+
+            .dfl-card {
+                padding: 19px;
+            }
+
+            .evidence-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .dfl-navigation {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="dfl-page">
+
+<div class="dfl-container">
+
+
+    <!-- HERO -->
+
+    <section class="dfl-hero">
+
+        <div class="dfl-label">
+            DIGITAL FORENSICS / PRACTICAL LAB 09
+        </div>
+
+        <h1>
+            Disk <span>Forensics</span> Investigation
+        </h1>
+
+        <p>
+            Analyze a simulated forensic disk image, verify its integrity,
+            examine storage artifacts and identify findings that may be
+            relevant to a digital investigation.
+        </p>
+
+    </section>
+
+
+    <!-- PROGRESS -->
+
+    <div class="dfl-progress">
+
+        <div class="dfl-progress-top">
+
+            <span>
+                Investigation Progress
+            </span>
+
+            <strong id="progressText">
+                0%
+            </strong>
+
+        </div>
+
+        <div class="dfl-progress-bar">
+
+            <div
+                class="dfl-progress-fill"
+                id="progressFill">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- EVIDENCE -->
+
+    <section class="dfl-card">
+
+        <div class="dfl-heading">
+
+            <div class="dfl-number">
+                01
+            </div>
+
+            <h2>
+                Examine Evidence
+            </h2>
+
+        </div>
+
+        <p>
+            The following is a simulated forensic evidence record.
+            In a real investigation, evidence handling and verification
+            procedures must be followed carefully.
+        </p>
+
+
+        <table class="evidence-table">
+
+            <tr>
+                <th>Property</th>
+                <th>Value</th>
+            </tr>
+
+            <tr>
+                <td>Evidence ID</td>
+                <td><strong>DISK-09</strong></td>
+            </tr>
+
+            <tr>
+                <td>Image Type</td>
+                <td><strong>Forensic Disk Image</strong></td>
+            </tr>
+
+            <tr>
+                <td>File System</td>
+                <td><strong>NTFS</strong></td>
+            </tr>
+
+            <tr>
+                <td>Partition</td>
+                <td><strong>System Partition</strong></td>
+            </tr>
+
+            <tr>
+                <td>Image Status</td>
+                <td><strong>Available for Analysis</strong></td>
+            </tr>
+
+            <tr>
+                <td>Integrity</td>
+                <td><strong>Verified</strong></td>
+            </tr>
+
+        </table>
+
+
+        <button
+            class="dfl-button"
+            onclick="showEvidence()">
+
+            🔎 Inspect Evidence
+
+        </button>
+
+
+        <div
+            class="dfl-output"
+            id="evidenceOutput">
+
+            Evidence DISK-09 represents a simulated NTFS disk image.
+            The image should be treated as an evidence copy rather than
+            modifying an original storage device. The next step is to
+            verify integrity and examine relevant artifacts.
+
+        </div>
+
+    </section>
+
+
+    <!-- HASH -->
+
+    <section class="dfl-card">
+
+        <div class="dfl-heading">
+
+            <div class="dfl-number">
+                02
+            </div>
+
+            <h2>
+                Verify Evidence Integrity
+            </h2>
+
+        </div>
+
+        <p>
+            Compare the recorded evidence hash with the calculated value.
+            In this simulated exercise, both values are intentionally equal.
+        </p>
+
+
+        <table class="evidence-table">
+
+            <tr>
+                <th>Hash Type</th>
+                <th>Recorded Hash</th>
+            </tr>
+
+            <tr>
+                <td>SHA-256</td>
+
+                <td>
+                    <strong>
+                        91af0e2d7b7c...8a42
+                    </strong>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Calculated</td>
+
+                <td>
+                    <strong>
+                        91af0e2d7b7c...8a42
+                    </strong>
+                </td>
+            </tr>
+
+        </table>
+
+
+        <button
+            class="dfl-button"
+            onclick="verifyHash()">
+
+            🔐 Verify Hash
+
+        </button>
+
+
+        <div
+            class="dfl-output"
+            id="hashOutput">
+
+        </div>
+
+    </section>
+
+
+    <!-- ARTIFACTS -->
+
+    <section class="dfl-card">
+
+        <div class="dfl-heading">
+
+            <div class="dfl-number">
+                03
+            </div>
+
+            <h2>
+                Analyze Disk Artifacts
+            </h2>
+
+        </div>
+
+        <p>
+            Select the artifacts that may be relevant to the investigation.
+        </p>
+
+
+        <label class="finding">
+
+            <input
+                type="checkbox"
+                class="artifact">
+
+            <div>
+
+                <strong>
+                    Windows User Directory
+                </strong>
+
+                <span>
+                    May contain user files, application data and other
+                    activity-related artifacts.
+                </span>
+
+            </div>
+
+        </label>
+
+
+        <label class="finding">
+
+            <input
+                type="checkbox"
+                class="artifact">
+
+            <div>
+
+                <strong>
+                    Recycle Bin Artifacts
+                </strong>
+
+                <span>
+                    May provide information about files that were deleted
+                    through normal Windows operations.
+                </span>
+
+            </div>
+
+        </label>
+
+
+        <label class="finding">
+
+            <input
+                type="checkbox"
+                class="artifact">
+
+            <div>
+
+                <strong>
+                    File Timestamps
+                </strong>
+
+                <span>
+                    Can provide temporal information about file activity.
+                </span>
+
+            </div>
+
+        </label>
+
+
+        <label class="finding">
+
+            <input
+                type="checkbox"
+                class="artifact">
+
+            <div>
+
+                <strong>
+                    Unallocated Space
+                </strong>
+
+                <span>
+                    May contain remnants of previously stored information.
+                </span>
+
+            </div>
+
+        </label>
+
+
+        <button
+            class="dfl-button"
+            onclick="analyzeArtifacts()">
+
+            Analyze Selected Artifacts
+
+        </button>
+
+
+        <div
+            class="dfl-output"
+            id="artifactOutput">
+
+        </div>
+
+    </section>
+
+
+    <!-- FINDINGS -->
+
+    <section class="dfl-card">
+
+        <div class="dfl-heading">
+
+            <div class="dfl-number">
+                04
+            </div>
+
+            <h2>
+                Record Investigation Findings
+            </h2>
+
+        </div>
+
+        <p>
+            Based on the simulated evidence, select the findings that should
+            be documented in a forensic report.
+        </p>
+
+
+        <label class="finding">
+
+            <input
+                type="checkbox"
+                class="findingCheck">
+
+            <div>
+
+                <strong>
+                    Evidence integrity was verified.
+                </strong>
+
+                <span>
+                    The recorded and calculated SHA-256 values match.
+                </span>
+
+            </div>
+
+        </label>
+
+
+        <label class="finding">
+
+            <input
+                type="checkbox"
+                class="findingCheck">
+
+            <div>
+
+                <strong>
+                    The image uses NTFS.
+                </strong>
+
+                <span>
+                    The simulated evidence record identifies NTFS as
+                    the file system.
+                </span>
+
+            </div>
+
+        </label>
+
+
+        <label class="finding">
+
+            <input
+                type="checkbox"
+                class="findingCheck">
+
+            <div>
+
+                <strong>
+                    Deleted-data analysis may require additional examination.
+                </strong>
+
+                <span>
+                    Deleted artifacts may or may not remain recoverable.
+                </span>
+
+            </div>
+
+        </label>
+
+
+        <button
+            class="dfl-button"
+            onclick="recordFindings()">
+
+            📋 Record Findings
+
+        </button>
+
+
+        <div
+            class="dfl-output"
+            id="findingOutput">
+
+        </div>
+
+    </section>
+
+
+    <!-- MCQ -->
+
+    <section class="dfl-card">
+
+        <div class="dfl-heading">
+
+            <div class="dfl-number">
+                05
+            </div>
+
+            <h2>
+                Knowledge Check
+            </h2>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                1. What is the main purpose of a forensic disk image?
+            </strong>
+
+            <label class="option">
+                <input type="radio" name="q1" value="a">
+                To replace the original evidence
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="b">
+                To provide an evidence copy for analysis
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="c">
+                To increase disk performance
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                2. Why are cryptographic hashes useful in forensics?
+            </strong>
+
+            <label class="option">
+                <input type="radio" name="q2" value="a">
+                They increase storage capacity
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="b">
+                They help verify data integrity
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="c">
+                They automatically recover every deleted file
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                3. Which file system is commonly associated with Windows?
+            </strong>
+
+            <label class="option">
+                <input type="radio" name="q3" value="a">
+                NTFS
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="b">
+                ext4
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="c">
+                HFS+
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                4. What can unallocated space potentially contain?
+            </strong>
+
+            <label class="option">
+                <input type="radio" name="q4" value="a">
+                Only operating system drivers
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q4" value="b">
+                Remnants of previously stored data
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q4" value="c">
+                Only encrypted passwords
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <strong>
+                5. Which activity should normally occur before detailed
+                forensic analysis?
+            </strong>
+
+            <label class="option">
+                <input type="radio" name="q5" value="a">
+                Evidence acquisition and preservation
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q5" value="b">
+                Deleting unnecessary evidence
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q5" value="c">
+                Formatting the disk
+            </label>
+
+        </div>
+
+
+        <button
+            class="dfl-button"
+            onclick="checkQuiz()">
+
+            Submit Knowledge Check
+
+        </button>
+
+
+        <div
+            class="dfl-score"
+            id="scoreBox">
+
+            <h2 id="scoreText"></h2>
+
+            <p id="scoreMessage"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- NAVIGATION -->
+<!-- =========================
+     LAB NAVIGATION
+========================= -->
+
+<div class="topic-navigation">
+
+    <a href="network-forensics-lab.html" class="topic-nav">
+        ← Lab: Network Forensics
+    </a>
+
+    <a href="../theory/incident-timeline.html" class="topic-nav">
+        Next Theory: Incident Timeline →
+    </a>
+
+</div>
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">Home</a>
+            <a href="../../../footer/about.html">About</a>
+            <a href="../../../footer/contact.html">Contact</a>
+            <a href="../../../footer/privacy-policy.html">Privacy Policy</a>
+            <a href="../../../footer/disclaimer.html">Disclaimer</a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script src="../../../js/navbar.js"></script>
+
+<script>
+
+    function showEvidence() {
+
+        document.getElementById("evidenceOutput").style.display = "block";
+
+        updateProgress(20);
+    }
+
+
+    function verifyHash() {
+
+        const output =
+            document.getElementById("hashOutput");
+
+        output.style.display = "block";
+
+        output.innerHTML =
+            "✓ HASH VERIFIED<br>" +
+            "Recorded SHA-256 and calculated SHA-256 values match.<br>" +
+            "The simulated evidence can proceed to analysis.";
+
+        updateProgress(40);
+    }
+
+
+    function analyzeArtifacts() {
+
+        const selected =
+            document.querySelectorAll(".artifact:checked").length;
+
+        const output =
+            document.getElementById("artifactOutput");
+
+        output.style.display = "block";
+
+        if (selected === 0) {
+
+            output.innerHTML =
+                "Select at least one artifact before continuing.";
+
+            return;
+        }
+
+        output.innerHTML =
+            "✓ ARTIFACT ANALYSIS COMPLETE<br>" +
+            selected +
+            " artifact(s) selected for investigation.<br>" +
+            "Review timestamps, file-system information and deleted-data indicators.";
+
+        updateProgress(60);
+    }
+
+
+    function recordFindings() {
+
+        const selected =
+            document.querySelectorAll(".findingCheck:checked").length;
+
+        const output =
+            document.getElementById("findingOutput");
+
+        output.style.display = "block";
+
+        if (selected === 0) {
+
+            output.innerHTML =
+                "Select the findings that should be documented.";
+
+            return;
+        }
+
+        output.innerHTML =
+            "✓ FINDINGS RECORDED<br>" +
+            selected +
+            " finding(s) added to the simulated forensic report.";
+
+        updateProgress(75);
+    }
+
+
+    function checkQuiz() {
+
+        const answers = {
+
+            q1: "b",
+            q2: "b",
+            q3: "a",
+            q4: "b",
+            q5: "a"
+
+        };
+
+        let score = 0;
+
+        Object.keys(answers).forEach(function(question) {
+
+            const selected =
+                document.querySelector(
+                    'input[name="' + question + '"]:checked'
+                );
+
+            if (selected &&
+                selected.value === answers[question]) {
+
+                score++;
+
+            }
+
+        });
+
+
+        const scoreBox =
+            document.getElementById("scoreBox");
+
+        const scoreText =
+            document.getElementById("scoreText");
+
+        const scoreMessage =
+            document.getElementById("scoreMessage");
+
+
+        scoreBox.style.display = "block";
+
+        scoreText.innerHTML =
+            score + " / 5";
+
+
+        if (score === 5) {
+
+            scoreMessage.innerHTML =
+                "Excellent. Disk Forensics lab completed successfully.";
+
+            updateProgress(100);
+
+        } else if (score >= 3) {
+
+            scoreMessage.innerHTML =
+                "Good work. Review the incorrect concepts and try again.";
+
+            updateProgress(90);
+
+        } else {
+
+            scoreMessage.innerHTML =
+                "Review the Disk Forensics theory and attempt the lab again.";
+
+            updateProgress(80);
+
+        }
+
+    }
+
+
+    function updateProgress(value) {
+
+        document.getElementById("progressFill").style.width =
+            value + "%";
+
+        document.getElementById("progressText").innerText =
+            value + "%";
+
+    }
+
+</script>
+
+</body>
+</html>

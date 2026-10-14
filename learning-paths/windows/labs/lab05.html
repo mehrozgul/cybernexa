@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberNexa | Lab 05: Windows Users & Groups Lab</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(14, 165, 233, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .lab-container {
+
+            width: 100%;
+
+            max-width: 1050px;
+
+            margin: auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 45px;
+        }
+
+        .lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #60a5fa;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 42px;
+
+            line-height: 1.2;
+        }
+
+        .lab-header h1 span {
+
+            color: #60a5fa;
+        }
+
+        .lab-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+        .lab-badges {
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 22px;
+        }
+
+        .lab-badge {
+
+            padding: 8px 13px;
+
+            border: 1px solid rgba(96, 165, 250, 0.20);
+
+            border-radius: 20px;
+
+            color: #bfdbfe;
+
+            background: rgba(96, 165, 250, 0.055);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           CARDS
+        ====================================================== */
+
+        .lab-card {
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+        }
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .lab-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(96, 165, 250, 0.30);
+
+            border-radius: 10px;
+
+            color: #60a5fa;
+
+            background: rgba(96, 165, 250, 0.07);
+
+            font-weight: 800;
+        }
+
+        .lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+        }
+
+        .lab-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+        .lab-card p {
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           OBJECTIVE
+        ====================================================== */
+
+        .objective-box {
+
+            padding: 20px;
+
+            border-left: 3px solid #60a5fa;
+
+            border-radius: 0 10px 10px 0;
+
+            background: rgba(96, 165, 250, 0.055);
+        }
+
+        .objective-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+        }
+
+        .objective-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           STEPS
+        ====================================================== */
+
+        .step {
+
+            margin-top: 22px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.13);
+
+            border-radius: 11px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            margin-right: 8px;
+
+            border-radius: 50%;
+
+            color: #dbeafe;
+
+            background: rgba(37, 99, 235, 0.25);
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .step-title {
+
+            color: #f8fafc;
+
+            font-size: 15px;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           COMMAND
+        ====================================================== */
+
+        .terminal {
+
+            margin-top: 15px;
+
+            padding: 18px 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+        .terminal-label {
+
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .terminal code {
+
+            color: #93c5fd;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 2;
+        }
+
+        /* =====================================================
+           EXPECTED RESULT
+        ====================================================== */
+
+        .result-box {
+
+            margin-top: 15px;
+
+            padding: 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.14);
+
+            border-radius: 10px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .result-box strong {
+
+            color: #60a5fa;
+
+            font-size: 13px;
+        }
+
+        .result-box p {
+
+            margin-bottom: 0;
+        }
+
+        /* =====================================================
+           CHECKLIST
+        ====================================================== */
+
+        .checklist {
+
+            list-style: none;
+
+            margin: 0;
+
+            padding: 0;
+        }
+
+        .checklist li {
+
+            position: relative;
+
+            padding: 10px 0 10px 25px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            border-bottom:
+                1px solid rgba(96, 165, 250, 0.07);
+        }
+
+        .checklist li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+
+            color: #60a5fa;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+        .lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background: rgba(96, 165, 250, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .lab-button:hover {
+
+            border-color: rgba(96, 165, 250, 0.65);
+
+            background: rgba(96, 165, 250, 0.10);
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 55px;
+            }
+
+            .lab-header h1 {
+
+                font-size: 30px;
+            }
+
+            .lab-card {
+
+                padding: 21px 18px;
+            }
+
+            .lab-card h2 {
+
+                font-size: 18px;
+            }
+
+            .lab-navigation {
+
+                flex-direction: column;
+            }
+
+            .lab-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+    
+        /* =====================================================
+           STANDARDIZED LAB NAVIGATION
+        ====================================================== */
+
+        .windows-lab-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .windows-lab-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 20px;
+            border: 1px solid rgba(103, 232, 249, 0.25);
+            border-radius: 9px;
+            color: #dbeafe;
+            background: rgba(103, 232, 249, 0.05);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .windows-lab-button:hover {
+            border-color: rgba(103, 232, 249, 0.65);
+            background: rgba(103, 232, 249, 0.12);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .windows-lab-button span {
+            color: #67e8f9;
+            font-size: 16px;
+        }
+
+        .windows-lab-button.theory {
+            border-color: rgba(96, 165, 250, 0.35);
+            background: rgba(96, 165, 250, 0.08);
+            color: #93c5fd;
+        }
+
+        .windows-lab-button.theory:hover {
+            border-color: rgba(96, 165, 250, 0.75);
+            background: rgba(96, 165, 250, 0.16);
+            color: #ffffff;
+        }
+
+        @media (max-width: 650px) {
+            .windows-lab-navigation {
+                flex-direction: column;
+                align-items: stretch;
+                margin-top: 25px;
+            }
+
+            .windows-lab-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+====================================================== -->
+
+<main class="lab-page">
+
+<div class="lab-container">
+
+
+<!-- HEADER -->
+
+<header class="lab-header">
+
+    <div class="lab-category">
+        WINDOWS PRACTICAL LAB
+    </div>
+
+    <h1>Windows Users &amp; Groups <span>Lab 05</span></h1>
+
+    <p class="lab-intro">
+
+        Practice identifying Windows users and groups,
+        inspecting account information and understanding
+        group membership using CMD and PowerShell.
+
+    </p>
+
+    <div class="lab-badges">
+
+        <div class="lab-badge">
+            Beginner
+        </div>
+
+        <div class="lab-badge">
+            Windows
+        </div>
+
+        <div class="lab-badge">
+            CMD
+        </div>
+
+        <div class="lab-badge">
+            PowerShell
+        </div>
+
+        <div class="lab-badge">
+            Identity Security
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- OBJECTIVE -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-icon">
+            🎯
+        </div>
+
+        <h2>
+            Lab Objective
+        </h2>
+
+    </div>
+
+    <div class="objective-box">
+
+        <strong>
+            Goal
+        </strong>
+
+        <span>
+
+            In this lab, you will learn how to identify the
+            current Windows user, list local users, inspect
+            local groups and check group membership using
+            built-in Windows commands.
+
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 1 -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-icon">
+            01
+        </div>
+
+        <h2>
+            Identify the Current User
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <span class="step-number">
+            1
+        </span>
+
+        <span class="step-title">
+            Open Command Prompt
+        </span>
+
+        <p>
+
+            Press:
+
+            <strong>
+                Windows + R
+            </strong>
+
+            and type:
+
+        </p>
+
+        <div class="terminal">
+
+            <span class="terminal-label">
+                Run
+            </span>
+
+            <code>
+                cmd
+            </code>
+
+        </div>
+
+    </div>
+
+
+    <div class="step">
+
+        <span class="step-number">
+            2
+        </span>
+
+        <span class="step-title">
+            Run whoami
+        </span>
+
+        <div class="terminal">
+
+            <span class="terminal-label">
+                CMD
+            </span>
+
+            <code>
+                whoami
+            </code>
+
+        </div>
+
+        <div class="result-box">
+
+            <strong>
+                Expected Result
+            </strong>
+
+            <p>
+
+                Windows displays the currently authenticated
+                user in computer\username format.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 2 -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-icon">
+            02
+        </div>
+
+        <h2>
+            List Local Users
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <span class="step-number">
+            1
+        </span>
+
+        <span class="step-title">
+            Run the following command
+        </span>
+
+        <div class="terminal">
+
+            <span class="terminal-label">
+                CMD
+            </span>
+
+            <code>
+                net user
+            </code>
+
+        </div>
+
+        <div class="result-box">
+
+            <strong>
+                Expected Result
+            </strong>
+
+            <p>
+
+                Windows displays the local user accounts
+                configured on the computer.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 3 -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-icon">
+            03
+        </div>
+
+        <h2>
+            Inspect a User Account
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <span class="step-number">
+            1
+        </span>
+
+        <span class="step-title">
+            Choose a username
+        </span>
+
+        <p>
+
+            First run:
+
+        </p>
+
+        <div class="terminal">
+
+            <span class="terminal-label">
+                CMD
+            </span>
+
+            <code>
+                net user
+            </code>
+
+        </div>
+
+    </div>
+
+
+    <div class="step">
+
+        <span class="step-number">
+            2
+        </span>
+
+        <span class="step-title">
+            Inspect the account
+        </span>
+
+        <div class="terminal">
+
+            <span class="terminal-label">
+                CMD Example
+            </span>
+
+            <code>
+                net user YOUR_USERNAME
+            </code>
+
+        </div>
+
+        <div class="result-box">
+
+            <strong>
+                Expected Result
+            </strong>
+
+            <p>
+
+                Windows displays information associated with
+                the selected local user account.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 4 -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-icon">
+            04
+        </div>
+
+        <h2>
+            List Local Groups
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <span class="step-number">
+            1
+        </span>
+
+        <span class="step-title">
+            Run the command
+        </span>
+
+        <div class="terminal">
+
+            <span class="terminal-label">
+                CMD
+            </span>
+
+            <code>
+                net localgroup
+            </code>
+
+        </div>
+
+        <div class="result-box">
+
+            <strong>
+                Expected Result
+            </strong>
+
+            <p>
+
+                Windows displays the local groups available
+                on the system.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 5 -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-icon">
+            05
+        </div>
+
+        <h2>
+            Check Administrators Group
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <span class="step-number">
+            1
+        </span>
+
+        <span class="step-title">
+            Run the command
+        </span>
+
+        <div class="terminal">
+
+            <span class="terminal-label">
+                CMD
+            </span>
+
+            <code>
+                net localgroup administrators
+            </code>
+
+        </div>
+
+        <div class="result-box">
+
+            <strong>
+                Expected Result
+            </strong>
+
+            <p>
+
+                Windows displays the members of the local
+                Administrators group.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 6 -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-icon">
+            PS
+        </div>
+
+        <h2>
+            Inspect Users with PowerShell
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <span class="step-number">
+            1
+        </span>
+
+        <span class="step-title">
+            Open PowerShell
+        </span>
+
+        <p>
+
+            Open PowerShell from the Windows Start menu.
+
+        </p>
+
+    </div>
+
+
+    <div class="step">
+
+        <span class="step-number">
+            2
+        </span>
+
+        <span class="step-title">
+            List local users
+        </span>
+
+        <div class="terminal">
+
+            <span class="terminal-label">
+                PowerShell
+            </span>
+
+            <code>
+                Get-LocalUser
+            </code>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 7 -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-icon">
+            G
+        </div>
+
+        <h2>
+            Inspect Local Groups with PowerShell
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <span class="step-number">
+            1
+        </span>
+
+        <span class="step-title">
+            List local groups
+        </span>
+
+        <div class="terminal">
+
+            <span class="terminal-label">
+                PowerShell
+            </span>
+
+            <code>
+                Get-LocalGroup
+            </code>
+
+        </div>
+
+    </div>
+
+
+    <div class="step">
+
+        <span class="step-number">
+            2
+        </span>
+
+        <span class="step-title">
+            Check Administrators members
+        </span>
+
+        <div class="terminal">
+
+            <span class="terminal-label">
+                PowerShell
+            </span>
+
+            <code>
+                Get-LocalGroupMember -Group "Administrators"
+            </code>
+
+        </div>
+
+        <div class="result-box">
+
+            <strong>
+                Expected Result
+            </strong>
+
+            <p>
+
+                PowerShell displays the accounts that belong
+                to the local Administrators group.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 8 -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-icon">
+            ✓
+        </div>
+
+        <h2>
+            Lab Verification Checklist
+        </h2>
+
+    </div>
+
+    <ul class="checklist">
+
+        <li>
+            I identified the current Windows user.
+        </li>
+
+        <li>
+            I listed local Windows users.
+        </li>
+
+        <li>
+            I inspected a user account.
+        </li>
+
+        <li>
+            I listed local groups.
+        </li>
+
+        <li>
+            I checked the Administrators group.
+        </li>
+
+        <li>
+            I used PowerShell to list local users.
+        </li>
+
+        <li>
+            I used PowerShell to list local groups.
+        </li>
+
+        <li>
+            I checked group membership using PowerShell.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- CYBERSECURITY CONNECTION -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-icon">
+            🔐
+        </div>
+
+        <h2>
+            Cybersecurity Connection
+        </h2>
+
+    </div>
+
+    <p>
+
+        In cybersecurity, users and groups are important
+        because excessive privileges can increase the impact
+        of a security incident. Security professionals therefore
+        examine account privileges, group membership and
+        unnecessary accounts during system security assessments.
+
+    </p>
+
+</section>
+
+
+<!-- NAVIGATION -->
+
+<div class="windows-lab-navigation">
+
+                <a
+                    href="lab04.html"
+                    class="windows-lab-button"
+                >
+                    <span>←</span>
+                    <strong>Previous: Lab 04: Windows PowerShell</strong>
+                </a>
+
+                <a
+                    href="../theory/windows-services.html"
+                    class="windows-lab-button theory"
+                >
+                    <span>📘</span>
+                    <strong>Theory: Windows Services</strong>
+                </a>
+
+                <!-- <a
+                    href="lab06.html"
+                    class="windows-lab-button"
+                >
+                    <strong>Next: Lab 06: Windows Services</strong>
+                    <span>→</span>
+                </a> -->
+
+            </div>
+
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<script src="../../../js/navbar.js"></script>
+
+
+</body>
+
+</html>

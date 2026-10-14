@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OWASP Top 10 - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .ws-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 191, 255, 0.06),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 255, 176, 0.055),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .ws-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* HERO */
+
+        .ws-hero {
+            position: relative;
+            padding: 42px 35px;
+            margin-bottom: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 34, 0.98),
+                    rgba(2, 12, 23, 0.98)
+                );
+
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .ws-hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .ws-hero-grid {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(260px, 0.75fr);
+
+            gap: 35px;
+            align-items: center;
+        }
+
+        .ws-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+
+            color: #00bfff;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .ws-kicker::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+
+            background: #00bfff;
+            box-shadow: 0 0 12px rgba(0, 191, 255, 0.7);
+        }
+
+        .ws-hero h1 {
+            margin: 0;
+
+            color: #ffffff;
+            font-size: 46px;
+            line-height: 1.12;
+            font-weight: 850;
+            letter-spacing: -1px;
+        }
+
+        .ws-hero h1 span {
+            color: #00bfff;
+        }
+
+        .ws-description {
+            max-width: 700px;
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        /* TERMINAL */
+
+        .terminal-panel {
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            border-radius: 11px;
+
+            background: rgba(0, 0, 0, 0.34);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            box-shadow:
+                inset 0 0 25px rgba(0, 191, 255, 0.025);
+        }
+
+        .terminal-top {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.09);
+        }
+
+        .terminal-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #405263;
+        }
+
+        .terminal-title {
+            margin-left: auto;
+            color: #52687c;
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+            margin-bottom: 9px;
+            color: #60788d;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .green {
+            color: #00ffb0;
+        }
+
+        .blue {
+            color: #00bfff;
+        }
+
+        /* META */
+
+        .ws-meta {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+            display: block;
+            margin-bottom: 6px;
+
+            color: #536a7f;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: #dce9f4;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* CARD */
+
+        .ws-card {
+            margin-bottom: 18px;
+            padding: 27px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .card-number {
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.22);
+            border-radius: 7px;
+
+            color: #00bfff;
+            background: rgba(0, 191, 255, 0.045);
+
+            font-family: Consolas, monospace;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .card-heading h2 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .ws-card p {
+            margin: 0 0 12px;
+
+            color: #8fa5bb;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* DEFINITION */
+
+        .definition {
+            padding: 21px;
+
+            border-left: 3px solid #00bfff;
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 191, 255, 0.055),
+                    rgba(0, 191, 255, 0.012)
+                );
+        }
+
+        .definition-label {
+            margin-bottom: 8px;
+
+            color: #00bfff;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .definition p {
+            margin: 0;
+            color: #cce9f5;
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        /* TOP 10 GRID */
+
+        .owasp-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 11px;
+            margin-top: 17px;
+        }
+
+        .owasp-item {
+            position: relative;
+            padding: 17px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.022);
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .owasp-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 255, 176, 0.28);
+        }
+
+        .owasp-id {
+            color: #00bfff;
+            font-family: Consolas, monospace;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .owasp-item h3 {
+            margin: 9px 0 6px;
+            color: #ffffff;
+            font-size: 13px;
+        }
+
+        .owasp-item p {
+            margin: 0;
+            color: #71879b;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* PRINCIPLES */
+
+        .principle-list {
+            display: grid;
+            gap: 9px;
+            margin-top: 16px;
+        }
+
+        .principle {
+            display: grid;
+            grid-template-columns: 30px 1fr;
+            gap: 11px;
+
+            padding: 12px;
+
+            border: 1px solid rgba(0, 191, 255, 0.08);
+            border-radius: 8px;
+
+            background: rgba(0, 191, 255, 0.018);
+        }
+
+        .principle-icon {
+            width: 27px;
+            height: 27px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 6px;
+
+            color: #00ffb0;
+            background: rgba(0, 255, 176, 0.05);
+
+            font-size: 13px;
+        }
+
+        .principle strong {
+            display: block;
+            margin-bottom: 3px;
+
+            color: #dce9f4;
+            font-size: 12px;
+        }
+
+        .principle span {
+            color: #70869a;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        /* NOTE */
+
+        .security-note {
+            padding: 21px;
+
+            border: 1px solid rgba(255, 177, 0, 0.17);
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .security-note h3 {
+            margin: 0 0 9px;
+            color: #ffc44d;
+            font-size: 13px;
+        }
+
+        .security-note p {
+            margin: 0;
+            color: #899bad;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* SUMMARY */
+
+        .summary {
+            padding: 25px;
+            text-align: center;
+
+            border: 1px solid rgba(0, 191, 255, 0.13);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.035),
+                    rgba(0, 255, 176, 0.025)
+                );
+        }
+
+        .summary-title {
+            margin-bottom: 9px;
+
+            color: #00bfff;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .summary h2 {
+            margin: 0 0 10px;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        .summary p {
+            max-width: 760px;
+            margin: 0 auto;
+
+            color: #7e94a8;
+            font-size: 12px;
+            line-height: 1.85;
+        }
+
+        /* LAB CTA */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+            margin-top: 25px;
+            padding: 21px;
+
+            border: 1px solid rgba(0, 191, 255, 0.14);
+            border-radius: 12px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .lab-text strong {
+            display: block;
+            margin-bottom: 5px;
+
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .lab-text span {
+            color: #71879b;
+            font-size: 11px;
+        }
+
+        .lab-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+            padding: 12px 20px;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.30);
+            border-radius: 8px;
+
+            color: #d5f7ff;
+            background: rgba(0, 191, 255, 0.055);
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .lab-button:hover {
+            transform: translateY(-2px);
+
+            border-color: rgba(0, 191, 255, 0.55);
+            background: rgba(0, 191, 255, 0.09);
+        }
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .ws-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ws-meta {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .ws-page {
+                padding: 45px 12px 60px;
+            }
+
+            .ws-hero {
+                padding: 27px 20px;
+            }
+
+            .ws-hero h1 {
+                font-size: 31px;
+            }
+
+            .ws-description {
+                font-size: 12px;
+            }
+
+            .ws-card {
+                padding: 20px;
+            }
+
+            .owasp-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-area {
+                flex-direction: column;
+                text-align: center;
+                align-items: stretch;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<main class="ws-page">
+
+    <div class="ws-container">
+
+
+        <!-- HERO -->
+
+        <section class="ws-hero">
+
+            <div class="ws-hero-grid">
+
+                <div>
+
+                    <div class="ws-kicker">
+                        WEB SECURITY / 15
+                    </div>
+
+                    <h1>
+                        <span>OWASP</span> Top 10
+                    </h1>
+
+                    <p class="ws-description">
+
+                        Learn the most important categories of web
+                        application security risks and understand how
+                        developers and security professionals identify,
+                        prevent and manage common application weaknesses.
+
+                    </p>
+
+                </div>
+
+
+                <div class="terminal-panel">
+
+                    <div class="terminal-top">
+
+                        <span class="terminal-dot"></span>
+                        <span class="terminal-dot"></span>
+                        <span class="terminal-dot"></span>
+
+                        <span class="terminal-title">
+                            WEB SECURITY
+                        </span>
+
+                    </div>
+
+                    <div class="terminal-line">
+                        <span class="green">security@cybernexa</span>:~$
+                        <span class="blue">owasp --top10</span>
+                    </div>
+
+                    <div class="terminal-line">
+                        Framework:
+                        <span class="blue">WEB APPLICATION</span>
+                    </div>
+
+                    <div class="terminal-line">
+                        Focus:
+                        <span class="green">RISK AWARENESS</span>
+                    </div>
+
+                    <div class="terminal-line">
+                        Status:
+                        <span class="green">READY</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- META -->
+
+        <div class="ws-meta">
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Domain
+                </span>
+
+                <span class="meta-value">
+                    Web Security
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Level
+                </span>
+
+                <span class="meta-value">
+                    Beginner
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Focus
+                </span>
+
+                <span class="meta-value green">
+                    Application Risks
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Practice
+                </span>
+
+                <span class="meta-value">
+                    Safe Lab
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- 01 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    01
+                </div>
+
+                <h2>
+                    What is OWASP?
+                </h2>
+
+            </div>
+
+            <div class="definition">
+
+                <div class="definition-label">
+                    Core Definition
+                </div>
+
+                <p>
+
+                    OWASP stands for the Open Worldwide Application
+                    Security Project. It is a community-driven
+                    organization that provides resources, guidance,
+                    standards and educational material for improving
+                    software and web application security.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- 02 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    02
+                </div>
+
+                <h2>
+                    What is the OWASP Top 10?
+                </h2>
+
+            </div>
+
+            <p>
+
+                The OWASP Top 10 is a widely used awareness resource
+                that highlights major categories of web application
+                security risks.
+
+            </p>
+
+            <p>
+
+                It helps developers, security teams and students
+                understand common weaknesses and prioritize secure
+                development practices.
+
+            </p>
+
+        </section>
+
+
+        <!-- 03 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    03
+                </div>
+
+                <h2>
+                    OWASP Top 10 Risk Categories
+                </h2>
+
+            </div>
+
+
+            <div class="owasp-grid">
+
+
+                <div class="owasp-item">
+
+                    <div class="owasp-id">
+                        A01
+                    </div>
+
+                    <h3>
+                        Broken Access Control
+                    </h3>
+
+                    <p>
+                        Weak authorization controls may allow users to
+                        access resources or actions outside their
+                        intended permissions.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <div class="owasp-id">
+                        A02
+                    </div>
+
+                    <h3>
+                        Cryptographic Failures
+                    </h3>
+
+                    <p>
+                        Sensitive information may be exposed when
+                        cryptography is missing, weak or incorrectly
+                        implemented.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <div class="owasp-id">
+                        A03
+                    </div>
+
+                    <h3>
+                        Injection
+                    </h3>
+
+                    <p>
+                        Untrusted input may influence interpreters or
+                        queries when applications fail to separate
+                        data from commands.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <div class="owasp-id">
+                        A04
+                    </div>
+
+                    <h3>
+                        Insecure Design
+                    </h3>
+
+                    <p>
+                        Security weaknesses can originate from missing
+                        security requirements or unsafe application
+                        design decisions.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <div class="owasp-id">
+                        A05
+                    </div>
+
+                    <h3>
+                        Security Misconfiguration
+                    </h3>
+
+                    <p>
+                        Unsafe defaults, unnecessary services or
+                        incorrectly configured security controls can
+                        increase application risk.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <div class="owasp-id">
+                        A06
+                    </div>
+
+                    <h3>
+                        Vulnerable Components
+                    </h3>
+
+                    <p>
+                        Outdated or vulnerable libraries and frameworks
+                        can introduce security weaknesses.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <div class="owasp-id">
+                        A07
+                    </div>
+
+                    <h3>
+                        Authentication Failures
+                    </h3>
+
+                    <p>
+                        Weak authentication mechanisms can allow account
+                        compromise or unauthorized access.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <div class="owasp-id">
+                        A08
+                    </div>
+
+                    <h3>
+                        Software &amp; Data Integrity Failures
+                    </h3>
+
+                    <p>
+                        Applications can become vulnerable when software,
+                        updates or critical data are not properly trusted
+                        or verified.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <div class="owasp-id">
+                        A09
+                    </div>
+
+                    <h3>
+                        Security Logging &amp; Monitoring Failures
+                    </h3>
+
+                    <p>
+                        Missing or ineffective logging can make suspicious
+                        activity difficult to detect and investigate.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <div class="owasp-id">
+                        A10
+                    </div>
+
+                    <h3>
+                        Server-Side Request Forgery
+                    </h3>
+
+                    <p>
+                        Server-side functionality may be abused when an
+                        application does not properly control outbound
+                        requests.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- 04 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    04
+                </div>
+
+                <h2>
+                    Why OWASP Top 10 Matters
+                </h2>
+
+            </div>
+
+
+            <div class="principle-list">
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        01
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Security Awareness
+                        </strong>
+
+                        <span>
+                            Helps developers recognize common application
+                            security risks during development.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        02
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Secure Development
+                        </strong>
+
+                        <span>
+                            Encourages security requirements and defensive
+                            programming practices.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        03
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Risk Identification
+                        </strong>
+
+                        <span>
+                            Provides a common vocabulary for discussing
+                            important web application risks.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        04
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Defensive Testing
+                        </strong>
+
+                        <span>
+                            Security teams can use these categories as a
+                            starting point for structured assessment.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- 05 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    05
+                </div>
+
+                <h2>
+                    OWASP Top 10 in a Secure Development Process
+                </h2>
+
+            </div>
+
+            <p>
+
+                OWASP Top 10 should not be treated as a checklist that
+                guarantees an application is secure. It is an awareness
+                resource that can be incorporated into a broader secure
+                software development lifecycle.
+
+            </p>
+
+            <p>
+
+                Developers should combine secure architecture, input
+                validation, authentication controls, authorization,
+                cryptographic protection, dependency management,
+                security testing and monitoring.
+
+            </p>
+
+            <div class="security-note">
+
+                <h3>
+                    ⚠ Security Awareness
+                </h3>
+
+                <p>
+
+                    A web application can have risks that are not covered
+                    by a single OWASP category. Security assessment should
+                    consider the application's architecture, business
+                    logic, threat model and operational environment.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- 06 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    06
+                </div>
+
+                <h2>
+                    Practical Security Thinking
+                </h2>
+
+            </div>
+
+            <p>
+
+                When reviewing a web application, a security professional
+                should ask questions such as:
+
+            </p>
+
+
+            <div class="principle-list">
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        ?
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Who can access this resource?
+                        </strong>
+
+                        <span>
+                            Evaluate authentication and authorization
+                            boundaries.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        ?
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Can user input influence application behavior?
+                        </strong>
+
+                        <span>
+                            Consider input handling, validation and
+                            injection risks.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        ?
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Is sensitive data protected?
+                        </strong>
+
+                        <span>
+                            Review cryptographic protection and data
+                            handling practices.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="principle">
+
+                    <div class="principle-icon">
+                        ?
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Would an incident be detectable?
+                        </strong>
+
+                        <span>
+                            Review logging, monitoring and security
+                            alerting capabilities.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- 07 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    07
+                </div>
+
+                <h2>
+                    Key Takeaways
+                </h2>
+
+            </div>
+
+
+            <div class="owasp-grid">
+
+                <div class="owasp-item">
+
+                    <h3>
+                        Defense in Depth
+                    </h3>
+
+                    <p>
+                        Web security requires multiple defensive controls
+                        rather than relying on one mechanism.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <h3>
+                        Least Privilege
+                    </h3>
+
+                    <p>
+                        Users and application components should receive only
+                        the permissions they actually need.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <h3>
+                        Secure by Design
+                    </h3>
+
+                    <p>
+                        Security should be considered during architecture
+                        and design, not only after deployment.
+                    </p>
+
+                </div>
+
+
+                <div class="owasp-item">
+
+                    <h3>
+                        Continuous Security
+                    </h3>
+
+                    <p>
+                        Applications, dependencies and security controls
+                        require continuous review and improvement.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SUMMARY -->
+
+        <section class="summary">
+
+            <div class="summary-title">
+                Module Summary
+            </div>
+
+            <h2>
+                Understand the Risk. Build the Defense.
+            </h2>
+
+            <p>
+
+                The OWASP Top 10 provides a practical foundation for
+                understanding major categories of web application risk.
+                Learning these categories helps developers and security
+                professionals recognize weaknesses, design stronger
+                defenses and perform structured security reviews.
+
+            </p>
+
+        </section>
+<!-- LESSON COMPLETION -->
+<section class="ws-card" id="lessonCompletion">
+
+    <div class="card-heading">
+        <div class="card-number">08</div>
+        <h2>Lesson Completion</h2>
+    </div>
+
+    <p>
+        You have completed the OWASP Top 10 lesson.
+        Mark this lesson as complete to track your learning progress.
+    </p>
+
+    <button
+        type="button"
+        class="lab-button"
+        data-lesson-progress
+        data-course-id="web-security"
+        data-lesson-id="owasp-top-10"
+        data-dashboard-url="../learning-paths/web-security/theory/owasp-top-10.html"
+        data-status-id="owaspTop10CompletionStatus">
+        Mark Lesson as Complete
+    </button>
+
+    <p
+        id="owaspTop10CompletionStatus"
+        role="status"
+        aria-live="polite"
+        style="margin-top: 15px;">
+    </p>
+
+</section>
+        <!-- LAB -->
+
+        <div class="lab-area">
+
+            <div class="lab-text">
+
+                <strong>
+                    Ready for the OWASP Top 10 Lab?
+                </strong>
+
+                <span>
+                    Test your knowledge with safe web-security
+                    identification and assessment exercises.
+                </span>
+
+            </div>
+
+
+            <a
+                href="../lab/owasp-top-10-lab.html"
+                class="lab-button"
+            >
+                🧪 Launch Lab →
+            </a>
+
+        </div>
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Web Attacks Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           PAGE
+        ====================================================== */
+
+        .lab-page {
+            min-height: calc(100vh - 80px);
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 255, 170, 0.055),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+            position: relative;
+
+            padding: 38px 32px;
+            margin-bottom: 22px;
+
+            border: 1px solid rgba(0, 255, 176, 0.15);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 23, 30, 0.98),
+                    rgba(2, 12, 23, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+            content: "";
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00ffb0,
+                    #00bfff,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 12px;
+
+            color: #00ffb0;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .lab-kicker::before {
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00ffb0;
+
+            box-shadow:
+                0 0 12px rgba(0, 255, 176, 0.65);
+        }
+
+        .lab-hero h1 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 40px;
+            line-height: 1.15;
+        }
+
+        .lab-hero h1 span {
+            color: #00ffb0;
+        }
+
+        .lab-hero p {
+            max-width: 760px;
+
+            margin: 14px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           LAB STATUS
+        ====================================================== */
+
+        .lab-status {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .status-card {
+            padding: 14px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .status-label {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #536a7f;
+
+            font-size: 8px;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .status-value {
+            color: #dce9f4;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .status-value.green {
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           AUTHORIZATION
+        ====================================================== */
+
+        .notice {
+            margin-bottom: 20px;
+            padding: 18px;
+
+            border: 1px solid rgba(255, 177, 0, 0.17);
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .notice-title {
+            margin-bottom: 7px;
+
+            color: #ffc44d;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .notice p {
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 11px;
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ====================================================== */
+
+        .progress-box {
+            margin-bottom: 20px;
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 11px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+
+            margin-bottom: 9px;
+        }
+
+        .progress-top span {
+            color: #71879b;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .progress-top strong {
+            color: #00ffb0;
+            font-size: 10px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 7px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background: rgba(255,255,255,0.05);
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00ffb0,
+                    #00bfff
+                );
+
+            transition: width 0.3s ease;
+        }
+
+        /* =====================================================
+           QUESTION CARD
+        ====================================================== */
+
+        .question-card {
+            margin-bottom: 18px;
+            padding: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .question-number {
+            margin-bottom: 8px;
+
+            color: #00ffb0;
+
+            font-family: Consolas, monospace;
+
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .question {
+            margin: 0 0 18px;
+
+            color: #ffffff;
+
+            font-size: 15px;
+            line-height: 1.65;
+            font-weight: 800;
+        }
+
+        .options {
+            display: grid;
+            gap: 9px;
+        }
+
+        .option {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 13px 14px;
+
+            border: 1px solid rgba(0, 191, 255, 0.09);
+            border-radius: 8px;
+
+            color: #8298aa;
+
+            background: rgba(0, 191, 255, 0.018);
+
+            cursor: pointer;
+
+            font-size: 11px;
+            line-height: 1.5;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .option:hover {
+            color: #dce9f4;
+
+            border-color:
+                rgba(0, 255, 176, 0.25);
+
+            background:
+                rgba(0, 255, 176, 0.035);
+        }
+
+        .option input {
+            accent-color: #00ffb0;
+        }
+
+        /* =====================================================
+           SUBMIT
+        ====================================================== */
+
+        .submit-area {
+            display: flex;
+            justify-content: center;
+
+            margin: 25px 0;
+        }
+
+        .submit-button {
+            padding: 13px 30px;
+
+            border: 1px solid rgba(0, 255, 176, 0.30);
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(0, 255, 176, 0.55);
+
+            background:
+                rgba(0, 255, 176, 0.09);
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result {
+            display: none;
+
+            margin-top: 20px;
+            padding: 28px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 255, 176, 0.15);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 255, 176, 0.035),
+                    rgba(0, 191, 255, 0.025)
+                );
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-label {
+            color: #00ffb0;
+
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .result h2 {
+            margin: 8px 0;
+
+            color: #ffffff;
+
+            font-size: 27px;
+        }
+
+        .result p {
+            margin: 0;
+
+            color: #7e94a8;
+
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.topic-navigation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 18px;
+
+    border: 1px solid rgba(0, 191, 255, 0.09);
+    border-radius: 9px;
+
+    color: #71879b;
+    background: rgba(0, 191, 255, 0.02);
+
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.topic-navigation a:hover {
+    color: #ccefe5;
+    border-color: rgba(0, 255, 176, 0.25);
+    background: rgba(0, 255, 176, 0.035);
+}
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-status {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+                font-size: 30px;
+            }
+
+            .lab-status {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.topic-navigation a {
+    flex: 0 1 auto;
+    max-width: 48%;
+    padding: 12px 10px;
+}
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- HERO -->
+
+            <section class="lab-hero">
+
+                <div class="lab-kicker">
+                    ETHICAL HACKING / PRACTICAL LAB
+                </div>
+
+                <h1>
+                    <span>Web Attacks</span> Lab
+                </h1>
+
+                <p>
+                    Test your understanding of common web application attack
+                    classes, security weaknesses and defensive controls.
+                    This laboratory uses safe, knowledge-based scenarios
+                    designed for authorized cybersecurity training.
+                </p>
+
+            </section>
+
+
+            <!-- STATUS -->
+
+            <div class="lab-status">
+
+                <div class="status-card">
+
+                    <span class="status-label">
+                        Environment
+                    </span>
+
+                    <span class="status-value green">
+                        AUTHORIZED
+                    </span>
+
+                </div>
+
+
+                <div class="status-card">
+
+                    <span class="status-label">
+                        Lab Type
+                    </span>
+
+                    <span class="status-value">
+                        MCQ
+                    </span>
+
+                </div>
+
+
+                <div class="status-card">
+
+                    <span class="status-label">
+                        Questions
+                    </span>
+
+                    <span class="status-value">
+                        10
+                    </span>
+
+                </div>
+
+
+                <div class="status-card">
+
+                    <span class="status-label">
+                        Difficulty
+                    </span>
+
+                    <span class="status-value">
+                        Beginner
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- AUTHORIZATION -->
+
+            <div class="notice">
+
+                <div class="notice-title">
+                    ⚠ AUTHORIZED TRAINING ENVIRONMENT
+                </div>
+
+                <p>
+                    This lab is educational and focuses on recognizing web
+                    security concepts. Practical security testing should only
+                    be performed against systems you own or systems for which
+                    you have explicit permission.
+                </p>
+
+            </div>
+
+
+            <!-- PROGRESS -->
+
+            <div class="progress-box">
+
+                <div class="progress-top">
+
+                    <span>
+                        LAB PROGRESS
+                    </span>
+
+                    <strong id="progressText">
+                        0 / 10
+                    </strong>
+
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 QUESTIONS
+            ================================================== -->
+
+            <form id="quizForm">
+
+
+                <!-- QUESTION 01 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 01
+                    </div>
+
+                    <h2 class="question">
+                        What is the main purpose of a web security assessment?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="a">
+                            To identify security weaknesses
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="b">
+                            To permanently disable the website
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="c">
+                            To delete the database
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="d">
+                            To bypass all security controls
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- QUESTION 02 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 02
+                    </div>
+
+                    <h2 class="question">
+                        Which vulnerability occurs when untrusted input
+                        changes the intended structure of a database query?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="a">
+                            CSRF
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="b">
+                            SQL Injection
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="c">
+                            Clickjacking
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="d">
+                            Session Timeout
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- QUESTION 03 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 03
+                    </div>
+
+                    <h2 class="question">
+                        What does XSS primarily involve?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="a">
+                            Unsafe handling of content in a browser context
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="b">
+                            Physical damage to a server
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="c">
+                            Changing network cables
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="d">
+                            Encrypting a hard drive
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- QUESTION 04 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 04
+                    </div>
+
+                    <h2 class="question">
+                        What does CSRF attempt to abuse?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="a">
+                            A user's authenticated browser session
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="b">
+                            A computer's power supply
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="c">
+                            A wireless antenna
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="d">
+                            A file compression algorithm
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- QUESTION 05 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 05
+                    </div>
+
+                    <h2 class="question">
+                        Which control helps prevent SQL injection?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="a">
+                            Parameterized queries
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="b">
+                            Disabling backups
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="c">
+                            Sharing database credentials
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="d">
+                            Removing authentication
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- QUESTION 06 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 06
+                    </div>
+
+                    <h2 class="question">
+                        What is broken access control?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="a">
+                            Failure to properly enforce permissions
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="b">
+                            Slow internet speed
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="c">
+                            A damaged monitor
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="d">
+                            A failed DNS query
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- QUESTION 07 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 07
+                    </div>
+
+                    <h2 class="question">
+                        Which of the following is part of a web application's
+                        attack surface?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="a">
+                            Input fields and APIs
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="b">
+                            Only the monitor
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="c">
+                            Only the keyboard
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="d">
+                            Only the power button
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- QUESTION 08 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 08
+                    </div>
+
+                    <h2 class="question">
+                        What is SSRF?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="a">
+                            A server is manipulated into making unintended requests
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="b">
+                            A method of password hashing
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="c">
+                            A type of physical firewall
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="d">
+                            A backup mechanism
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- QUESTION 09 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 09
+                    </div>
+
+                    <h2 class="question">
+                        Which practice helps protect web applications
+                        from XSS?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="a">
+                            Output encoding
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="b">
+                            Disabling all logs
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="c">
+                            Sharing session tokens
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="d">
+                            Removing input validation
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- QUESTION 10 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 10
+                    </div>
+
+                    <h2 class="question">
+                        Where should practical web security testing be performed?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="a">
+                            On any public website
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="b">
+                            Only on authorized training or testing environments
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="c">
+                            On random user accounts
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="d">
+                            On third-party production systems without permission
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- SUBMIT -->
+
+                <div class="submit-area">
+
+                    <button
+                        type="button"
+                        class="submit-button"
+                        onclick="checkQuiz()">
+
+                        CHECK LAB →
+
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- RESULT -->
+
+            <section
+                class="result"
+                id="result">
+
+                <div class="result-label">
+                    LAB RESULT
+                </div>
+
+                <h2 id="score">
+                    0 / 10
+                </h2>
+
+                <p id="resultMessage">
+                    Complete the laboratory to view your result.
+                </p>
+
+            </section>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="topic-navigation">
+
+                <a href="network-attacks-lab.html">
+                    ← Lab: Network Attack
+                </a>
+
+                <a href="../theory/post-exploitation-concepts.html">
+                    Next Theory: Post-Exploitation →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+
+    <script>
+
+        const answers = {
+            q1: "a",
+            q2: "b",
+            q3: "a",
+            q4: "a",
+            q5: "a",
+            q6: "a",
+            q7: "a",
+            q8: "a",
+            q9: "a",
+            q10: "b"
+        };
+
+
+        const totalQuestions = 10;
+
+
+        document
+            .getElementById("quizForm")
+            .addEventListener("change", updateProgress);
+
+
+        function updateProgress() {
+
+            let answered = 0;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+
+                const selected =
+                    document.querySelector(
+                        `input[name="q${i}"]:checked`
+                    );
+
+                if (selected) {
+                    answered++;
+                }
+
+            }
+
+            const percentage =
+                (answered / totalQuestions) * 100;
+
+            document
+                .getElementById("progressFill")
+                .style.width =
+                percentage + "%";
+
+            document
+                .getElementById("progressText")
+                .textContent =
+                answered + " / " + totalQuestions;
+        }
+
+
+        function checkQuiz() {
+
+            let score = 0;
+            let answered = 0;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+
+                const selected =
+                    document.querySelector(
+                        `input[name="q${i}"]:checked`
+                    );
+
+                if (selected) {
+
+                    answered++;
+
+                    if (
+                        selected.value ===
+                        answers["q" + i]
+                    ) {
+
+                        score++;
+
+                    }
+
+                }
+
+            }
+
+
+            const result =
+                document.getElementById("result");
+
+            const scoreElement =
+                document.getElementById("score");
+
+            const messageElement =
+                document.getElementById("resultMessage");
+
+
+            result.classList.add("show");
+
+
+            scoreElement.textContent =
+                score + " / " + totalQuestions;
+
+
+            if (answered < totalQuestions) {
+
+                messageElement.textContent =
+                    "You answered " +
+                    answered +
+                    " of " +
+                    totalQuestions +
+                    " questions. Review the unanswered questions and try again.";
+
+                return;
+            }
+
+
+            if (score >= 9) {
+
+                messageElement.textContent =
+                    "Excellent. Your understanding of web attack concepts and defensive controls is strong.";
+
+            }
+
+            else if (score >= 7) {
+
+                messageElement.textContent =
+                    "Good work. Review the weaker concepts once more to strengthen your understanding.";
+
+            }
+
+            else if (score >= 5) {
+
+                messageElement.textContent =
+                    "You have the basic concepts. Review XSS, SQL Injection, CSRF, SSRF and access control.";
+
+            }
+
+            else {
+
+                messageElement.textContent =
+                    "Review the Web Attacks theory section and attempt the laboratory again.";
+
+            }
+
+
+            result.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+
+        updateProgress();
+
+    </script>
+
+
+</body>
+
+</html>

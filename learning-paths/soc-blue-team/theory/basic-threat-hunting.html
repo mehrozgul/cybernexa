@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Basic Threat Hunting | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn the fundamentals of Basic Threat Hunting, including hunting methodology, indicators, hypotheses, investigation and practical security analysis.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        :root {
+            --th-bg: #070d14;
+            --th-panel: #0d151f;
+            --th-panel-2: #111d29;
+
+            --th-cyan: #36d9ff;
+            --th-blue: #4d8dff;
+            --th-purple: #9b7cff;
+
+            --th-green: #42d69a;
+            --th-orange: #ffae52;
+            --th-red: #ff5b68;
+
+            --th-text: #edf7ff;
+            --th-muted: #91a5b7;
+            --th-border: #203342;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 10% 10%,
+                    rgba(54, 217, 255, 0.08),
+                    transparent 30%),
+                radial-gradient(circle at 90% 20%,
+                    rgba(155, 124, 255, 0.07),
+                    transparent 28%),
+                var(--th-bg);
+
+            color: var(--th-text);
+            font-family: Arial, Helvetica, sans-serif;
+
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .th-container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+
+        /* =========================================================
+   NAVBAR
+========================================================= */
+
+        .navbar {
+            width: 100%;
+            overflow: visible;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            width: min(1150px, 92%);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            min-height: 70px;
+            position: relative;
+        }
+
+        .brand {
+            max-width: 100%;
+            display: flex;
+            align-items: center;
+
+            min-width: 0;
+        }
+
+        .brand-logo {
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-name,
+        .brand-tagline {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* =========================================================
+   HERO
+========================================================= */
+
+        .th-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 82px 0 68px;
+
+            border-bottom: 1px solid var(--th-border);
+        }
+
+        .th-hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 480px;
+            height: 480px;
+
+            right: -230px;
+            top: -240px;
+
+            border: 1px solid rgba(54, 217, 255, 0.12);
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 45px rgba(54, 217, 255, 0.025),
+                0 0 0 90px rgba(54, 217, 255, 0.015);
+        }
+
+        .th-breadcrumb {
+            color: var(--th-cyan);
+
+            font-size: 13px;
+            letter-spacing: 0.4px;
+
+            margin-bottom: 20px;
+        }
+
+        .th-hero-grid {
+            display: grid;
+
+            grid-template-columns: 1.35fr 0.65fr;
+
+            gap: 45px;
+
+            align-items: center;
+        }
+
+        .th-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 13px;
+
+            margin-bottom: 18px;
+
+            border: 1px solid rgba(54, 217, 255, 0.32);
+            border-radius: 4px;
+
+            background: rgba(54, 217, 255, 0.055);
+
+            color: var(--th-cyan);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .th-pulse {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--th-cyan);
+
+            box-shadow:
+                0 0 12px rgba(54, 217, 255, 0.85);
+        }
+
+        .th-hero h1 {
+            margin: 0 0 18px;
+
+            font-size: clamp(38px, 5vw, 62px);
+
+            line-height: 1.05;
+            letter-spacing: -1px;
+        }
+
+        .th-hero h1 span {
+            color: var(--th-cyan);
+        }
+
+        .th-hero-description {
+            max-width: 720px;
+
+            color: var(--th-muted);
+
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        /* =========================================================
+   HUNTING CONSOLE
+========================================================= */
+
+        .th-console {
+            padding: 24px;
+
+            border: 1px solid var(--th-border);
+            border-top: 2px solid var(--th-cyan);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(17, 29, 41, 0.98),
+                    rgba(8, 14, 21, 0.98));
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .th-console-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+        .th-console-header strong {
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .th-live {
+            color: var(--th-green);
+            font-size: 10px;
+        }
+
+        .th-divider {
+            height: 1px;
+            background: var(--th-border);
+
+            margin: 15px 0;
+        }
+
+        .th-console-row {
+            display: flex;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 8px 0;
+
+            color: var(--th-muted);
+            font-size: 13px;
+        }
+
+        .th-console-row strong {
+            color: var(--th-text);
+            font-weight: normal;
+        }
+
+        .th-console-active {
+            color: var(--th-cyan) !important;
+        }
+
+        /* =========================================================
+   CONTENT
+========================================================= */
+
+        .th-section {
+            padding: 70px 0;
+        }
+
+        .th-section-title {
+            margin-bottom: 28px;
+        }
+
+        .th-section-title h2 {
+            margin: 0 0 10px;
+
+            font-size: 32px;
+        }
+
+        .th-section-title p {
+            color: var(--th-muted);
+
+            line-height: 1.7;
+        }
+
+        .th-content-card {
+            padding: 30px;
+
+            border: 1px solid var(--th-border);
+            border-left: 3px solid var(--th-cyan);
+
+            border-radius: 7px;
+
+            background: var(--th-panel);
+        }
+
+        .th-content-card p {
+            margin: 0 0 16px;
+
+            color: var(--th-muted);
+
+            line-height: 1.85;
+            font-size: 15px;
+        }
+
+        .th-content-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* =========================================================
+   DEFINITION
+========================================================= */
+
+        .th-definition {
+            padding: 28px;
+
+            border: 1px solid rgba(54, 217, 255, 0.25);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(54, 217, 255, 0.07),
+                    rgba(77, 141, 255, 0.025));
+        }
+
+        .th-definition-label {
+            margin-bottom: 12px;
+
+            color: var(--th-cyan);
+
+            font-size: 12px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .th-definition p {
+            margin: 0;
+
+            color: var(--th-text);
+
+            font-size: 18px;
+            line-height: 1.75;
+        }
+
+        /* =========================================================
+   WHY THREAT HUNTING
+========================================================= */
+
+        .th-reason-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .th-reason {
+            padding: 24px;
+
+            border: 1px solid var(--th-border);
+
+            border-radius: 7px;
+
+            background: var(--th-panel);
+        }
+
+        .th-reason-number {
+            display: block;
+
+            margin-bottom: 15px;
+
+            color: var(--th-cyan);
+
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .th-reason h3 {
+            margin: 0 0 10px;
+
+            font-size: 17px;
+        }
+
+        .th-reason p {
+            margin: 0;
+
+            color: var(--th-muted);
+
+            line-height: 1.65;
+            font-size: 14px;
+        }
+
+        /* =========================================================
+   HUNTING PROCESS
+========================================================= */
+
+        .th-flow {
+            display: grid;
+
+            grid-template-columns: repeat(6, 1fr);
+
+            gap: 10px;
+
+            margin-top: 30px;
+        }
+
+        .th-flow-step {
+            position: relative;
+
+            min-height: 125px;
+
+            padding: 18px 12px;
+
+            border: 1px solid var(--th-border);
+
+            border-radius: 6px;
+
+            background: var(--th-panel);
+
+            text-align: center;
+        }
+
+        .th-flow-step::after {
+            content: "→";
+
+            position: absolute;
+
+            right: -15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--th-cyan);
+
+            z-index: 2;
+        }
+
+        .th-flow-step:last-child::after {
+            display: none;
+        }
+
+        .th-flow-number {
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: var(--th-cyan);
+
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .th-flow-step strong {
+            font-size: 13px;
+        }
+
+        /* =========================================================
+   HYPOTHESIS
+========================================================= */
+
+        .th-hypothesis {
+            padding: 25px;
+
+            border: 1px solid rgba(155, 124, 255, 0.28);
+            border-top: 2px solid var(--th-purple);
+
+            border-radius: 7px;
+
+            background: rgba(155, 124, 255, 0.035);
+        }
+
+        .th-hypothesis-label {
+            color: var(--th-purple);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+
+            margin-bottom: 12px;
+        }
+
+        .th-hypothesis p {
+            margin: 0;
+
+            color: var(--th-muted);
+
+            line-height: 1.8;
+        }
+
+        .th-code {
+            margin-top: 18px;
+
+            padding: 18px;
+
+            overflow-x: auto;
+
+            border: 1px solid var(--th-border);
+            border-radius: 6px;
+
+            background: #050a10;
+
+            color: var(--th-cyan);
+
+            font-family: Consolas, monospace;
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        /* =========================================================
+   EXAMPLE
+========================================================= */
+
+        .th-example {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .th-example-box {
+            padding: 25px;
+
+            border: 1px solid var(--th-border);
+
+            border-radius: 7px;
+
+            background: var(--th-panel);
+        }
+
+        .th-example-box h3 {
+            margin: 0 0 15px;
+
+            font-size: 17px;
+        }
+
+        .th-example-box p {
+            margin: 0;
+
+            color: var(--th-muted);
+
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .th-example-box.suspicious {
+            border-top: 2px solid var(--th-orange);
+        }
+
+        .th-example-box.hunting {
+            border-top: 2px solid var(--th-green);
+        }
+
+        /* =========================================================
+   KEY CONCEPTS
+========================================================= */
+
+        .th-key-list {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .th-key {
+            padding: 17px 20px;
+
+            border: 1px solid var(--th-border);
+
+            border-radius: 6px;
+
+            background: var(--th-panel);
+        }
+
+        .th-key strong {
+            color: var(--th-text);
+        }
+
+        .th-key span {
+            color: var(--th-muted);
+
+            font-size: 14px;
+        }
+
+        /* =========================================================
+   SUMMARY
+========================================================= */
+
+        .th-summary {
+            padding: 30px;
+
+            border: 1px solid rgba(66, 214, 154, 0.25);
+
+            border-radius: 7px;
+
+            background: rgba(66, 214, 154, 0.035);
+        }
+
+        .th-summary h2 {
+            margin-top: 0;
+
+            color: var(--th-green);
+        }
+
+        .th-summary p {
+            margin: 0;
+
+            color: var(--th-muted);
+
+            line-height: 1.8;
+        }
+
+        /* =========================================================
+   PRACTICAL LAB CTA
+   ========================================================= */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+
+            margin-top: 35px;
+            padding: 24px 26px;
+
+            border: 1px solid rgba(66, 165, 255, 0.22);
+            border-left: 3px solid var(--aa-blue);
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 208, 0.025));
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.20);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* Top scanning line */
+
+        .lab-area::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(66, 165, 255, 0.7),
+                    rgba(53, 214, 208, 0.6),
+                    transparent);
+        }
+
+
+        /* Lab text */
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 0;
+        }
+
+
+        .lab-text strong {
+            color: var(--aa-text);
+
+            font-size: 16px;
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .lab-text span {
+            color: var(--aa-muted);
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* Lab button */
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            min-width: 155px;
+
+            padding: 12px 20px;
+
+            border: 1px solid rgba(66, 165, 255, 0.40);
+            border-radius: 5px;
+
+            color: var(--aa-blue);
+
+            background:
+                rgba(66, 165, 255, 0.07);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            text-decoration: none;
+
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        /* Hover */
+
+        .lab-button:hover {
+            color: #ffffff;
+
+            border-color: rgba(66, 165, 255, 0.75);
+
+            background:
+                rgba(66, 165, 255, 0.14);
+
+            box-shadow:
+                0 0 18px rgba(66, 165, 255, 0.16);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* Active */
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+        /* =========================================================
+   LAB CTA RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .lab-area {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 18px;
+
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+        }
+
+        /* =========================================================
+   RESPONSIVE
+========================================================= */
+
+        @media (max-width: 950px) {
+
+            /* PAGE-LOCAL SHARED NAVBAR FIX: brand left, hamburger right */
+            .nav-container {
+                width: 92%;
+                min-height: 68px;
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) 36px !important;
+                align-items: center;
+                column-gap: 10px;
+                position: relative;
+                padding: 0;
+            }
+
+            .brand {
+                grid-column: 1 !important;
+                grid-row: 1 !important;
+                min-width: 0;
+                justify-self: start;
+            }
+
+            .menu-button {
+                grid-column: 2 !important;
+                grid-row: 1 !important;
+                justify-self: end !important;
+                margin-left: auto !important;
+                z-index: 10002;
+            }
+
+            .menu-toggle:checked ~ .navigation {
+                display: flex !important;
+                position: fixed !important;
+                top: 68px !important;
+                left: 0 !important;
+                right: 0 !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                max-height: calc(100dvh - 68px);
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 3px !important;
+                padding: 10px 4% 18px !important;
+                box-sizing: border-box !important;
+                background: #020714 !important;
+                border-top: 1px solid rgba(0, 202, 255, 0.20);
+                border-bottom: 1px solid rgba(0, 202, 255, 0.25);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+                z-index: 10001 !important;
+            }
+
+            .menu-toggle:checked ~ .navigation .nav-item {
+                display: flex !important;
+                width: 100% !important;
+                min-height: 42px;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 0 14px;
+                box-sizing: border-box;
+                border-radius: 6px;
+                white-space: normal;
+            }
+
+            .menu-toggle:checked ~ .navigation .profile-nav {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            .menu-toggle:checked ~ .navigation .profile-trigger {
+                width: 100% !important;
+                justify-content: flex-start;
+            }
+
+            .menu-toggle:checked ~ .navigation .profile-menu {
+                position: static !important;
+                width: 100% !important;
+            }
+
+            .th-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .th-reason-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .th-flow {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .th-flow-step::after {
+                display: none;
+            }
+
+            .th-example {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .nav-container {
+                width: 94%;
+                min-height: 64px;
+                padding: 0;
+                grid-template-columns: minmax(0, 1fr) 36px !important;
+            }
+
+            .menu-toggle:checked ~ .navigation {
+                top: 64px !important;
+                max-height: calc(100dvh - 64px);
+            }
+
+            .brand-logo svg {
+                width: 38px;
+                height: 46px;
+            }
+
+            .brand-name {
+                font-size: 19px;
+            }
+
+            .brand-tagline {
+                font-size: 9px;
+            }
+
+            .th-hero {
+                padding: 70px 0 55px;
+            }
+
+            .th-section {
+                padding: 60px 0;
+            }
+
+            .th-flow {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .th-flow-step {
+                min-height: 105px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .nav-container {
+                width: 92%;
+                min-height: 62px;
+                padding: 0;
+                grid-template-columns: minmax(0, 1fr) 36px !important;
+            }
+
+            .menu-toggle:checked ~ .navigation {
+                top: 62px !important;
+                max-height: calc(100dvh - 62px);
+            }
+
+            .brand-logo svg {
+                width: 34px;
+                height: 42px;
+            }
+
+            .brand-name {
+                font-size: 17px;
+            }
+
+            .brand-tagline {
+                font-size: 8px;
+            }
+
+            .th-container {
+                width: 92%;
+            }
+
+            .th-hero {
+                padding: 55px 0 45px;
+            }
+
+            .th-hero h1 {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .th-hero-description {
+                font-size: 15px;
+            }
+
+            .th-console {
+                padding: 20px;
+            }
+
+            .th-section {
+                padding: 50px 0;
+            }
+
+            .th-section-title h2 {
+                font-size: 26px;
+            }
+
+            .th-content-card {
+                padding: 22px;
+            }
+
+            .th-definition {
+                padding: 22px;
+            }
+
+            .th-definition p {
+                font-size: 16px;
+            }
+
+            .th-reason-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .th-flow {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .th-example {
+                grid-template-columns: 1fr;
+            }
+
+            .th-key-list {
+                grid-template-columns: 1fr;
+            }
+
+            .th-summary {
+                padding: 22px;
+            }
+
+            .th-topic-nav {
+                flex-direction: column;
+            }
+
+            .th-nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 380px) {
+
+            .nav-container {
+                width: 94%;
+                min-height: 62px;
+                grid-template-columns: minmax(0, 1fr) 34px !important;
+                column-gap: 8px;
+            }
+
+            .menu-toggle:checked ~ .navigation {
+                top: 62px !important;
+                max-height: calc(100dvh - 62px);
+            }
+
+            .th-container {
+                width: 94%;
+            }
+
+            .th-hero h1 {
+                font-size: 32px;
+            }
+
+            .th-flow {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <header class="th-hero">
+
+        <div class="th-container">
+
+            <div class="th-breadcrumb">
+                CyberNexa / SOC / Blue Team / Basic Threat Hunting
+            </div>
+
+            <div class="th-hero-grid">
+
+                <div>
+
+                    <div class="th-badge">
+
+                        <span class="th-pulse"></span>
+
+                        Threat Hunting Training
+
+                    </div>
+
+                    <h1>
+                        Basic <span>Threat Hunting</span>
+                    </h1>
+
+                    <p class="th-hero-description">
+                        Basic Threat Hunting is the proactive process of searching
+                        security data, logs, endpoints and network activity for
+                        suspicious behavior that automated security tools may not
+                        have detected.
+                    </p>
+
+                </div>
+
+                <div class="th-console">
+
+                    <div class="th-console-header">
+
+                        <strong>
+                            THREAT HUNT CONSOLE
+                        </strong>
+
+                        <span class="th-live">
+                            ● ACTIVE
+                        </span>
+
+                    </div>
+
+                    <div class="th-divider"></div>
+
+                    <div class="th-console-row">
+                        <span>Mode</span>
+                        <strong class="th-console-active">
+                            Proactive
+                        </strong>
+                    </div>
+
+                    <div class="th-console-row">
+                        <span>Focus</span>
+                        <strong>
+                            Suspicious Activity
+                        </strong>
+                    </div>
+
+                    <div class="th-console-row">
+                        <span>Data</span>
+                        <strong>
+                            Logs &amp; Telemetry
+                        </strong>
+                    </div>
+
+                    <div class="th-console-row">
+                        <span>Objective</span>
+                        <strong>
+                            Find Hidden Threats
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <main>
+
+        <!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+        <section class="th-section">
+
+            <div class="th-container">
+
+                <div class="th-section-title">
+
+                    <h2>Definition</h2>
+
+                    <p>
+                        Understand the basic meaning of Threat Hunting before
+                        performing an investigation.
+                    </p>
+
+                </div>
+
+                <div class="th-definition">
+
+                    <div class="th-definition-label">
+                        Core Definition
+                    </div>
+
+                    <p>
+                        Threat Hunting is a proactive cybersecurity activity in which
+                        security analysts actively search systems, networks, endpoints
+                        and security data for signs of malicious or suspicious activity
+                        that may not have been detected by existing security controls.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     CORE EXPLANATION
+====================================================== -->
+
+        <section class="th-section">
+
+            <div class="th-container">
+
+                <div class="th-section-title">
+
+                    <h2>How Threat Hunting Works</h2>
+
+                    <p>
+                        Threat hunting is based on investigation rather than waiting
+                        for an alert to appear.
+                    </p>
+
+                </div>
+
+                <div class="th-content-card">
+
+                    <p>
+                        A SOC normally receives alerts from security tools such as
+                        SIEM platforms, endpoint security systems and network monitoring
+                        solutions.
+                    </p>
+
+                    <p>
+                        Threat hunting goes one step further. Instead of waiting for
+                        an alert, an analyst develops a reasonable hypothesis about
+                        possible malicious activity and searches available security
+                        data for supporting evidence.
+                    </p>
+
+                    <p>
+                        The analyst may examine authentication logs, process activity,
+                        network connections, DNS requests, endpoint events and other
+                        security telemetry.
+                    </p>
+
+                    <p>
+                        If suspicious behavior is discovered, the analyst investigates
+                        the activity further and determines whether it represents a
+                        potential security incident.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     WHY IMPORTANT
+====================================================== -->
+
+        <section class="th-section">
+
+            <div class="th-container">
+
+                <div class="th-section-title">
+
+                    <h2>Why Threat Hunting Matters</h2>
+
+                    <p>
+                        Threat hunting helps security teams discover suspicious
+                        activity that may bypass automated detection.
+                    </p>
+
+                </div>
+
+                <div class="th-reason-grid">
+
+                    <div class="th-reason">
+
+                        <span class="th-reason-number">
+                            REASON 01
+                        </span>
+
+                        <h3>Find Hidden Threats</h3>
+
+                        <p>
+                            Attackers may remain inside an environment without generating
+                            an obvious security alert. Hunting helps search for such activity.
+                        </p>
+
+                    </div>
+
+                    <div class="th-reason">
+
+                        <span class="th-reason-number">
+                            REASON 02
+                        </span>
+
+                        <h3>Improve Detection</h3>
+
+                        <p>
+                            Hunting findings can help analysts improve detection rules,
+                            alerts and security monitoring.
+                        </p>
+
+                    </div>
+
+                    <div class="th-reason">
+
+                        <span class="th-reason-number">
+                            REASON 03
+                        </span>
+
+                        <h3>Understand Attacker Behavior</h3>
+
+                        <p>
+                            Analysts can investigate patterns and behaviors that may indicate
+                            reconnaissance, persistence or other malicious activity.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     HUNTING PROCESS
+====================================================== -->
+
+        <section class="th-section">
+
+            <div class="th-container">
+
+                <div class="th-section-title">
+
+                    <h2>Threat Hunting Process</h2>
+
+                    <p>
+                        A simplified hunting workflow used by security analysts.
+                    </p>
+
+                </div>
+
+                <div class="th-flow">
+
+                    <div class="th-flow-step">
+
+                        <span class="th-flow-number">
+                            01
+                        </span>
+
+                        <strong>
+                            Hypothesis
+                        </strong>
+
+                    </div>
+
+                    <div class="th-flow-step">
+
+                        <span class="th-flow-number">
+                            02
+                        </span>
+
+                        <strong>
+                            Collect Data
+                        </strong>
+
+                    </div>
+
+                    <div class="th-flow-step">
+
+                        <span class="th-flow-number">
+                            03
+                        </span>
+
+                        <strong>
+                            Search
+                        </strong>
+
+                    </div>
+
+                    <div class="th-flow-step">
+
+                        <span class="th-flow-number">
+                            04
+                        </span>
+
+                        <strong>
+                            Investigate
+                        </strong>
+
+                    </div>
+
+                    <div class="th-flow-step">
+
+                        <span class="th-flow-number">
+                            05
+                        </span>
+
+                        <strong>
+                            Validate
+                        </strong>
+
+                    </div>
+
+                    <div class="th-flow-step">
+
+                        <span class="th-flow-number">
+                            06
+                        </span>
+
+                        <strong>
+                            Respond / Improve
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     HYPOTHESIS
+====================================================== -->
+
+        <section class="th-section">
+
+            <div class="th-container">
+
+                <div class="th-section-title">
+
+                    <h2>Threat Hunting Hypothesis</h2>
+
+                    <p>
+                        A hypothesis gives the analyst a specific question to investigate.
+                    </p>
+
+                </div>
+
+                <div class="th-hypothesis">
+
+                    <div class="th-hypothesis-label">
+                        Example Hunting Hypothesis
+                    </div>
+
+                    <p>
+                        "An attacker may be attempting to access user accounts through
+                        repeated failed authentication attempts followed by a successful
+                        login from an unusual source."
+                    </p>
+
+                    <div class="th-code">
+                        FailedLogins &gt; 5
+                        +
+                        SuccessfulLogin
+                        +
+                        UnusualSource
+                        =
+                        Investigate Activity
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     SIMPLE EXAMPLE
+====================================================== -->
+
+        <section class="th-section">
+
+            <div class="th-container">
+
+                <div class="th-section-title">
+
+                    <h2>Simple Example</h2>
+
+                    <p>
+                        Consider a basic authentication investigation.
+                    </p>
+
+                </div>
+
+                <div class="th-example">
+
+                    <div class="th-example-box suspicious">
+
+                        <h3>
+                            ⚠ Suspicious Pattern
+                        </h3>
+
+                        <p>
+                            An analyst notices that an account has several failed login
+                            attempts followed by a successful login from an unfamiliar
+                            IP address.
+                        </p>
+
+                    </div>
+
+                    <div class="th-example-box hunting">
+
+                        <h3>
+                            ✓ Hunting Investigation
+                        </h3>
+
+                        <p>
+                            The analyst searches authentication logs, checks the source
+                            IP, reviews login times and looks for additional suspicious
+                            activity involving the same account.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+        <section class="th-section">
+
+            <div class="th-container">
+
+                <div class="th-section-title">
+
+                    <h2>Key Concepts</h2>
+
+                    <p>
+                        Important terms to remember from Basic Threat Hunting.
+                    </p>
+
+                </div>
+
+                <div class="th-key-list">
+
+                    <div class="th-key">
+
+                        <strong>Threat Hunting:</strong>
+
+                        <span>
+                            Proactively searching for hidden or suspicious activity.
+                        </span>
+
+                    </div>
+
+                    <div class="th-key">
+
+                        <strong>Hypothesis:</strong>
+
+                        <span>
+                            A security assumption or question that guides the investigation.
+                        </span>
+
+                    </div>
+
+                    <div class="th-key">
+
+                        <strong>Telemetry:</strong>
+
+                        <span>
+                            Security data collected from systems, endpoints and networks.
+                        </span>
+
+                    </div>
+
+                    <div class="th-key">
+
+                        <strong>Hunt Query:</strong>
+
+                        <span>
+                            A search used to identify potentially suspicious activity.
+                        </span>
+
+                    </div>
+
+                    <div class="th-key">
+
+                        <strong>Evidence:</strong>
+
+                        <span>
+                            Information that supports or disproves a security hypothesis.
+                        </span>
+
+                    </div>
+
+                    <div class="th-key">
+
+                        <strong>Threat Indicator:</strong>
+
+                        <span>
+                            A data point that may indicate malicious activity.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+        <section class="th-section">
+
+            <div class="th-container">
+
+                <div class="th-summary">
+
+                    <h2>
+                        Summary
+                    </h2>
+
+                    <p>
+                        Basic Threat Hunting is a proactive SOC activity used to search
+                        for suspicious behavior that may not have triggered an automated
+                        security alert. Analysts create a hypothesis, collect relevant
+                        security data, perform searches, investigate suspicious results,
+                        validate their findings and use the results to improve security
+                        monitoring and detection. Threat hunting therefore complements
+                        automated detection and helps security teams discover potentially
+                        hidden threats.
+                    </p>
+
+                </div>
+                <!-- LESSON COMPLETION -->
+<section class="th-section" id="lesson-completion">
+    <div class="th-container">
+        <div class="th-content-card">
+            <div class="th-section-title">
+                <h2>Lesson Completion</h2>
+                <p>
+                    You have completed the Basic Threat Hunting lesson.
+                    Review the key concepts and mark this lesson as completed.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="basic-threat-hunting"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/basic-threat-hunting.html"
+                data-status-id="basicthreathuntingCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="basicthreathuntingCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+        </div>
+    </div>
+</section>
+                <div class="lab-area">
+
+                    <div class="lab-text">
+                        <strong>Ready for the Practical Lab?</strong>
+
+                        <span>
+                            Test your understanding through an
+                            authorized SOC security-training simulation.
+                        </span>
+                    </div>
+
+                    <a href="../lab/basic-threat-hunting-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

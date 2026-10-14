@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Privilege Escalation Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 10%,
+                    rgba(0, 255, 170, 0.055),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 88% 15%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 40px 35px;
+
+            margin-bottom: 20px;
+
+            border: 1px solid rgba(0, 255, 176, 0.15);
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 23, 30, 0.98),
+                    rgba(2, 12, 23, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00ffb0,
+                    #00bfff,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            color: #00ffb0;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 13px;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 42px;
+
+            line-height: 1.15;
+
+            font-weight: 850;
+        }
+
+        .lab-hero h1 span {
+            color: #00ffb0;
+        }
+
+        .lab-description {
+
+            max-width: 780px;
+
+            margin: 15px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           INFO STRIP
+        ====================================================== */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .info-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+        }
+
+        .info-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .info-value.green {
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           AUTHORIZATION NOTICE
+        ====================================================== */
+
+        .authorization {
+
+            margin-bottom: 20px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(255, 177, 0, 0.17);
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .authorization-title {
+
+            margin-bottom: 8px;
+
+            color: #ffc44d;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .authorization p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ====================================================== */
+
+        .progress-card {
+
+            margin-bottom: 20px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 10px;
+        }
+
+        .progress-title {
+
+            color: #dce9f4;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .progress-count {
+
+            color: #00ffb0;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+        }
+
+        .progress-bar {
+
+            width: 100%;
+
+            height: 6px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(0, 191, 255, 0.08);
+
+            overflow: hidden;
+        }
+
+        .progress-fill {
+
+            width: 0%;
+
+            height: 100%;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00ffb0,
+                    #00bfff
+                );
+
+            transition: width 0.3s ease;
+        }
+
+        /* =====================================================
+           QUESTION CARD
+        ====================================================== */
+
+        .question-card {
+
+            margin-bottom: 15px;
+
+            padding: 23px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .question-number {
+
+            margin-bottom: 10px;
+
+            color: #00ffb0;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+        }
+
+        .question-text {
+
+            margin-bottom: 17px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            font-weight: 700;
+        }
+
+        .options {
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .option {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            padding: 12px;
+
+            border: 1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 255, 176, 0.25);
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        .option input {
+
+            margin-top: 3px;
+
+            accent-color: #00ffb0;
+        }
+
+        .option span {
+
+            color: #8298ab;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           BUTTON
+        ====================================================== */
+
+        .submit-area {
+
+            margin-top: 25px;
+
+            text-align: center;
+        }
+
+        .submit-button {
+
+            padding: 13px 28px;
+
+            border: 1px solid rgba(0, 255, 176, 0.30);
+
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .submit-button:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(0, 255, 176, 0.55);
+
+            background:
+                rgba(0, 255, 176, 0.09);
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 25px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 255, 176, 0.15);
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 255, 176, 0.035),
+                    rgba(0, 191, 255, 0.025)
+                );
+        }
+
+        .result-title {
+
+            margin-bottom: 8px;
+
+            color: #00ffb0;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .result-score {
+
+            margin-bottom: 8px;
+
+            color: #ffffff;
+
+            font-size: 28px;
+
+            font-weight: 850;
+        }
+
+        .result-message {
+
+            color: #7e94a8;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.topic-navigation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 18px;
+
+    border: 1px solid rgba(0, 191, 255, 0.09);
+    border-radius: 9px;
+
+    color: #71879b;
+    background: rgba(0, 191, 255, 0.02);
+
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.topic-navigation a:hover {
+    color: #ccefe5;
+    border-color: rgba(0, 255, 176, 0.25);
+    background: rgba(0, 255, 176, 0.035);
+}        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-info {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+
+                font-size: 31px;
+            }
+
+            .lab-description {
+
+                font-size: 12px;
+            }
+
+            .lab-info {
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .question-card {
+
+                padding: 19px;
+            }
+
+            .topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.topic-navigation a {
+    flex: 0 1 auto;
+    max-width: 48%;
+    padding: 12px 10px;
+}
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN LAB
+====================================================== -->
+
+<main class="lab-page">
+
+    <div class="lab-container">
+
+
+        <!-- HERO -->
+
+        <section class="lab-hero">
+
+            <div class="lab-kicker">
+                ETHICAL HACKING LAB / 12
+            </div>
+
+            <h1>
+                <span>Privilege Escalation</span>
+                Lab
+            </h1>
+
+            <p class="lab-description">
+
+                Test your understanding of privilege boundaries,
+                vertical and horizontal escalation, least privilege,
+                permission auditing and authorized security assessment
+                practices.
+
+            </p>
+
+        </section>
+
+
+        <!-- INFO -->
+
+        <div class="lab-info">
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    Lab Type
+                </span>
+
+                <span class="info-value">
+                    MCQ Assessment
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    Questions
+                </span>
+
+                <span class="info-value">
+                    10
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    Difficulty
+                </span>
+
+                <span class="info-value">
+                    Intermediate
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    Environment
+                </span>
+
+                <span class="info-value green">
+                    Authorized
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- AUTHORIZATION -->
+
+        <section class="authorization">
+
+            <div class="authorization-title">
+                ⚠ AUTHORIZED TRAINING ENVIRONMENT
+            </div>
+
+            <p>
+
+                This lab is educational and focuses on controlled
+                security-assessment concepts. Perform actual privilege
+                escalation testing only on systems you own or have
+                explicit permission to assess.
+
+            </p>
+
+        </section>
+
+
+        <!-- PROGRESS -->
+
+        <section class="progress-card">
+
+            <div class="progress-top">
+
+                <div class="progress-title">
+                    Lab Progress
+                </div>
+
+                <div class="progress-count" id="progressCount">
+                    0 / 10
+                </div>
+
+            </div>
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progressFill"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUESTION 1 -->
+
+        <section class="question-card">
+
+            <div class="question-number">
+                QUESTION 01
+            </div>
+
+            <div class="question-text">
+
+                What is privilege escalation?
+
+            </div>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q1" value="a">
+                    <span>
+                        Increasing system storage capacity
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q1" value="b">
+                    <span>
+                        Obtaining a higher level of access than originally permitted
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q1" value="c">
+                    <span>
+                        Changing a computer's screen resolution
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q1" value="d">
+                    <span>
+                        Compressing system files
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUESTION 2 -->
+
+        <section class="question-card">
+
+            <div class="question-number">
+                QUESTION 02
+            </div>
+
+            <div class="question-text">
+
+                What does vertical privilege escalation generally mean?
+
+            </div>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q2" value="a">
+                    <span>
+                        Accessing another user's account at the same privilege level
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q2" value="b">
+                    <span>
+                        Moving from a lower privilege level to a higher privilege level
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q2" value="c">
+                    <span>
+                        Moving data between folders
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q2" value="d">
+                    <span>
+                        Changing a network cable
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUESTION 3 -->
+
+        <section class="question-card">
+
+            <div class="question-number">
+                QUESTION 03
+            </div>
+
+            <div class="question-text">
+
+                Which concept gives users only the permissions required
+                to perform their legitimate tasks?
+
+            </div>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q3" value="a">
+                    <span>
+                        Least privilege
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q3" value="b">
+                    <span>
+                        Open access
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q3" value="c">
+                    <span>
+                        Anonymous access
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q3" value="d">
+                    <span>
+                        Unlimited privilege
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUESTION 4 -->
+
+        <section class="question-card">
+
+            <div class="question-number">
+                QUESTION 04
+            </div>
+
+            <div class="question-text">
+
+                A normal user accesses another user's resources without
+                increasing their own privilege level. What type of
+                escalation does this represent?
+
+            </div>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q4" value="a">
+                    <span>
+                        Vertical escalation
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q4" value="b">
+                    <span>
+                        Horizontal escalation
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q4" value="c">
+                    <span>
+                        Physical escalation
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q4" value="d">
+                    <span>
+                        Network escalation
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUESTION 5 -->
+
+        <section class="question-card">
+
+            <div class="question-number">
+                QUESTION 05
+            </div>
+
+            <div class="question-text">
+
+                Which of the following can contribute to privilege
+                escalation risk?
+
+            </div>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q5" value="a">
+                    <span>
+                        Excessive permissions
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q5" value="b">
+                    <span>
+                        Strong access controls
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q5" value="c">
+                    <span>
+                        Proper patch management
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q5" value="d">
+                    <span>
+                        Correctly configured permissions
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUESTION 6 -->
+
+        <section class="question-card">
+
+            <div class="question-number">
+                QUESTION 06
+            </div>
+
+            <div class="question-text">
+
+                During an authorized assessment, what should a tester
+                do after identifying a possible privilege weakness?
+
+            </div>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q6" value="a">
+                    <span>
+                        Ignore the finding
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q6" value="b">
+                    <span>
+                        Safely validate and document the finding within scope
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q6" value="c">
+                    <span>
+                        Test unrelated external systems
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q6" value="d">
+                    <span>
+                        Delete the affected system
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUESTION 7 -->
+
+        <section class="question-card">
+
+            <div class="question-number">
+                QUESTION 07
+            </div>
+
+            <div class="question-text">
+
+                Which defensive practice helps reduce unnecessary
+                privilege escalation opportunities?
+
+            </div>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q7" value="a">
+                    <span>
+                        Giving every user administrator access
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q7" value="b">
+                    <span>
+                        Disabling all security controls
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q7" value="c">
+                    <span>
+                        Applying least privilege
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q7" value="d">
+                    <span>
+                        Sharing administrator credentials
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUESTION 8 -->
+
+        <section class="question-card">
+
+            <div class="question-number">
+                QUESTION 08
+            </div>
+
+            <div class="question-text">
+
+                Why is patch management relevant to privilege escalation?
+
+            </div>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q8" value="a">
+                    <span>
+                        Patches can reduce exposure to known software vulnerabilities
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q8" value="b">
+                    <span>
+                        Patches automatically create administrator accounts
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q8" value="c">
+                    <span>
+                        Patches remove all users
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q8" value="d">
+                    <span>
+                        Patches disable authentication
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUESTION 9 -->
+
+        <section class="question-card">
+
+            <div class="question-number">
+                QUESTION 09
+            </div>
+
+            <div class="question-text">
+
+                Which information is important when documenting a
+                privilege-escalation finding?
+
+            </div>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q9" value="a">
+                    <span>
+                        Only the tester's name
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q9" value="b">
+                    <span>
+                        Evidence, affected resource and security impact
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q9" value="c">
+                    <span>
+                        Personal social-media information
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q9" value="d">
+                    <span>
+                        Unrelated system information
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUESTION 10 -->
+
+        <section class="question-card">
+
+            <div class="question-number">
+                QUESTION 10
+            </div>
+
+            <div class="question-text">
+
+                Where should privilege-escalation testing be performed
+                for cybersecurity learning?
+
+            </div>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q10" value="a">
+                    <span>
+                        Any system found on the Internet
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q10" value="b">
+                    <span>
+                        Someone else's production server
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q10" value="c">
+                    <span>
+                        Authorized labs, CTFs or intentionally vulnerable machines
+                    </span>
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q10" value="d">
+                    <span>
+                        Random public devices
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- SUBMIT -->
+
+        <div class="submit-area">
+
+            <button
+                class="submit-button"
+                onclick="checkQuiz()"
+            >
+                Check Lab Results →
+            </button>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <section
+            class="result"
+            id="result"
+        >
+
+            <div class="result-title">
+                Lab Assessment Complete
+            </div>
+
+            <div
+                class="result-score"
+                id="score"
+            >
+                0 / 10
+            </div>
+
+            <div
+                class="result-message"
+                id="resultMessage"
+            >
+            </div>
+
+        </section>
+
+
+        <!-- NAVIGATION -->
+
+        <div class="topic-navigation">
+
+            <a href="post-exploitation-concepts-lab.html">
+                ← Lab: Post-Exploitation
+            </a>
+            <a href="../theory/reporting.html">
+                Next Theory: Reporting →
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<script>
+
+    /* =====================================================
+       CORRECT ANSWERS
+    ====================================================== */
+
+    const answers = {
+
+        q1: "b",
+        q2: "b",
+        q3: "a",
+        q4: "b",
+        q5: "a",
+        q6: "b",
+        q7: "c",
+        q8: "a",
+        q9: "b",
+        q10: "c"
+
+    };
+
+
+    /* =====================================================
+       PROGRESS
+    ====================================================== */
+
+    const questionNames = [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6",
+        "q7",
+        "q8",
+        "q9",
+        "q10"
+    ];
+
+
+    function updateProgress() {
+
+        let answered = 0;
+
+        questionNames.forEach(function(name) {
+
+            const selected =
+                document.querySelector(
+                    'input[name="' + name + '"]:checked'
+                );
+
+            if (selected) {
+                answered++;
+            }
+
+        });
+
+
+        document.getElementById("progressCount").textContent =
+            answered + " / 10";
+
+
+        document.getElementById("progressFill").style.width =
+            (answered / 10 * 100) + "%";
+
+    }
+
+
+    document.querySelectorAll(
+        'input[type="radio"]'
+    ).forEach(function(input) {
+
+        input.addEventListener(
+            "change",
+            updateProgress
+        );
+
+    });
+
+
+    /* =====================================================
+       CHECK QUIZ
+    ====================================================== */
+
+    function checkQuiz() {
+
+        let score = 0;
+
+        let unanswered = 0;
+
+
+        questionNames.forEach(function(name) {
+
+            const selected =
+                document.querySelector(
+                    'input[name="' + name + '"]:checked'
+                );
+
+
+            if (!selected) {
+
+                unanswered++;
+
+                return;
+
+            }
+
+
+            if (selected.value === answers[name]) {
+
+                score++;
+
+            }
+
+        });
+
+
+        if (unanswered > 0) {
+
+            alert(
+                "Please answer all 10 questions before checking your result."
+            );
+
+            return;
+
+        }
+
+
+        const result =
+            document.getElementById("result");
+
+        const scoreElement =
+            document.getElementById("score");
+
+        const messageElement =
+            document.getElementById("resultMessage");
+
+
+        scoreElement.textContent =
+            score + " / 10";
+
+
+        if (score === 10) {
+
+            messageElement.textContent =
+                "Excellent! You have a strong understanding of privilege escalation concepts, privilege boundaries and defensive controls.";
+
+        }
+        else if (score >= 8) {
+
+            messageElement.textContent =
+                "Very good! Your understanding is strong. Review a few concepts before moving to the next topic.";
+
+        }
+        else if (score >= 6) {
+
+            messageElement.textContent =
+                "Good attempt. Review vertical and horizontal escalation, least privilege and assessment methodology.";
+
+        }
+        else {
+
+            messageElement.textContent =
+                "Review the theory again, especially privilege types, causes, assessment steps and defensive measures.";
+
+        }
+
+
+        result.style.display = "block";
+
+
+        result.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }
+
+</script>
+
+
+<script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,2614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Basics - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+
+    <style>
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%),
+                radial-gradient(circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%),
+                #02080d;
+        }
+
+
+        .linux-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-topic-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+
+        .linux-topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-topic-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98));
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           DESKTOP HOVER
+        ====================================================== */
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform:
+                    translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-card::after,
+        .linux-user-card::after,
+        .linux-command-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent);
+
+            transform:
+                skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover::after,
+            .linux-user-card:hover::after,
+            .linux-command-card:hover::after {
+
+                animation:
+                    linuxLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .linux-definition-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-definition-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-definition-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           GRID
+        ====================================================== */
+
+        .linux-user-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-user-card {
+
+            position: relative;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-user-card:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.35);
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .linux-user-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .linux-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+
+        /* =====================================================
+           COMMAND CARDS
+        ====================================================== */
+
+        .linux-command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-command-card {
+
+            position: relative;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+        }
+
+
+        .linux-command-card code {
+
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .linux-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-flow-item {
+
+            padding: 12px 16px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .linux-summary-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-summary-list li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 23px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-summary-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .linux-summary-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform:
+                translateY(-1px);
+        }
+
+        .linux-topic-button.practical-lab {
+            border-color: rgba(34, 211, 238, 0.35);
+            background: rgba(34, 211, 238, 0.08);
+        }
+
+        .linux-topic-button.practical-lab:hover {
+            border-color: rgba(34, 211, 238, 0.70);
+            background: rgba(34, 211, 238, 0.14);
+        }
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-learning-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-topic-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-learning-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-topic-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-topic-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-definition-box {
+
+                padding: 16px;
+            }
+
+
+            .linux-definition-box span {
+
+                font-size: 13px;
+            }
+
+
+            .linux-user-grid,
+            .linux-command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-key-item {
+
+                font-size: 11px;
+
+                padding:
+                    9px 11px;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-learning-page {
+
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+        /* =====================================================
+   LINUX TOPIC SEARCH
+===================================================== */
+
+        .linux-topic-search {
+
+            display: flex;
+            align-items: center;
+
+            max-width: 650px;
+
+            margin: 25px auto 0;
+
+            gap: 10px;
+        }
+
+        .linux-topic-search input {
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 13px 16px;
+
+            border: 1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            outline: none;
+
+            color: #f8fafc;
+
+            background: rgba(103, 232, 249, 0.045);
+
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .linux-topic-search input::placeholder {
+
+            color: #7f909c;
+        }
+
+        .linux-topic-search input:focus {
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            box-shadow:
+                0 0 18px rgba(103, 232, 249, 0.08);
+        }
+
+        .linux-topic-search button {
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .linux-topic-search button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.12);
+
+            transform: translateY(-1px);
+        }
+
+        .linux-search-message {
+
+            min-height: 20px;
+
+            margin-top: 10px;
+
+            color: #67e8f9;
+
+            font-size: 12px;
+
+            text-align: center;
+        }
+
+
+        /* =====================================================
+   SEARCH HIGHLIGHT
+===================================================== */
+
+        .linux-search-highlight {
+
+            border-color:
+                rgba(103, 232, 249, 0.75) !important;
+
+            box-shadow:
+                0 0 25px rgba(103, 232, 249, 0.12) !important;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+   MOBILE SEARCH
+===================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-topic-search {
+
+                flex-direction: column;
+
+                width: 100%;
+
+                gap: 8px;
+            }
+
+            .linux-topic-search input {
+
+                width: 100%;
+            }
+
+            .linux-topic-search button {
+
+                width: 100%;
+            }
+
+        }
+
+        #navbar-placeholder a[href*="linux"] svg,
+        #navbar-placeholder a[href*="linux"] i {
+            width: 18px;
+            height: 18px;
+            font-size: 16px;
+        }
+
+        /* Page-specific fix: Linux navbar icon */
+        #navbar-placeholder a[href*="linux"] svg,
+        #navbar-placeholder a[href*="linux"] i,
+        #navbar-placeholder a[href*="linux"] .nav-icon,
+        #navbar-placeholder a[href*="linux"] .nav-icon-wrapper {
+            width: 18px !important;
+            height: 18px !important;
+            min-width: 18px !important;
+            min-height: 18px !important;
+            font-size: 16px !important;
+        }
+
+        /* Keep the Linux navigation item compact */
+        #navbar-placeholder a[href*="linux"] {
+            gap: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SHARED CYBERNEXA NAVBAR -->
+    <div id="navbar-placeholder" data-navbar-path="../../../components/navbar.html" data-root-path="../../../">
+    </div>
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-learning-page">
+
+        <div class="linux-learning-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="linux-topic-header">
+
+                <div class="linux-topic-category">
+                    LINUX
+                </div>
+
+                <h1>
+                    Linux <span>Basics</span>
+                </h1>
+
+                <p class="linux-topic-intro">
+
+                    Learn the fundamental concepts of Linux,
+                    understand how the operating system works,
+                    and become comfortable with the Linux terminal.
+
+                </p>
+                <!-- =================================================
+                        LINUX TOPIC SEARCH
+                ================================================== -->
+
+                <div class="linux-topic-search">
+
+                    <input type="text" id="linuxSearchInput" placeholder="Search Linux Basics topics..."
+                        autocomplete="off">
+
+                    <button type="button" id="linuxSearchButton">
+                        🔍 Search
+                    </button>
+
+                </div>
+
+                <div id="linuxSearchMessage" class="linux-search-message"></div>
+            </header>
+
+
+
+            <!-- =================================================
+                 WHAT IS LINUX
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🐧
+                    </div>
+
+                    <h2>
+                        What is Linux?
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-definition-box">
+
+                    <strong>
+                        Simple Definition
+                    </strong>
+
+                    <span>
+
+                        Linux is an open-source operating system
+                        used to manage computer hardware, software,
+                        files, users and system resources.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 OPERATING SYSTEM
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        OS
+                    </div>
+
+                    <h2>
+                        Linux as an Operating System
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    An operating system acts as a bridge between
+                    computer hardware and the applications that
+                    users run.
+
+                </p>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        User
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Applications
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Linux OS
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Hardware
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 KERNEL
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        K
+                    </div>
+
+                    <h2>
+                        Linux Kernel
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The kernel is the core component of a Linux
+                    operating system. It communicates with hardware
+                    and manages important system resources.
+
+                </p>
+
+
+                <div class="linux-user-grid">
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Process Management
+                        </h3>
+
+                        <p>
+
+                            Manages running processes and CPU
+                            resources.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Memory Management
+                        </h3>
+
+                        <p>
+
+                            Manages RAM and memory allocation
+                            between processes.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Device Management
+                        </h3>
+
+                        <p>
+
+                            Provides communication between software
+                            and hardware devices.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            File System Management
+                        </h3>
+
+                        <p>
+
+                            Provides the mechanisms used to manage
+                            files and storage resources.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 OPEN SOURCE
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ∞
+                    </div>
+
+                    <h2>
+                        Open Source
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux is open-source software. Its source code
+                    can be inspected, modified and distributed under
+                    the terms of its licenses.
+
+                </p>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Open Source
+                    </div>
+
+                    <div class="linux-key-item">
+                        Community Driven
+                    </div>
+
+                    <div class="linux-key-item">
+                        Flexible
+                    </div>
+
+                    <div class="linux-key-item">
+                        Customizable
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 DISTRIBUTIONS
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        D
+                    </div>
+
+                    <h2>
+                        Linux Distributions
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A Linux distribution combines the Linux kernel
+                    with system software, package management tools
+                    and other components to provide a complete
+                    operating system.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            Ubuntu
+                        </code>
+
+                        <p>
+
+                            A widely used Linux distribution suitable
+                            for desktops, servers and learning.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            Debian
+                        </code>
+
+                        <p>
+
+                            A community-developed distribution known
+                            for stability.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            Fedora
+                        </code>
+
+                        <p>
+
+                            A Linux distribution focused on newer
+                            technologies and development.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            Kali Linux
+                        </code>
+
+                        <p>
+
+                            A security-focused distribution commonly
+                            used for penetration testing and security
+                            research.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TERMINAL
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Linux Terminal
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The terminal provides a command-line interface
+                    through which users can interact with the Linux
+                    system using commands.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        $
+                    </code>
+
+                    <br>
+
+                    <code>
+                        whoami
+                    </code>
+
+                    <br>
+
+                    <code>
+                        pwd
+                    </code>
+
+                    <br>
+
+                    <code>
+                        ls
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SHELL
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        SH
+                    </div>
+
+                    <h2>
+                        Shell
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A shell is a command interpreter that accepts
+                    commands from the user and communicates with
+                    the operating system.
+
+                </p>
+
+
+                <div class="linux-user-grid">
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Bash
+                        </h3>
+
+                        <p>
+
+                            Bash is one of the most commonly used
+                            shells on Linux systems.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Command
+                        </h3>
+
+                        <p>
+
+                            A command tells the shell to perform
+                            a particular operation.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 BASIC TERMINAL CONCEPTS
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        >
+                    </div>
+
+                    <h2>
+                        Basic Terminal Concepts
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            Prompt
+                        </code>
+
+                        <p>
+
+                            Shows that the shell is ready to
+                            receive a command.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            Command
+                        </code>
+
+                        <p>
+
+                            The instruction entered by the user.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            Argument
+                        </code>
+
+                        <p>
+
+                            Additional information provided to
+                            a command.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            Option
+                        </code>
+
+                        <p>
+
+                            Modifies how a command performs
+                            its operation.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 BASIC COMMANDS
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        C
+                    </div>
+
+                    <h2>
+                        Essential Linux Commands
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    These commands are commonly used when
+                    beginning to work with Linux.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            whoami
+                        </code>
+
+                        <p>
+                            Displays the current username.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            pwd
+                        </code>
+
+                        <p>
+                            Displays the current working directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ls
+                        </code>
+
+                        <p>
+                            Lists files and directories.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cd
+                        </code>
+
+                        <p>
+                            Changes the current directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            mkdir
+                        </code>
+
+                        <p>
+                            Creates a directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            touch
+                        </code>
+
+                        <p>
+                            Creates an empty file when used in the
+                            usual way.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cp
+                        </code>
+
+                        <p>
+                            Copies files or directories.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            mv
+                        </code>
+
+                        <p>
+                            Moves or renames files and directories.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            rm
+                        </code>
+
+                        <p>
+                            Removes files or directories when used
+                            with the appropriate options.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            clear
+                        </code>
+
+                        <p>
+                            Clears the terminal display.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 COMMAND EXAMPLES
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Simple Command Examples
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        pwd
+                    </code>
+
+                    <br>
+
+                    <code>
+                        ls
+                    </code>
+
+                    <br>
+
+                    <code>
+                        mkdir test
+                    </code>
+
+                    <br>
+
+                    <code>
+                        cd test
+                    </code>
+
+                    <br>
+
+                    <code>
+                        touch file.txt
+                    </code>
+
+                    <br>
+
+                    <code>
+                        ls
+                    </code>
+
+                </div>
+
+
+                <p>
+
+                    These commands demonstrate a simple workflow:
+                    check the current location, view its contents,
+                    create a directory, enter it, create a file and
+                    then view the file.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ROOT AND REGULAR USER
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        U
+                    </div>
+
+                    <h2>
+                        Root and Regular Users
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-user-grid">
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Root User
+                        </h3>
+
+                        <p>
+
+                            The root account has extensive
+                            administrative privileges.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Regular User
+                        </h3>
+
+                        <p>
+
+                            A regular account normally operates
+                            with more limited privileges.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        sudo command
+                    </code>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>sudo</strong> command can allow an
+                    authorized user to execute a command with
+                    elevated privileges.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LINUX AND CYBERSECURITY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why Linux Basics Matter in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux knowledge is important for cybersecurity
+                    because many security tools, servers, cloud
+                    systems and security laboratories use Linux.
+
+                    Understanding the terminal and basic system
+                    operations provides a foundation for later
+                    security topics.
+
+                </p>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Terminal
+                    </div>
+
+                    <div class="linux-key-item">
+                        Command Line
+                    </div>
+
+                    <div class="linux-key-item">
+                        Users
+                    </div>
+
+                    <div class="linux-key-item">
+                        Files
+                    </div>
+
+                    <div class="linux-key-item">
+                        Processes
+                    </div>
+
+                    <div class="linux-key-item">
+                        Networking
+                    </div>
+
+                    <div class="linux-key-item">
+                        Security
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 QUICK SUMMARY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Quick Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-summary-list">
+
+                    <li>
+                        Linux is an open-source operating system.
+                    </li>
+
+                    <li>
+                        The kernel is the core component of Linux.
+                    </li>
+
+                    <li>
+                        Linux distributions combine the kernel
+                        with other software to provide a complete system.
+                    </li>
+
+                    <li>
+                        The terminal provides a command-line interface.
+                    </li>
+
+                    <li>
+                        A shell interprets commands entered by the user.
+                    </li>
+
+                    <li>
+                        Bash is a commonly used Linux shell.
+                    </li>
+
+                    <li>
+                        pwd displays the current working directory.
+                    </li>
+
+                    <li>
+                        ls lists files and directories.
+                    </li>
+
+                    <li>
+                        cd changes the current directory.
+                    </li>
+
+                    <li>
+                        mkdir creates a directory.
+                    </li>
+
+                    <li>
+                        touch can create an empty file.
+                    </li>
+
+                    <li>
+                        sudo can provide authorized elevated command execution.
+                    </li>
+
+                    <li>
+                        Linux fundamentals provide a foundation for cybersecurity.
+                    </li>
+
+                </ul>
+
+            </section>
+
+<!-- Lesson Completion -->
+<section class="linux-card" id="lessonCompletion">
+    <div class="linux-card-heading">
+        <div class="linux-icon" aria-hidden="true">✓</div>
+        <h2>Complete This Lesson</h2>
+    </div>
+
+    <p>
+        Mark this lesson as complete after studying all the topics.
+        Your progress will be saved to your CyberNexa account.
+    </p>
+
+    <button
+        type="button"
+        class="linux-topic-button"
+        data-lesson-progress
+        data-course-id="linux"
+        data-lesson-id="linux-basics"
+        data-dashboard-url="../learning-paths/linux/theory/linux-basics.html"
+        data-status-id="lessonCompletionStatus">
+
+        Mark Lesson Complete
+    </button>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite">
+    </p>
+</section>
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+            <div class="linux-topic-navigation">
+
+                <a href="linux.html" class="linux-topic-button previous">
+                    <span>←</span>
+                    <strong>Previous: Linux Learning Path</strong>
+                </a>
+
+                <a href="../lab/lab01.html" class="linux-topic-button practical-lab">
+                    <span>🧪</span>
+                    <strong>Perform Lab</strong>
+                </a>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../js/supabase-client.js"></script>
+    <script src="../../../js/lesson-progress.js"></script>
+    <script src="../../../js/navbar-loader.js"></script>
+    <script src="../../../js/navbar.js"></script>
+
+    <!-- User Session and Profile -->
+    <script src="../../../js/session.js"></script>
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+         Sweep only when user scrolls/touches.
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards = document.querySelectorAll(
+            ".linux-card, .linux-user-card, .linux-command-card"
+        );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+                void card.offsetWidth;
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(
+                sweepTimeout
+            );
+
+
+            sweepTimeout = setTimeout(() => {
+
+                sweepCards.forEach(card => {
+
+                    card.classList.remove(
+                        "mobile-sweep"
+                    );
+
+                });
+
+            }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
+
+    <script>
+
+        /* =====================================================
+           LINUX TOPIC SEARCH
+        ===================================================== */
+
+        const linuxSearchInput =
+            document.getElementById("linuxSearchInput");
+
+        const linuxSearchButton =
+            document.getElementById("linuxSearchButton");
+
+        const linuxSearchMessage =
+            document.getElementById("linuxSearchMessage");
+
+
+        function searchLinuxTopic() {
+
+            const searchText =
+                linuxSearchInput.value
+                    .trim()
+                    .toLowerCase();
+
+            const cards =
+                document.querySelectorAll(".linux-card");
+
+            let found = false;
+
+            cards.forEach(card => {
+
+                card.classList.remove(
+                    "linux-search-highlight"
+                );
+
+            });
+
+
+            if (searchText === "") {
+
+                linuxSearchMessage.textContent =
+                    "Please enter a Linux topic.";
+
+                return;
+            }
+
+
+            cards.forEach(card => {
+
+                const cardText =
+                    card.innerText.toLowerCase();
+
+                if (
+                    cardText.includes(searchText)
+                    && !found
+                ) {
+
+                    found = true;
+
+                    card.classList.add(
+                        "linux-search-highlight"
+                    );
+
+                    card.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                }
+
+            });
+
+
+            if (found) {
+
+                linuxSearchMessage.textContent =
+                    "Topic found.";
+
+            } else {
+
+                linuxSearchMessage.textContent =
+                    "No matching Linux topic found.";
+
+            }
+
+        }
+
+
+        /* Search button */
+
+        linuxSearchButton.addEventListener(
+            "click",
+            searchLinuxTopic
+        );
+
+
+        /* Enter key */
+
+        linuxSearchInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Enter") {
+
+                    searchLinuxTopic();
+
+                }
+
+            }
+        );
+
+    </script>
+</body>
+
+</html>

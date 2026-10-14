@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CyberNexa | Lab 11: Active Directory Basics Lab</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .windows-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(14, 165, 233, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .windows-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        .windows-topic-header {
+
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .windows-topic-category {
+
+            display: inline-block;
+            margin-bottom: 14px;
+
+            color: #60a5fa;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .windows-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+        .windows-topic-header h1 span {
+            color: #60a5fa;
+        }
+
+        .windows-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .windows-badges {
+
+            display: flex;
+
+            justify-content: center;
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 22px;
+        }
+
+        .windows-badge {
+
+            padding: 8px 13px;
+
+            border: 1px solid rgba(96, 165, 250, 0.20);
+            border-radius: 20px;
+
+            color: #bfdbfe;
+
+            background: rgba(96, 165, 250, 0.055);
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .windows-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+        }
+
+        .windows-card-heading {
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .windows-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(96, 165, 250, 0.30);
+
+            border-radius: 10px;
+
+            color: #60a5fa;
+
+            background: rgba(96, 165, 250, 0.07);
+
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .windows-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+            font-weight: 750;
+        }
+
+        .windows-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+        .windows-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        .windows-definition-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left: 3px solid #60a5fa;
+
+            border-radius: 0 10px 10px 0;
+
+            background: rgba(96, 165, 250, 0.055);
+        }
+
+        .windows-definition-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+        .windows-definition-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+        .windows-steps {
+
+            margin: 18px 0 0;
+
+            padding-left: 22px;
+        }
+
+        .windows-steps li {
+
+            margin-bottom: 12px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        .windows-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+        .windows-terminal-label {
+
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .windows-command-box code {
+
+            color: #93c5fd;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+        .windows-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .windows-key-item {
+
+            padding: 10px 14px;
+
+            border: 1px solid rgba(96, 165, 250, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background: rgba(96, 165, 250, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+        .windows-info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+        .windows-info-card {
+
+            padding: 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.14);
+
+            border-radius: 11px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .windows-info-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+        .windows-result-box {
+
+            padding: 18px;
+
+            margin-top: 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.18);
+
+            border-radius: 10px;
+
+            background: rgba(96, 165, 250, 0.04);
+        }
+
+        .windows-result-box strong {
+
+            color: #60a5fa;
+        }
+
+        .windows-result-box p {
+
+            margin: 8px 0 0;
+        }
+
+        .windows-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+        .windows-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background: rgba(96, 165, 250, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .windows-topic-button:hover {
+
+            border-color:
+                rgba(96, 165, 250, 0.65);
+
+            background:
+                rgba(96, 165, 250, 0.10);
+
+            transform:
+                translateY(-1px);
+        }
+
+        .windows-topic-button span {
+
+            color: #60a5fa;
+
+            font-size: 17px;
+        }
+
+        .windows-topic-button.next {
+
+            border-color:
+                rgba(37, 99, 235, 0.40);
+
+            background:
+                rgba(37, 99, 235, 0.09);
+        }
+
+        @media (max-width: 600px) {
+
+            .windows-learning-page {
+
+                padding: 45px 12px 55px;
+            }
+
+            .windows-topic-header h1 {
+
+                font-size: 30px;
+            }
+
+            .windows-card {
+
+                padding: 21px 18px;
+            }
+
+            .windows-card h2 {
+
+                font-size: 18px;
+            }
+
+            .windows-info-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .windows-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .windows-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+    
+        /* =====================================================
+           STANDARDIZED LAB NAVIGATION
+        ====================================================== */
+
+        .windows-lab-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .windows-lab-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 20px;
+            border: 1px solid rgba(103, 232, 249, 0.25);
+            border-radius: 9px;
+            color: #dbeafe;
+            background: rgba(103, 232, 249, 0.05);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .windows-lab-button:hover {
+            border-color: rgba(103, 232, 249, 0.65);
+            background: rgba(103, 232, 249, 0.12);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .windows-lab-button span {
+            color: #67e8f9;
+            font-size: 16px;
+        }
+
+        .windows-lab-button.theory {
+            border-color: rgba(96, 165, 250, 0.35);
+            background: rgba(96, 165, 250, 0.08);
+            color: #93c5fd;
+        }
+
+        .windows-lab-button.theory:hover {
+            border-color: rgba(96, 165, 250, 0.75);
+            background: rgba(96, 165, 250, 0.16);
+            color: #ffffff;
+        }
+
+        @media (max-width: 650px) {
+            .windows-lab-navigation {
+                flex-direction: column;
+                align-items: stretch;
+                margin-top: 25px;
+            }
+
+            .windows-lab-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html"
+           class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<main class="windows-learning-page">
+
+<div class="windows-learning-container">
+
+
+<header class="windows-topic-header">
+
+    <div class="windows-topic-category">
+        WINDOWS PRACTICAL LAB
+    </div>
+
+    <h1>Active Directory Basics <span>Lab 11</span></h1>
+
+    <p class="windows-topic-intro">
+
+        Practice basic Active Directory concepts in an
+        authorized Windows Server virtual lab environment.
+        This lab focuses on understanding the domain,
+        organizational units, users and groups.
+
+    </p>
+
+
+    <div class="windows-badges">
+
+        <div class="windows-badge">
+            Beginner
+        </div>
+
+        <div class="windows-badge">
+            Practical
+        </div>
+
+        <div class="windows-badge">
+            Windows Server
+        </div>
+
+        <div class="windows-badge">
+            AD DS
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            🎯
+        </div>
+
+        <h2>
+            Lab Objective
+        </h2>
+
+    </div>
+
+    <p>
+        The objective of this lab is to understand the basic
+        workflow of Active Directory Domain Services and practice
+        creating an Organizational Unit, user and security group
+        in an authorized Windows Server lab environment.
+    </p>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            ⚠
+        </div>
+
+        <h2>
+            Lab Requirements
+        </h2>
+
+    </div>
+
+    <div class="windows-info-grid">
+
+        <div class="windows-info-card">
+
+            <h3>
+                Windows Server
+            </h3>
+
+            <p>
+                A Windows Server virtual machine with
+                Active Directory Domain Services available.
+            </p>
+
+        </div>
+
+
+        <div class="windows-info-card">
+
+            <h3>
+                Administrator Access
+            </h3>
+
+            <p>
+                Use an administrator account inside your
+                own authorized lab environment.
+            </p>
+
+        </div>
+
+
+        <div class="windows-info-card">
+
+            <h3>
+                Server Manager
+            </h3>
+
+            <p>
+                Server Manager can be used to install and
+                manage the AD DS role.
+            </p>
+
+        </div>
+
+
+        <div class="windows-info-card">
+
+            <h3>
+                Virtual Lab
+            </h3>
+
+            <p>
+                A local VirtualBox or VMware environment is
+                recommended for safe practice.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            01
+        </div>
+
+        <h2>
+            Check the Server
+        </h2>
+
+    </div>
+
+    <p>
+        First identify the Windows Server system and verify
+        that you are working inside your authorized lab.
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            hostname
+        </code>
+
+        <br>
+
+        <code>
+            whoami
+        </code>
+
+        <br>
+
+        <code>
+            ipconfig
+        </code>
+
+    </div>
+
+    <div class="windows-result-box">
+
+        <strong>Expected Result</strong>
+
+        <p>
+            The commands should display the server hostname,
+            current user and network configuration.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            02
+        </div>
+
+        <h2>
+            Verify Active Directory Tools
+        </h2>
+
+    </div>
+
+    <p>
+        Open Server Manager and check whether the
+        Active Directory Users and Computers console
+        is available.
+    </p>
+
+    <ol class="windows-steps">
+
+        <li>
+            Open <strong>Server Manager</strong>.
+        </li>
+
+        <li>
+            Open <strong>Tools</strong>.
+        </li>
+
+        <li>
+            Look for <strong>Active Directory Users and Computers</strong>.
+        </li>
+
+        <li>
+            Open the console.
+        </li>
+
+    </ol>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            03
+        </div>
+
+        <h2>
+            Explore the Domain
+        </h2>
+
+    </div>
+
+    <p>
+        In Active Directory Users and Computers, locate
+        your lab domain and inspect its available containers.
+    </p>
+
+    <div class="windows-key-concepts">
+
+        <div class="windows-key-item">
+            Domain
+        </div>
+
+        <div class="windows-key-item">
+            Users
+        </div>
+
+        <div class="windows-key-item">
+            Computers
+        </div>
+
+        <div class="windows-key-item">
+            Builtin
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            04
+        </div>
+
+        <h2>
+            Create an Organizational Unit
+        </h2>
+
+    </div>
+
+    <p>
+        Create an Organizational Unit for the lab users.
+    </p>
+
+    <ol class="windows-steps">
+
+        <li>
+            Right-click your domain.
+        </li>
+
+        <li>
+            Select <strong>New → Organizational Unit</strong>.
+        </li>
+
+        <li>
+            Enter the name:
+            <strong>CyberNexa-Users</strong>
+        </li>
+
+        <li>
+            Confirm the creation.
+        </li>
+
+    </ol>
+
+    <div class="windows-result-box">
+
+        <strong>Expected Result</strong>
+
+        <p>
+            A new OU named CyberNexa-Users should appear
+            inside the domain.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            05
+        </div>
+
+        <h2>
+            Create a Test User
+        </h2>
+
+    </div>
+
+    <p>
+        Create a dedicated test account for the lab.
+        Do not use real credentials or another person's account.
+    </p>
+
+    <ol class="windows-steps">
+
+        <li>
+            Open the <strong>CyberNexa-Users</strong> OU.
+        </li>
+
+        <li>
+            Right-click the OU.
+        </li>
+
+        <li>
+            Select <strong>New → User</strong>.
+        </li>
+
+        <li>
+            Use a test name such as:
+            <strong>CyberNexa Test User</strong>
+        </li>
+
+        <li>
+            Complete the wizard using a lab-only password.
+        </li>
+
+    </ol>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            06
+        </div>
+
+        <h2>
+            Create a Security Group
+        </h2>
+
+    </div>
+
+    <p>
+        Create a security group that can later be used
+        for access-control exercises.
+    </p>
+
+    <ol class="windows-steps">
+
+        <li>
+            Right-click the CyberNexa-Users OU.
+        </li>
+
+        <li>
+            Select <strong>New → Group</strong>.
+        </li>
+
+        <li>
+            Name the group:
+            <strong>CyberNexa-Students</strong>
+        </li>
+
+        <li>
+            Select the appropriate security-group option.
+        </li>
+
+        <li>
+            Create the group.
+        </li>
+
+    </ol>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            07
+        </div>
+
+        <h2>
+            Add the Test User to the Group
+        </h2>
+
+    </div>
+
+    <p>
+        Add the test user to the CyberNexa-Students
+        security group.
+    </p>
+
+    <ol class="windows-steps">
+
+        <li>
+            Open the CyberNexa-Students group properties.
+        </li>
+
+        <li>
+            Open the <strong>Members</strong> section.
+        </li>
+
+        <li>
+            Add the CyberNexa test user.
+        </li>
+
+        <li>
+            Confirm the membership.
+        </li>
+
+    </ol>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            Get-ADGroupMember -Identity "CyberNexa-Students"
+        </code>
+
+    </div>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            08
+        </div>
+
+        <h2>
+            Verify the User
+        </h2>
+
+    </div>
+
+    <p>
+        Use PowerShell to verify that the test account
+        exists in Active Directory.
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            Get-ADUser -Identity "CyberNexaTestUser"
+        </code>
+
+    </div>
+
+    <div class="windows-result-box">
+
+        <strong>Expected Result</strong>
+
+        <p>
+            PowerShell should return information about the
+            test user if the account exists.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            ✓
+        </div>
+
+        <h2>
+            Lab Verification Checklist
+        </h2>
+
+    </div>
+
+    <div class="windows-key-concepts">
+
+        <div class="windows-key-item">
+            ✓ AD DS Available
+        </div>
+
+        <div class="windows-key-item">
+            ✓ Domain Located
+        </div>
+
+        <div class="windows-key-item">
+            ✓ OU Created
+        </div>
+
+        <div class="windows-key-item">
+            ✓ Test User Created
+        </div>
+
+        <div class="windows-key-item">
+            ✓ Security Group Created
+        </div>
+
+        <div class="windows-key-item">
+            ✓ User Added to Group
+        </div>
+
+        <div class="windows-key-item">
+            ✓ User Verified
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            📝
+        </div>
+
+        <h2>
+            What You Learned
+        </h2>
+
+    </div>
+
+    <ul class="windows-steps">
+
+        <li>
+            What Active Directory is.
+        </li>
+
+        <li>
+            What a Domain Controller does.
+        </li>
+
+        <li>
+            How domains organize identities and computers.
+        </li>
+
+        <li>
+            What Organizational Units are.
+        </li>
+
+        <li>
+            How user accounts are represented in Active Directory.
+        </li>
+
+        <li>
+            How security groups organize users.
+        </li>
+
+        <li>
+            How group membership can be verified.
+        </li>
+
+        <li>
+            Why Active Directory is important for Windows security.
+        </li>
+
+    </ul>
+
+</section>
+
+
+
+<div class="windows-lab-navigation">
+
+                <a
+                    href="lab10.html"
+                    class="windows-lab-button"
+                >
+                    <span>←</span>
+                    <strong>Previous: Lab 10: Windows Security</strong>
+                </a>
+
+                <a
+                    href="../theory/windows-logs.html"
+                    class="windows-lab-button theory"
+                >
+                    <span>📘</span>
+                    <strong>Theory: Windows Logs</strong>
+                </a>
+
+                <!-- <a
+                    href="lab12.html"
+                    class="windows-lab-button"
+                >
+                    <strong>Next: Lab 12: Windows Logs</strong>
+                    <span>→</span>
+                </a> -->
+
+            </div>
+
+
+</div>
+
+</main>
+
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+
+<script src="../../../js/navbar.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HTTP / HTTPS - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .ws-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(125, 80, 255, 0.07),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .ws-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* HERO */
+
+        .ws-hero {
+            position: relative;
+            padding: 42px 35px;
+            margin-bottom: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 18, 35, 0.98),
+                    rgba(2, 10, 23, 0.98)
+                );
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .ws-hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #7d50ff,
+                    transparent
+                );
+        }
+
+        .ws-hero-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(260px, 0.75fr);
+
+            gap: 35px;
+            align-items: center;
+        }
+
+        .ws-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .ws-kicker::before {
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00bfff;
+
+            box-shadow:
+                0 0 12px rgba(0, 191, 255, 0.65);
+        }
+
+        .ws-hero h1 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 46px;
+            line-height: 1.12;
+
+            font-weight: 850;
+            letter-spacing: -1px;
+        }
+
+        .ws-hero h1 span {
+            color: #00bfff;
+        }
+
+        .ws-description {
+            max-width: 700px;
+
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        /* TERMINAL */
+
+        .terminal-panel {
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            border-radius: 11px;
+
+            background: rgba(0, 0, 0, 0.34);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        .terminal-top {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.09);
+        }
+
+        .terminal-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+            background: #405263;
+        }
+
+        .terminal-title {
+            margin-left: auto;
+
+            color: #52687c;
+
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+            margin-bottom: 9px;
+
+            color: #60788d;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .blue {
+            color: #00bfff;
+        }
+
+        .purple {
+            color: #a879ff;
+        }
+
+        .green {
+            color: #00ffb0;
+        }
+
+        /* META */
+
+        .ws-meta {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: #dce9f4;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* CARD */
+
+        .ws-card {
+            margin-bottom: 18px;
+            padding: 27px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .card-number {
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .card-heading h2 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .ws-card p {
+            margin: 0 0 12px;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* DEFINITION */
+
+        .definition {
+            padding: 21px;
+
+            border-left: 3px solid #00bfff;
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 191, 255, 0.055),
+                    rgba(0, 191, 255, 0.012)
+                );
+        }
+
+        .definition-label {
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .definition p {
+            margin: 0;
+
+            color: #ccebf5;
+
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        /* FLOW */
+
+        .flow {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+        .flow-item {
+            padding: 17px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .flow-item strong {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffffff;
+
+            font-size: 12px;
+        }
+
+        .flow-item span {
+            color: #71879b;
+
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .arrow {
+            color: #00bfff;
+        }
+
+        /* METHOD GRID */
+
+        .method-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 11px;
+
+            margin-top: 17px;
+        }
+
+        .method {
+            padding: 17px;
+
+            border: 1px solid rgba(0, 191, 255, 0.09);
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .method h3 {
+            margin: 0 0 7px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .method p {
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* COMPARISON */
+
+        .comparison {
+            width: 100%;
+
+            margin-top: 17px;
+
+            border-collapse: collapse;
+
+            overflow: hidden;
+        }
+
+        .comparison th,
+        .comparison td {
+            padding: 13px;
+
+            border: 1px solid rgba(0, 191, 255, 0.09);
+
+            text-align: left;
+        }
+
+        .comparison th {
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.04);
+
+            font-size: 11px;
+        }
+
+        .comparison td {
+            color: #8499ac;
+
+            background:
+                rgba(0, 0, 0, 0.12);
+
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        /* SECURITY */
+
+        .security-list {
+            display: grid;
+
+            gap: 9px;
+
+            margin-top: 16px;
+        }
+
+        .security-item {
+            display: grid;
+
+            grid-template-columns: 30px 1fr;
+
+            gap: 11px;
+
+            padding: 12px;
+
+            border: 1px solid rgba(0, 191, 255, 0.08);
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .security-icon {
+            width: 27px;
+            height: 27px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 6px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.05);
+
+            font-size: 13px;
+        }
+
+        .security-item strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #dce9f4;
+
+            font-size: 12px;
+        }
+
+        .security-item span {
+            color: #70869a;
+
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        /* WARNING */
+
+        .warning {
+            padding: 21px;
+
+            border: 1px solid rgba(255, 177, 0, 0.17);
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .warning-title {
+            margin-bottom: 9px;
+
+            color: #ffc44d;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .warning p {
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* SUMMARY */
+
+        .summary {
+            padding: 25px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 191, 255, 0.13);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.035),
+                    rgba(125, 80, 255, 0.025)
+                );
+        }
+
+        .summary-title {
+            margin-bottom: 9px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .summary h2 {
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .summary p {
+            max-width: 760px;
+
+            margin: 0 auto;
+
+            color: #7e94a8;
+
+            font-size: 12px;
+            line-height: 1.85;
+        }
+
+        /* LAB CTA */
+
+        .lab-area {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 25px;
+            padding: 21px;
+
+            border: 1px solid rgba(0, 191, 255, 0.14);
+            border-radius: 12px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .lab-text strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .lab-text span {
+            color: #71879b;
+
+            font-size: 11px;
+        }
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 12px 20px;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.30);
+            border-radius: 8px;
+
+            color: #d8f5ff;
+
+            background:
+                rgba(0, 191, 255, 0.055);
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .lab-button:hover {
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            background:
+                rgba(0, 191, 255, 0.09);
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .ws-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ws-meta {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .flow {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .ws-page {
+                padding: 45px 12px 60px;
+            }
+
+            .ws-hero {
+                padding: 27px 20px;
+            }
+
+            .ws-hero h1 {
+                font-size: 31px;
+            }
+
+            .ws-description {
+                font-size: 12px;
+            }
+
+            .ws-card {
+                padding: 20px;
+            }
+
+            .flow {
+                grid-template-columns: 1fr;
+            }
+
+            .method-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .lab-area {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                text-align: center;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<main class="ws-page">
+
+<div class="ws-container">
+
+
+<section class="ws-hero">
+
+    <div class="ws-hero-grid">
+
+        <div>
+
+            <div class="ws-kicker">
+                WEB SECURITY / 02
+            </div>
+
+            <h1>
+                <span>HTTP / HTTPS</span>
+            </h1>
+
+            <p class="ws-description">
+                Understand how browsers and web servers communicate through
+                HTTP, why HTTPS is used to protect web traffic, how requests
+                and responses work, and why secure transport is an important
+                foundation of modern web security.
+            </p>
+
+        </div>
+
+
+        <div class="terminal-panel">
+
+            <div class="terminal-top">
+
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+
+                <span class="terminal-title">
+                    WEB SECURITY LAB
+                </span>
+
+            </div>
+
+            <div class="terminal-line">
+                <span class="blue">browser</span> →
+                <span class="purple">HTTP REQUEST</span>
+            </div>
+
+            <div class="terminal-line">
+                Server:
+                <span class="green">HTTP RESPONSE</span>
+            </div>
+
+            <div class="terminal-line">
+                Secure:
+                <span class="green">HTTPS / TLS</span>
+            </div>
+
+            <div class="terminal-line">
+                Status:
+                <span class="green">PROTECTED</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="ws-meta">
+
+    <div class="meta-item">
+        <span class="meta-label">Domain</span>
+        <span class="meta-value">Web Security</span>
+    </div>
+
+    <div class="meta-item">
+        <span class="meta-label">Level</span>
+        <span class="meta-value">Beginner</span>
+    </div>
+
+    <div class="meta-item">
+        <span class="meta-label">Protocol</span>
+        <span class="meta-value">HTTP / HTTPS</span>
+    </div>
+
+    <div class="meta-item">
+        <span class="meta-label">Focus</span>
+        <span class="meta-value">Secure Communication</span>
+    </div>
+
+</div>
+
+
+<!-- 01 -->
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">01</div>
+
+        <h2>What is HTTP?</h2>
+
+    </div>
+
+    <div class="definition">
+
+        <div class="definition-label">
+            Core Definition
+        </div>
+
+        <p>
+            HTTP (Hypertext Transfer Protocol) is an application-layer
+            protocol used for communication between web clients and web
+            servers. A browser sends an HTTP request and the server returns
+            an HTTP response containing information such as HTML, CSS,
+            JavaScript, images or data.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- 02 -->
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">02</div>
+
+        <h2>How HTTP Communication Works</h2>
+
+    </div>
+
+    <p>
+        Web communication normally follows a request-response model.
+        The client requests a resource and the server processes that
+        request before returning a response.
+    </p>
+
+    <div class="flow">
+
+        <div class="flow-item">
+            <strong>Browser</strong>
+            <span>Creates the request</span>
+        </div>
+
+        <div class="flow-item">
+            <strong>HTTP Request</strong>
+            <span>Method, URL and headers</span>
+        </div>
+
+        <div class="flow-item">
+            <strong>Web Server</strong>
+            <span>Processes request</span>
+        </div>
+
+        <div class="flow-item">
+            <strong>HTTP Response</strong>
+            <span>Status and content</span>
+        </div>
+
+        <div class="flow-item">
+            <strong>Browser</strong>
+            <span>Displays the result</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 03 -->
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">03</div>
+
+        <h2>HTTP Request</h2>
+
+    </div>
+
+    <p>
+        An HTTP request contains information that tells the server what
+        the client wants to do. Common request components include the
+        HTTP method, requested resource, headers and sometimes a body.
+    </p>
+
+    <div class="method-grid">
+
+        <div class="method">
+
+            <h3>GET</h3>
+
+            <p>
+                Requests a resource from the server. It is commonly used
+                when retrieving a web page or other resource.
+            </p>
+
+        </div>
+
+        <div class="method">
+
+            <h3>POST</h3>
+
+            <p>
+                Sends data to the server, commonly for form submission
+                or creating server-side data.
+            </p>
+
+        </div>
+
+        <div class="method">
+
+            <h3>PUT</h3>
+
+            <p>
+                Commonly used to replace or update a resource.
+            </p>
+
+        </div>
+
+        <div class="method">
+
+            <h3>DELETE</h3>
+
+            <p>
+                Requests deletion of a resource when the server supports
+                that operation.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 04 -->
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">04</div>
+
+        <h2>HTTP Response</h2>
+
+    </div>
+
+    <p>
+        The server sends an HTTP response after processing a request.
+        The response normally contains a status code, headers and
+        optionally a response body.
+    </p>
+
+    <table class="comparison">
+
+        <thead>
+
+            <tr>
+                <th>Status</th>
+                <th>Meaning</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>200 OK</td>
+                <td>The request was successfully processed.</td>
+            </tr>
+
+            <tr>
+                <td>301 / 302</td>
+                <td>Redirects the client to another location.</td>
+            </tr>
+
+            <tr>
+                <td>400 Bad Request</td>
+                <td>The request contains invalid information.</td>
+            </tr>
+
+            <tr>
+                <td>401 Unauthorized</td>
+                <td>Authentication is required or has failed.</td>
+            </tr>
+
+            <tr>
+                <td>403 Forbidden</td>
+                <td>The server refuses access to the resource.</td>
+            </tr>
+
+            <tr>
+                <td>404 Not Found</td>
+                <td>The requested resource could not be found.</td>
+            </tr>
+
+            <tr>
+                <td>500 Server Error</td>
+                <td>An error occurred while processing the request.</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</section>
+
+
+<!-- 05 -->
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">05</div>
+
+        <h2>What is HTTPS?</h2>
+
+    </div>
+
+    <div class="definition">
+
+        <div class="definition-label">
+            Secure HTTP
+        </div>
+
+        <p>
+            HTTPS (Hypertext Transfer Protocol Secure) is HTTP protected
+            using TLS (Transport Layer Security). TLS helps provide
+            confidentiality, integrity and authentication for communication
+            between the client and server.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- 06 -->
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">06</div>
+
+        <h2>HTTP vs HTTPS</h2>
+
+    </div>
+
+    <table class="comparison">
+
+        <thead>
+
+            <tr>
+                <th>Feature</th>
+                <th>HTTP</th>
+                <th>HTTPS</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>Transport Security</td>
+                <td>Not protected by TLS</td>
+                <td>Protected by TLS</td>
+            </tr>
+
+            <tr>
+                <td>Encryption</td>
+                <td>No TLS encryption</td>
+                <td>Traffic is protected by TLS</td>
+            </tr>
+
+            <tr>
+                <td>Integrity</td>
+                <td>No TLS integrity protection</td>
+                <td>TLS provides integrity protection</td>
+            </tr>
+
+            <tr>
+                <td>Authentication</td>
+                <td>No TLS server authentication</td>
+                <td>TLS certificates help authenticate the server</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</section>
+
+
+<!-- 07 -->
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">07</div>
+
+        <h2>Why HTTPS Matters in Web Security</h2>
+
+    </div>
+
+    <div class="security-list">
+
+        <div class="security-item">
+
+            <div class="security-icon">🔐</div>
+
+            <div>
+
+                <strong>Confidentiality</strong>
+
+                <span>
+                    TLS helps prevent unauthorized parties from reading
+                    protected web traffic in transit.
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="security-item">
+
+            <div class="security-icon">🛡</div>
+
+            <div>
+
+                <strong>Integrity</strong>
+
+                <span>
+                    TLS helps detect unauthorized modification of protected
+                    data while it is being transmitted.
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="security-item">
+
+            <div class="security-icon">✓</div>
+
+            <div>
+
+                <strong>Server Authentication</strong>
+
+                <span>
+                    TLS certificates help a browser verify the identity
+                    associated with a website.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- 08 -->
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">08</div>
+
+        <h2>Important Security Concepts</h2>
+
+    </div>
+
+    <p>
+        HTTPS protects data while it travels between the client and
+        server, but it does not automatically make the entire application
+        secure. Application vulnerabilities can still exist.
+    </p>
+
+    <div class="warning">
+
+        <div class="warning-title">
+            ⚠ HTTPS IS NOT A COMPLETE SECURITY SOLUTION
+        </div>
+
+        <p>
+            A website can use HTTPS and still contain vulnerabilities such
+            as SQL injection, cross-site scripting, broken access control,
+            insecure authentication or unsafe file handling. HTTPS protects
+            the communication channel; application security requires
+            additional controls.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="summary">
+
+    <div class="summary-title">
+        Module Summary
+    </div>
+
+    <h2>
+        Understand the Traffic. Secure the Channel.
+    </h2>
+
+    <p>
+        HTTP provides the basic request-response mechanism used by the web,
+        while HTTPS adds TLS protection to that communication. Understanding
+        requests, responses, methods, status codes and TLS is essential for
+        analyzing modern web applications and learning web security.
+    </p>
+
+</section>
+        <!-- =================================================
+             LESSON COMPLETION
+        ================================================== -->
+
+        <section class="ws-card" id="lessonCompletion">
+
+            <div class="card-heading">
+
+                <div class="card-number">✓</div>
+
+                <h2>Lesson Completion</h2>
+
+            </div>
+
+            <p>
+                You have completed the HTTP / HTTPS lesson.
+                Mark this lesson as complete to save your learning
+                progress to your CyberNexa account.
+            </p>
+
+            <div style="margin-top: 22px; text-align: center;">
+
+                <button
+                    type="button"
+                    class="lab-button"
+                    data-lesson-progress
+                    data-course-id="web-security"
+                    data-lesson-id="http-https"
+                    data-dashboard-url="../learning-paths/web-security/theory/http-https.html"
+                    data-status-id="httpHttpsCompletionStatus">
+                    ✓ Mark Lesson Complete
+                </button>
+
+                <p
+                    id="httpHttpsCompletionStatus"
+                    role="status"
+                    aria-live="polite"
+                    style="margin-top: 15px;">
+                </p>
+
+            </div>
+
+        </section>
+<div class="lab-area">
+
+    <div class="lab-text">
+
+        <strong>
+            Ready for the Practical Lab?
+        </strong>
+
+        <span>
+            Analyze simulated HTTP and HTTPS traffic in an authorized
+            Web Security training environment.
+        </span>
+
+    </div>
+
+    <a
+        href="../lab/http-https-lab.html"
+        class="lab-button"
+    >
+        🧪 Launch Lab →
+    </a>
+
+</div>
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">Home</a>
+
+            <a href="../../../footer/about.html">About</a>
+
+            <a href="../../../footer/contact.html">Contact</a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

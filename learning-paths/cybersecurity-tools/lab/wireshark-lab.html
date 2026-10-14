@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Wireshark Lab | CyberNexa</title>
+
+    <style>
+
+        /* =====================================================
+           CYBERNEXA WIRESHARK LAB
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 202, 255, 0.10),
+                    transparent 30%
+                ),
+                #020914;
+
+            color: #dce8f5;
+
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+
+            border-bottom:
+                1px solid rgba(0, 202, 255, 0.16);
+
+            background: #030c19;
+        }
+
+        .nav-container {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 14px 25px;
+        }
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: white;
+
+            text-decoration: none;
+        }
+
+        .brand-logo {
+
+            width: 38px;
+            height: 45px;
+
+            color: #00caff;
+        }
+
+        .brand-logo svg {
+
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+
+            font-size: 21px;
+
+            font-weight: 900;
+        }
+
+        .brand-name span {
+
+            color: #00caff;
+        }
+
+        .brand-tagline {
+
+            color: #71869c;
+
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .lab-page {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            padding:
+                35px 20px 75px;
+        }
+
+        .breadcrumb {
+
+            color: #657b91;
+
+            font-size: 12px;
+
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb span {
+
+            color: #00caff;
+
+            padding: 0 7px;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .lab-header {
+
+            padding: 30px;
+
+            border:
+                1px solid rgba(0, 230, 138, 0.25);
+
+            border-left:
+                4px solid #00e68a;
+
+            border-radius: 12px;
+
+            background:
+                rgba(0, 230, 138, 0.035);
+        }
+
+        .lab-label {
+
+            color: #00e68a;
+
+            font-size: 11px;
+
+            font-weight: 900;
+
+            letter-spacing: 2px;
+        }
+
+        .lab-header h1 {
+
+            margin:
+                8px 0;
+
+            color: white;
+
+            font-size: 34px;
+        }
+
+        .lab-header p {
+
+            margin: 0;
+
+            color: #9aacbf;
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           LAB BOX
+        ===================================================== */
+
+        .lab-box {
+
+            margin-top: 22px;
+
+            padding: 23px;
+
+            border:
+                1px solid rgba(0, 202, 255, 0.15);
+
+            border-radius: 10px;
+
+            background: #041221;
+        }
+
+        .lab-box h2 {
+
+            margin-top: 0;
+
+            color: white;
+
+            font-size: 19px;
+        }
+
+        .instructions {
+
+            color: #9eb1c4;
+
+            font-size: 13px;
+        }
+
+        .instructions li {
+
+            margin-bottom: 6px;
+        }
+
+        /* =====================================================
+           FILTER
+        ===================================================== */
+
+        .filter-area {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+        .filter-input {
+
+            flex: 1;
+
+            padding: 12px 14px;
+
+            border:
+                1px solid rgba(0, 202, 255, 0.25);
+
+            border-radius: 7px;
+
+            background: #020810;
+
+            color: #7ee7ff;
+
+            outline: none;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 12px;
+        }
+
+        .filter-input:focus {
+
+            border-color: #00caff;
+        }
+
+        .apply-button {
+
+            padding:
+                10px 18px;
+
+            border:
+                1px solid #00caff;
+
+            border-radius: 22px;
+
+            background:
+                rgba(0, 202, 255, 0.07);
+
+            color: #00caff;
+
+            cursor: pointer;
+
+            font-weight: 800;
+        }
+
+        .apply-button:hover {
+
+            background:
+                rgba(0, 202, 255, 0.16);
+        }
+
+        /* =====================================================
+           PACKET TABLE
+        ===================================================== */
+
+        .packet-container {
+
+            margin-top: 20px;
+
+            overflow-x: auto;
+
+            border:
+                1px solid rgba(0, 202, 255, 0.13);
+
+            border-radius: 8px;
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 750px;
+        }
+
+        th {
+
+            padding: 12px;
+
+            text-align: left;
+
+            background: #061a2b;
+
+            color: #00caff;
+
+            font-size: 11px;
+        }
+
+        td {
+
+            padding: 11px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.045);
+
+            color: #a9b9ca;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 11px;
+        }
+
+        tr:hover td {
+
+            background:
+                rgba(0, 202, 255, 0.035);
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-box {
+
+            margin-top: 15px;
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0, 230, 138, 0.18);
+
+            border-radius: 7px;
+
+            background:
+                rgba(0, 230, 138, 0.025);
+
+            color: #7fffc0;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           ANALYSIS
+        ===================================================== */
+
+        .analysis-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+        .analysis-card {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(96, 92, 255, 0.18);
+
+            border-radius: 8px;
+
+            background:
+                rgba(96, 92, 255, 0.035);
+        }
+
+        .analysis-card strong {
+
+            display: block;
+
+            color: white;
+
+            font-size: 13px;
+
+            margin-bottom: 5px;
+        }
+
+        .analysis-card span {
+
+            color: #8297ab;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           CHALLENGE
+        ===================================================== */
+
+        .challenge {
+
+            margin-top: 22px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(255, 189, 0, 0.25);
+
+            border-left:
+                4px solid #ffbd00;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255, 189, 0, 0.035);
+        }
+
+        .challenge h3 {
+
+            margin-top: 0;
+
+            color: #ffbd00;
+        }
+
+        .challenge p,
+        .challenge li {
+
+            color: #a8b8ca;
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 24px;
+        }
+
+        .lab-navigation a {
+
+            flex: 1;
+
+            padding: 12px;
+
+            text-align: center;
+
+            color: #8ea5b9;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            border:
+                1px solid rgba(0, 202, 255, 0.15);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 202, 255, 0.025);
+        }
+
+        .lab-navigation a:hover {
+
+            color: #00caff;
+
+            border-color:
+                rgba(0, 202, 255, 0.45);
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            border-top:
+                1px solid rgba(0, 202, 255, 0.13);
+
+            background: #020711;
+
+            padding:
+                35px 20px 20px;
+        }
+
+        .footer-container {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .footer-brand {
+
+            color: white;
+
+            font-size: 20px;
+
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+
+            color: #00caff;
+        }
+
+        .footer-container p {
+
+            color: #64798e;
+
+            font-size: 11px;
+        }
+
+        .footer-links {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 18px;
+        }
+
+        .footer-links a {
+
+            color: #8296aa;
+
+            text-decoration: none;
+
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+
+            color: #00caff;
+        }
+
+        .copyright {
+
+            max-width: 1100px;
+
+            margin: 25px auto 0;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.05);
+
+            text-align: center;
+
+            color: #506477;
+
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 750px) {
+
+            .filter-area {
+
+                flex-direction: column;
+            }
+
+            .analysis-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .lab-navigation {
+
+                flex-direction: column;
+            }
+
+            .footer-container {
+
+                flex-direction: column;
+            }
+
+        }
+/* =====================================================
+   FINAL RESPONSIVE / NO HORIZONTAL MOVEMENT FIX
+===================================================== */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    min-width: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.navbar,
+.nav-container,
+.lab-page,
+.lab-box,
+.lab-header,
+.challenge,
+.footer {
+    width: 100%;
+    max-width: 100%;
+}
+
+.brand,
+.footer-container,
+.footer-links,
+.lab-navigation,
+.filter-area {
+    min-width: 0;
+}
+
+.brand-text,
+.breadcrumb,
+.lab-header,
+.lab-box,
+.challenge,
+.footer-container {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+
+/* =====================================================
+   FILTER RESPONSIVE
+===================================================== */
+
+.filter-input {
+    min-width: 0;
+    width: 100%;
+}
+
+.apply-button {
+    flex-shrink: 0;
+}
+
+
+/* =====================================================
+   TABLE DESKTOP
+===================================================== */
+
+.packet-container {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.packet-container table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+}
+
+.packet-container th,
+.packet-container td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+
+/* =====================================================
+   MEDIUM SCREENS
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .lab-page {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .lab-header,
+    .lab-box,
+    .challenge {
+        padding: 20px;
+    }
+
+    .analysis-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .packet-container th,
+    .packet-container td {
+        padding: 9px 7px;
+        font-size: 10px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .nav-container {
+        padding: 12px 15px;
+    }
+
+    .brand {
+        gap: 8px;
+    }
+
+    .brand-logo {
+        width: 32px;
+        height: 38px;
+        flex-shrink: 0;
+    }
+
+    .brand-name {
+        font-size: 18px;
+    }
+
+    .brand-tagline {
+        font-size: 9px;
+    }
+
+
+    .lab-page {
+        padding: 22px 12px 55px;
+    }
+
+
+    .breadcrumb {
+        font-size: 10px;
+        line-height: 1.7;
+    }
+
+
+    .lab-header {
+        padding: 20px 16px;
+    }
+
+    .lab-header h1 {
+        font-size: 27px;
+        line-height: 1.2;
+    }
+
+    .lab-header p {
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+
+    .lab-box {
+        padding: 17px 14px;
+    }
+
+    .lab-box h2 {
+        font-size: 17px;
+    }
+
+
+    .instructions {
+        padding-left: 20px;
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+
+    /* Filter becomes full width */
+
+    .filter-area {
+        width: 100%;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    .filter-input {
+        width: 100%;
+        min-width: 0;
+        font-size: 12px;
+    }
+
+    .apply-button {
+        width: 100%;
+        padding: 11px 15px;
+    }
+
+
+    /* =================================================
+       MOBILE PACKET TABLE
+       Converts rows into responsive cards
+    ================================================= */
+
+    .packet-container {
+        border: none;
+        overflow: visible;
+    }
+
+    .packet-container table {
+        width: 100%;
+        min-width: 0;
+        display: block;
+        border: none;
+    }
+
+    .packet-container thead {
+        display: none;
+    }
+
+    .packet-container tbody {
+        display: block;
+        width: 100%;
+    }
+
+    .packet-container tr {
+        display: block;
+        width: 100%;
+        margin-bottom: 12px;
+        padding: 10px;
+        border: 1px solid rgba(0, 202, 255, 0.14);
+        border-radius: 8px;
+        background: #020b16;
+    }
+
+    .packet-container td {
+        display: grid;
+        grid-template-columns: 90px minmax(0, 1fr);
+        gap: 8px;
+
+        width: 100%;
+        min-width: 0;
+
+        padding: 7px 3px;
+
+        border-top: 1px solid rgba(255,255,255,0.045);
+
+        font-size: 10px;
+        line-height: 1.5;
+
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .packet-container td:first-child {
+        border-top: none;
+    }
+
+
+    /* Mobile table labels */
+
+    .packet-container td:nth-child(1)::before {
+        content: "No.";
+        color: #00caff;
+        font-weight: 800;
+    }
+
+    .packet-container td:nth-child(2)::before {
+        content: "Time";
+        color: #00caff;
+        font-weight: 800;
+    }
+
+    .packet-container td:nth-child(3)::before {
+        content: "Source";
+        color: #00caff;
+        font-weight: 800;
+    }
+
+    .packet-container td:nth-child(4)::before {
+        content: "Destination";
+        color: #00caff;
+        font-weight: 800;
+    }
+
+    .packet-container td:nth-child(5)::before {
+        content: "Protocol";
+        color: #00caff;
+        font-weight: 800;
+    }
+
+    .packet-container td:nth-child(6)::before {
+        content: "Port";
+        color: #00caff;
+        font-weight: 800;
+    }
+
+    .packet-container td:nth-child(7)::before {
+        content: "Info";
+        color: #00caff;
+        font-weight: 800;
+    }
+
+
+    /* =================================================
+       STATUS
+    ================================================= */
+
+    .status-box {
+        font-size: 10px;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =================================================
+       ANALYSIS
+    ================================================= */
+
+    .analysis-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .analysis-card {
+        padding: 15px;
+    }
+
+
+    /* =================================================
+       CHALLENGE
+    ================================================= */
+
+    .challenge {
+        padding: 17px 14px;
+    }
+
+    .challenge p,
+    .challenge li {
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+
+    /* =================================================
+       NAVIGATION
+    ================================================= */
+
+    .lab-navigation {
+        width: 100%;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .lab-navigation a {
+        width: 100%;
+        min-width: 0;
+        padding: 11px 9px;
+        font-size: 11px;
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =================================================
+       FOOTER
+    ================================================= */
+
+    .footer {
+        padding: 30px 15px 18px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .footer-links {
+        width: 100%;
+        gap: 10px 15px;
+    }
+
+    .footer-links a {
+        font-size: 10px;
+    }
+
+    .copyright {
+        font-size: 9px;
+        line-height: 1.6;
+    }
+
+}
+
+
+/* =====================================================
+   VERY SMALL DEVICES
+===================================================== */
+
+@media (max-width: 360px) {
+
+    .lab-page {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .nav-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .brand-name {
+        font-size: 17px;
+    }
+
+    .brand-tagline {
+        font-size: 8px;
+    }
+
+    .lab-header h1 {
+        font-size: 24px;
+    }
+
+    .lab-header,
+    .lab-box,
+    .challenge {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .packet-container td {
+        grid-template-columns: 75px minmax(0, 1fr);
+        font-size: 9px;
+    }
+
+}
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58
+                        C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     LAB
+===================================================== -->
+
+<main class="lab-page">
+
+
+    <div class="breadcrumb">
+
+        Cybersecurity Tools
+
+        <span>›</span>
+
+        Wireshark
+
+        <span>›</span>
+
+        Practical Lab
+
+    </div>
+
+
+
+    <section class="lab-header">
+
+        <div class="lab-label">
+            WIRESHARK PRACTICAL LAB
+        </div>
+
+        <h1>
+            Network Packet Analysis
+        </h1>
+
+        <p>
+            Practice identifying protocols, IP addresses, ports
+            and suspicious-looking traffic using a simulated
+            packet-analysis environment.
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         OBJECTIVES
+    ================================================= -->
+
+    <section class="lab-box">
+
+        <h2>
+            Lab Objectives
+        </h2>
+
+        <ol class="instructions">
+
+            <li>
+                Understand the basic structure of a captured packet.
+            </li>
+
+            <li>
+                Identify source and destination IP addresses.
+            </li>
+
+            <li>
+                Identify protocols and ports.
+            </li>
+
+            <li>
+                Apply Wireshark-style display filters.
+            </li>
+
+            <li>
+                Investigate suspicious traffic patterns.
+            </li>
+
+        </ol>
+
+    </section>
+
+
+
+    <!-- =================================================
+         FILTER ENVIRONMENT
+    ================================================= -->
+
+    <section class="lab-box">
+
+        <h2>
+            Packet Analysis Environment
+        </h2>
+
+        <p class="instructions">
+
+            Try filters such as:
+
+            <strong>
+                dns
+            </strong>,
+
+            <strong>
+                tcp
+            </strong>,
+
+            <strong>
+                http
+            </strong>,
+
+            <strong>
+                udp
+            </strong>
+
+            or
+
+            <strong>
+                tcp.port == 443
+            </strong>.
+
+        </p>
+
+
+        <div class="filter-area">
+
+            <input
+                type="text"
+                id="filterInput"
+                class="filter-input"
+                placeholder="Enter display filter..."
+            >
+
+            <button
+                type="button"
+                id="applyFilter"
+                class="apply-button"
+            >
+                Apply Filter
+            </button>
+
+        </div>
+
+
+
+        <!-- PACKET TABLE -->
+
+        <div class="packet-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>No.</th>
+
+                        <th>Time</th>
+
+                        <th>Source</th>
+
+                        <th>Destination</th>
+
+                        <th>Protocol</th>
+
+                        <th>Port</th>
+
+                        <th>Info</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="packetTable">
+
+                    <tr
+                        data-protocol="dns"
+                        data-port="53"
+                    >
+
+                        <td>1</td>
+                        <td>0.000</td>
+                        <td>192.168.1.10</td>
+                        <td>8.8.8.8</td>
+                        <td>DNS</td>
+                        <td>53</td>
+                        <td>DNS query</td>
+
+                    </tr>
+
+
+                    <tr
+                        data-protocol="tcp"
+                        data-port="443"
+                    >
+
+                        <td>2</td>
+                        <td>0.421</td>
+                        <td>192.168.1.10</td>
+                        <td>142.250.190.14</td>
+                        <td>TCP</td>
+                        <td>443</td>
+                        <td>HTTPS connection</td>
+
+                    </tr>
+
+
+                    <tr
+                        data-protocol="http"
+                        data-port="80"
+                    >
+
+                        <td>3</td>
+                        <td>0.812</td>
+                        <td>192.168.1.10</td>
+                        <td>192.168.1.20</td>
+                        <td>HTTP</td>
+                        <td>80</td>
+                        <td>GET /login</td>
+
+                    </tr>
+
+
+                    <tr
+                        data-protocol="udp"
+                        data-port="53"
+                    >
+
+                        <td>4</td>
+                        <td>1.154</td>
+                        <td>192.168.1.20</td>
+                        <td>192.168.1.1</td>
+                        <td>UDP</td>
+                        <td>53</td>
+                        <td>DNS response</td>
+
+                    </tr>
+
+
+                    <tr
+                        data-protocol="tcp"
+                        data-port="22"
+                    >
+
+                        <td>5</td>
+                        <td>1.892</td>
+                        <td>192.168.1.30</td>
+                        <td>192.168.1.10</td>
+                        <td>TCP</td>
+                        <td>22</td>
+                        <td>SSH connection</td>
+
+                    </tr>
+
+
+                    <tr
+                        data-protocol="tcp"
+                        data-port="443"
+                    >
+
+                        <td>6</td>
+                        <td>2.331</td>
+                        <td>192.168.1.10</td>
+                        <td>10.10.10.50</td>
+                        <td>TCP</td>
+                        <td>443</td>
+                        <td>Encrypted traffic</td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div
+            id="status"
+            class="status-box"
+        >
+            Showing all sample packets.
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ANALYSIS
+    ================================================= -->
+
+    <section class="lab-box">
+
+        <h2>
+            Analyst Observations
+        </h2>
+
+
+        <div class="analysis-grid">
+
+            <div class="analysis-card">
+
+                <strong>
+                    DNS
+                </strong>
+
+                <span>
+                    Look for unexpected domains or unusual DNS activity.
+                </span>
+
+            </div>
+
+
+            <div class="analysis-card">
+
+                <strong>
+                    HTTPS
+                </strong>
+
+                <span>
+                    Identify encrypted connections and their endpoints.
+                </span>
+
+            </div>
+
+
+            <div class="analysis-card">
+
+                <strong>
+                    SSH
+                </strong>
+
+                <span>
+                    Investigate unexpected SSH connections on port 22.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         CHALLENGE
+    ================================================= -->
+
+    <section class="challenge">
+
+        <h3>
+            Advanced Challenge
+        </h3>
+
+        <p>
+            Investigate the sample traffic and answer:
+        </p>
+
+        <ul>
+
+            <li>
+                Which packet uses DNS?
+            </li>
+
+            <li>
+                Which packet uses HTTPS?
+            </li>
+
+            <li>
+                Which packet communicates using SSH?
+            </li>
+
+            <li>
+                Which source IP appears to initiate the SSH connection?
+            </li>
+
+            <li>
+                Which display filter would isolate TCP traffic?
+            </li>
+
+        </ul>
+
+    </section>
+
+
+
+    <!-- =================================================
+         NAVIGATION
+    ================================================= -->
+
+    <div class="lab-navigation">
+
+        <a href="../theory/wireshark.html">
+            ← Wireshark Theory
+        </a>
+
+        <a href="../theory/cyber-tools.html">
+            All Cybersecurity Tools
+        </a>
+
+        <a href="../theory/nmap.html">
+            Next: Nmap Lab →
+        </a>
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    /* =====================================================
+       WIRESHARK LAB FILTER ENGINE
+    ===================================================== */
+
+    const filterInput =
+        document.getElementById("filterInput");
+
+    const applyFilter =
+        document.getElementById("applyFilter");
+
+    const packetRows =
+        document.querySelectorAll(
+            "#packetTable tr"
+        );
+
+    const status =
+        document.getElementById("status");
+
+
+    function filterPackets() {
+
+        const query =
+            filterInput.value
+                .trim()
+                .toLowerCase();
+
+
+        let visiblePackets = 0;
+
+
+        packetRows.forEach(function (row) {
+
+            const protocol =
+                row.dataset.protocol;
+
+            const port =
+                row.dataset.port;
+
+            const rowText =
+                row.textContent.toLowerCase();
+
+
+            let match = false;
+
+
+            if (!query) {
+
+                match = true;
+
+            }
+
+            else if (
+                query === "dns" &&
+                protocol === "dns"
+            ) {
+
+                match = true;
+
+            }
+
+            else if (
+                query === "tcp" &&
+                protocol === "tcp"
+            ) {
+
+                match = true;
+
+            }
+
+            else if (
+                query === "udp" &&
+                protocol === "udp"
+            ) {
+
+                match = true;
+
+            }
+
+            else if (
+                query === "http" &&
+                protocol === "http"
+            ) {
+
+                match = true;
+
+            }
+
+            else if (
+                query === "tcp.port == 443" &&
+                protocol === "tcp" &&
+                port === "443"
+            ) {
+
+                match = true;
+
+            }
+
+            else if (
+                query === "tcp.port == 22" &&
+                protocol === "tcp" &&
+                port === "22"
+            ) {
+
+                match = true;
+
+            }
+
+            else if (
+                rowText.includes(query)
+            ) {
+
+                match = true;
+
+            }
+
+
+            if (match) {
+
+                row.style.display = "";
+
+                visiblePackets++;
+
+            }
+
+            else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+
+        if (!query) {
+
+            status.textContent =
+                "Showing all sample packets.";
+
+        }
+
+        else if (visiblePackets === 0) {
+
+            status.textContent =
+                "No packets matched the filter.";
+
+        }
+
+        else {
+
+            status.textContent =
+                visiblePackets +
+                " packet(s) matched the filter.";
+
+        }
+
+    }
+
+
+    applyFilter.addEventListener(
+        "click",
+        filterPackets
+    );
+
+
+    filterInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+
+                filterPackets();
+
+            }
+
+        }
+    );
+</script>
+</body>
+</html>

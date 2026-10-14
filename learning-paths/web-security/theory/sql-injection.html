@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SQL Injection - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           WEB SECURITY PAGE
+        ====================================================== */
+
+        .ws-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 10%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 88% 15%,
+                    rgba(99, 102, 241, 0.07),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .ws-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .ws-hero {
+
+            position: relative;
+
+            padding: 42px 35px;
+            margin-bottom: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(4, 22, 37, 0.98),
+                    rgba(2, 10, 22, 0.98)
+                );
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .ws-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #6366f1,
+                    transparent
+                );
+        }
+
+        .ws-hero-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(260px, 0.75fr);
+
+            gap: 35px;
+
+            align-items: center;
+        }
+
+        .ws-kicker {
+
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .ws-kicker::before {
+
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00bfff;
+
+            box-shadow:
+                0 0 12px rgba(0, 191, 255, 0.7);
+        }
+
+        .ws-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 46px;
+            line-height: 1.12;
+
+            font-weight: 850;
+
+            letter-spacing: -1px;
+        }
+
+        .ws-hero h1 span {
+            color: #00bfff;
+        }
+
+        .ws-description {
+
+            max-width: 700px;
+
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           TERMINAL
+        ====================================================== */
+
+        .terminal-panel {
+
+            padding: 18px;
+
+            border: 1px solid rgba(99, 102, 241, 0.18);
+            border-radius: 11px;
+
+            background: rgba(0, 0, 0, 0.34);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        .terminal-top {
+
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+
+            border-bottom:
+                1px solid rgba(99, 102, 241, 0.10);
+        }
+
+        .terminal-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #405263;
+        }
+
+        .terminal-title {
+
+            margin-left: auto;
+
+            color: #52687c;
+
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+
+            margin-bottom: 9px;
+
+            color: #60788d;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .blue {
+            color: #00bfff;
+        }
+
+        .purple {
+            color: #818cf8;
+        }
+
+        .green {
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           META
+        ====================================================== */
+
+        .ws-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .meta-value.blue {
+            color: #00bfff;
+        }
+
+        /* =====================================================
+           CONTENT CARD
+        ====================================================== */
+
+        .ws-card {
+
+            margin-bottom: 18px;
+
+            padding: 27px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .card-heading {
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .card-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background: rgba(0, 191, 255, 0.045);
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .card-heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .ws-card p {
+
+            margin: 0 0 12px;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .definition {
+
+            padding: 21px;
+
+            border-left: 3px solid #00bfff;
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 191, 255, 0.055),
+                    rgba(0, 191, 255, 0.012)
+                );
+        }
+
+        .definition-label {
+
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .definition p {
+
+            margin: 0;
+
+            color: #d5effa;
+
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           FLOW GRID
+        ====================================================== */
+
+        .flow-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+        .flow-card {
+
+            padding: 18px;
+
+            min-height: 140px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .flow-number {
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .flow-card h3 {
+
+            margin: 10px 0 7px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .flow-card p {
+
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           CODE BOX
+        ====================================================== */
+
+        .code-box {
+
+            margin-top: 17px;
+
+            padding: 19px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background: #02070d;
+
+            overflow-x: auto;
+        }
+
+        .code-box pre {
+
+            margin: 0;
+
+            color: #a9c4d7;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .code-comment {
+            color: #52687c;
+        }
+
+        .code-keyword {
+            color: #818cf8;
+        }
+
+        .code-string {
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           WARNING
+        ====================================================== */
+
+        .warning-box {
+
+            padding: 21px;
+
+            border: 1px solid rgba(255, 177, 0, 0.18);
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .warning-title {
+
+            margin-bottom: 9px;
+
+            color: #ffc44d;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .warning-box p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           DEFENSE GRID
+        ====================================================== */
+
+        .defense-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 11px;
+
+            margin-top: 17px;
+        }
+
+        .defense-item {
+
+            padding: 17px;
+
+            border: 1px solid rgba(0, 255, 176, 0.09);
+            border-radius: 9px;
+
+            background: rgba(0, 255, 176, 0.018);
+        }
+
+        .defense-item h3 {
+
+            margin: 0 0 6px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .defense-item p {
+
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .summary {
+
+            padding: 25px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 191, 255, 0.13);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.035),
+                    rgba(99, 102, 241, 0.025)
+                );
+        }
+
+        .summary-title {
+
+            margin-bottom: 9px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .summary h2 {
+
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .summary p {
+
+            max-width: 760px;
+
+            margin: 0 auto;
+
+            color: #7e94a8;
+
+            font-size: 12px;
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           LAB CTA
+        ====================================================== */
+
+        .lab-area {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 25px;
+            padding: 21px;
+
+            border: 1px solid rgba(0, 191, 255, 0.14);
+            border-radius: 12px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .lab-text strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .lab-text span {
+
+            color: #71879b;
+
+            font-size: 11px;
+        }
+
+        .lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 12px 20px;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.30);
+            border-radius: 8px;
+
+            color: #d5f6ff;
+
+            background: rgba(0, 191, 255, 0.055);
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            transition: 0.2s ease;
+        }
+
+        .lab-button:hover {
+
+            transform: translateY(-2px);
+
+            border-color: rgba(0, 191, 255, 0.55);
+
+            background: rgba(0, 191, 255, 0.09);
+        }
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .ws-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .ws-meta {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .ws-page {
+                padding: 45px 12px 60px;
+            }
+
+            .ws-hero {
+                padding: 27px 20px;
+            }
+
+            .ws-hero h1 {
+                font-size: 31px;
+            }
+
+            .ws-description {
+                font-size: 12px;
+            }
+
+            .ws-card {
+                padding: 20px;
+            }
+
+            .flow-grid,
+            .defense-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-area {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<main class="ws-page">
+
+    <div class="ws-container">
+
+
+        <!-- HERO -->
+
+        <section class="ws-hero">
+
+            <div class="ws-hero-grid">
+
+                <div>
+
+                    <div class="ws-kicker">
+                        WEB SECURITY / 06
+                    </div>
+
+                    <h1>
+                        <span>SQL Injection</span>
+                        Fundamentals
+                    </h1>
+
+                    <p class="ws-description">
+                        Understand how unsafe database queries can allow
+                        attacker-controlled input to alter application
+                        logic, why SQL Injection occurs, how it can affect
+                        confidentiality and integrity, and how secure
+                        development practices prevent it.
+                    </p>
+
+                </div>
+
+
+                <div class="terminal-panel">
+
+                    <div class="terminal-top">
+
+                        <span class="terminal-dot"></span>
+                        <span class="terminal-dot"></span>
+                        <span class="terminal-dot"></span>
+
+                        <span class="terminal-title">
+                            WEB SECURITY LAB
+                        </span>
+
+                    </div>
+
+                    <div class="terminal-line">
+                        <span class="blue">web@cybernexa</span>:~$
+                        <span class="purple">sql-audit --mode lab</span>
+                    </div>
+
+                    <div class="terminal-line">
+                        Input: <span class="blue">USER CONTROLLED</span>
+                    </div>
+
+                    <div class="terminal-line">
+                        Query: <span class="purple">PARAMETERIZED</span>
+                    </div>
+
+                    <div class="terminal-line">
+                        Defense: <span class="green">ENABLED</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- META -->
+
+        <div class="ws-meta">
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Domain
+                </span>
+
+                <span class="meta-value">
+                    Web Security
+                </span>
+
+            </div>
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Level
+                </span>
+
+                <span class="meta-value">
+                    Beginner
+                </span>
+
+            </div>
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Environment
+                </span>
+
+                <span class="meta-value blue">
+                    Authorized Lab
+                </span>
+
+            </div>
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Focus
+                </span>
+
+                <span class="meta-value">
+                    Input Validation
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- 01 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    01
+                </div>
+
+                <h2>
+                    What is SQL Injection?
+                </h2>
+
+            </div>
+
+
+            <div class="definition">
+
+                <div class="definition-label">
+                    Core Definition
+                </div>
+
+                <p>
+                    SQL Injection is a web application vulnerability that
+                    occurs when untrusted user input is incorporated into
+                    database queries in an unsafe way. If application code
+                    constructs SQL statements directly from user input,
+                    specially crafted input may change the intended meaning
+                    of the query.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- 02 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    02
+                </div>
+
+                <h2>
+                    How SQL Injection Happens
+                </h2>
+
+            </div>
+
+            <p>
+                A web application commonly receives input from forms,
+                URL parameters, search fields or API requests. The
+                application may then use that input while communicating
+                with a database.
+            </p>
+
+            <p>
+                The security problem appears when the application treats
+                user-controlled data as part of the SQL command itself
+                instead of keeping data and query instructions separate.
+            </p>
+
+
+            <div class="flow-grid">
+
+                <div class="flow-card">
+
+                    <div class="flow-number">
+                        STEP 01
+                    </div>
+
+                    <h3>
+                        User Input
+                    </h3>
+
+                    <p>
+                        A user submits information through a web form or
+                        another application interface.
+                    </p>
+
+                </div>
+
+
+                <div class="flow-card">
+
+                    <div class="flow-number">
+                        STEP 02
+                    </div>
+
+                    <h3>
+                        Application
+                    </h3>
+
+                    <p>
+                        The server receives and processes the supplied
+                        input.
+                    </p>
+
+                </div>
+
+
+                <div class="flow-card">
+
+                    <div class="flow-number">
+                        STEP 03
+                    </div>
+
+                    <h3>
+                        Database Query
+                    </h3>
+
+                    <p>
+                        The application sends a database query using
+                        application-controlled parameters.
+                    </p>
+
+                </div>
+
+
+                <div class="flow-card">
+
+                    <div class="flow-number">
+                        STEP 04
+                    </div>
+
+                    <h3>
+                        Database Response
+                    </h3>
+
+                    <p>
+                        The database returns information that the
+                        application processes.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 03 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    03
+                </div>
+
+                <h2>
+                    Vulnerable Query vs Secure Query
+                </h2>
+
+            </div>
+
+            <p>
+                The fundamental security difference is whether user input
+                is treated as executable SQL syntax or as ordinary data.
+            </p>
+
+
+            <div class="code-box">
+
+<pre><span class="code-comment">// Conceptual vulnerable pattern</span>
+<span class="code-keyword">query</span> =
+    <span class="code-string">"SELECT * FROM users WHERE username = '"</span>
+    + username
+    + <span class="code-string">"'"</span>;</pre>
+
+            </div>
+
+
+            <div class="code-box">
+
+<pre><span class="code-comment">// Conceptual secure pattern</span>
+<span class="code-keyword">query</span> =
+    <span class="code-string">"SELECT * FROM users WHERE username = ?"</span>;
+
+<span class="code-comment">// User input is supplied separately as a parameter.</span></pre>
+
+            </div>
+
+        </section>
+
+
+        <!-- 04 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    04
+                </div>
+
+                <h2>
+                    Security Impact
+                </h2>
+
+            </div>
+
+            <p>
+                The impact of SQL Injection depends on the vulnerable
+                application's database permissions, exposed functionality
+                and the amount of data accessible through the affected
+                component.
+            </p>
+
+
+            <div class="defense-grid">
+
+                <div class="defense-item">
+
+                    <h3>
+                        Data Exposure
+                    </h3>
+
+                    <p>
+                        Improperly protected queries may expose information
+                        that the application should not return.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Authentication Bypass
+                    </h3>
+
+                    <p>
+                        In vulnerable authentication logic, altered query
+                        behavior may affect how credentials are evaluated.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Data Modification
+                    </h3>
+
+                    <p>
+                        Excessive database permissions can increase the
+                        potential impact of a database-related weakness.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Application Integrity
+                    </h3>
+
+                    <p>
+                        Unexpected database behavior can affect the
+                        correctness and reliability of an application.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 05 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    05
+                </div>
+
+                <h2>
+                    Common Causes
+                </h2>
+
+            </div>
+
+
+            <div class="defense-grid">
+
+                <div class="defense-item">
+
+                    <h3>
+                        String Concatenation
+                    </h3>
+
+                    <p>
+                        Building SQL commands by directly joining strings
+                        containing user input.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Missing Parameterization
+                    </h3>
+
+                    <p>
+                        Failing to use prepared statements or parameterized
+                        database APIs.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Excessive Database Privileges
+                    </h3>
+
+                    <p>
+                        Giving an application's database account more
+                        permissions than it actually needs.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Poor Input Handling
+                    </h3>
+
+                    <p>
+                        Treating external input as trusted instead of
+                        validating it according to application requirements.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 06 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    06
+                </div>
+
+                <h2>
+                    Prevention Techniques
+                </h2>
+
+            </div>
+
+
+            <div class="defense-grid">
+
+                <div class="defense-item">
+
+                    <h3>
+                        Prepared Statements
+                    </h3>
+
+                    <p>
+                        Keep SQL structure separate from user-supplied
+                        values by using parameterized queries.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Input Validation
+                    </h3>
+
+                    <p>
+                        Validate input according to expected type, length,
+                        format and business rules.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Least Privilege
+                    </h3>
+
+                    <p>
+                        Give application database accounts only the
+                        permissions required for their normal operation.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Safe Error Handling
+                    </h3>
+
+                    <p>
+                        Avoid exposing database details, SQL statements or
+                        sensitive implementation information in error messages.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 07 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    07
+                </div>
+
+                <h2>
+                    Authorized Testing
+                </h2>
+
+            </div>
+
+
+            <div class="warning-box">
+
+                <div class="warning-title">
+                    ⚠ AUTHORIZED WEB SECURITY LAB ONLY
+                </div>
+
+                <p>
+                    SQL Injection testing should only be performed against
+                    applications you own or systems for which you have
+                    explicit permission. For learning, use intentionally
+                    vulnerable training applications, local virtual
+                    machines, CTF environments or dedicated security labs.
+                    Never test random public websites.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- 08 -->
+
+        <section class="summary">
+
+            <div class="summary-title">
+                Module Summary
+            </div>
+
+            <h2>
+                Separate Data From SQL Instructions.
+            </h2>
+
+            <p>
+                SQL Injection primarily results from unsafe handling of
+                user-controlled input in database queries. Understanding
+                query construction, parameterization, least privilege and
+                safe error handling is essential for building and assessing
+                secure web applications.
+            </p>
+
+        </section>
+<!-- LESSON COMPLETION -->
+
+<section class="ws-card" id="lessonCompletion">
+
+    <div class="card-heading">
+
+        <div class="card-number">09</div>
+
+        <h2>Lesson Completion</h2>
+
+    </div>
+
+    <p>
+        You have reached the end of the SQL Injection lesson.
+        Mark this lesson as completed after reviewing the concepts.
+    </p>
+
+    <button
+        type="button"
+        data-lesson-progress
+        data-course-id="web-security"
+        data-lesson-id="sql-injection"
+        data-dashboard-url="../learning-paths/web-security/theory/sql-injection.html"
+        data-status-id="sqlInjectionCompletionStatus"
+        class="lab-button"
+    >
+        Mark Lesson as Completed
+    </button>
+
+    <p
+        id="sqlInjectionCompletionStatus"
+        role="status"
+        aria-live="polite"
+        style="margin-top: 12px;"
+    ></p>
+
+</section>
+        <!-- LAB CTA -->
+
+        <div class="lab-area">
+
+            <div class="lab-text">
+
+                <strong>
+                    Ready for the Practical Lab?
+                </strong>
+
+                <span>
+                    Practice identifying SQL Injection risks in a safe
+                    simulated Web Security environment.
+                </span>
+
+            </div>
+
+
+            <a
+                href="../lab/sql-injection-lab.html"
+                class="lab-button"
+            >
+                🧪 Launch Lab →
+            </a>
+
+        </div>
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+
+</html>

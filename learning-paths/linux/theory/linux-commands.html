@@ -1,0 +1,2464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Commands - CyberNexa</title>
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+    <style>
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+        .linux-learning-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            padding: 70px 20px 80px;
+            background:
+                radial-gradient(circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%),
+                radial-gradient(circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%),
+                #02080d;
+        }
+
+        .linux-learning-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+        .linux-topic-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .linux-topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-topic-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LINUX SEARCH
+        ====================================================== */
+
+        .linux-search-box {
+
+            width: 100%;
+            max-width: 650px;
+
+            margin: 0 auto 35px;
+
+            position: relative;
+        }
+
+
+        .linux-search-box input {
+
+            width: 100%;
+
+            padding: 15px 48px 15px 18px;
+
+            border: 1px solid rgba(103, 232, 249, 0.18);
+
+            border-radius: 10px;
+
+            outline: none;
+
+            color: #e2e8f0;
+
+            background: rgba(3, 13, 20, 0.95);
+
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .linux-search-box input::placeholder {
+
+            color: #7d8b96;
+        }
+
+
+        .linux-search-box input:focus {
+
+            border-color: rgba(103, 232, 249, 0.55);
+
+            box-shadow:
+                0 0 20px rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-search-icon {
+
+            position: absolute;
+
+            right: 17px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #67e8f9;
+
+            font-size: 17px;
+
+            pointer-events: none;
+        }
+
+
+        .linux-no-results {
+
+            display: none;
+
+            margin: -20px auto 25px;
+
+            text-align: center;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98));
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           DESKTOP HOVER
+        ====================================================== */
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-card::after,
+        .linux-command-card::after,
+        .linux-example-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent);
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover::after,
+            .linux-command-card:hover::after,
+            .linux-example-card:hover::after {
+
+                animation:
+                    linuxLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .linux-definition-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-definition-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-definition-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           COMMAND GRID
+        ====================================================== */
+
+        .linux-command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-command-card {
+
+            position: relative;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-command-card:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.35);
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .linux-command-card code {
+
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           TERMINAL BOX
+        ====================================================== */
+
+        .linux-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+
+            white-space: pre;
+        }
+
+
+        /* =====================================================
+           EXAMPLES
+        ====================================================== */
+
+        .linux-example-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-example-card {
+
+            position: relative;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+        }
+
+
+        .linux-example-card h3 {
+
+            margin: 0 0 10px;
+
+            color: #f8fafc;
+
+            font-size: 15px;
+        }
+
+
+        .linux-example-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        .linux-example-card code {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .linux-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-flow-item {
+
+            padding: 12px 16px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .linux-summary-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-summary-list li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 23px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-summary-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .linux-summary-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           HIDDEN SEARCH RESULT
+        ====================================================== */
+
+        .search-hidden {
+            display: none !important;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-learning-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-topic-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-learning-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-topic-header {
+
+                margin-bottom: 30px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-topic-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-search-box {
+
+                margin-bottom: 28px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-definition-box {
+
+                padding: 16px;
+            }
+
+
+            .linux-definition-box span {
+
+                font-size: 13px;
+            }
+
+
+            .linux-command-grid,
+            .linux-example-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-key-item {
+
+                font-size: 11px;
+
+                padding: 9px 11px;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-learning-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+        /* Page-specific Linux navbar icon size */
+        #navbar-placeholder a[href*="linux"] svg,
+        #navbar-placeholder a[href*="linux"] i {
+            width: 18px;
+            height: 18px;
+            font-size: 16px;
+        }
+
+        /* Page-specific fix: Linux navbar icon */
+        #navbar-placeholder a[href*="linux"] svg,
+        #navbar-placeholder a[href*="linux"] i,
+        #navbar-placeholder a[href*="linux"] .nav-icon,
+        #navbar-placeholder a[href*="linux"] .nav-icon-wrapper {
+            width: 18px !important;
+            height: 18px !important;
+            min-width: 18px !important;
+            min-height: 18px !important;
+            font-size: 16px !important;
+        }
+
+        /* Keep the Linux navigation item compact */
+        #navbar-placeholder a[href*="linux"] {
+            gap: 8px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- SHARED NAVBAR -->
+    <div id="navbar-placeholder" data-navbar-path="../../../components/navbar.html" data-root-path="../../../">
+    </div>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-learning-page">
+
+        <div class="linux-learning-container">
+
+
+            <!-- HEADER -->
+
+            <header class="linux-topic-header">
+
+                <div class="linux-topic-category">
+                    LINUX
+                </div>
+
+                <h1>
+                    Linux <span>Commands</span>
+                </h1>
+
+                <p class="linux-topic-intro">
+
+                    Linux commands allow users to interact with the
+                    operating system through the terminal. Learning
+                    basic commands is essential for Linux administration
+                    and cybersecurity.
+
+                </p>
+
+            </header>
+
+
+            <!-- =================================================
+                 LINUX SEARCH
+            ================================================== -->
+
+            <div class="linux-search-box">
+
+                <input type="search" id="linuxSearch" placeholder="Search Linux commands..." autocomplete="off">
+
+                <span class="linux-search-icon">
+                    ⌕
+                </span>
+
+            </div>
+
+            <div class="linux-no-results" id="linuxNoResults">
+                No matching Linux command found.
+            </div>
+
+
+
+            <!-- =================================================
+                 DEFINITION
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        What are Linux Commands?
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-definition-box">
+
+                    <strong>
+                        Simple Definition
+                    </strong>
+
+                    <span>
+
+                        Linux commands are text instructions entered
+                        in the terminal to perform tasks such as
+                        navigating directories, managing files,
+                        checking system information and controlling
+                        processes.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TERMINAL
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        >
+                    </div>
+
+                    <h2>
+                        Linux Terminal
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The terminal provides a command-line interface
+                    through which users can communicate directly with
+                    the Linux operating system.
+
+                </p>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        User
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Terminal
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Shell
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Linux System
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION COMMANDS
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        /
+                    </div>
+
+                    <h2>
+                        Directory Navigation Commands
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    These commands are commonly used to move through
+                    directories and understand the current location.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            pwd
+                        </code>
+
+                        <p>
+                            Displays the current working directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ls
+                        </code>
+
+                        <p>
+                            Lists files and directories in the current location.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cd
+                        </code>
+
+                        <p>
+                            Changes the current working directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cd ..
+                        </code>
+
+                        <p>
+                            Moves one directory level back.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cd ~
+                        </code>
+
+                        <p>
+                            Moves to the current user's home directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ls -la
+                        </code>
+
+                        <p>
+                            Displays detailed information including hidden files.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FILE COMMANDS
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        F
+                    </div>
+
+                    <h2>
+                        File Management Commands
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux provides simple commands for creating,
+                    copying, moving and deleting files.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            touch file.txt
+                        </code>
+
+                        <p>
+                            Creates an empty file.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cp file.txt backup.txt
+                        </code>
+
+                        <p>
+                            Copies a file to another location or name.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            mv file.txt new.txt
+                        </code>
+
+                        <p>
+                            Moves or renames a file.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            rm file.txt
+                        </code>
+
+                        <p>
+                            Removes a file.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 DIRECTORY COMMANDS
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        D
+                    </div>
+
+                    <h2>
+                        Directory Management Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            mkdir projects
+                        </code>
+
+                        <p>
+                            Creates a new directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            rmdir projects
+                        </code>
+
+                        <p>
+                            Removes an empty directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cp -r folder backup
+                        </code>
+
+                        <p>
+                            Copies a directory and its contents.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            rm -r folder
+                        </code>
+
+                        <p>
+                            Removes a directory and its contents.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 VIEWING FILE CONTENT
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        V
+                    </div>
+
+                    <h2>
+                        Viewing File Content
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cat file.txt
+                        </code>
+
+                        <p>
+                            Displays the contents of a file.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            less file.txt
+                        </code>
+
+                        <p>
+                            Opens a file for controlled page-by-page viewing.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            head file.txt
+                        </code>
+
+                        <p>
+                            Displays the beginning of a file.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            tail file.txt
+                        </code>
+
+                        <p>
+                            Displays the end of a file.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SEARCHING
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ?
+                    </div>
+
+                    <h2>
+                        Searching Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            find
+                        </code>
+
+                        <p>
+                            Searches for files and directories based on specified conditions.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            grep
+                        </code>
+
+                        <p>
+                            Searches text for matching patterns.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            which
+                        </code>
+
+                        <p>
+                            Shows the location of a command executable.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            locate
+                        </code>
+
+                        <p>
+                            Searches a file database for matching file paths.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SYSTEM INFORMATION
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        System Information Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            whoami
+                        </code>
+
+                        <p>
+                            Displays the current username.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            hostname
+                        </code>
+
+                        <p>
+                            Displays the system hostname.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            uname -a
+                        </code>
+
+                        <p>
+                            Displays detailed system and kernel information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            uptime
+                        </code>
+
+                        <p>
+                            Shows how long the system has been running.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 DISK / MEMORY
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        %
+                    </div>
+
+                    <h2>
+                        Disk &amp; Memory Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            df -h
+                        </code>
+
+                        <p>
+                            Displays available and used disk space.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            du -h
+                        </code>
+
+                        <p>
+                            Shows disk usage of files and directories.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            free -h
+                        </code>
+
+                        <p>
+                            Displays memory and swap usage.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            top
+                        </code>
+
+                        <p>
+                            Displays active processes and system resource usage.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PERMISSIONS / PRIVILEGE
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Privilege &amp; Permission Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chmod
+                        </code>
+
+                        <p>
+                            Changes file and directory permissions.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chown
+                        </code>
+
+                        <p>
+                            Changes the owner of a file or directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            sudo
+                        </code>
+
+                        <p>
+                            Executes an authorized command with elevated privileges.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            su
+                        </code>
+
+                        <p>
+                            Switches to another user account.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL EXAMPLE
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        >
+                    </div>
+
+                    <h2>
+                        Simple Linux Command Example
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The following example creates a directory,
+                    enters it and creates a new file.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>mkdir cybersecurity
+cd cybersecurity
+touch notes.txt
+ls</code>
+
+                </div>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        Create Directory
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Enter Directory
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Create File
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        List Files
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why Linux Commands Matter in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Cybersecurity professionals frequently use the
+                    Linux terminal to inspect systems, analyze files,
+                    investigate logs, manage permissions and perform
+                    security-related tasks.
+
+                </p>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        System Administration
+                    </div>
+
+                    <div class="linux-key-item">
+                        File Analysis
+                    </div>
+
+                    <div class="linux-key-item">
+                        Log Analysis
+                    </div>
+
+                    <div class="linux-key-item">
+                        Permissions
+                    </div>
+
+                    <div class="linux-key-item">
+                        Process Analysis
+                    </div>
+
+                    <div class="linux-key-item">
+                        Troubleshooting
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 QUICK SUMMARY
+            ================================================== -->
+
+            <section class="linux-card searchable-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Quick Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-summary-list">
+
+                    <li>
+                        Linux commands are instructions executed through the terminal.
+                    </li>
+
+                    <li>
+                        pwd shows the current working directory.
+                    </li>
+
+                    <li>
+                        ls lists files and directories.
+                    </li>
+
+                    <li>
+                        cd changes the current directory.
+                    </li>
+
+                    <li>
+                        touch creates an empty file.
+                    </li>
+
+                    <li>
+                        mkdir creates a directory.
+                    </li>
+
+                    <li>
+                        cp copies files or directories.
+                    </li>
+
+                    <li>
+                        mv moves or renames files.
+                    </li>
+
+                    <li>
+                        rm removes files or directories.
+                    </li>
+
+                    <li>
+                        cat displays file contents.
+                    </li>
+
+                    <li>
+                        grep searches text for matching patterns.
+                    </li>
+
+                    <li>
+                        find searches for files and directories.
+                    </li>
+
+                    <li>
+                        df and du help analyze disk usage.
+                    </li>
+
+                    <li>
+                        chmod manages permissions.
+                    </li>
+
+                    <li>
+                        sudo provides authorized elevated command execution.
+                    </li>
+
+                    <li>
+                        Linux command-line skills are important for cybersecurity.
+                    </li>
+
+                </ul>
+            </section>
+
+<!-- Lesson Completion -->
+<section class="linux-card" id="lessonCompletion">
+    <div class="linux-card-heading">
+        <div class="linux-icon" aria-hidden="true">✓</div>
+        <h2>Complete This Lesson</h2>
+    </div>
+
+    <p>
+        Mark this lesson as complete after studying all the topics.
+        Your progress will be saved to your CyberNexa account.
+    </p>
+
+    <button
+        type="button"
+        class="linux-topic-button"
+        data-lesson-progress
+        data-course-id="linux"
+        data-lesson-id="linux-commands"
+        data-dashboard-url="../learning-paths/linux/theory/linux-commands.html"
+        data-status-id="lessonCompletionStatus">
+
+        Mark Lesson Complete
+    </button>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite">
+    </p>
+</section>
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-topic-navigation">
+
+
+                <a href="linux-file-system.html" class="linux-topic-button previous">
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Linux File System
+                    </strong>
+
+                </a>
+
+                <a href="../lab/lab03.html" class="linux-topic-button practical-lab">
+                    <span>🧪</span>
+                    <strong>Perform Lab</strong>
+                </a>
+            </div>
+        </div>
+    </main>
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../js/supabase-client.js"></script>
+    <script src="../../../js/lesson-progress.js"></script>
+    <script src="../../../js/navbar-loader.js"></script>
+    <script src="../../../js/navbar.js"></script>
+    <script src="../../../js/session.js"></script>
+
+    <script>
+
+        const linuxSearch =
+            document.getElementById("linuxSearch");
+
+        const searchableCards =
+            document.querySelectorAll(".searchable-card");
+
+        const linuxNoResults =
+            document.getElementById("linuxNoResults");
+
+
+        linuxSearch.addEventListener("input", function () {
+
+            const searchValue =
+                this.value.trim().toLowerCase();
+
+            let visibleCards = 0;
+
+
+            searchableCards.forEach(card => {
+
+                const cardText =
+                    card.textContent.toLowerCase();
+
+                if (
+                    searchValue === "" ||
+                    cardText.includes(searchValue)
+                ) {
+
+                    card.classList.remove(
+                        "search-hidden"
+                    );
+
+                    visibleCards++;
+
+                } else {
+
+                    card.classList.add(
+                        "search-hidden"
+                    );
+
+                }
+
+            });
+
+
+            if (
+                searchValue !== "" &&
+                visibleCards === 0
+            ) {
+
+                linuxNoResults.style.display =
+                    "block";
+
+            } else {
+
+                linuxNoResults.style.display =
+                    "none";
+
+            }
+
+        });
+
+    </script>
+    <script>
+
+        const sweepCards =
+            document.querySelectorAll(
+                ".linux-card, .linux-command-card, .linux-example-card"
+            );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+                void card.offsetWidth;
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(
+                sweepTimeout
+            );
+
+
+            sweepTimeout = setTimeout(() => {
+
+                sweepCards.forEach(card => {
+
+                    card.classList.remove(
+                        "mobile-sweep"
+                    );
+
+                });
+
+            }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (
+                    window.innerWidth <= 600
+                ) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+    </script>
+</body>
+</html>

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+    <title>Python Automation | CyberNexa</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 202, 255, 0.08),
+                    transparent 30%
+                ),
+                #030b16;
+
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
+            background: #030c19;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 16px 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #00caff;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            color: #7f94aa;
+            font-size: 10px;
+        }
+
+        /* ================= PAGE ================= */
+
+        .article-page {
+            max-width: 1000px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        .article-breadcrumb {
+            color: #6f849a;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .article-breadcrumb span {
+            color: #00caff;
+            padding: 0 7px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .article-header {
+            padding: 28px;
+            border: 1px solid rgba(0, 202, 255, 0.25);
+            border-left: 4px solid #00caff;
+            border-radius: 9px;
+            background: rgba(0, 202, 255, 0.04);
+        }
+
+        .article-label {
+            color: #00caff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .article-header h1 {
+            color: white;
+            font-size: 34px;
+            margin: 9px 0;
+        }
+
+        .article-header p {
+            color: #9fb1c5;
+            font-size: 13px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* ================= SECTIONS ================= */
+
+        .article-section {
+            margin-top: 22px;
+            padding: 25px;
+
+            border: 1px solid rgba(0, 202, 255, 0.15);
+            border-radius: 9px;
+
+            background: #041221;
+        }
+
+        .article-section h2 {
+            color: white;
+            font-size: 20px;
+            margin-top: 0;
+        }
+
+        .article-section p {
+            color: #aabbd0;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* ================= CODE ================= */
+
+        .code-block {
+            margin-top: 15px;
+            padding: 17px;
+
+            border: 1px solid rgba(0, 202, 255, 0.18);
+            border-radius: 7px;
+
+            background: #020810;
+
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .code-block code {
+            color: #7ee7ff;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* ================= CONCEPT CARDS ================= */
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .concept-card {
+            padding: 18px;
+
+            border: 1px solid rgba(0, 202, 255, 0.16);
+            border-radius: 8px;
+
+            background: #030d19;
+        }
+
+        .concept-card h3 {
+            color: #00caff;
+            font-size: 15px;
+            margin-top: 0;
+        }
+
+        .concept-card p {
+            margin-bottom: 0;
+            font-size: 12px;
+        }
+
+        /* ================= LIST ================= */
+
+        .article-list {
+            padding-left: 20px;
+        }
+
+        .article-list li {
+            color: #aabbd0;
+            font-size: 13px;
+            margin-bottom: 9px;
+            line-height: 1.6;
+        }
+
+        /* ================= OUTPUT ================= */
+
+        .output-box {
+            margin-top: 12px;
+            padding: 15px;
+
+            border: 1px solid rgba(0, 230, 138, 0.2);
+            border-radius: 7px;
+
+            background: #020810;
+            color: #7fffc0;
+
+            font-family: Consolas, monospace;
+            font-size: 12px;
+        }
+
+        /* ================= SUMMARY ================= */
+
+        .summary-box {
+            border-left: 4px solid #00e68a;
+            background: rgba(0, 230, 138, 0.035);
+        }
+
+        /* ================= LAB BUTTON ================= */
+
+        .article-lab {
+            margin-top: 25px;
+
+            padding: 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+
+            border: 1px solid rgba(0, 230, 138, 0.25);
+            border-left: 4px solid #00e68a;
+            border-radius: 9px;
+
+            background: rgba(0, 230, 138, 0.04);
+        }
+
+        .article-lab h2 {
+            color: white;
+            margin: 8px 0;
+        }
+
+        .article-lab p {
+            color: #9fb1c5;
+            font-size: 12px;
+            margin-bottom: 0;
+        }
+
+        .article-lab a {
+            flex-shrink: 0;
+
+            padding: 11px 20px;
+
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+
+            color: #00e68a;
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .article-lab a:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+        /* LESSON COMPLETION BUTTON */
+
+#lesson-completion .lab-button {
+    padding: 11px 20px;
+    border: 1px solid #00e68a;
+    border-radius: 22px;
+    background: rgba(0, 230, 138, 0.04);
+    color: #00e68a;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+#lesson-completion .lab-button:hover {
+    background: #00e68a;
+    color: #02100a;
+}
+        /* ================= FOOTER ================= */
+
+        .footer {
+            border-top: 1px solid rgba(0, 202, 255, 0.15);
+            background: #020914;
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            max-width: 1000px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #6f849a;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            max-width: 1000px;
+            margin: 25px auto 0;
+
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255,255,255,0.05);
+
+            text-align: center;
+
+            color: #52667b;
+            font-size: 10px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            .article-page {
+                padding: 25px 15px 55px;
+            }
+
+            .article-header {
+                padding: 22px;
+            }
+
+            .article-header h1 {
+                font-size: 27px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-lab {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .article-navigation {
+                flex-direction: column;
+            }
+
+            .article-navigation a {
+                text-align: center;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<!-- ================= MAIN ================= -->
+
+<main class="article-page">
+
+    <!-- BREADCRUMB -->
+
+    <div class="article-breadcrumb">
+
+        Python for Cybersecurity
+        <span>›</span>
+        Automation
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <section class="article-header">
+
+        <div class="article-label">
+            PYTHON FOR CYBERSECURITY
+        </div>
+
+        <h1>
+            Python Automation
+        </h1>
+
+        <p>
+            Learn how Python can automate repetitive cybersecurity
+            tasks and make security workflows faster and more efficient.
+        </p>
+
+    </section>
+
+
+    <!-- DEFINITION -->
+
+    <section class="article-section">
+
+        <h2>What is Automation?</h2>
+
+        <p>
+            Automation means using a program to perform tasks
+            automatically instead of performing every step manually.
+            In cybersecurity, Python can automate repetitive tasks
+            such as checking files, processing logs, testing hosts,
+            generating reports and monitoring security information.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>print("Starting security check...")
+
+tasks = [
+    "Check logs",
+    "Check files",
+    "Generate report"
+]
+
+for task in tasks:
+    print("Running:", task)
+
+print("Automation completed.")</code></pre>
+
+        </div>
+
+    </section>
+
+
+    <!-- WHY IMPORTANT -->
+
+    <section class="article-section">
+
+        <h2>Why is Automation Important in Cybersecurity?</h2>
+
+        <p>
+            Security professionals often need to perform the same
+            operations on many files, systems or logs. Automation
+            reduces repetitive manual work and helps create
+            consistent workflows.
+        </p>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+
+                <h3>Log Analysis</h3>
+
+                <p>
+                    Automatically process large numbers of log entries.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>File Checking</h3>
+
+                <p>
+                    Automatically inspect files and directories.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>Report Generation</h3>
+
+                <p>
+                    Automatically create security reports.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>Monitoring</h3>
+
+                <p>
+                    Repeatedly check systems or security information.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BASIC AUTOMATION -->
+
+    <section class="article-section">
+
+        <h2>Basic Automation with Loops</h2>
+
+        <p>
+            Loops are commonly used in automation because they allow
+            Python to perform the same operation for multiple items.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>security_tasks = [
+    "Check firewall",
+    "Check logs",
+    "Check open ports",
+    "Generate report"
+]
+
+for task in security_tasks:
+    print("Running:", task)</code></pre>
+
+        </div>
+
+        <div class="output-box">
+Running: Check firewall
+Running: Check logs
+Running: Check open ports
+Running: Generate report
+        </div>
+
+    </section>
+
+
+    <!-- FILE AUTOMATION -->
+
+    <section class="article-section">
+
+        <h2>Automating File Checks</h2>
+
+        <p>
+            Python can automatically examine files and identify
+            specific file types or names.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>import os
+
+folder = "logs"
+
+for file in os.listdir(folder):
+
+    if file.endswith(".log"):
+        print("Log file found:", file)</code></pre>
+
+        </div>
+
+        <p>
+            The program checks the specified directory and identifies
+            files ending with the <strong>.log</strong> extension.
+        </p>
+
+    </section>
+
+
+    <!-- LOG AUTOMATION -->
+
+    <section class="article-section">
+
+        <h2>Automating Log Analysis</h2>
+
+        <p>
+            A security script can read a log file and automatically
+            search for suspicious keywords.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>security_log = """
+Login successful
+Login failed
+Login failed
+Login successful
+"""
+
+failed_count = security_log.lower().count("failed")
+
+print("Failed login attempts:", failed_count)</code></pre>
+
+        </div>
+
+        <div class="output-box">
+Failed login attempts: 2
+        </div>
+
+    </section>
+
+
+    <!-- FUNCTIONS -->
+
+    <section class="article-section">
+
+        <h2>Automation with Functions</h2>
+
+        <p>
+            Functions make automation programs easier to organize.
+            A function can contain a task that can be executed
+            whenever required.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>def check_log(log):
+
+    if "failed" in log.lower():
+        return "Suspicious login activity detected."
+
+    return "No failed login activity found."
+
+
+security_log = "Login failed"
+
+result = check_log(security_log)
+
+print(result)</code></pre>
+
+        </div>
+
+    </section>
+
+
+    <!-- AUTOMATION WORKFLOW -->
+
+    <section class="article-section">
+
+        <h2>Basic Cybersecurity Automation Workflow</h2>
+
+        <ul class="article-list">
+
+            <li>Collect security information.</li>
+
+            <li>Process the collected information.</li>
+
+            <li>Check for suspicious conditions.</li>
+
+            <li>Generate a result or report.</li>
+
+            <li>Store the result for later analysis.</li>
+
+        </ul>
+
+        <div class="code-block">
+
+<pre><code>data = "Login failed"
+
+if "failed" in data.lower():
+
+    result = "Alert: Failed login detected."
+
+else:
+
+    result = "No alert."
+
+print(result)</code></pre>
+
+        </div>
+
+    </section>
+
+
+    <!-- SECURITY EXAMPLE -->
+
+    <section class="article-section">
+
+        <h2>Cybersecurity Automation Example</h2>
+
+        <p>
+            The following example automatically checks multiple
+            security events and identifies failed login activity.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>events = [
+    "Login successful",
+    "Login failed",
+    "Login successful",
+    "Login failed"
+]
+
+failed_attempts = 0
+
+for event in events:
+
+    if "failed" in event.lower():
+        failed_attempts += 1
+
+print("Failed attempts:", failed_attempts)
+
+if failed_attempts > 0:
+    print("Security alert generated.")</code></pre>
+
+        </div>
+
+        <div class="output-box">
+Failed attempts: 2
+Security alert generated.
+        </div>
+
+    </section>
+
+
+    <!-- IMPORTANT CONCEPTS -->
+
+    <section class="article-section">
+
+        <h2>Common Python Features Used in Automation</h2>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+
+                <h3>Variables</h3>
+
+                <p>
+                    Store data used by the automation script.
+                </p>
+
+            </div>
+
+            <div class="concept-card">
+
+                <h3>Loops</h3>
+
+                <p>
+                    Repeat tasks for multiple items.
+                </p>
+
+            </div>
+
+            <div class="concept-card">
+
+                <h3>Functions</h3>
+
+                <p>
+                    Organize repeated tasks into reusable blocks.
+                </p>
+
+            </div>
+
+            <div class="concept-card">
+
+                <h3>Modules</h3>
+
+                <p>
+                    Provide ready-made functionality for automation.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+
+    <section class="article-section summary-box">
+
+        <h2>Summary</h2>
+
+        <ul class="article-list">
+
+            <li>Automation means performing tasks automatically using code.</li>
+
+            <li>Python is useful for automating repetitive cybersecurity tasks.</li>
+
+            <li>Loops can process multiple files, logs or security events.</li>
+
+            <li>Functions help organize automation scripts.</li>
+
+            <li>Automation can be used for log analysis, file checking and report generation.</li>
+
+            <li>Automation reduces repetitive manual work and improves consistency.</li>
+
+        </ul>
+
+    </section>
+    <!-- =====================================================
+     LESSON COMPLETION
+====================================================== -->
+
+<section class="article-section" id="lesson-completion">
+
+    <h2>Lesson Completion</h2>
+
+    <p>
+        You have completed the Python Automation lesson.
+        Review the key concepts and mark this lesson as completed
+        to track your learning progress.
+    </p>
+
+    <button
+        type="button"
+        class="lab-button"
+        data-lesson-progress
+        data-course-id="python"
+        data-lesson-id="automation"
+        data-dashboard-url="../learning-paths/python/theory/automation.html"
+        data-status-id="automationCompletionStatus">
+        Mark Lesson as Completed
+    </button>
+
+    <p
+        id="automationCompletionStatus"
+        role="status"
+        aria-live="polite"
+        style="margin-top: 12px;">
+    </p>
+
+</section>
+    <!-- LAB -->
+
+    <section class="article-lab">
+
+        <div>
+
+            <span class="article-label">
+                PRACTICAL LAB
+            </span>
+
+            <h2>
+                Practice Python Automation
+            </h2>
+
+            <p>
+                Build a simple cybersecurity automation script
+                that analyzes security events automatically.
+            </p>
+
+        </div>
+
+        <a href="../lab/automation-lab.html">
+            Open Lab →
+        </a>
+
+    </section>
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

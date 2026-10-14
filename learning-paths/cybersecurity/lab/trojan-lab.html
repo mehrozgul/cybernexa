@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Trojan Practical Lab - CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%
+                ),
+                #020714;
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1000px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           LAB HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 42px;
+        }
+
+        .lab-label {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 42px;
+
+            font-weight: 800;
+        }
+
+        .lab-header h1 span {
+
+            color: #00bfff;
+        }
+
+        .lab-header p {
+
+            max-width: 720px;
+
+            margin: 17px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           LAB INFO GRID
+        ====================================================== */
+
+        .lab-info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 13px;
+
+            margin-bottom: 22px;
+        }
+
+        .lab-info {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+        }
+
+        .lab-info strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #ffffff;
+
+            font-size: 12px;
+        }
+
+        .lab-info span {
+
+            color: #8193aa;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.20);
+        }
+
+        .lab-card h2 {
+
+            margin: 0 0 13px;
+
+            color: #ffffff;
+
+            font-size: 20px;
+        }
+
+        .lab-card p {
+
+            margin: 0 0 12px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        .lab-card ul {
+
+            margin: 10px 0 0;
+
+            padding-left: 21px;
+        }
+
+        .lab-card li {
+
+            margin-bottom: 8px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           SCENARIO
+        ====================================================== */
+
+        .scenario {
+
+            margin-top: 15px;
+
+            padding: 19px;
+
+            border-left:
+                3px solid #00bfff;
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+        }
+
+        .scenario strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .scenario p {
+
+            margin: 0;
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           QUESTIONS
+        ====================================================== */
+
+        .question {
+
+            margin-bottom: 25px;
+
+            padding-bottom: 20px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.08);
+        }
+
+        .question:last-child {
+
+            margin-bottom: 0;
+
+            padding-bottom: 0;
+
+            border-bottom: none;
+        }
+
+        .question-title {
+
+            margin-bottom: 12px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            line-height: 1.6;
+        }
+
+        .options {
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 11px 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 8px;
+
+            color: #91a4bd;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.30);
+
+            background:
+                rgba(0, 191, 255, 0.05);
+        }
+
+        .option input {
+
+            accent-color: #00bfff;
+
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           CHECK BUTTON
+        ====================================================== */
+
+        .check-area {
+
+            margin-top: 25px;
+
+            text-align: center;
+        }
+
+        .check-button {
+
+            padding: 12px 25px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 8px;
+
+            color: #bfeaff;
+
+            background:
+                rgba(0, 191, 255, 0.06);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .check-button:hover {
+
+            background:
+                rgba(0, 191, 255, 0.10);
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.18);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            text-align: center;
+        }
+
+        .result h3 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+        .result p {
+
+            margin: 0;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion {
+
+            margin-top: 25px;
+
+            padding: 23px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 12px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+        }
+
+        .completion h2 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+        .completion p {
+
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-top: 30px;
+        }
+
+        .lab-navigation a {
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 9px;
+
+            color: #91a4bd;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                border-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .lab-navigation a:hover {
+
+            color: #bfeaff;
+
+            border-color:
+                rgba(0, 191, 255, 0.35);
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .lab-page {
+
+                padding: 45px 12px 55px;
+            }
+
+            .lab-header h1 {
+
+                font-size: 30px;
+            }
+
+            .lab-header p {
+
+                font-size: 13px;
+            }
+
+            .lab-info-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .lab-card {
+
+                padding: 20px;
+            }
+
+            .lab-navigation {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         TROJAN LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- HEADER -->
+
+            <header class="lab-header">
+
+                <div class="lab-label">
+                    PRACTICAL LAB
+                </div>
+
+                <h1>
+                    <span>Trojan</span> Lab
+                </h1>
+
+                <p>
+                    Identify Trojan characteristics, recognize common
+                    delivery methods and practice safe responses to
+                    suspicious applications and files.
+                </p>
+
+            </header>
+
+
+            <!-- INFO -->
+
+            <div class="lab-info-grid">
+
+                <div class="lab-info">
+
+                    <strong>
+                        Difficulty
+                    </strong>
+
+                    <span>
+                        Beginner
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info">
+
+                    <strong>
+                        Type
+                    </strong>
+
+                    <span>
+                        Malware Analysis
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info">
+
+                    <strong>
+                        Objective
+                    </strong>
+
+                    <span>
+                        Identify Trojan Behavior
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- OBJECTIVE -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🎯 Lab Objective
+                </h2>
+
+                <p>
+                    In this lab, you will analyze a simple Trojan scenario
+                    and identify the characteristics that distinguish a
+                    Trojan from legitimate software.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Understand how a Trojan disguises itself.
+                    </li>
+
+                    <li>
+                        Identify common Trojan delivery methods.
+                    </li>
+
+                    <li>
+                        Recognize suspicious software behavior.
+                    </li>
+
+                    <li>
+                        Understand basic prevention and response measures.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- SCENARIO -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🧩 Scenario
+                </h2>
+
+                <div class="scenario">
+
+                    <strong>
+                        SafeSoft Application
+                    </strong>
+
+                    <p>
+                        A user receives an email containing a file that
+                        appears to be a useful software installer. The
+                        application looks legitimate, but after installation
+                        it performs unexpected activities and attempts to
+                        access information that the application does not
+                        need. The security team suspects that the file may
+                        be a Trojan.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- QUESTIONS -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🧪 Knowledge Check
+                </h2>
+
+
+                <!-- Q1 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        1. What is a Trojan?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="a">
+                            A legitimate security tool
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="b">
+                            Malware that disguises itself as legitimate software
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="c">
+                            A network cable
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="d">
+                            A type of firewall
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q2 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        2. How does a Trojan commonly reach a victim?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="a">
+                            Through deceptive files or applications
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="b">
+                            Through trusted-looking downloads
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="c">
+                            Through malicious email attachments
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="d">
+                            All of the above
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q3 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        3. Which behavior can indicate that an application may be suspicious?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="a">
+                            It requests unnecessary permissions
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="b">
+                            It performs unexpected activities
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="c">
+                            It accesses resources unrelated to its purpose
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="d">
+                            All of the above
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q4 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        4. Which action can help prevent Trojan infections?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="a">
+                            Downloading software from unknown websites
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="b">
+                            Opening every email attachment
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="c">
+                            Downloading software from trusted sources
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="d">
+                            Disabling security software
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q5 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        5. What should a user do if a downloaded application behaves suspiciously?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="a">
+                            Continue using it normally
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="b">
+                            Share the application with other users
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="c">
+                            Investigate and report the suspicious activity
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="d">
+                            Disable all security controls
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="check-area">
+
+                    <button
+                        class="check-button"
+                        onclick="checkAnswers()"
+                    >
+                        Check Answers
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="result"
+                    id="result"
+                >
+
+                    <h3 id="resultTitle">
+                        Lab Result
+                    </h3>
+
+                    <p id="resultText"></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- COMPLETION -->
+
+            <section class="completion">
+
+                <h2>
+                    ✅ Complete the Trojan Lab
+                </h2>
+
+                <p>
+                    After completing the knowledge check, review how
+                    Trojans disguise themselves as legitimate software,
+                    how suspicious applications can be identified and
+                    how trusted software sources and security controls
+                    can reduce the risk.
+                </p>
+
+            </section>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="lab-navigation">
+
+                <a href="worm-lab.html">
+                    ← Previous: Worm
+                </a>
+
+                <a href="cybersecurity-lab.html">
+                    All Labs
+                </a>
+
+                <a href="../theory/ransomware.html">
+                    Next Theory: Ransomware →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+    <script>
+
+        function checkAnswers() {
+
+            const answers = {
+
+                q1: "b",
+                q2: "d",
+                q3: "d",
+                q4: "c",
+                q5: "c"
+
+            };
+
+            let score = 0;
+
+            const total =
+                Object.keys(answers).length;
+
+            Object.keys(answers).forEach(function (question) {
+
+                const selected =
+                    document.querySelector(
+                        'input[name="' + question + '"]:checked'
+                    );
+
+                if (
+                    selected &&
+                    selected.value === answers[question]
+                ) {
+
+                    score++;
+
+                }
+
+            });
+
+
+            const result =
+                document.getElementById("result");
+
+            const resultTitle =
+                document.getElementById("resultTitle");
+
+            const resultText =
+                document.getElementById("resultText");
+
+
+            result.style.display = "block";
+
+
+            resultTitle.textContent =
+                "Score: " + score + " / " + total;
+
+
+            if (score === total) {
+
+                resultText.textContent =
+                    "Excellent! You correctly understand the main concepts of Trojans, their delivery methods and basic prevention.";
+
+            }
+
+            else if (score >= 3) {
+
+                resultText.textContent =
+                    "Good work! Review the Trojan theory once more and try the lab again.";
+
+            }
+
+            else {
+
+                resultText.textContent =
+                    "Review the Trojan theory and attempt the lab again.";
+
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,2324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>What is Containment? | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn what containment means in Incident Response, its purpose, types, examples and key security concepts.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        :root {
+
+            --ct-bg: #080d14;
+            --ct-panel: #0d141d;
+            --ct-panel-2: #111b26;
+
+            --ct-red: #ff4d5a;
+            --ct-orange: #ff9f43;
+            --ct-yellow: #ffd166;
+            --ct-green: #43d19e;
+            --ct-blue: #42a5ff;
+
+            --ct-text: #edf5fb;
+            --ct-muted: #91a4b5;
+
+            --ct-border: #20303e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+
+            margin: 0;
+
+            background:
+                radial-gradient(circle at 15% 15%,
+                    rgba(255, 77, 90, 0.09),
+                    transparent 30%),
+                radial-gradient(circle at 85% 25%,
+                    rgba(255, 159, 67, 0.07),
+                    transparent 28%),
+                var(--ct-bg);
+
+            color: var(--ct-text);
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .ct-container {
+
+            width: min(1150px, 92%);
+
+            margin: auto;
+        }
+
+        /* =========================================================
+   HERO
+   ========================================================= */
+
+        .ct-hero {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 85px 0 70px;
+
+            border-bottom:
+                1px solid var(--ct-border);
+        }
+
+        .ct-hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 420px;
+            height: 420px;
+
+            right: -180px;
+            top: -180px;
+
+            border:
+                1px solid rgba(255, 77, 90, 0.12);
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 40px rgba(255, 77, 90, 0.025),
+
+                0 0 0 80px rgba(255, 77, 90, 0.015);
+        }
+
+        .ct-breadcrumb {
+
+            color: var(--ct-orange);
+
+            font-size: 13px;
+
+            margin-bottom: 22px;
+
+            letter-spacing: 0.4px;
+        }
+
+        .ct-hero-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1.35fr 0.65fr;
+
+            gap: 45px;
+
+            align-items: center;
+        }
+
+        .ct-alert {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 8px 13px;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid rgba(255, 77, 90, 0.35);
+
+            border-radius: 4px;
+
+            background:
+                rgba(255, 77, 90, 0.06);
+
+            color: var(--ct-red);
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .ct-pulse {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--ct-red);
+
+            box-shadow:
+                0 0 12px rgba(255, 77, 90, 0.8);
+        }
+
+        .ct-hero h1 {
+
+            margin: 0 0 18px;
+
+            font-size:
+                clamp(38px, 5vw, 62px);
+
+            line-height: 1.05;
+
+            letter-spacing: -1px;
+        }
+
+        .ct-hero h1 span {
+            color: var(--ct-red);
+        }
+
+        .ct-hero-description {
+
+            max-width: 720px;
+
+            color: var(--ct-muted);
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+   STATUS PANEL
+   ========================================================= */
+
+        .ct-status-panel {
+
+            padding: 24px;
+
+            border:
+                1px solid var(--ct-border);
+
+            border-top:
+                2px solid var(--ct-red);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(17, 27, 38, 0.98),
+                    rgba(9, 14, 21, 0.98));
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .ct-status-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+        .ct-status-header strong {
+
+            font-size: 13px;
+
+            letter-spacing: 1px;
+        }
+
+        .ct-live {
+
+            color: var(--ct-red);
+
+            font-size: 11px;
+        }
+
+        .ct-divider {
+
+            height: 1px;
+
+            background:
+                var(--ct-border);
+
+            margin: 15px 0;
+        }
+
+        .ct-status-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 8px 0;
+
+            color: var(--ct-muted);
+
+            font-size: 13px;
+        }
+
+        .ct-status-row strong {
+
+            color: var(--ct-text);
+
+            font-weight: normal;
+        }
+
+        .ct-severity {
+
+            color:
+                var(--ct-orange) !important;
+        }
+
+
+        /* =========================================================
+   CONTENT
+   ========================================================= */
+
+        .ct-section {
+
+            padding: 70px 0;
+        }
+
+        .ct-section-title {
+
+            margin-bottom: 28px;
+        }
+
+        .ct-section-title h2 {
+
+            margin: 0 0 10px;
+
+            font-size: 32px;
+        }
+
+        .ct-section-title p {
+
+            color: var(--ct-muted);
+
+            line-height: 1.7;
+        }
+
+        .ct-content-card {
+
+            padding: 30px;
+
+            border:
+                1px solid var(--ct-border);
+
+            border-left:
+                3px solid var(--ct-red);
+
+            border-radius: 7px;
+
+            background:
+                var(--ct-panel);
+        }
+
+        .ct-content-card p {
+
+            margin:
+                0 0 16px;
+
+            color:
+                var(--ct-muted);
+
+            line-height: 1.85;
+
+            font-size: 15px;
+        }
+
+        .ct-content-card p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================================
+   DEFINITION
+   ========================================================= */
+
+        .ct-definition {
+
+            padding: 28px;
+
+            border:
+                1px solid rgba(255, 159, 67, 0.25);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(255, 159, 67, 0.07),
+                    rgba(255, 77, 90, 0.025));
+        }
+
+        .ct-definition-label {
+
+            margin-bottom: 12px;
+
+            color: var(--ct-orange);
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .ct-definition p {
+
+            margin: 0;
+
+            color: var(--ct-text);
+
+            font-size: 18px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+   REASON GRID
+   ========================================================= */
+
+        .ct-reason-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .ct-reason {
+
+            padding: 24px;
+
+            border:
+                1px solid var(--ct-border);
+
+            border-radius: 7px;
+
+            background:
+                var(--ct-panel);
+        }
+
+        .ct-reason-number {
+
+            display: block;
+
+            margin-bottom: 15px;
+
+            color: var(--ct-red);
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .ct-reason h3 {
+
+            margin:
+                0 0 10px;
+
+            font-size: 17px;
+        }
+
+        .ct-reason p {
+
+            margin: 0;
+
+            color: var(--ct-muted);
+
+            line-height: 1.65;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   CONTAINMENT TYPES
+   ========================================================= */
+
+        .ct-type-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+        }
+
+        .ct-type {
+
+            padding: 25px;
+
+            border:
+                1px solid var(--ct-border);
+
+            border-radius: 7px;
+
+            background:
+                var(--ct-panel);
+        }
+
+        .ct-type.short {
+
+            border-top:
+                2px solid var(--ct-red);
+        }
+
+        .ct-type.long {
+
+            border-top:
+                2px solid var(--ct-orange);
+        }
+
+        .ct-type h3 {
+
+            margin:
+                0 0 10px;
+
+            font-size: 18px;
+        }
+
+        .ct-type p {
+
+            margin: 0;
+
+            color: var(--ct-muted);
+
+            line-height: 1.7;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   CONTAINMENT FLOW
+   ========================================================= */
+
+        .ct-flow {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 10px;
+
+            margin-top: 30px;
+        }
+
+        .ct-flow-step {
+
+            position: relative;
+
+            min-height: 125px;
+
+            padding: 18px 12px;
+
+            border:
+                1px solid var(--ct-border);
+
+            border-radius: 6px;
+
+            background:
+                var(--ct-panel);
+
+            text-align: center;
+        }
+
+        .ct-flow-step::after {
+
+            content: "→";
+
+            position: absolute;
+
+            right: -15px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color:
+                var(--ct-red);
+
+            z-index: 2;
+        }
+
+        .ct-flow-step:last-child::after {
+            display: none;
+        }
+
+        .ct-flow-number {
+
+            display: block;
+
+            margin-bottom: 12px;
+
+            color:
+                var(--ct-red);
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .ct-flow-step strong {
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+   EXAMPLE
+   ========================================================= */
+
+        .ct-example {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .ct-example-box {
+
+            padding: 25px;
+
+            border:
+                1px solid var(--ct-border);
+
+            border-radius: 7px;
+
+            background:
+                var(--ct-panel);
+        }
+
+        .ct-example-box h3 {
+
+            margin:
+                0 0 15px;
+
+            font-size: 17px;
+        }
+
+        .ct-example-box p {
+
+            margin: 0;
+
+            color:
+                var(--ct-muted);
+
+            line-height: 1.7;
+
+            font-size: 14px;
+        }
+
+        .ct-example-box.alert-box {
+
+            border-top:
+                2px solid var(--ct-red);
+        }
+
+        .ct-example-box.response-box {
+
+            border-top:
+                2px solid var(--ct-green);
+        }
+
+
+        /* =========================================================
+   KEY CONCEPTS
+   ========================================================= */
+
+        .ct-key-list {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .ct-key {
+
+            padding: 17px 20px;
+
+            border:
+                1px solid var(--ct-border);
+
+            border-radius: 6px;
+
+            background:
+                var(--ct-panel);
+        }
+
+        .ct-key strong {
+            color: var(--ct-text);
+        }
+
+        .ct-key span {
+
+            color:
+                var(--ct-muted);
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   SUMMARY
+   ========================================================= */
+
+        .ct-summary {
+
+            padding: 30px;
+
+            border:
+                1px solid rgba(67, 209, 158, 0.25);
+
+            border-radius: 7px;
+
+            background:
+                rgba(67, 209, 158, 0.035);
+        }
+
+        .ct-summary h2 {
+
+            margin-top: 0;
+
+            color:
+                var(--ct-green);
+        }
+
+        .ct-summary p {
+
+            margin: 0;
+
+            color:
+                var(--ct-muted);
+
+            line-height: 1.8;
+        }
+
+        /* =========================================================
+   CYBERNEXA — PRACTICAL LAB CTA
+========================================================= */
+
+        .lab-cta-section {
+            width: 100%;
+            margin-top: 35px;
+        }
+
+
+        /* =========================================================
+   LAB CTA CONTAINER
+========================================================= */
+
+        .lab-cta {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 30px;
+
+            width: 100%;
+
+            padding: 30px;
+
+            border: 1px solid rgba(255, 83, 100, 0.28);
+            border-left: 4px solid #ff5364;
+            border-radius: 16px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(255, 83, 100, 0.045),
+                    rgba(5, 10, 16, 0.96));
+
+            box-shadow:
+                0 0 0 1px rgba(255, 83, 100, 0.025),
+                0 18px 45px rgba(0, 0, 0, 0.25);
+
+            overflow: hidden;
+
+            box-sizing: border-box;
+        }
+
+
+        /* =========================================================
+   LIGHT RED TOP LINE
+========================================================= */
+
+        .lab-cta::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(255, 83, 100, 0.15) 15%,
+                    rgba(255, 83, 100, 0.85) 50%,
+                    rgba(255, 83, 100, 0.15) 85%,
+                    transparent 100%);
+
+            box-shadow:
+                0 0 12px rgba(255, 83, 100, 0.25);
+
+        }
+
+
+        /* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+        .lab-cta-content {
+
+            flex: 1;
+
+            min-width: 0;
+
+        }
+
+
+        .lab-cta-content h3 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 19px;
+
+            line-height: 1.4;
+
+            font-weight: 700;
+
+        }
+
+
+        .lab-cta-content p {
+
+            margin: 0;
+
+            max-width: 750px;
+
+            color: #8fa4b5;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =========================================================
+   LAUNCH LAB BUTTON
+========================================================= */
+
+        .lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            min-width: 165px;
+
+            padding: 13px 20px;
+
+            border: 1px solid rgba(255, 83, 100, 0.45);
+
+            border-radius: 9px;
+
+            background:
+                rgba(255, 83, 100, 0.055);
+
+            color: #edf6fc;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            line-height: 1.2;
+
+            text-decoration: none;
+
+            white-space: nowrap;
+
+            box-shadow:
+                0 0 0 1px rgba(255, 83, 100, 0.025),
+                0 8px 22px rgba(0, 0, 0, 0.22);
+
+            transition:
+                color 0.25s ease,
+                background 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+
+        }
+
+
+        /* =========================================================
+   BUTTON HOVER
+========================================================= */
+
+        .lab-button:hover {
+
+            color: #ffffff;
+
+            border-color:
+                rgba(255, 83, 100, 0.85);
+
+            background:
+                rgba(255, 83, 100, 0.10);
+
+            box-shadow:
+                0 0 16px rgba(255, 83, 100, 0.12),
+                0 10px 25px rgba(0, 0, 0, 0.28);
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        /* =========================================================
+   BUTTON ACTIVE
+========================================================= */
+
+        .lab-button:active {
+
+            transform:
+                translateY(0);
+
+            box-shadow:
+                0 0 10px rgba(255, 83, 100, 0.10);
+
+        }
+
+
+        /* =========================================================
+   TABLET
+========================================================= */
+
+        @media (max-width: 800px) {
+
+            .lab-cta {
+
+                padding: 25px;
+
+                gap: 22px;
+
+            }
+
+
+            .lab-cta-content h3 {
+
+                font-size: 18px;
+
+            }
+
+
+            .lab-cta-content p {
+
+                font-size: 13px;
+
+            }
+
+
+            .lab-button {
+
+                min-width: 150px;
+
+                padding: 12px 17px;
+
+                font-size: 13px;
+
+            }
+
+        }
+
+
+        /* =========================================================
+   MOBILE
+========================================================= */
+
+        @media (max-width: 600px) {
+
+            .lab-cta {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 20px;
+
+                padding: 24px;
+
+            }
+
+
+            .lab-cta-content h3 {
+
+                font-size: 18px;
+
+            }
+
+
+            .lab-cta-content p {
+
+                font-size: 13px;
+
+            }
+
+
+            .lab-button {
+
+                width: 100%;
+
+                min-width: 0;
+
+                box-sizing: border-box;
+
+            }
+
+        }
+
+
+        /* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+        @media (max-width: 430px) {
+
+            .lab-cta {
+
+                padding: 20px;
+
+                border-radius: 12px;
+
+            }
+
+
+            .lab-cta-content h3 {
+
+                font-size: 17px;
+
+            }
+
+
+            .lab-cta-content p {
+
+                font-size: 12px;
+
+                line-height: 1.65;
+
+            }
+
+
+            .lab-button {
+
+                padding: 12px 15px;
+
+                font-size: 13px;
+
+                border-radius: 8px;
+
+            }
+
+        }
+
+        /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 950px) {
+
+            .nav-container {
+
+                width: 92%;
+
+                min-height: 68px;
+            }
+
+            .brand-logo svg {
+
+                width: 42px;
+
+                height: 50px;
+            }
+
+            .ct-hero-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .ct-reason-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .ct-flow {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+            .ct-flow-step::after {
+                display: none;
+            }
+
+            .ct-example {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .nav-container {
+
+                width: 94%;
+
+                min-height: 64px;
+
+                padding: 8px 0;
+            }
+
+            .brand {
+
+                gap: 8px;
+            }
+
+            .brand-logo svg {
+
+                width: 38px;
+
+                height: 46px;
+            }
+
+            .brand-name {
+                font-size: 19px;
+            }
+
+            .brand-tagline {
+                font-size: 9px;
+            }
+
+            .ct-hero {
+
+                padding:
+                    70px 0 55px;
+            }
+
+            .ct-hero-grid {
+                gap: 30px;
+            }
+
+            .ct-status-panel {
+                width: 100%;
+            }
+
+            .ct-section {
+                padding: 60px 0;
+            }
+
+            .ct-flow {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap: 12px;
+            }
+
+            .ct-flow-step {
+                min-height: 105px;
+            }
+
+            .footer {
+
+                width: 100%;
+
+                overflow: hidden;
+            }
+
+            .footer-container {
+
+                width: 92%;
+
+                margin: 0 auto;
+
+                display: flex;
+
+                flex-direction: column;
+
+                gap: 25px;
+            }
+
+            .footer-links {
+
+                display: flex;
+
+                flex-wrap: wrap;
+
+                gap: 10px 18px;
+            }
+
+            .footer-links a {
+                white-space: nowrap;
+            }
+
+            .copyright {
+
+                width: 92%;
+
+                margin-left: auto;
+
+                margin-right: auto;
+
+                line-height: 1.6;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .nav-container {
+
+                width: 92%;
+
+                min-height: 62px;
+
+                padding: 7px 0;
+            }
+
+            .brand {
+
+                gap: 7px;
+
+                max-width: 100%;
+            }
+
+            .brand-logo svg {
+
+                width: 34px;
+
+                height: 42px;
+            }
+
+            .brand-name {
+
+                font-size: 17px;
+
+                letter-spacing: 0;
+            }
+
+            .brand-tagline {
+
+                font-size: 8px;
+
+                letter-spacing: 0;
+            }
+
+            .ct-hero {
+
+                padding:
+                    55px 0 45px;
+            }
+
+            .ct-breadcrumb {
+
+                font-size: 11px;
+
+                line-height: 1.6;
+
+                margin-bottom: 18px;
+            }
+
+            .ct-alert {
+
+                font-size: 10px;
+
+                padding: 7px 10px;
+            }
+
+            .ct-hero h1 {
+
+                font-size:
+                    clamp(34px, 10vw, 48px);
+
+                letter-spacing: -0.5px;
+            }
+
+            .ct-hero-description {
+
+                font-size: 15px;
+
+                line-height: 1.7;
+            }
+
+            .ct-status-panel {
+                padding: 20px;
+            }
+
+            .ct-status-header strong {
+                font-size: 11px;
+            }
+
+            .ct-live {
+                font-size: 9px;
+            }
+
+            .ct-status-row {
+
+                font-size: 12px;
+
+                gap: 15px;
+            }
+
+            .ct-status-row strong {
+                text-align: right;
+            }
+
+            .ct-section {
+                padding: 50px 0;
+            }
+
+            .ct-section-title {
+                margin-bottom: 22px;
+            }
+
+            .ct-section-title h2 {
+                font-size: 26px;
+            }
+
+            .ct-section-title p {
+                font-size: 14px;
+            }
+
+            .ct-content-card {
+                padding: 22px;
+            }
+
+            .ct-content-card p {
+
+                font-size: 14px;
+
+                line-height: 1.8;
+            }
+
+            .ct-definition {
+                padding: 22px;
+            }
+
+            .ct-definition p {
+
+                font-size: 16px;
+
+                line-height: 1.7;
+            }
+
+            .ct-reason-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ct-reason {
+                padding: 21px;
+            }
+
+            .ct-type-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ct-flow {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 10px;
+            }
+
+            .ct-flow-step {
+
+                min-height: 95px;
+
+                padding:
+                    15px 8px;
+            }
+
+            .ct-flow-step strong {
+                font-size: 12px;
+            }
+
+            .ct-example {
+
+                grid-template-columns: 1fr;
+
+                gap: 15px;
+            }
+
+            .ct-example-box {
+                padding: 21px;
+            }
+
+            .ct-key-list {
+                grid-template-columns: 1fr;
+            }
+
+            .ct-key {
+                padding: 16px;
+            }
+
+            .ct-key span {
+
+                font-size: 13px;
+
+                line-height: 1.6;
+            }
+
+            .ct-summary {
+                padding: 22px;
+            }
+
+            .ct-summary p {
+
+                font-size: 14px;
+
+                line-height: 1.75;
+            }
+
+            .ct-topic-nav {
+
+                flex-direction: column;
+
+                gap: 10px;
+            }
+
+            .ct-nav-button {
+
+                width: 100%;
+
+                justify-content: center;
+
+                text-align: center;
+            }
+
+            .footer-container {
+
+                width: 92%;
+
+                gap: 22px;
+            }
+
+            .footer-brand {
+                font-size: 22px;
+            }
+
+            .footer-container p {
+
+                font-size: 13px;
+
+                line-height: 1.6;
+            }
+
+            .footer-links {
+
+                width: 100%;
+
+                display: grid;
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 12px 18px;
+            }
+
+            .footer-links a {
+
+                font-size: 13px;
+
+                white-space: normal;
+            }
+
+            .copyright {
+
+                width: 92%;
+
+                padding: 18px 0;
+
+                font-size: 11px;
+
+                line-height: 1.6;
+
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 380px) {
+
+            .nav-container {
+                width: 94%;
+            }
+
+            .brand-logo svg {
+
+                width: 30px;
+
+                height: 38px;
+            }
+
+            .brand-name {
+                font-size: 15px;
+            }
+
+            .brand-tagline {
+                font-size: 7px;
+            }
+
+            .ct-container {
+                width: 94%;
+            }
+
+            .ct-hero h1 {
+                font-size: 32px;
+            }
+
+            .ct-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <header class="ct-hero">
+
+        <div class="ct-container">
+
+            <div class="ct-breadcrumb">
+                CyberNexa / Incident Response / Containment
+            </div>
+
+
+            <div class="ct-hero-grid">
+
+
+                <div>
+
+                    <div class="ct-alert">
+
+                        <span class="ct-pulse"></span>
+
+                        Containment Training
+
+                    </div>
+
+
+                    <h1>
+                        What is <span>Containment?</span>
+                    </h1>
+
+
+                    <p class="ct-hero-description">
+
+                        Containment is the process of limiting the spread and
+                        impact of a cybersecurity incident by isolating affected
+                        systems, accounts, networks or other resources.
+
+                    </p>
+
+                </div>
+
+
+                <div class="ct-status-panel">
+
+                    <div class="ct-status-header">
+
+                        <strong>
+                            INCIDENT COMMAND
+                        </strong>
+
+                        <span class="ct-live">
+                            ● RESPONSE
+                        </span>
+
+                    </div>
+
+
+                    <div class="ct-divider"></div>
+
+
+                    <div class="ct-status-row">
+
+                        <span>Status</span>
+
+                        <strong>Containment</strong>
+
+                    </div>
+
+
+                    <div class="ct-status-row">
+
+                        <span>Category</span>
+
+                        <strong>Incident Response</strong>
+
+                    </div>
+
+
+                    <div class="ct-status-row">
+
+                        <span>Priority</span>
+
+                        <strong class="ct-severity">
+                            Limit Impact
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ct-status-row">
+
+                        <span>Objective</span>
+
+                        <strong>Stop Spread</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+        <section class="ct-section">
+
+            <div class="ct-container">
+
+                <div class="ct-section-title">
+
+                    <h2>Definition</h2>
+
+                    <p>
+                        First, understand the core meaning of Containment.
+                    </p>
+
+                </div>
+
+
+                <div class="ct-definition">
+
+                    <div class="ct-definition-label">
+                        Core Definition
+                    </div>
+
+                    <p>
+
+                        Containment is the Incident Response phase in which
+                        security teams take actions to prevent a security incident
+                        from spreading or causing additional damage while the
+                        investigation and remediation continue.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     CORE EXPLANATION
+====================================================== -->
+
+        <section class="ct-section">
+
+            <div class="ct-container">
+
+                <div class="ct-section-title">
+
+                    <h2>How Containment Works</h2>
+
+                    <p>
+                        Containment focuses on controlling the incident before
+                        the threat can cause further damage.
+                    </p>
+
+                </div>
+
+
+                <div class="ct-content-card">
+
+                    <p>
+
+                        After an incident has been identified and assessed,
+                        security teams determine which systems, accounts or
+                        network resources may be affected.
+
+                    </p>
+
+                    <p>
+
+                        The team then applies appropriate containment actions.
+                        For example, a compromised computer may be isolated
+                        from the network, or a compromised account may be
+                        disabled or temporarily restricted.
+
+                    </p>
+
+                    <p>
+
+                        Containment does not necessarily remove the attacker
+                        or malware immediately. Its primary purpose is to limit
+                        the incident's scope and prevent additional damage.
+
+                    </p>
+
+                    <p>
+
+                        Once the incident is controlled, security teams can
+                        continue with eradication, recovery and further
+                        investigation.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     WHY IMPORTANT
+====================================================== -->
+
+        <section class="ct-section">
+
+            <div class="ct-container">
+
+                <div class="ct-section-title">
+
+                    <h2>Why Containment Matters</h2>
+
+                    <p>
+                        Containment helps security teams control an active
+                        incident while protecting additional systems and data.
+                    </p>
+
+                </div>
+
+
+                <div class="ct-reason-grid">
+
+
+                    <div class="ct-reason">
+
+                        <span class="ct-reason-number">
+                            REASON 01
+                        </span>
+
+                        <h3>Stop the Spread</h3>
+
+                        <p>
+
+                            Containment can prevent an attacker, malware or
+                            compromised account from affecting additional systems.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="ct-reason">
+
+                        <span class="ct-reason-number">
+                            REASON 02
+                        </span>
+
+                        <h3>Limit Damage</h3>
+
+                        <p>
+
+                            Isolating affected resources can reduce the potential
+                            impact on systems, services and data.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="ct-reason">
+
+                        <span class="ct-reason-number">
+                            REASON 03
+                        </span>
+
+                        <h3>Protect Investigation</h3>
+
+                        <p>
+
+                            Controlled containment can help security teams continue
+                            investigation while reducing ongoing attacker activity.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     TYPES OF CONTAINMENT
+====================================================== -->
+
+        <section class="ct-section">
+
+            <div class="ct-container">
+
+                <div class="ct-section-title">
+
+                    <h2>Types of Containment</h2>
+
+                    <p>
+                        Containment can be performed for a short period or
+                        maintained for a longer period depending on the incident.
+                    </p>
+
+                </div>
+
+
+                <div class="ct-type-grid">
+
+
+                    <div class="ct-type short">
+
+                        <h3>Short-Term Containment</h3>
+
+                        <p>
+
+                            Short-term containment provides an immediate response
+                            to limit an active incident. Examples include isolating
+                            a compromised device, disabling a suspicious account
+                            or blocking malicious network traffic.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="ct-type long">
+
+                        <h3>Long-Term Containment</h3>
+
+                        <p>
+
+                            Long-term containment provides continued protection
+                            while the security team performs deeper investigation,
+                            eradication and recovery activities.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     CONTAINMENT FLOW
+====================================================== -->
+
+        <section class="ct-section">
+
+            <div class="ct-container">
+
+                <div class="ct-section-title">
+
+                    <h2>Containment Flow</h2>
+
+                    <p>
+                        A simplified representation of how containment can
+                        be performed during an incident.
+                    </p>
+
+                </div>
+
+
+                <div class="ct-flow">
+
+
+                    <div class="ct-flow-step">
+
+                        <span class="ct-flow-number">
+                            01
+                        </span>
+
+                        <strong>
+                            Identify Affected Resource
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ct-flow-step">
+
+                        <span class="ct-flow-number">
+                            02
+                        </span>
+
+                        <strong>
+                            Assess Risk
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ct-flow-step">
+
+                        <span class="ct-flow-number">
+                            03
+                        </span>
+
+                        <strong>
+                            Isolate
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ct-flow-step">
+
+                        <span class="ct-flow-number">
+                            04
+                        </span>
+
+                        <strong>
+                            Monitor
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ct-flow-step">
+
+                        <span class="ct-flow-number">
+                            05
+                        </span>
+
+                        <strong>
+                            Prepare Remediation
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     EXAMPLE
+====================================================== -->
+
+        <section class="ct-section">
+
+            <div class="ct-container">
+
+                <div class="ct-section-title">
+
+                    <h2>Simple Example</h2>
+
+                    <p>
+                        Consider a compromised workstation as an example.
+                    </p>
+
+                </div>
+
+
+                <div class="ct-example">
+
+
+                    <div class="ct-example-box alert-box">
+
+                        <h3>🚨 Possible Incident</h3>
+
+                        <p>
+
+                            A workstation shows suspicious network activity
+                            and security monitoring indicates that malware may
+                            have compromised the system.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="ct-example-box response-box">
+
+                        <h3>✓ Containment</h3>
+
+                        <p>
+
+                            The security team isolates the workstation from the
+                            network while preserving the system for investigation.
+                            Other systems continue operating while the affected
+                            device is analyzed.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+        <section class="ct-section">
+
+            <div class="ct-container">
+
+                <div class="ct-section-title">
+
+                    <h2>Key Concepts</h2>
+
+                    <p>
+                        Important terms to remember for this topic.
+                    </p>
+
+                </div>
+
+
+                <div class="ct-key-list">
+
+
+                    <div class="ct-key">
+
+                        <strong>Containment:</strong>
+
+                        <span>
+                            Actions taken to limit the scope and impact of an incident.
+                        </span>
+
+                    </div>
+
+
+                    <div class="ct-key">
+
+                        <strong>Isolation:</strong>
+
+                        <span>
+                            Separating an affected resource from other systems or networks.
+                        </span>
+
+                    </div>
+
+
+                    <div class="ct-key">
+
+                        <strong>Short-Term:</strong>
+
+                        <span>
+                            Immediate actions used to control an active incident.
+                        </span>
+
+                    </div>
+
+
+                    <div class="ct-key">
+
+                        <strong>Long-Term:</strong>
+
+                        <span>
+                            Continued controls used while deeper investigation and remediation occur.
+                        </span>
+
+                    </div>
+
+
+                    <div class="ct-key">
+
+                        <strong>Compromised System:</strong>
+
+                        <span>
+                            A system that may have been affected or controlled by a threat.
+                        </span>
+
+                    </div>
+
+
+                    <div class="ct-key">
+
+                        <strong>Incident Scope:</strong>
+
+                        <span>
+                            The systems, accounts, data or resources affected by an incident.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+        <section class="ct-section">
+
+            <div class="ct-container">
+
+                <div class="ct-summary">
+
+                    <h2>Summary</h2>
+
+                    <p>
+
+                        Containment is an important Incident Response phase
+                        used to control a cybersecurity incident and limit its
+                        impact. Security teams identify affected resources,
+                        assess the risk and apply appropriate isolation or
+                        blocking measures. Containment may be short-term or
+                        long-term depending on the situation. After the threat
+                        is controlled, teams can continue with eradication,
+                        recovery and investigation.
+
+                    </p>
+
+                </div>
+                
+<!-- LESSON COMPLETION -->
+<section class="ct-section" id="lessonCompletion">
+    <div class="ct-container">
+        <div class="ct-summary">
+            <h2>Lesson Completion</h2>
+
+            <p>
+                You have reached the end of this lesson.
+                Mark it complete to save your learning progress
+                to your CyberNexa account.
+            </p>
+
+            <div style="margin-top: 22px; text-align: center;">
+                <button
+                    type="button"
+                    class="lab-button"
+                    data-lesson-progress
+                    data-course-id="incident-response"
+                    data-lesson-id="containment"
+                    data-dashboard-url="../learning-paths/incident-response/theory/containment.html"
+                    data-status-id="lessonCompletionStatus">
+                    ✓ Mark Lesson Complete
+                </button>
+
+                <p
+                    id="lessonCompletionStatus"
+                    role="status"
+                    aria-live="polite"
+                    style="margin-top: 15px; font-size: 14px;">
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+                <!-- =========================================================
+     PRACTICAL LAB CTA
+========================================================= -->
+
+                <section class="lab-cta-section">
+
+                    <div class="lab-cta">
+
+                        <div class="lab-cta-content">
+
+                            <h3>
+                                Ready for the Practical Lab?
+                            </h3>
+
+                            <p>
+                                Test your understanding in an authorized
+                                cybersecurity training environment.
+                            </p>
+
+                        </div>
+
+
+                        <a href="../lab/Containment-lab.html" class="lab-button">
+
+                            🧪 Launch Lab →
+
+                        </a>
+
+                    </div>
+
+                </section>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+
+            <div>
+
+                <div class="footer-brand">
+
+                    Cyber<span>Nexa</span>
+
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+    <!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

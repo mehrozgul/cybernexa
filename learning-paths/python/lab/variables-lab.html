@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Variables Lab | CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #020817;
+            color: #e8f1ff;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            background: #030b1c;
+            border-bottom: 1px solid #123456;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            min-height: 95px;
+            margin: auto;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 52px;
+            height: 60px;
+            color: #00cfff;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            color: white;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .brand-name span {
+            color: #00cfff;
+        }
+
+        .brand-tagline {
+            color: #8292aa;
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .lab-page {
+            width: min(1100px, 92%);
+            margin: auto;
+            padding: 35px 0 70px;
+        }
+
+
+        /* =====================================================
+           BREADCRUMB
+        ===================================================== */
+
+        .breadcrumb {
+            color: #91a4bf;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb span {
+            color: #00cfff;
+            padding: 0 8px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .lab-header {
+            background: linear-gradient(
+                135deg,
+                #061329,
+                #10132d
+            );
+
+            border: 1px solid #244d73;
+            border-left: 4px solid #8b5cf6;
+
+            border-radius: 14px;
+            padding: 32px;
+            margin-bottom: 25px;
+        }
+
+        .lab-label {
+            color: #00cfff;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .lab-header h1 {
+            color: white;
+            font-size: clamp(32px, 5vw, 48px);
+            margin: 8px 0 10px;
+        }
+
+        .lab-header p {
+            color: #aebdd0;
+            max-width: 800px;
+        }
+
+
+        /* =====================================================
+           INFO GRID
+        ===================================================== */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-card {
+            background: #061329;
+            border: 1px solid #163b5c;
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+        .info-card strong {
+            display: block;
+            color: #00cfff;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .info-card span {
+            color: #b8c7d9;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .progress-box {
+            background: #061329;
+            border: 1px solid #163b5c;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 25px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            color: #aebdd0;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #0b1729;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #00cfff,
+                #8b5cf6
+            );
+            transition: 0.3s;
+        }
+
+
+        /* =====================================================
+           TASK
+        ===================================================== */
+
+        .task {
+            background: #061329;
+            border: 1px solid #163b5c;
+            border-left: 3px solid #00cfff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .task h2 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .task p {
+            color: #aebdd0;
+            margin-bottom: 15px;
+        }
+
+        .task ul {
+            padding-left: 22px;
+            color: #b8c7d9;
+        }
+
+        .task li {
+            margin-bottom: 7px;
+        }
+
+
+        /* =====================================================
+           CODE EDITOR
+        ===================================================== */
+
+        .editor-box {
+            background: #01050d;
+            border: 1px solid #173c5e;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: #07182c;
+            padding: 10px 14px;
+
+            color: #8fa5bf;
+            font-size: 13px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 260px;
+
+            background: #01050d;
+            color: #b9f5ff;
+
+            border: none;
+            outline: none;
+
+            resize: vertical;
+
+            padding: 20px;
+
+            font-family: Consolas, Monaco, monospace;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .lab-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 7px;
+            padding: 11px 18px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .run-btn {
+            background: #00cfff;
+            color: #00101c;
+        }
+
+        .reset-btn {
+            background: #18283d;
+            color: #b9c9dc;
+            border: 1px solid #2a4662;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           OUTPUT
+        ===================================================== */
+
+        .output-section {
+            background: #061329;
+            border: 1px solid #163b5c;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .output-section h3 {
+            color: #00cfff;
+            margin-bottom: 10px;
+        }
+
+        .output {
+            min-height: 90px;
+            background: #01050d;
+            border: 1px solid #173c5e;
+            border-radius: 8px;
+            padding: 15px;
+
+            color: #83f5ff;
+            font-family: Consolas, monospace;
+
+            white-space: pre-wrap;
+        }
+
+
+        /* =====================================================
+           CHECKLIST
+        ===================================================== */
+
+        .checklist {
+            background: #061329;
+            border: 1px solid #163b5c;
+            border-radius: 10px;
+            padding: 22px;
+            margin-top: 20px;
+        }
+
+        .checklist h3 {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .check-item {
+            display: block;
+            color: #aebdd0;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .check-item input {
+            margin-right: 8px;
+        }
+
+
+        /* =====================================================
+           COMPLETION
+        ===================================================== */
+
+        .completion {
+            display: none;
+            background: #06251e;
+            border: 1px solid #09856e;
+            color: #79f5d9;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 20px;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .lab-navigation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .lab-navigation a {
+            background: #061329;
+            border: 1px solid #163b5c;
+            border-radius: 8px;
+            padding: 13px;
+            text-align: center;
+            color: #9edfff;
+        }
+
+        .lab-navigation a:hover {
+            border-color: #00cfff;
+            color: #00cfff;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            background: #010611;
+            border-top: 1px solid #12304e;
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            max-width: 1100px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .footer-brand span {
+            color: #00cfff;
+        }
+
+        .footer-container p {
+            color: #71839b;
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8498b2;
+            font-size: 13px;
+        }
+
+        .footer-links a:hover {
+            color: #00cfff;
+        }
+
+        .copyright {
+            max-width: 1100px;
+            margin: 25px auto 0;
+            padding-top: 18px;
+
+            border-top: 1px solid #102238;
+
+            text-align: center;
+            color: #596b83;
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-page {
+                width: 94%;
+            }
+
+            .lab-header,
+            .task {
+                padding: 22px;
+            }
+
+            .lab-navigation {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58
+                        C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN LAB
+===================================================== -->
+
+<main class="lab-page">
+
+
+    <!-- BREADCRUMB -->
+
+    <div class="breadcrumb">
+
+        Python for Cybersecurity
+
+        <span>›</span>
+
+        Variables
+
+        <span>›</span>
+
+        Practical Lab
+
+    </div>
+
+
+
+    <!-- HEADER -->
+
+    <section class="lab-header">
+
+        <div class="lab-label">
+            PYTHON FOR CYBERSECURITY • PRACTICAL LAB
+        </div>
+
+        <h1>
+            Python Variables Lab
+        </h1>
+
+        <p>
+            Practice creating variables and storing cybersecurity
+            information such as IP addresses, ports, protocols
+            and security status.
+        </p>
+
+    </section>
+
+
+
+    <!-- INFO -->
+
+    <div class="info-grid">
+
+        <div class="info-card">
+
+            <strong>Difficulty</strong>
+
+            <span>Beginner</span>
+
+        </div>
+
+        <div class="info-card">
+
+            <strong>Topic</strong>
+
+            <span>Python Variables</span>
+
+        </div>
+
+        <div class="info-card">
+
+            <strong>Environment</strong>
+
+            <span>Python 3.x</span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- PROGRESS -->
+
+    <div class="progress-box">
+
+        <div class="progress-top">
+
+            <span>Lab Progress</span>
+
+            <span id="progressText">0%</span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                id="progressFill"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- TASK -->
+
+    <section class="task">
+
+        <h2>Lab Objective</h2>
+
+        <p>
+            Create Python variables for a fictional cybersecurity
+            target and display their values.
+        </p>
+
+        <ul>
+
+            <li>
+                Create a variable named <strong>target_ip</strong>.
+            </li>
+
+            <li>
+                Store <strong>192.168.1.10</strong> in it.
+            </li>
+
+            <li>
+                Create a variable named <strong>target_port</strong>.
+            </li>
+
+            <li>
+                Store <strong>443</strong> in it.
+            </li>
+
+            <li>
+                Create a variable named <strong>protocol</strong>
+                and store <strong>HTTPS</strong>.
+            </li>
+
+            <li>
+                Create a Boolean variable named <strong>secure</strong>
+                and set it to <strong>True</strong>.
+            </li>
+
+            <li>
+                Print all four values.
+            </li>
+
+        </ul>
+
+
+        <!-- CODE -->
+
+        <div class="editor-box">
+
+            <div class="editor-header">
+
+                <span>
+                    variables_lab.py
+                </span>
+
+                <span>
+                    Python 3.x
+                </span>
+
+            </div>
+
+<textarea id="codeEditor">target_ip = "192.168.1.10"
+target_port = 443
+protocol = "HTTPS"
+secure = True
+
+print("Target IP:", target_ip)
+print("Target Port:", target_port)
+print("Protocol:", protocol)
+print("Secure:", secure)</textarea>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="lab-buttons">
+
+            <button
+                class="btn run-btn"
+                id="runButton"
+            >
+                ▶ Run Lab
+            </button>
+
+            <button
+                class="btn reset-btn"
+                id="resetButton"
+            >
+                ↻ Reset
+            </button>
+
+        </div>
+
+
+        <!-- OUTPUT -->
+
+        <div class="output-section">
+
+            <h3>
+                Output
+            </h3>
+
+            <div
+                class="output"
+                id="output"
+            >
+                Click "Run Lab" to see the expected output.
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         CHECKLIST
+    ================================================== -->
+
+    <section class="checklist">
+
+        <h3>
+            Lab Checklist
+        </h3>
+
+        <label class="check-item">
+
+            <input
+                type="checkbox"
+                class="lab-check"
+            >
+
+            I created the target_ip variable.
+
+        </label>
+
+
+        <label class="check-item">
+
+            <input
+                type="checkbox"
+                class="lab-check"
+            >
+
+            I created the target_port variable.
+
+        </label>
+
+
+        <label class="check-item">
+
+            <input
+                type="checkbox"
+                class="lab-check"
+            >
+
+            I created the protocol variable.
+
+        </label>
+
+
+        <label class="check-item">
+
+            <input
+                type="checkbox"
+                class="lab-check"
+            >
+
+            I created the secure Boolean variable.
+
+        </label>
+
+
+        <label class="check-item">
+
+            <input
+                type="checkbox"
+                class="lab-check"
+            >
+
+            I understand how Python variables work.
+
+        </label>
+
+    </section>
+
+
+
+    <!-- COMPLETION -->
+
+    <div
+        class="completion"
+        id="completion"
+    >
+
+        ✓ Excellent! You have completed the
+        Python Variables practical lab.
+
+    </div>
+
+
+
+    <!-- =================================================
+         NAVIGATION
+    ================================================== -->
+
+    <div class="lab-navigation">
+
+        <a href="python-basics-lab.html">
+            ← Lab: Python Basic
+        </a>
+
+        <a href="../theory/conditions.html">
+            Next Theory: Conditions →
+        </a>
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    const codeEditor =
+        document.getElementById("codeEditor");
+
+    const runButton =
+        document.getElementById("runButton");
+
+    const resetButton =
+        document.getElementById("resetButton");
+
+    const output =
+        document.getElementById("output");
+
+    const checks =
+        document.querySelectorAll(".lab-check");
+
+    const progressFill =
+        document.getElementById("progressFill");
+
+    const progressText =
+        document.getElementById("progressText");
+
+    const completion =
+        document.getElementById("completion");
+
+
+    /* =====================================================
+       ORIGINAL CODE
+    ===================================================== */
+
+    const originalCode =
+`target_ip = "192.168.1.10"
+target_port = 443
+protocol = "HTTPS"
+secure = True
+
+print("Target IP:", target_ip)
+print("Target Port:", target_port)
+print("Protocol:", protocol)
+print("Secure:", secure)`;
+
+
+    /* =====================================================
+       RUN LAB
+    ===================================================== */
+
+    runButton.addEventListener("click", function() {
+
+        const code =
+            codeEditor.value;
+
+        const requiredVariables = [
+            "target_ip",
+            "target_port",
+            "protocol",
+            "secure"
+        ];
+
+        const allVariablesExist =
+            requiredVariables.every(function(variable) {
+
+                return code.includes(variable);
+
+            });
+
+
+        if (!allVariablesExist) {
+
+            output.textContent =
+                "Error: Make sure all required variables are created.";
+
+            return;
+
+        }
+
+
+        output.textContent =
+`Target IP: 192.168.1.10
+Target Port: 443
+Protocol: HTTPS
+Secure: True`;
+
+    });
+
+
+
+    /* =====================================================
+       RESET
+    ===================================================== */
+
+    resetButton.addEventListener("click", function() {
+
+        codeEditor.value =
+            originalCode;
+
+        output.textContent =
+            'Click "Run Lab" to see the expected output.';
+
+    });
+
+
+
+    /* =====================================================
+       CHECKLIST / PROGRESS
+    ===================================================== */
+
+    checks.forEach(function(check) {
+
+        check.addEventListener("change", updateProgress);
+
+    });
+
+
+    function updateProgress() {
+
+        let completed = 0;
+
+        checks.forEach(function(check) {
+
+            if (check.checked) {
+                completed++;
+            }
+
+        });
+
+
+        const percentage =
+            Math.round(
+                (completed / checks.length) * 100
+            );
+
+
+        progressFill.style.width =
+            percentage + "%";
+
+        progressText.textContent =
+            percentage + "%";
+
+
+        if (percentage === 100) {
+
+            completion.style.display =
+                "block";
+
+        } else {
+
+            completion.style.display =
+                "none";
+
+        }
+
+    }
+
+</script>
+
+
+</body>
+</html>

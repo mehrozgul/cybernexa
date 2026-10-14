@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cookies Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(0, 255, 176, 0.05),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b,
+                    #020914 50%,
+                    #01050b
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 38px 32px;
+            margin-bottom: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 34, 0.98),
+                    rgba(2, 10, 22, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            margin-bottom: 12px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 38px;
+        }
+
+        .lab-hero h1 span {
+            color: #00bfff;
+        }
+
+        .lab-hero p {
+
+            max-width: 760px;
+
+            margin: 13px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           LAB INFO
+        ====================================================== */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .info-card small {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+        .info-card strong {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           PRACTICAL PANEL
+        ====================================================== */
+
+        .panel {
+
+            margin-bottom: 18px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .panel-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            margin-bottom: 13px;
+        }
+
+        .panel-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            font-family: monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .panel-title h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+        .panel p {
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           COOKIE DEMO
+        ====================================================== */
+
+        .cookie-console {
+
+            padding: 19px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                #01070d;
+        }
+
+        .input-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            margin-bottom: 10px;
+        }
+
+        .input-row input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 7px;
+
+            outline: none;
+
+            color: #dce9f4;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 11px;
+        }
+
+        .input-row input:focus {
+
+            border-color:
+                rgba(0, 191, 255, 0.45);
+        }
+
+        .button-row {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 10px;
+        }
+
+        .action-btn {
+
+            padding: 11px 16px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #c9f3ff;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            cursor: pointer;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .action-btn:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            background:
+                rgba(0, 191, 255, 0.09);
+        }
+
+        .action-btn.danger {
+
+            border-color:
+                rgba(255, 100, 100, 0.25);
+
+            color: #ffaaaa;
+        }
+
+        .output {
+
+            min-height: 90px;
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.10);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 255, 176, 0.018);
+
+            color: #8fa5bb;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+        /* =====================================================
+           SECURITY TABLE
+        ====================================================== */
+
+        .security-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 15px;
+        }
+
+        .security-table th,
+        .security-table td {
+
+            padding: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            text-align: left;
+
+            font-size: 11px;
+        }
+
+        .security-table th {
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+        }
+
+        .security-table td {
+
+            color: #8298ab;
+        }
+
+        /* =====================================================
+           MCQ
+        ====================================================== */
+
+        .question {
+
+            margin-bottom: 20px;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .question h3 {
+
+            margin: 0 0 13px;
+
+            color: #dce9f4;
+
+            font-size: 13px;
+        }
+
+        .option {
+
+            display: block;
+
+            margin: 8px 0;
+
+            padding: 10px 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.07);
+
+            border-radius: 7px;
+
+            color: #8298ab;
+
+            cursor: pointer;
+
+            font-size: 11px;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+
+            color: #c9f3ff;
+        }
+
+        .option input {
+
+            margin-right: 8px;
+        }
+
+        .result {
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            color: #00ffb0;
+
+            background:
+                rgba(0, 255, 176, 0.035);
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .submit-btn {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 8px;
+
+            color: #d4f7ff;
+
+            background:
+                rgba(0, 191, 255, 0.06);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .submit-btn:hover {
+
+            background:
+                rgba(0, 191, 255, 0.11);
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .lab-navigation a {
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 8px;
+
+            color: #71879b;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .lab-navigation a:hover {
+
+            color: #c9f3ff;
+
+            border-color:
+                rgba(0, 191, 255, 0.30);
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-info {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+                font-size: 30px;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+
+            .security-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .lab-navigation {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+    <div class="lab-container">
+
+
+        <!-- HERO -->
+
+        <section class="lab-hero">
+
+            <div class="lab-kicker">
+                WEB SECURITY LAB / 03
+            </div>
+
+            <h1>
+                Browser <span>Cookies</span> Lab
+            </h1>
+
+            <p>
+                Practice the fundamentals of browser cookies in a safe
+                local environment. Create a test cookie, inspect stored
+                cookie data, modify it and remove it. The exercise also
+                introduces important cookie security attributes.
+            </p>
+
+        </section>
+
+
+        <!-- INFO -->
+
+        <div class="lab-info">
+
+            <div class="info-card">
+
+                <small>
+                    Category
+                </small>
+
+                <strong>
+                    Web Security
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <small>
+                    Level
+                </small>
+
+                <strong>
+                    Beginner
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <small>
+                    Environment
+                </small>
+
+                <strong>
+                    Local Browser
+                </strong>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <small>
+                    Type
+                </small>
+
+                <strong>
+                    Practical + MCQ
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRACTICAL -->
+
+        <section class="panel">
+
+            <div class="panel-title">
+
+                <div class="panel-number">
+                    01
+                </div>
+
+                <h2>
+                    Cookie Practice Console
+                </h2>
+
+            </div>
+
+            <p>
+                Enter a test cookie name and value. This demonstration
+                operates only on the current browser page and does not
+                interact with an external server.
+            </p>
+
+
+            <div class="cookie-console">
+
+                <div class="input-row">
+
+                    <input
+                        type="text"
+                        id="cookieName"
+                        placeholder="Cookie name e.g. cybernexa_test"
+                    >
+
+                    <input
+                        type="text"
+                        id="cookieValue"
+                        placeholder="Cookie value e.g. learning"
+                    >
+
+                </div>
+
+
+                <div class="button-row">
+
+                    <button
+                        class="action-btn"
+                        onclick="createCookie()"
+                    >
+                        Create Cookie
+                    </button>
+
+                    <button
+                        class="action-btn"
+                        onclick="readCookies()"
+                    >
+                        Read Cookies
+                    </button>
+
+                    <button
+                        class="action-btn"
+                        onclick="updateCookie()"
+                    >
+                        Update Cookie
+                    </button>
+
+                    <button
+                        class="action-btn danger"
+                        onclick="deleteCookie()"
+                    >
+                        Delete Cookie
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="output"
+                    id="output"
+                >
+                    Ready for cookie testing...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- SECURITY ATTRIBUTES -->
+
+        <section class="panel">
+
+            <div class="panel-title">
+
+                <div class="panel-number">
+                    02
+                </div>
+
+                <h2>
+                    Cookie Security Attributes
+                </h2>
+
+            </div>
+
+            <p>
+                Security-sensitive cookies should be configured carefully.
+                The following attributes are commonly important in
+                production web applications.
+            </p>
+
+
+            <table class="security-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Attribute
+                        </th>
+
+                        <th>
+                            Purpose
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            Secure
+                        </td>
+
+                        <td>
+                            Sends the cookie only over HTTPS connections.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            HttpOnly
+                        </td>
+
+                        <td>
+                            Prevents JavaScript from directly accessing
+                            the cookie.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            SameSite
+                        </td>
+
+                        <td>
+                            Controls cookie sending behavior in
+                            cross-site contexts.
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Max-Age
+                        </td>
+
+                        <td>
+                            Defines how long the cookie should remain valid.
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- MCQ -->
+
+        <section class="panel">
+
+            <div class="panel-title">
+
+                <div class="panel-number">
+                    03
+                </div>
+
+                <h2>
+                    Knowledge Check
+                </h2>
+
+            </div>
+
+
+            <div class="question">
+
+                <h3>
+                    1. What is the main purpose of a web cookie?
+                </h3>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q1"
+                        value="a"
+                    >
+                    To store browser-related state
+                </label>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q1"
+                        value="b"
+                    >
+                    To replace the operating system
+                </label>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q1"
+                        value="c"
+                    >
+                    To increase CPU speed
+                </label>
+
+            </div>
+
+
+            <div class="question">
+
+                <h3>
+                    2. Which attribute prevents JavaScript from directly
+                    reading a cookie?
+                </h3>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q2"
+                        value="a"
+                    >
+                    Secure
+                </label>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q2"
+                        value="b"
+                    >
+                    HttpOnly
+                </label>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q2"
+                        value="c"
+                    >
+                    Max-Age
+                </label>
+
+            </div>
+
+
+            <div class="question">
+
+                <h3>
+                    3. Which attribute is related to cross-site
+                    cookie sending behavior?
+                </h3>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q3"
+                        value="a"
+                    >
+                    SameSite
+                </label>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q3"
+                        value="b"
+                    >
+                    HttpOnly
+                </label>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q3"
+                        value="c"
+                    >
+                    Domain Name System
+                </label>
+
+            </div>
+
+
+            <div class="question">
+
+                <h3>
+                    4. Which attribute indicates that a cookie should
+                    be sent only over HTTPS?
+                </h3>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q4"
+                        value="a"
+                    >
+                    Secure
+                </label>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q4"
+                        value="b"
+                    >
+                    SameSite
+                </label>
+
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q4"
+                        value="c"
+                    >
+                    Path
+                </label>
+
+            </div>
+
+
+            <button
+                class="submit-btn"
+                onclick="checkQuiz()"
+            >
+                Submit Quiz
+            </button>
+
+
+            <div
+                class="result"
+                id="quizResult"
+            >
+                Submit your answers to see the result.
+            </div>
+
+        </section>
+
+
+        <!-- NAVIGATION -->
+
+        <div class="lab-navigation">
+
+            <a href="http-https-lab.html">
+                ← Lab: HTTP/HTTPS
+            </a>
+
+            <a href="web-security-lab.html">
+                All Labs
+            </a>
+
+            <a href="../theory/sessions.html">
+                Next Theory: Sessions →
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script src="../../../js/navbar.js"></script>
+
+
+<script>
+
+/* =====================================================
+   COOKIE PRACTICE
+===================================================== */
+
+function getCookie(name) {
+
+    const cookies = document.cookie.split("; ");
+
+    for (let cookie of cookies) {
+
+        const parts = cookie.split("=");
+
+        const key = parts.shift();
+
+        const value = parts.join("=");
+
+        if (key === name) {
+            return value;
+        }
+
+    }
+
+    return null;
+}
+
+
+/* =====================================================
+   CREATE
+===================================================== */
+
+function createCookie() {
+
+    const name =
+        document.getElementById("cookieName").value.trim();
+
+    const value =
+        document.getElementById("cookieValue").value.trim();
+
+    const output =
+        document.getElementById("output");
+
+
+    if (!name || !value) {
+
+        output.textContent =
+            "Please enter both cookie name and value.";
+
+        return;
+    }
+
+
+    document.cookie =
+        encodeURIComponent(name) +
+        "=" +
+        encodeURIComponent(value) +
+        "; max-age=3600; path=/";
+
+
+    output.textContent =
+        "Cookie created successfully.\n\n" +
+        "Name: " + name + "\n" +
+        "Value: " + value +
+        "\n\nThe cookie is stored by this browser page.";
+}
+
+
+/* =====================================================
+   READ
+===================================================== */
+
+function readCookies() {
+
+    const output =
+        document.getElementById("output");
+
+
+    if (!document.cookie) {
+
+        output.textContent =
+            "No JavaScript-accessible cookies were found.";
+
+        return;
+    }
+
+
+    output.textContent =
+        "Current accessible cookies:\n\n" +
+        document.cookie;
+}
+
+
+/* =====================================================
+   UPDATE
+===================================================== */
+
+function updateCookie() {
+
+    const name =
+        document.getElementById("cookieName").value.trim();
+
+    const value =
+        document.getElementById("cookieValue").value.trim();
+
+    const output =
+        document.getElementById("output");
+
+
+    if (!name || !value) {
+
+        output.textContent =
+            "Enter the cookie name and new value.";
+
+        return;
+    }
+
+
+    const existing =
+        getCookie(name);
+
+
+    if (existing === null) {
+
+        output.textContent =
+            "Cookie not found. Create it first.";
+
+        return;
+    }
+
+
+    document.cookie =
+        encodeURIComponent(name) +
+        "=" +
+        encodeURIComponent(value) +
+        "; max-age=3600; path=/";
+
+
+    output.textContent =
+        "Cookie updated successfully.\n\n" +
+        "Name: " + name + "\n" +
+        "Old Value: " + existing + "\n" +
+        "New Value: " + value;
+}
+
+
+/* =====================================================
+   DELETE
+===================================================== */
+
+function deleteCookie() {
+
+    const name =
+        document.getElementById("cookieName").value.trim();
+
+    const output =
+        document.getElementById("output");
+
+
+    if (!name) {
+
+        output.textContent =
+            "Enter the cookie name to delete.";
+
+        return;
+    }
+
+
+    document.cookie =
+        encodeURIComponent(name) +
+        "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+
+
+    output.textContent =
+        "Delete request sent for cookie:\n\n" +
+        name;
+}
+
+
+/* =====================================================
+   QUIZ
+===================================================== */
+
+function checkQuiz() {
+
+    const answers = {
+
+        q1: "a",
+        q2: "b",
+        q3: "a",
+        q4: "a"
+
+    };
+
+
+    let score = 0;
+
+
+    for (let question in answers) {
+
+        const selected =
+            document.querySelector(
+                'input[name="' +
+                question +
+                '"]:checked'
+            );
+
+
+        if (selected &&
+            selected.value === answers[question]) {
+
+            score++;
+
+        }
+
+    }
+
+
+    const result =
+        document.getElementById("quizResult");
+
+
+    result.textContent =
+        "Your Score: " +
+        score +
+        " / 4";
+
+
+    if (score === 4) {
+
+        result.textContent +=
+            " — Excellent! Cookie security concepts are clear.";
+
+    } else if (score >= 3) {
+
+        result.textContent +=
+            " — Good work! Review the security attributes once.";
+
+    } else {
+
+        result.textContent +=
+            " — Review the theory and try again.";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

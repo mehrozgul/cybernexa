@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>File Upload Vulnerabilities - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .ws-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 8%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 88% 12%,
+                    rgba(0, 255, 176, 0.055),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .ws-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* HERO */
+
+        .ws-hero {
+            position: relative;
+            padding: 42px 35px;
+            margin-bottom: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 34, 0.98),
+                    rgba(2, 10, 20, 0.98)
+                );
+
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .ws-hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .ws-hero-grid {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(260px, 0.75fr);
+
+            gap: 35px;
+            align-items: center;
+        }
+
+        .ws-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00bfff;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .ws-kicker::before {
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00bfff;
+
+            box-shadow:
+                0 0 12px rgba(0, 191, 255, 0.7);
+        }
+
+        .ws-hero h1 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 44px;
+            line-height: 1.12;
+            font-weight: 850;
+
+            letter-spacing: -1px;
+        }
+
+        .ws-hero h1 span {
+            color: #00bfff;
+        }
+
+        .ws-description {
+            max-width: 700px;
+
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        /* TERMINAL */
+
+        .terminal-panel {
+            padding: 18px;
+
+            border: 1px solid rgba(0, 255, 176, 0.13);
+            border-radius: 11px;
+
+            background: rgba(0, 0, 0, 0.34);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        .terminal-top {
+            display: flex;
+            align-items: center;
+
+            gap: 6px;
+
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.09);
+        }
+
+        .terminal-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+            background: #405263;
+        }
+
+        .terminal-title {
+            margin-left: auto;
+
+            color: #52687c;
+
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+            margin-bottom: 9px;
+
+            color: #60788d;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .green {
+            color: #00ffb0;
+        }
+
+        .blue {
+            color: #00bfff;
+        }
+
+        /* META */
+
+        .ws-meta {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: #dce9f4;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* CARDS */
+
+        .ws-card {
+            margin-bottom: 18px;
+            padding: 27px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .card-number {
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .card-heading h2 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .ws-card p {
+            margin: 0 0 12px;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* DEFINITION */
+
+        .definition {
+            padding: 21px;
+
+            border-left: 3px solid #00bfff;
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 191, 255, 0.055),
+                    rgba(0, 191, 255, 0.012)
+                );
+        }
+
+        .definition-label {
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .definition p {
+            margin: 0;
+
+            color: #d4edf7;
+
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        /* GRID */
+
+        .concept-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 12px;
+
+            margin-top: 17px;
+        }
+
+        .concept {
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .concept h3 {
+            margin: 0 0 7px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .concept p {
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* FLOW */
+
+        .upload-flow {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+        .flow-step {
+            padding: 17px;
+
+            border: 1px solid rgba(0, 255, 176, 0.09);
+            border-radius: 9px;
+
+            background:
+                rgba(0, 255, 176, 0.018);
+        }
+
+        .flow-number {
+            color: #00ffb0;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .flow-step h3 {
+            margin: 10px 0 6px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .flow-step p {
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 10px;
+            line-height: 1.65;
+        }
+
+        /* WARNING */
+
+        .security-box {
+            padding: 21px;
+
+            border: 1px solid rgba(255, 177, 0, 0.18);
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .security-title {
+            margin-bottom: 9px;
+
+            color: #ffc44d;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .security-box p {
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* CHECKLIST */
+
+        .check-list {
+            display: grid;
+
+            gap: 9px;
+
+            margin-top: 16px;
+        }
+
+        .check-item {
+            padding: 13px;
+
+            border: 1px solid rgba(0, 191, 255, 0.08);
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+        }
+
+        .check-item strong {
+            color: #dce9f4;
+        }
+
+        /* SUMMARY */
+
+        .summary {
+            padding: 25px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 191, 255, 0.14);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.035),
+                    rgba(0, 255, 176, 0.025)
+                );
+        }
+
+        .summary-title {
+            margin-bottom: 9px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .summary h2 {
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .summary p {
+            max-width: 760px;
+
+            margin: 0 auto;
+
+            color: #7e94a8;
+
+            font-size: 12px;
+            line-height: 1.85;
+        }
+
+        /* LAB CTA */
+
+        .lab-area {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 25px;
+            padding: 21px;
+
+            border: 1px solid rgba(0, 255, 176, 0.14);
+            border-radius: 12px;
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        .lab-text strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .lab-text span {
+            color: #71879b;
+
+            font-size: 11px;
+        }
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 12px 20px;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 255, 176, 0.30);
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.055);
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .lab-button:hover {
+            border-color: rgba(0, 255, 176, 0.55);
+            background: rgba(0, 255, 176, 0.09);
+        }
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .ws-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ws-meta {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .upload-flow {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .ws-page {
+                padding: 45px 12px 60px;
+            }
+
+            .ws-hero {
+                padding: 27px 20px;
+            }
+
+            .ws-hero h1 {
+                font-size: 31px;
+            }
+
+            .ws-hero-description {
+                font-size: 12px;
+            }
+
+            .ws-card {
+                padding: 20px;
+            }
+
+            .concept-grid,
+            .upload-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-area {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<main class="ws-page">
+
+<div class="ws-container">
+
+
+    <!-- HERO -->
+
+    <section class="ws-hero">
+
+        <div class="ws-hero-grid">
+
+            <div>
+
+                <div class="ws-kicker">
+                    WEB SECURITY / 07
+                </div>
+
+                <h1>
+                    <span>File Upload</span>
+                    Vulnerabilities
+                </h1>
+
+                <p class="ws-description">
+                    Learn how unrestricted or improperly validated file
+                    uploads can create security risks, how attackers may
+                    abuse weak upload controls, and how secure applications
+                    validate, isolate and safely process uploaded files.
+                </p>
+
+            </div>
+
+
+            <div class="terminal-panel">
+
+                <div class="terminal-top">
+
+                    <span class="terminal-dot"></span>
+                    <span class="terminal-dot"></span>
+                    <span class="terminal-dot"></span>
+
+                    <span class="terminal-title">
+                        WEB SECURITY LAB
+                    </span>
+
+                </div>
+
+                <div class="terminal-line">
+                    <span class="green">web@cybernexa</span>:~$
+                    <span class="blue">upload --security-check</span>
+                </div>
+
+                <div class="terminal-line">
+                    Validation:
+                    <span class="green">REQUIRED</span>
+                </div>
+
+                <div class="terminal-line">
+                    Storage:
+                    <span class="blue">ISOLATED</span>
+                </div>
+
+                <div class="terminal-line">
+                    Status:
+                    <span class="green">PROTECTED</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- META -->
+
+    <div class="ws-meta">
+
+        <div class="meta-item">
+
+            <span class="meta-label">
+                Domain
+            </span>
+
+            <span class="meta-value">
+                Web Security
+            </span>
+
+        </div>
+
+        <div class="meta-item">
+
+            <span class="meta-label">
+                Level
+            </span>
+
+            <span class="meta-value">
+                Intermediate
+            </span>
+
+        </div>
+
+        <div class="meta-item">
+
+            <span class="meta-label">
+                Environment
+            </span>
+
+            <span class="meta-value green">
+                Authorized
+            </span>
+
+        </div>
+
+        <div class="meta-item">
+
+            <span class="meta-label">
+                Focus
+            </span>
+
+            <span class="meta-value">
+                Upload Security
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- 01 -->
+
+    <section class="ws-card">
+
+        <div class="card-heading">
+
+            <div class="card-number">
+                01
+            </div>
+
+            <h2>
+                What is a File Upload Vulnerability?
+            </h2>
+
+        </div>
+
+
+        <div class="definition">
+
+            <div class="definition-label">
+                Core Definition
+            </div>
+
+            <p>
+                A file upload vulnerability occurs when a web application
+                accepts files from users without applying appropriate
+                validation, storage, access-control and processing
+                protections. A poorly designed upload feature can allow
+                dangerous or unexpected files to enter an application
+                environment and potentially affect confidentiality,
+                integrity or availability.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 02 -->
+
+    <section class="ws-card">
+
+        <div class="card-heading">
+
+            <div class="card-number">
+                02
+            </div>
+
+            <h2>
+                Why File Uploads Become a Security Risk
+            </h2>
+
+        </div>
+
+        <p>
+            File uploads are common in profile pictures, documents,
+            assignments, support tickets and content-management systems.
+            The risk appears when the application trusts the uploaded
+            file too much.
+        </p>
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <h3>
+                    Weak Validation
+                </h3>
+
+                <p>
+                    The application may rely only on the filename or
+                    extension instead of validating the actual content.
+                </p>
+
+            </div>
+
+            <div class="concept">
+
+                <h3>
+                    Unsafe Storage
+                </h3>
+
+                <p>
+                    Uploaded files may be stored in a location where
+                    they can be directly interpreted or executed.
+                </p>
+
+            </div>
+
+            <div class="concept">
+
+                <h3>
+                    Excessive Permissions
+                </h3>
+
+                <p>
+                    Uploaded files may receive permissions that are
+                    broader than necessary.
+                </p>
+
+            </div>
+
+            <div class="concept">
+
+                <h3>
+                    Unsafe Processing
+                </h3>
+
+                <p>
+                    Applications may process images, archives or documents
+                    without sufficient security controls.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 03 -->
+
+    <section class="ws-card">
+
+        <div class="card-heading">
+
+            <div class="card-number">
+                03
+            </div>
+
+            <h2>
+                Secure File Upload Flow
+            </h2>
+
+        </div>
+
+        <p>
+            A secure application should treat every uploaded file as
+            untrusted input and pass it through several security checks
+            before storage and further processing.
+        </p>
+
+        <div class="upload-flow">
+
+            <div class="flow-step">
+
+                <div class="flow-number">
+                    STEP 01
+                </div>
+
+                <h3>
+                    Receive
+                </h3>
+
+                <p>
+                    Accept the file through the application upload
+                    endpoint.
+                </p>
+
+            </div>
+
+            <div class="flow-step">
+
+                <div class="flow-number">
+                    STEP 02
+                </div>
+
+                <h3>
+                    Validate
+                </h3>
+
+                <p>
+                    Check size, type, content and application-specific
+                    upload rules.
+                </p>
+
+            </div>
+
+            <div class="flow-step">
+
+                <div class="flow-number">
+                    STEP 03
+                </div>
+
+                <h3>
+                    Isolate
+                </h3>
+
+                <p>
+                    Store files outside executable application areas
+                    whenever possible.
+                </p>
+
+            </div>
+
+            <div class="flow-step">
+
+                <div class="flow-number">
+                    STEP 04
+                </div>
+
+                <h3>
+                    Serve Safely
+                </h3>
+
+                <p>
+                    Apply appropriate access controls and safe response
+                    headers when files are downloaded.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 04 -->
+
+    <section class="ws-card">
+
+        <div class="card-heading">
+
+            <div class="card-number">
+                04
+            </div>
+
+            <h2>
+                Common Security Weaknesses
+            </h2>
+
+        </div>
+
+        <div class="check-list">
+
+            <div class="check-item">
+                <strong>Extension-only validation:</strong>
+                trusting a filename extension without deeper validation.
+            </div>
+
+            <div class="check-item">
+                <strong>Missing size limits:</strong>
+                allowing unexpectedly large uploads.
+            </div>
+
+            <div class="check-item">
+                <strong>Predictable filenames:</strong>
+                allowing uploaded files to be easily guessed or overwritten.
+            </div>
+
+            <div class="check-item">
+                <strong>Executable storage:</strong>
+                storing untrusted files in locations where server-side
+                execution may be possible.
+            </div>
+
+            <div class="check-item">
+                <strong>Insufficient authorization:</strong>
+                allowing users to upload or access files outside their
+                permitted scope.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 05 -->
+
+    <section class="ws-card">
+
+        <div class="card-heading">
+
+            <div class="card-number">
+                05
+            </div>
+
+            <h2>
+                Security Impact
+            </h2>
+
+        </div>
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <h3>
+                    Malicious Content
+                </h3>
+
+                <p>
+                    An attacker may attempt to upload content that the
+                    application was never designed to process.
+                </p>
+
+            </div>
+
+            <div class="concept">
+
+                <h3>
+                    Storage Abuse
+                </h3>
+
+                <p>
+                    Weak size and quantity controls can lead to excessive
+                    storage consumption.
+                </p>
+
+            </div>
+
+            <div class="concept">
+
+                <h3>
+                    Content Exposure
+                </h3>
+
+                <p>
+                    Incorrect access controls can expose private uploaded
+                    documents to unauthorized users.
+                </p>
+
+            </div>
+
+            <div class="concept">
+
+                <h3>
+                    Application Compromise
+                </h3>
+
+                <p>
+                    In severe cases, unsafe processing or executable
+                    upload paths can contribute to broader compromise.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 06 -->
+
+    <section class="ws-card">
+
+        <div class="card-heading">
+
+            <div class="card-number">
+                06
+            </div>
+
+            <h2>
+                Secure Upload Controls
+            </h2>
+
+        </div>
+
+        <div class="security-box">
+
+            <div class="security-title">
+                ⚠ DEFENSIVE SECURITY CHECKLIST
+            </div>
+
+            <p>
+                Use an allowlist of permitted file types, validate file
+                content where appropriate, enforce file-size limits,
+                generate server-side filenames, store uploads in an
+                isolated location, apply least-privilege permissions,
+                prevent unintended execution and enforce authorization
+                checks for file access.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 07 -->
+
+    <section class="ws-card">
+
+        <div class="card-heading">
+
+            <div class="card-number">
+                07
+            </div>
+
+            <h2>
+                Professional Example
+            </h2>
+
+        </div>
+
+        <p>
+            Imagine a student portal that allows students to upload
+            assignment documents. A secure implementation should verify
+            that the submitted file matches the permitted document types,
+            enforce a reasonable size limit, assign a server-generated
+            identifier and store the file in a protected location.
+        </p>
+
+        <p>
+            The download process should also verify that the requesting
+            student has permission to access that specific document.
+        </p>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+
+    <section class="summary">
+
+        <div class="summary-title">
+            Module Summary
+        </div>
+
+        <h2>
+            Never Trust an Uploaded File
+        </h2>
+
+        <p>
+            File uploads should always be treated as untrusted input.
+            Strong validation, isolated storage, safe processing,
+            authorization and least-privilege permissions significantly
+            reduce the security risks associated with upload functionality.
+        </p>
+
+    </section>
+<!-- =================================================
+     LESSON COMPLETION
+================================================== -->
+
+<section class="ws-card" id="lessonCompletion">
+
+    <div class="card-heading">
+        <div class="card-number">✓</div>
+        <h2>Lesson Completion</h2>
+    </div>
+
+    <p>
+        You have completed the File Upload Vulnerabilities lesson.
+        Mark this lesson as complete to save your learning
+        progress to your CyberNexa account.
+    </p>
+
+    <div style="margin-top: 22px; text-align: center;">
+
+        <button
+            type="button"
+            class="lab-button"
+            data-lesson-progress
+            data-course-id="web-security"
+            data-lesson-id="file-upload-vulnerabilities"
+            data-dashboard-url="../learning-paths/web-security/theory/file-upload-vulnerabilities.html"
+            data-status-id="fileUploadVulnerabilitiesCompletionStatus">
+            ✓ Mark Lesson Complete
+        </button>
+
+        <p
+            id="fileUploadVulnerabilitiesCompletionStatus"
+            role="status"
+            aria-live="polite"
+            style="margin-top: 15px;">
+        </p>
+
+    </div>
+
+</section>
+    <!-- LAB CTA -->
+
+    <div class="lab-area">
+
+        <div class="lab-text">
+
+            <strong>
+                Ready for the Practical Lab?
+            </strong>
+
+            <span>
+                Test file-upload security concepts in a safe,
+                simulated Web Security environment.
+            </span>
+
+        </div>
+
+        <a
+            href="../lab/file-upload-vulnerabilities-lab.html"
+            class="lab-button"
+        >
+            🧪 Launch Lab →
+        </a>
+
+    </div>
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

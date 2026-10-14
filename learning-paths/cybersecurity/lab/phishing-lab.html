@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Phishing Practical Lab - CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%
+                ),
+                #020714;
+        }
+
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1000px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           LAB HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 42px;
+        }
+
+
+        .lab-label {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 42px;
+
+            font-weight: 800;
+        }
+
+
+        .lab-header h1 span {
+
+            color: #00bfff;
+        }
+
+
+        .lab-header p {
+
+            max-width: 720px;
+
+            margin: 17px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB INFO GRID
+        ====================================================== */
+
+        .lab-info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 13px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .lab-info {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+        }
+
+
+        .lab-info strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #ffffff;
+
+            font-size: 12px;
+        }
+
+
+        .lab-info span {
+
+            color: #8193aa;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.20);
+        }
+
+
+        .lab-card h2 {
+
+            margin: 0 0 13px;
+
+            color: #ffffff;
+
+            font-size: 20px;
+        }
+
+
+        .lab-card p {
+
+            margin: 0 0 12px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        .lab-card ul {
+
+            margin: 10px 0 0;
+
+            padding-left: 21px;
+        }
+
+
+        .lab-card li {
+
+            margin-bottom: 8px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           SCENARIO
+        ====================================================== */
+
+        .scenario {
+
+            margin-top: 15px;
+
+            padding: 19px;
+
+            border-left:
+                3px solid #00bfff;
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+        }
+
+
+        .scenario strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+
+        .scenario p {
+
+            margin: 0;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           EMAIL ANALYSIS
+        ====================================================== */
+
+        .email-box {
+
+            margin-top: 16px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, 0.18);
+        }
+
+
+        .email-row {
+
+            margin-bottom: 10px;
+
+            color: #91a4bd;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        .email-row:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        .email-row strong {
+
+            color: #ffffff;
+        }
+
+
+        .warning-text {
+
+            margin-top: 16px;
+
+            padding: 14px;
+
+            border-left:
+                3px solid #00bfff;
+
+            border-radius: 7px;
+
+            color: #bfeaff;
+
+            background:
+                rgba(0, 191, 255, 0.04);
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           QUESTIONS
+        ====================================================== */
+
+        .question {
+
+            margin-bottom: 25px;
+
+            padding-bottom: 20px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.08);
+        }
+
+
+        .question:last-child {
+
+            margin-bottom: 0;
+
+            padding-bottom: 0;
+
+            border-bottom: none;
+        }
+
+
+        .question-title {
+
+            margin-bottom: 12px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            line-height: 1.6;
+        }
+
+
+        .options {
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+
+        .option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 11px 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 8px;
+
+            color: #91a4bd;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.30);
+
+            background:
+                rgba(0, 191, 255, 0.05);
+        }
+
+
+        .option input {
+
+            accent-color: #00bfff;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           CHECK BUTTON
+        ====================================================== */
+
+        .check-area {
+
+            margin-top: 25px;
+
+            text-align: center;
+        }
+
+
+        .check-button {
+
+            padding: 12px 25px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 8px;
+
+            color: #bfeaff;
+
+            background:
+                rgba(0, 191, 255, 0.06);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .check-button:hover {
+
+            background:
+                rgba(0, 191, 255, 0.10);
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.18);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            text-align: center;
+        }
+
+
+        .result h3 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+
+        .result p {
+
+            margin: 0;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion {
+
+            margin-top: 25px;
+
+            padding: 23px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 12px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+        }
+
+
+        .completion h2 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+
+        .completion p {
+
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-top: 30px;
+        }
+
+
+        .lab-navigation a {
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 9px;
+
+            color: #91a4bd;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                border-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        .lab-navigation a:hover {
+
+            color: #bfeaff;
+
+            border-color:
+                rgba(0, 191, 255, 0.35);
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .lab-page {
+
+                padding: 45px 12px 55px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 30px;
+            }
+
+
+            .lab-header p {
+
+                font-size: 13px;
+            }
+
+
+            .lab-info-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .lab-card {
+
+                padding: 20px;
+            }
+
+
+            .lab-navigation {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         PHISHING LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- HEADER -->
+
+            <header class="lab-header">
+
+                <div class="lab-label">
+                    PRACTICAL LAB
+                </div>
+
+                <h1>
+                    <span>Phishing</span> Lab
+                </h1>
+
+                <p>
+                    Learn how to identify common phishing indicators,
+                    analyze suspicious messages and apply safe
+                    defensive practices.
+                </p>
+
+            </header>
+
+
+            <!-- INFO -->
+
+            <div class="lab-info-grid">
+
+                <div class="lab-info">
+
+                    <strong>
+                        Difficulty
+                    </strong>
+
+                    <span>
+                        Beginner
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info">
+
+                    <strong>
+                        Type
+                    </strong>
+
+                    <span>
+                        Threat Analysis
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info">
+
+                    <strong>
+                        Objective
+                    </strong>
+
+                    <span>
+                        Identify Phishing
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- OBJECTIVE -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🎯 Lab Objective
+                </h2>
+
+                <p>
+                    In this lab, you will analyze a simulated suspicious
+                    message and identify common phishing indicators.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Understand common phishing warning signs.
+                    </li>
+
+                    <li>
+                        Identify suspicious links and sender information.
+                    </li>
+
+                    <li>
+                        Recognize urgency and social-engineering techniques.
+                    </li>
+
+                    <li>
+                        Practice safe responses to suspicious messages.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- SCENARIO -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🧩 Scenario
+                </h2>
+
+                <div class="scenario">
+
+                    <strong>
+                        SecureTech Employee
+                    </strong>
+
+                    <p>
+                        You receive a message claiming to be from your
+                        organization's IT department. The message says
+                        that your account will be disabled soon unless
+                        you verify your account immediately. You must
+                        analyze the message before taking any action.
+                    </p>
+
+                </div>
+
+
+                <!-- SIMULATED MESSAGE -->
+
+                <div class="email-box">
+
+                    <div class="email-row">
+
+                        <strong>
+                            Sender:
+                        </strong>
+
+                        IT Support &lt;support@example-security-check.com&gt;
+
+                    </div>
+
+
+                    <div class="email-row">
+
+                        <strong>
+                            Subject:
+                        </strong>
+
+                        Urgent: Verify Your Account Immediately
+
+                    </div>
+
+
+                    <div class="email-row">
+
+                        <strong>
+                            Message:
+                        </strong>
+
+                        Your account requires immediate verification.
+                        Failure to verify may result in account
+                        suspension. Please use the provided verification
+                        link and confirm your account information.
+
+                    </div>
+
+
+                    <div class="email-row">
+
+                        <strong>
+                            Link:
+                        </strong>
+
+                        http://example-security-check.com/verify
+                    </div>
+
+
+                    <div class="warning-text">
+
+                        ⚠️ This is a simulated training message.
+                        Do not enter real credentials or personal
+                        information into suspicious websites.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- QUESTIONS -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🧪 Knowledge Check
+                </h2>
+
+
+                <!-- Q1 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        1. Which sign is commonly associated with phishing?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="a"
+                            >
+
+                            An unexpected urgent request
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="b"
+                            >
+
+                            A normal system notification
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="c"
+                            >
+
+                            A scheduled internal meeting
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="d"
+                            >
+
+                            A normal software update
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q2 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        2. What should you check when analyzing a suspicious email?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="a"
+                            >
+
+                            Sender address
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="b"
+                            >
+
+                            Link destination
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="c"
+                            >
+
+                            Message wording and urgency
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="d"
+                            >
+
+                            All of the above
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q3 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        3. What should you do if an unexpected message asks for your password?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="a"
+                            >
+
+                            Provide the password immediately
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="b"
+                            >
+
+                            Verify the request through a trusted channel
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="c"
+                            >
+
+                            Forward your password to a coworker
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="d"
+                            >
+
+                            Disable security software
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q4 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        4. Why can urgent language be a phishing warning sign?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="a"
+                            >
+
+                            It may pressure users into acting without verification
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="b"
+                            >
+
+                            It always means the message is legitimate
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="c"
+                            >
+
+                            It guarantees the sender is trusted
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="d"
+                            >
+
+                            It makes links automatically safe
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q5 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        5. What is the safest response to a suspicious link?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="a"
+                            >
+
+                            Click it to see where it goes
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="b"
+                            >
+
+                            Enter credentials to test it
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="c"
+                            >
+
+                            Avoid the link and verify through a trusted method
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="d"
+                            >
+
+                            Share it with other users
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CHECK -->
+
+                <div class="check-area">
+
+                    <button
+                        class="check-button"
+                        onclick="checkAnswers()"
+                    >
+                        Check Answers
+                    </button>
+
+                </div>
+
+
+                <!-- RESULT -->
+
+                <div
+                    class="result"
+                    id="result"
+                >
+
+                    <h3 id="resultTitle">
+                        Lab Result
+                    </h3>
+
+                    <p id="resultText"></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- COMPLETION -->
+
+            <section class="completion">
+
+                <h2>
+                    ✅ Complete the Phishing Lab
+                </h2>
+
+                <p>
+                    After completing the knowledge check, remember to
+                    verify unexpected requests, inspect sender information,
+                    avoid suspicious links and report suspected phishing
+                    through the appropriate security channel.
+                </p>
+
+            </section>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="lab-navigation">
+
+                <a href="spyware-lab.html">
+                    ← Previous: Spyware
+                </a>
+
+
+                <a href="cybersecurity-lab.html">
+                    All Labs
+                </a>
+
+
+                <a href="../theory/social-engineering.html">
+                    Next Theory: Social Engineering →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+    <script>
+
+        function checkAnswers() {
+
+            const answers = {
+
+                q1: "a",
+                q2: "d",
+                q3: "b",
+                q4: "a",
+                q5: "c"
+
+            };
+
+
+            let score = 0;
+
+            const total =
+                Object.keys(answers).length;
+
+
+            Object.keys(answers).forEach(function (question) {
+
+                const selected =
+                    document.querySelector(
+                        'input[name="' + question + '"]:checked'
+                    );
+
+
+                if (
+                    selected &&
+                    selected.value === answers[question]
+                ) {
+
+                    score++;
+
+                }
+
+            });
+
+
+            const result =
+                document.getElementById("result");
+
+
+            const resultTitle =
+                document.getElementById("resultTitle");
+
+
+            const resultText =
+                document.getElementById("resultText");
+
+
+            result.style.display = "block";
+
+
+            resultTitle.textContent =
+                "Score: " + score + " / " + total;
+
+
+            if (score === total) {
+
+                resultText.textContent =
+                    "Excellent! You correctly identified the main phishing indicators and safe defensive practices.";
+
+            }
+
+            else if (score >= 3) {
+
+                resultText.textContent =
+                    "Good work! Review the phishing theory once more and try the lab again.";
+
+            }
+
+            else {
+
+                resultText.textContent =
+                    "Review the Phishing theory and attempt the lab again.";
+
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

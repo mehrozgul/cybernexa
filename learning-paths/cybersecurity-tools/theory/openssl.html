@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+    <title>OpenSSL | CyberNexa</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 202, 255, 0.10),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 230, 138, 0.06),
+                    transparent 30%
+                ),
+                #030b16;
+
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            width: 100%;
+            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
+            background: #030c19;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 15px 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            min-width: 0;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #00caff;
+            flex-shrink: 0;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            color: #7f94aa;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .openssl-page {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        .breadcrumb {
+            color: #71869c;
+            font-size: 12px;
+            margin-bottom: 22px;
+            overflow-wrap: anywhere;
+        }
+
+        .breadcrumb span {
+            color: #00caff;
+            padding: 0 7px;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .openssl-header {
+            position: relative;
+            overflow: hidden;
+
+            padding: 34px;
+
+            border: 1px solid rgba(0, 202, 255, 0.25);
+            border-left: 4px solid #00caff;
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 202, 255, 0.08),
+                    rgba(0, 230, 138, 0.025)
+                );
+        }
+
+        .openssl-header::after {
+            content: "TLS 1.3  •  RSA  •  AES  •  X.509";
+
+            position: absolute;
+            right: 25px;
+            bottom: 18px;
+
+            color: rgba(0, 202, 255, 0.16);
+            font-family: Consolas, monospace;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .tool-label {
+            color: #00caff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .openssl-header h1 {
+            margin: 10px 0;
+            color: white;
+            font-size: 38px;
+        }
+
+        .openssl-header h1 span {
+            color: #00caff;
+        }
+
+        .openssl-header p {
+            max-width: 760px;
+            margin: 0;
+            color: #9eb1c5;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
+
+        .section {
+            margin-top: 22px;
+            padding: 25px;
+
+            border: 1px solid rgba(0, 202, 255, 0.15);
+            border-radius: 9px;
+
+            background: #041221;
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: white;
+            font-size: 21px;
+        }
+
+        .section h2::before {
+            content: "openssl > ";
+            color: #00e68a;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+        }
+
+        .section p {
+            color: #aabbd0;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           CONCEPT GRID
+        ===================================================== */
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .concept-card {
+            min-width: 0;
+            padding: 18px;
+
+            border: 1px solid rgba(0, 202, 255, 0.16);
+            border-radius: 8px;
+
+            background: #020b15;
+        }
+
+        .concept-card h3 {
+            margin-top: 0;
+            color: #00caff;
+            font-size: 15px;
+        }
+
+        .concept-card p {
+            margin-bottom: 0;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           CODE
+        ===================================================== */
+
+        .code-block {
+            width: 100%;
+            margin-top: 16px;
+            overflow-x: auto;
+
+            border: 1px solid rgba(0, 202, 255, 0.18);
+            border-radius: 7px;
+
+            background: #020810;
+        }
+
+        pre {
+            margin: 0;
+            padding: 17px;
+
+            color: #7ee7ff;
+
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 12px;
+            line-height: 1.65;
+
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .command {
+            color: #7fffc0;
+        }
+
+        /* =====================================================
+           INFO BOX
+        ===================================================== */
+
+        .info-box {
+            margin-top: 18px;
+            padding: 17px;
+
+            border-left: 4px solid #00e68a;
+            border-radius: 7px;
+
+            background: rgba(0, 230, 138, 0.045);
+        }
+
+        .info-box strong {
+            color: #00e68a;
+        }
+
+        /* =====================================================
+           SECURITY FLOW
+        ===================================================== */
+
+        .flow {
+            display: grid;
+            grid-template-columns:
+                repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .flow-card {
+            min-width: 0;
+            padding: 17px 10px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 202, 255, 0.17);
+            border-radius: 8px;
+
+            background: #020b15;
+        }
+
+        .flow-card span {
+            display: block;
+            margin-bottom: 7px;
+
+            color: #00caff;
+            font-family: Consolas, monospace;
+            font-size: 11px;
+        }
+
+        .flow-card strong {
+            color: white;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           LIST
+        ===================================================== */
+
+        .topic-list {
+            padding-left: 20px;
+            color: #aabbd0;
+            font-size: 13px;
+        }
+
+        .topic-list li {
+            margin-bottom: 7px;
+        }
+
+        /* =====================================================
+           LAB BUTTON
+        ===================================================== */
+
+        .lab-banner {
+            margin-top: 25px;
+            padding: 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+
+            border: 1px solid rgba(0, 230, 138, 0.28);
+            border-left: 4px solid #00e68a;
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 230, 138, 0.06),
+                    rgba(0, 202, 255, 0.025)
+                );
+        }
+
+        .lab-banner h2 {
+            margin: 0 0 6px;
+            color: white;
+            font-size: 19px;
+        }
+
+        .lab-banner p {
+            margin: 0;
+            color: #8fa5ba;
+            font-size: 12px;
+        }
+
+        .lab-button {
+            flex-shrink: 0;
+
+            padding: 11px 20px;
+
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+
+            color: #00e68a;
+            background: rgba(0, 230, 138, 0.07);
+
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .lab-button:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+        
+/* =====================================================
+   LESSON COMPLETION
+===================================================== */
+
+.lesson-completion-button {
+    display: inline-block;
+    padding: 11px 20px;
+
+    border: 1px solid #00caff;
+    border-radius: 22px;
+
+    background: rgba(0, 202, 255, 0.06);
+    color: #00caff;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.lesson-completion-button:hover {
+    background: #00caff;
+    color: #020811;
+}
+
+.lesson-completion-button:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+}
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            width: 100%;
+            border-top: 1px solid rgba(0, 202, 255, 0.15);
+            background: #020914;
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #6f849a;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            width: 100%;
+            max-width: 1050px;
+            margin: 25px auto 0;
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255,255,255,0.05);
+
+            text-align: center;
+            color: #52667b;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .concept-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .flow {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .openssl-page {
+                padding: 25px 14px 55px;
+            }
+
+            .openssl-header {
+                padding: 24px 20px;
+            }
+
+            .openssl-header h1 {
+                font-size: 29px;
+            }
+
+            .openssl-header::after {
+                position: static;
+                display: block;
+                margin-top: 15px;
+                white-space: normal;
+                line-height: 1.5;
+            }
+
+            .section {
+                padding: 20px 16px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .lab-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .topic-navigation {
+                flex-direction: column;
+            }
+
+            .topic-navigation a {
+                width: 100%;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<main class="openssl-page">
+
+    <div class="breadcrumb">
+        Cybersecurity Tools
+        <span>›</span>
+        OpenSSL
+        <span>›</span>
+        Theory
+    </div>
+
+
+    <!-- HEADER -->
+
+    <section class="openssl-header">
+
+        <div class="tool-label">
+            SECURITY TOOL / CRYPTOGRAPHY
+        </div>
+
+        <h1>
+            Open<span>SSL</span>
+        </h1>
+
+        <p>
+            Learn how OpenSSL is used for cryptography, TLS/SSL,
+            certificates, public-key infrastructure, hashing and
+            secure communications.
+        </p>
+
+    </section>
+
+
+    <!-- WHAT -->
+
+    <section class="section">
+
+        <h2>What is OpenSSL?</h2>
+
+        <p>
+            OpenSSL is an open-source cryptographic toolkit that
+            provides implementations of cryptographic algorithms
+            and protocols. It is widely used for TLS/SSL,
+            certificate management, key generation, hashing and
+            secure data operations.
+        </p>
+
+        <div class="info-box">
+
+            <strong>Important:</strong>
+
+            OpenSSL is not simply an "encryption program".
+            It is a toolkit containing cryptographic functions,
+            certificate utilities and protocol support.
+        </div>
+
+    </section>
+
+
+    <!-- WHY -->
+
+    <section class="section">
+
+        <h2>Why is OpenSSL Important?</h2>
+
+        <p>
+            Cybersecurity systems need mechanisms for protecting
+            confidentiality, integrity and authentication.
+            OpenSSL provides command-line tools that help security
+            professionals work with these mechanisms.
+        </p>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+                <h3>Encryption</h3>
+                <p>
+                    Protect data so unauthorized users cannot
+                    easily read it.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <h3>Certificates</h3>
+                <p>
+                    Work with X.509 certificates used in
+                    secure communications.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <h3>Hashing</h3>
+                <p>
+                    Generate cryptographic digests for
+                    integrity verification.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <h3>TLS</h3>
+                <p>
+                    Supports secure network communication
+                    through TLS/SSL technologies.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CRYPTOGRAPHY -->
+
+    <section class="section">
+
+        <h2>Core OpenSSL Concepts</h2>
+
+        <div class="flow">
+
+            <div class="flow-card">
+                <span>01</span>
+                <strong>Private Key</strong>
+            </div>
+
+            <div class="flow-card">
+                <span>02</span>
+                <strong>Public Key</strong>
+            </div>
+
+            <div class="flow-card">
+                <span>03</span>
+                <strong>Certificate</strong>
+            </div>
+
+            <div class="flow-card">
+                <span>04</span>
+                <strong>TLS</strong>
+            </div>
+
+            <div class="flow-card">
+                <span>05</span>
+                <strong>Secure Data</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- KEY GENERATION -->
+
+    <section class="section">
+
+        <h2>Generate a Private Key</h2>
+
+        <p>
+            A private key is secret cryptographic material.
+            It must be protected because anyone possessing
+            it may be able to perform operations that depend
+            on that key.
+        </p>
+
+        <div class="code-block">
+
+<pre><code class="command">openssl genrsa -out private.key 2048</code></pre>
+
+        </div>
+
+        <p>
+            The command generates a 2048-bit RSA private key
+            and stores it in <strong>private.key</strong>.
+        </p>
+
+    </section>
+
+
+    <!-- CERTIFICATE -->
+
+    <section class="section">
+
+        <h2>Create a Test Certificate</h2>
+
+        <p>
+            A self-signed certificate can be useful in a
+            local development or learning environment.
+        </p>
+
+        <div class="code-block">
+
+<pre><code class="command">openssl req -new -x509 \
+-key private.key \
+-out certificate.crt \
+-days 365</code></pre>
+
+        </div>
+
+        <div class="info-box">
+
+            <strong>Lab note:</strong>
+
+            A self-signed certificate is appropriate for
+            controlled learning environments, but it does not
+            provide the same trust model as a certificate issued
+            by a trusted Certificate Authority.
+        </div>
+
+    </section>
+
+
+    <!-- CERTIFICATE INSPECTION -->
+
+    <section class="section">
+
+        <h2>Inspect a Certificate</h2>
+
+        <p>
+            OpenSSL can display certificate information such as
+            the subject, issuer, validity period and public-key
+            information.
+        </p>
+
+        <div class="code-block">
+
+<pre><code class="command">openssl x509 -in certificate.crt -text -noout</code></pre>
+
+        </div>
+
+    </section>
+
+
+    <!-- HASHING -->
+
+    <section class="section">
+
+        <h2>Generate a SHA-256 Hash</h2>
+
+        <p>
+            Cryptographic hashes are commonly used to verify
+            whether data has changed.
+        </p>
+
+        <div class="code-block">
+
+<pre><code class="command">openssl dgst -sha256 file.txt</code></pre>
+
+        </div>
+
+        <p>
+            The resulting digest can be compared with another
+            digest to determine whether the file contents match.
+        </p>
+
+    </section>
+
+
+    <!-- COMMON COMMANDS -->
+
+    <section class="section">
+
+        <h2>Useful OpenSSL Commands</h2>
+
+        <ul class="topic-list">
+
+            <li>
+                <strong>openssl version</strong>
+                — display the installed OpenSSL version.
+            </li>
+
+            <li>
+                <strong>openssl genrsa</strong>
+                — generate an RSA private key.
+            </li>
+
+            <li>
+                <strong>openssl req</strong>
+                — create certificate requests and certificates.
+            </li>
+
+            <li>
+                <strong>openssl x509</strong>
+                — inspect and work with X.509 certificates.
+            </li>
+
+            <li>
+                <strong>openssl dgst</strong>
+                — calculate message digests.
+            </li>
+
+            <li>
+                <strong>openssl s_client</strong>
+                — inspect TLS connections in controlled environments.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- CYBERSECURITY APPLICATION -->
+
+    <section class="section">
+
+        <h2>OpenSSL in Cybersecurity</h2>
+
+        <p>
+            Security professionals may encounter OpenSSL while
+            investigating TLS configurations, generating test
+            certificates, verifying cryptographic material,
+            checking hashes and troubleshooting secure network
+            communication.
+        </p>
+
+        <div class="code-block">
+
+<pre><code class="command">openssl version</code></pre>
+
+        </div>
+
+        <p>
+            This is a simple first step for confirming that
+            OpenSSL is installed and available in a Linux
+            security environment.
+        </p>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+
+    <section class="section">
+
+        <h2>Summary</h2>
+
+        <ul class="topic-list">
+
+            <li>OpenSSL is a cryptographic toolkit.</li>
+
+            <li>It supports cryptographic operations and TLS/SSL.</li>
+
+            <li>It can generate and inspect cryptographic keys.</li>
+
+            <li>It can create and inspect X.509 certificates.</li>
+
+            <li>It can calculate cryptographic hashes.</li>
+
+            <li>It is widely useful for security testing and troubleshooting.</li>
+
+        </ul>
+
+    </section>
+    
+    <!-- LESSON COMPLETION -->
+
+    <section class="section" id="lessonCompletion">
+
+        <h2>Complete This Lesson</h2>
+
+        <p>
+            Mark this lesson as complete after learning OpenSSL basics,
+            cryptographic keys, certificates, SHA-256 hashing and
+            common commands used in cybersecurity.
+        </p>
+
+        <div style="text-align: center; margin-top: 20px;">
+
+            <button
+                type="button"
+                class="lesson-completion-button"
+                data-lesson-progress
+                data-course-id="cybersecurity-tools"
+                data-lesson-id="openssl"
+                data-dashboard-url="../learning-paths/cybersecurity-tools/theory/openssl.html"
+                data-status-id="lessonCompletionStatus">
+
+                ✓ Mark Lesson Complete
+
+            </button>
+
+        </div>
+
+        <p
+            id="lessonCompletionStatus"
+            role="status"
+            aria-live="polite"
+            style="text-align: center; margin-top: 15px;">
+        </p>
+
+    </section>
+    <!-- LAB -->
+
+    <section class="lab-banner">
+
+        <div>
+
+            <h2>
+                OpenSSL Practical Lab
+            </h2>
+
+            <p>
+                Generate a test key, create a local certificate,
+                inspect the certificate and calculate a SHA-256 hash.
+            </p>
+
+        </div>
+
+        <a
+            href="../lab/openssl-lab.html"
+            class="lab-button"
+        >
+            Open Lab →
+        </a>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

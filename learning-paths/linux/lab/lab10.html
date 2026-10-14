@@ -1,0 +1,3329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Networking Commands Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1000px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           LAB HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 45px;
+        }
+
+
+        .lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 13px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 42px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .lab-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .lab-intro {
+
+            max-width: 750px;
+
+            margin: 17px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB INFO
+        ====================================================== */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .lab-info-card {
+
+            padding: 16px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.14);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            text-align: center;
+        }
+
+
+        .lab-info-card strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-info-card span {
+
+            color: #dbeafe;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 20px;
+
+            padding: 28px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px
+                rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .lab-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.40);
+
+                box-shadow:
+                    0 18px 45px
+                    rgba(0, 0, 0, 0.32),
+                    0 0 28px
+                    rgba(103, 232, 249, 0.08);
+
+                transform:
+                    translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           LIGHT SWEEP
+        ====================================================== */
+
+        .lab-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent
+                );
+
+            transform:
+                skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .lab-card:hover::after {
+
+                animation:
+                    labLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                labMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes labLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes labMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 17px;
+        }
+
+
+        .lab-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 17px;
+
+            font-weight: 700;
+        }
+
+
+        .lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 20px;
+
+            font-weight: 750;
+        }
+
+
+        .lab-card p {
+
+            margin: 0 0 13px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+
+
+        .lab-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           STEP NUMBER
+        ====================================================== */
+
+        .step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            margin-bottom: 13px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 8px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           INSTRUCTION BOX
+        ====================================================== */
+
+        .instruction-box {
+
+            margin-top: 15px;
+
+            padding: 17px 19px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .instruction-box strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #f8fafc;
+
+            font-size: 13px;
+        }
+
+
+        .instruction-box span {
+
+            color: #c3cdd5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           TERMINAL
+        ====================================================== */
+
+        .terminal-box {
+
+            position: relative;
+
+            margin-top: 17px;
+
+            padding: 17px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .terminal-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .terminal-title {
+
+            color: #71808c;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 11px;
+        }
+
+
+        .copy-button {
+
+            padding: 7px 11px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.22);
+
+            border-radius: 7px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .copy-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        .terminal-box pre {
+
+            margin: 0;
+
+            white-space: pre-wrap;
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        .terminal-box code {
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+
+        /* =====================================================
+           EXPECTED RESULT
+        ====================================================== */
+
+        .expected-box {
+
+            margin-top: 15px;
+
+            padding: 15px 17px;
+
+            border:
+                1px solid
+                rgba(34, 197, 94, 0.18);
+
+            border-left:
+                3px solid #4ade80;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(34, 197, 94, 0.045);
+        }
+
+
+        .expected-box strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #86efac;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .expected-box span {
+
+            color: #b9c7c0;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           SAFETY NOTE
+        ====================================================== */
+
+        .safety-box {
+
+            margin-top: 15px;
+
+            padding: 16px 18px;
+
+            border:
+                1px solid
+                rgba(250, 204, 21, 0.18);
+
+            border-left:
+                3px solid #facc15;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(250, 204, 21, 0.045);
+        }
+
+
+        .safety-box strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #fde68a;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .safety-box span {
+
+            color: #c7c5b5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           COMMAND GRID
+        ====================================================== */
+
+        .command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+
+        .command-card {
+
+            padding: 16px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.13);
+
+            border-radius: 9px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .command-card code {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .command-card span {
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .lab-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-top: 20px;
+        }
+
+
+        .flow-item {
+
+            padding: 11px 14px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.18);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.045);
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY POINTS
+        ====================================================== */
+
+        .key-points {
+
+            margin: 17px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .key-points li {
+
+            position: relative;
+
+            padding:
+                8px 0 8px 22px;
+
+            color: #b6c2cc;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid
+                rgba(103, 232, 249, 0.06);
+        }
+
+
+        .key-points li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .key-points li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 8px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion-card {
+
+            text-align: center;
+
+            padding: 30px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.22);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(8, 31, 42, 0.98),
+                    rgba(3, 14, 21, 0.98)
+                );
+
+            margin-bottom: 25px;
+        }
+
+
+        .completion-icon {
+
+            width: 50px;
+            height: 50px;
+
+            margin: 0 auto 13px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.35);
+
+            border-radius: 50%;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 21px;
+        }
+
+
+        .completion-card h2 {
+
+            margin: 0 0 9px;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+        }
+
+
+        .completion-card p {
+
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        .complete-button {
+
+            margin-top: 18px;
+
+            padding: 11px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .complete-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.12);
+        }
+
+
+        .completion-status {
+
+            display: none;
+
+            margin-top: 12px;
+
+            color: #86efac;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 30px;
+        }
+
+
+        .lab-nav-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 12px 17px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.24);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .lab-nav-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .lab-nav-button span {
+
+            color: #67e8f9;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 35px;
+            }
+
+
+            .lab-info {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .lab-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 29px;
+
+                line-height: 1.25;
+            }
+
+
+            .lab-intro {
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .lab-info {
+
+                grid-template-columns: 1fr;
+
+                gap: 8px;
+            }
+
+
+            .lab-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 15px;
+
+                border-radius: 12px;
+            }
+
+
+            .lab-heading {
+
+                gap: 10px;
+            }
+
+
+            .lab-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 15px;
+            }
+
+
+            .lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .lab-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 9px;
+            }
+
+
+            .lab-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .flow-item {
+
+                width: 100%;
+            }
+
+
+            .flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 17px;
+            }
+
+
+            .terminal-box {
+
+                padding:
+                    15px;
+            }
+
+
+            .terminal-box pre {
+
+                font-size: 12px;
+            }
+
+
+            .terminal-header {
+
+                align-items: flex-start;
+            }
+
+
+            .lab-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .lab-nav-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+
+
+            .completion-card {
+
+                padding:
+                    25px 18px;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .lab-header h1 {
+
+                font-size: 26px;
+            }
+
+
+            .lab-page {
+
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+
+            .lab-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="lab-header">
+
+                <div class="lab-category">
+                    LINUX PRACTICAL LAB
+                </div>
+
+                <h1>
+                    Lab 10 -  <span>Networking Commands</span>
+                </h1>
+
+                <p class="lab-intro">
+
+                    In this practical lab, you will learn how to
+                    inspect network interfaces, check IP addresses,
+                    view routing information, test connectivity,
+                    inspect network connections, perform DNS queries
+                    and communicate with web servers using Linux
+                    networking commands.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LAB INFORMATION
+            ================================================== -->
+
+            <section class="lab-info">
+
+                <div class="lab-info-card">
+
+                    <strong>Platform</strong>
+
+                    <span>Ubuntu / Debian Linux</span>
+
+                </div>
+
+
+                <div class="lab-info-card">
+
+                    <strong>Tool</strong>
+
+                    <span>Linux Terminal</span>
+
+                </div>
+
+
+                <div class="lab-info-card">
+
+                    <strong>Level</strong>
+
+                    <span>Beginner</span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB OBJECTIVE
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        🌐
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The objective of this lab is to understand the
+                    practical use of Linux networking commands for
+                    network configuration, troubleshooting and
+                    basic network analysis.
+
+                </p>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What You Will Practice
+                    </strong>
+
+                    <span>
+
+                        IP address inspection, interface status,
+                        routing table, connectivity testing,
+                        DNS lookup, active connections and HTTP
+                        communication.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 01
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Open the Linux Terminal
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Open the Terminal application in your Ubuntu
+                    or Debian-based Linux system.
+
+                </p>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Instruction
+                    </strong>
+
+                    <span>
+
+                        Press
+                        <strong>Ctrl + Alt + T</strong>
+                        to open the terminal.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        A Linux terminal window should appear and
+                        you should be ready to enter networking
+                        commands.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 02
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        IP
+                    </div>
+
+                    <h2>
+                        Display IP Address Information
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the <strong>ip addr</strong> command to
+                    display network interfaces and their assigned
+                    IP addresses.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'ip addr')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>ip addr</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        This command displays network interfaces,
+                        IPv4 addresses, IPv6 addresses, MAC
+                        addresses and interface status.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        Network interfaces such as
+                        <strong>lo</strong> and <strong>eth0</strong>
+                        or <strong>ens33</strong> should be displayed
+                        with their IP information.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 03
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        ↔
+                    </div>
+
+                    <h2>
+                        Check Network Interface Status
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>ip link</strong> to check the
+                    available network interfaces and whether they
+                    are UP or DOWN.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'ip link')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>ip link</code></pre>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        Linux displays available network interfaces
+                        and their operational state.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 04
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        R
+                    </div>
+
+                    <h2>
+                        View the Routing Table
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the <strong>ip route</strong> command to
+                    view how Linux decides where network traffic
+                    should be sent.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'ip route')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>ip route</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        The routing table contains routes for local
+                        networks, remote networks and the default
+                        gateway.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        You should see routing entries including a
+                        default route such as
+                        <strong>default via ...</strong>.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 05
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    05
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        P
+                    </div>
+
+                    <h2>
+                        Test Network Connectivity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>ping</strong> to test whether another
+                    host is reachable over the network.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'ping -c 4 8.8.8.8')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>ping -c 4 8.8.8.8</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        The command sends four ICMP echo requests
+                        to Google's public DNS IP address
+                        <strong>8.8.8.8</strong>.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        If the destination is reachable, you should
+                        receive ICMP replies along with latency
+                        information.
+
+                    </span>
+
+                </div>
+
+
+                <div class="safety-box">
+
+                    <strong>
+                        Important
+                    </strong>
+
+                    <span>
+
+                        If there is no Internet connection, the
+                        command may show packet loss or
+                        "Destination Host Unreachable".
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 06
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    06
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        T
+                    </div>
+
+                    <h2>
+                        Trace the Network Path
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>traceroute</strong> to observe the
+                    network hops between your system and a
+                    destination.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'traceroute google.com')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>traceroute google.com</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        If Command Is Missing
+                    </strong>
+
+                    <span>
+
+                        On some Ubuntu installations, install it
+                        using:
+
+                        <br><br>
+
+                        <strong>sudo apt install traceroute</strong>
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        The terminal displays network hops between
+                        your computer and the destination.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 07
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    07
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        S
+                    </div>
+
+                    <h2>
+                        View Active Network Connections
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>ss</strong> to view listening ports
+                    and active network connections.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'ss -tuln')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>ss -tuln</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Option Meaning
+                    </strong>
+
+                    <span>
+
+                        <strong>-t</strong> = TCP connections
+                        <br>
+                        <strong>-u</strong> = UDP connections
+                        <br>
+                        <strong>-l</strong> = Listening sockets
+                        <br>
+                        <strong>-n</strong> = Numeric addresses and ports
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        Listening TCP and UDP ports should be displayed,
+                        such as port 22 for SSH if SSH is enabled.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 08
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    08
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        D
+                    </div>
+
+                    <h2>
+                        Perform a DNS Lookup
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>nslookup</strong> to query DNS
+                    information for a domain name.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'nslookup google.com')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>nslookup google.com</code></pre>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        The command should display the DNS server
+                        used and IP address information for the
+                        requested domain.
+
+                    </span>
+
+                </div>
+
+
+                <div class="safety-box">
+
+                    <strong>
+                        Security Connection
+                    </strong>
+
+                    <span>
+
+                        DNS investigation is commonly used during
+                        network troubleshooting and cybersecurity
+                        reconnaissance.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 09
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    09
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        D
+                    </div>
+
+                    <h2>
+                        Perform an Advanced DNS Query
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>dig</strong> command provides
+                    detailed DNS query information.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'dig google.com')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>dig google.com</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Useful Information
+                    </strong>
+
+                    <span>
+
+                        The output contains the DNS question,
+                        answer section, query time and DNS server
+                        information.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        A detailed DNS response should be displayed
+                        in the terminal.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 10
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    10
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        H
+                    </div>
+
+                    <h2>
+                        Check the Hostname
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the <strong>hostname</strong> command to
+                    display the system's hostname.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'hostname')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>hostname</code></pre>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        The hostname assigned to your Linux system
+                        should be displayed.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 11
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    11
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        W
+                    </div>
+
+                    <h2>
+                        Test HTTP Connectivity with curl
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>curl</strong> to send an HTTP request
+                    to a web server.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'curl -I https://example.com')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>curl -I https://example.com</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        The <strong>-I</strong> option requests only
+                        the HTTP response headers instead of the
+                        complete webpage.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        You should receive HTTP response information
+                        such as the status code and server headers.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 12
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    12
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        ↓
+                    </div>
+
+                    <h2>
+                        Download a File with wget
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>wget</strong> command can download
+                    files from HTTP or HTTPS servers.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'wget https://example.com')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>wget https://example.com</code></pre>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        wget connects to the specified server and
+                        attempts to download the requested resource.
+
+                    </span>
+
+                </div>
+
+
+                <div class="safety-box">
+
+                    <strong>
+                        Safety Note
+                    </strong>
+
+                    <span>
+
+                        Download files only from trusted sources.
+                        Never execute unknown downloaded files
+                        without verifying them.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 IMPORTANT COMMANDS
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Important Linux Networking Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="command-grid">
+
+                    <div class="command-card">
+
+                        <code>ip addr</code>
+
+                        <span>
+                            Displays IP addresses and network interfaces.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>ip link</code>
+
+                        <span>
+                            Displays network interface status.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>ip route</code>
+
+                        <span>
+                            Displays the routing table.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>ping host</code>
+
+                        <span>
+                            Tests network connectivity.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>traceroute host</code>
+
+                        <span>
+                            Displays the path to a destination.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>ss -tuln</code>
+
+                        <span>
+                            Displays listening TCP and UDP ports.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>nslookup domain</code>
+
+                        <span>
+                            Performs a DNS lookup.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>dig domain</code>
+
+                        <span>
+                            Performs a detailed DNS query.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>hostname</code>
+
+                        <span>
+                            Displays the system hostname.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>curl -I URL</code>
+
+                        <span>
+                            Checks HTTP response headers.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>wget URL</code>
+
+                        <span>
+                            Downloads resources from a web server.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>ip neigh</code>
+
+                        <span>
+                            Displays the local neighbor/ARP cache.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NETWORKING WORKFLOW
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        →
+                    </div>
+
+                    <h2>
+                        Linux Network Troubleshooting Workflow
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A simple troubleshooting workflow can be
+                    remembered as follows:
+
+                </p>
+
+
+                <div class="lab-flow">
+
+                    <div class="flow-item">
+                        Check IP
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Check Interface
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Check Route
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Ping
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        DNS Test
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY CONNECTION
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why Networking Commands Matter in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux networking commands are important in
+                    cybersecurity because security professionals
+                    need to understand network configuration,
+                    connectivity, services, DNS and active
+                    connections.
+
+                </p>
+
+
+                <ul class="key-points">
+
+                    <li>
+                        IP commands help identify network interfaces
+                        and addresses.
+                    </li>
+
+                    <li>
+                        Routing information helps understand where
+                        network traffic is sent.
+                    </li>
+
+                    <li>
+                        Ping helps test basic network connectivity.
+                    </li>
+
+                    <li>
+                        ss helps identify listening services and ports.
+                    </li>
+
+                    <li>
+                        DNS tools help investigate domain resolution.
+                    </li>
+
+                    <li>
+                        curl helps inspect HTTP communication.
+                    </li>
+
+                    <li>
+                        These commands are useful for network
+                        troubleshooting and defensive security analysis.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL TASK
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        !
+                    </div>
+
+                    <h2>
+                        Practical Task
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Perform the following tasks in your Linux
+                    terminal:
+
+                </p>
+
+
+                <ul class="key-points">
+
+                    <li>
+                        Display your Linux system's IP address.
+                    </li>
+
+                    <li>
+                        Check the status of your network interfaces.
+                    </li>
+
+                    <li>
+                        Display the routing table.
+                    </li>
+
+                    <li>
+                        Ping 8.8.8.8 to test connectivity.
+                    </li>
+
+                    <li>
+                        Trace the route to google.com.
+                    </li>
+
+                    <li>
+                        Display listening TCP and UDP ports.
+                    </li>
+
+                    <li>
+                        Perform a DNS lookup for google.com.
+                    </li>
+
+                    <li>
+                        Perform a detailed DNS query using dig.
+                    </li>
+
+                    <li>
+                        Display your hostname.
+                    </li>
+
+                    <li>
+                        Test HTTP headers using curl.
+                    </li>
+
+                </ul>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Practical Goal
+                    </strong>
+
+                    <span>
+
+                        Complete the basic Linux networking
+                        troubleshooting workflow:
+
+                        <strong>
+                            IP → Interface → Route → Ping → DNS → Ports
+                        </strong>
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 COMPLETION
+            ================================================== -->
+
+            <section class="completion-card">
+
+                <div class="completion-icon">
+                    ✓
+                </div>
+
+
+                <h2>
+                    Lab Completion
+                </h2>
+
+
+                <p>
+
+                    If you successfully completed the Linux
+                    networking commands, mark this lab as completed.
+
+                    This lab covered the basic commands used for
+                    Linux networking, troubleshooting and
+                    cybersecurity analysis.
+
+                </p>
+
+
+                <button
+                    type="button"
+                    class="complete-button"
+                    onclick="completeLab()"
+                >
+                    Mark Lab as Completed
+                </button>
+
+
+                <div
+                    id="completionStatus"
+                    class="completion-status"
+                >
+                    ✓ Lab completed successfully.
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="lab-navigation">
+
+
+                <a
+                    href="lab09.html"
+                    class="lab-nav-button"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Package Management
+                    </strong>
+
+                </a>
+
+
+                <a
+                    href="../theory/linux-bash-basics.html"
+                    class="lab-nav-button"
+                >
+
+                    <strong>
+                        Next Topic: linux Bash Basics
+                    </strong>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+
+    <!-- =====================================================
+         COPY COMMAND
+    ====================================================== -->
+
+    <script>
+
+        function copyCommand(button, command) {
+
+            navigator.clipboard.writeText(command)
+
+                .then(() => {
+
+                    const oldText =
+                        button.textContent;
+
+                    button.textContent =
+                        "✓ Copied";
+
+                    button.style.borderColor =
+                        "rgba(34, 197, 94, 0.55)";
+
+                    button.style.color =
+                        "#86efac";
+
+
+                    setTimeout(() => {
+
+                        button.textContent =
+                            oldText;
+
+                        button.style.borderColor =
+                            "";
+
+                        button.style.color =
+                            "";
+
+                    }, 1500);
+
+                })
+
+                .catch(() => {
+
+                    button.textContent =
+                        "Copy failed";
+
+                });
+
+        }
+
+    </script>
+
+
+
+    <!-- =====================================================
+         LAB COMPLETION + LOCAL STORAGE
+    ====================================================== -->
+
+    <script>
+
+        const LAB_STORAGE_KEY =
+            "cybernexa_linux_networking_commands_lab_completed";
+
+
+        function completeLab() {
+
+            localStorage.setItem(
+                LAB_STORAGE_KEY,
+                "true"
+            );
+
+
+            const status =
+                document.getElementById(
+                    "completionStatus"
+                );
+
+
+            status.style.display =
+                "block";
+
+        }
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const completed =
+                    localStorage.getItem(
+                        LAB_STORAGE_KEY
+                    );
+
+
+                if (completed === "true") {
+
+                    document.getElementById(
+                        "completionStatus"
+                    ).style.display =
+                        "block";
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+    ====================================================== -->
+
+    <script>
+
+        const labCards =
+            document.querySelectorAll(
+                ".lab-card"
+            );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+
+            labCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+
+                void card.offsetWidth;
+
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(
+                sweepTimeout
+            );
+
+
+            sweepTimeout =
+                setTimeout(() => {
+
+                    labCards.forEach(card => {
+
+                        card.classList.remove(
+                            "mobile-sweep"
+                        );
+
+                    });
+
+                }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            triggerMobileSweep,
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberNexa | Lab 01: Windows Basics Lab</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .windows-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(59, 130, 246, 0.10),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(34, 211, 238, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .windows-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .windows-lab-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+
+        .windows-lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .windows-lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .windows-lab-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .windows-lab-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .windows-lab-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .windows-lab-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform:
+                    translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .windows-lab-card::after,
+        .windows-task-card::after,
+        .windows-command-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent
+                );
+
+            transform:
+                skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .windows-lab-card:hover::after,
+            .windows-task-card:hover::after,
+            .windows-command-card:hover::after {
+
+                animation:
+                    windowsLabLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                windowsLabMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes windowsLabLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes windowsLabMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .windows-lab-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .windows-lab-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .windows-lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .windows-lab-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+
+        .windows-lab-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .windows-lab-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           OBJECTIVE BOX
+        ====================================================== */
+
+        .windows-objective-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .windows-objective-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .windows-objective-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           TASK GRID
+        ====================================================== */
+
+        .windows-task-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .windows-task-card {
+
+            position: relative;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .windows-task-card:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.35);
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .windows-task-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            margin-bottom: 12px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 8px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .windows-task-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .windows-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .windows-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+
+        /* =====================================================
+           COMMAND GRID
+        ====================================================== */
+
+        .windows-command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .windows-command-card {
+
+            position: relative;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+        }
+
+
+        .windows-command-card code {
+
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .windows-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           STEPS
+        ====================================================== */
+
+        .windows-step-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .windows-step-list li {
+
+            position: relative;
+
+            padding:
+                12px 0 12px 32px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+
+            border-bottom:
+                1px solid rgba(103, 232, 249, 0.07);
+        }
+
+
+        .windows-step-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .windows-step-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 12px;
+
+            width: 21px;
+            height: 21px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           EXPECTED OUTPUT
+        ====================================================== */
+
+        .windows-output-box {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(34, 211, 238, 0.16);
+
+            border-radius: 10px;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+        }
+
+
+        .windows-output-box strong {
+
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .windows-output-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .windows-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .windows-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           CHECKLIST
+        ====================================================== */
+
+        .windows-checklist {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .windows-checklist li {
+
+            position: relative;
+
+            padding:
+                10px 0 10px 28px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        .windows-checklist li::before {
+
+            content: "□";
+
+            position: absolute;
+
+            left: 0;
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .windows-lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .windows-lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .windows-lab-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .windows-lab-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        .windows-lab-button.theory {
+
+            border-color:
+                rgba(59, 130, 246, 0.35);
+
+            background:
+                rgba(59, 130, 246, 0.07);
+        }
+
+
+        .windows-lab-button.theory:hover {
+
+            border-color:
+                rgba(59, 130, 246, 0.70);
+
+            background:
+                rgba(59, 130, 246, 0.13);
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .windows-lab-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .windows-lab-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .windows-lab-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .windows-lab-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .windows-lab-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .windows-lab-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .windows-lab-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .windows-lab-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .windows-lab-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .windows-lab-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .windows-lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .windows-lab-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .windows-objective-box {
+
+                padding: 16px;
+            }
+
+
+            .windows-objective-box span {
+
+                font-size: 13px;
+            }
+
+
+            .windows-task-grid,
+            .windows-command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .windows-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .windows-key-item {
+
+                font-size: 11px;
+
+                padding:
+                    9px 11px;
+            }
+
+
+            .windows-lab-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .windows-lab-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .windows-lab-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .windows-lab-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .windows-lab-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="windows-lab-page">
+
+        <div class="windows-lab-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="windows-lab-header">
+
+                <div class="windows-lab-category">
+                    WINDOWS PRACTICAL LAB
+                </div>
+
+                <h1>Windows Basics <span>Lab 01</span></h1>
+
+                <p class="windows-lab-intro">
+
+                    Practice the basic Windows system concepts
+                    using built-in tools, system information,
+                    user accounts and command-line utilities.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LAB OBJECTIVE
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        🎯
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+
+                <div class="windows-objective-box">
+
+                    <strong>
+                        What You Will Learn
+                    </strong>
+
+                    <span>
+
+                        In this lab, you will identify basic
+                        Windows system information, explore
+                        the Windows interface and use basic
+                        CMD commands to inspect the system.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB REQUIREMENTS
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        💻
+                    </div>
+
+                    <h2>
+                        Lab Requirements
+                    </h2>
+
+                </div>
+
+
+                <div class="windows-key-concepts">
+
+                    <div class="windows-key-item">
+                        Windows 10 / 11
+                    </div>
+
+                    <div class="windows-key-item">
+                        Computer / Laptop
+                    </div>
+
+                    <div class="windows-key-item">
+                        Command Prompt
+                    </div>
+
+                    <div class="windows-key-item">
+                        Basic Windows Access
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TASKS
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        01
+                    </div>
+
+                    <h2>
+                        Lab Tasks
+                    </h2>
+
+                </div>
+
+
+                <div class="windows-task-grid">
+
+
+                    <div class="windows-task-card">
+
+                        <div class="windows-task-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Check Windows Version
+                        </h3>
+
+                        <p>
+
+                            Identify the Windows version
+                            installed on your computer.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="windows-task-card">
+
+                        <div class="windows-task-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Check System Information
+                        </h3>
+
+                        <p>
+
+                            View basic information about
+                            the operating system and computer.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="windows-task-card">
+
+                        <div class="windows-task-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Identify Current User
+                        </h3>
+
+                        <p>
+
+                            Use the command line to identify
+                            the currently logged-in user.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="windows-task-card">
+
+                        <div class="windows-task-number">
+                            04
+                        </div>
+
+                        <h3>
+                            Check Network Configuration
+                        </h3>
+
+                        <p>
+
+                            Display the basic network
+                            configuration of the computer.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 1
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        1
+                    </div>
+
+                    <h2>
+                        Step 1 — Open Command Prompt
+                    </h2>
+
+                </div>
+
+
+                <ol class="windows-step-list">
+
+                    <li>
+                        Press <strong>Windows + R</strong>.
+                    </li>
+
+                    <li>
+                        Type <strong>cmd</strong>.
+                    </li>
+
+                    <li>
+                        Press <strong>Enter</strong>.
+                    </li>
+
+                    <li>
+                        Command Prompt will open.
+                    </li>
+
+                </ol>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 2
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        2
+                    </div>
+
+                    <h2>
+                        Step 2 — Check Windows Version
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the following command to display
+                    the Windows version information.
+
+                </p>
+
+
+                <div class="windows-command-box">
+
+                    <code>
+                        winver
+                    </code>
+
+                </div>
+
+
+                <div class="windows-output-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <code>
+                        A Windows About dialog will appear
+                        showing the Windows version and build information.
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 3
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        3
+                    </div>
+
+                    <h2>
+                        Step 3 — Check System Information
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the <strong>systeminfo</strong> command
+                    to display detailed system information.
+
+                </p>
+
+
+                <div class="windows-command-box">
+
+                    <code>
+                        systeminfo
+                    </code>
+
+                </div>
+
+
+                <div class="windows-output-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <code>
+                        Host Name<br>
+                        OS Name<br>
+                        OS Version<br>
+                        System Manufacturer<br>
+                        System Model<br>
+                        System Type
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 4
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        4
+                    </div>
+
+                    <h2>
+                        Step 4 — Check Current User
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the <strong>whoami</strong> command
+                    to identify the account currently running
+                    the command prompt.
+
+                </p>
+
+
+                <div class="windows-command-box">
+
+                    <code>
+                        whoami
+                    </code>
+
+                </div>
+
+
+                <div class="windows-output-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <code>
+                        COMPUTER-NAME\username
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 5
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        5
+                    </div>
+
+                    <h2>
+                        Step 5 — Check Network Configuration
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the <strong>ipconfig</strong> command
+                    to view the computer's basic IP configuration.
+
+                </p>
+
+
+                <div class="windows-command-box">
+
+                    <code>
+                        ipconfig
+                    </code>
+
+                </div>
+
+
+                <div class="windows-output-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <code>
+                        IPv4 Address<br>
+                        Subnet Mask<br>
+                        Default Gateway
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 BASIC COMMAND REFERENCE
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Basic Windows Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="windows-command-grid">
+
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            winver
+                        </code>
+
+                        <p>
+                            Opens Windows version information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            systeminfo
+                        </code>
+
+                        <p>
+                            Displays detailed system information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            whoami
+                        </code>
+
+                        <p>
+                            Displays the current user.
+                        </p>
+
+                    </div>
+
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            ipconfig
+                        </code>
+
+                        <p>
+                            Displays basic network configuration.
+                        </p>
+
+                    </div>
+
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            hostname
+                        </code>
+
+                        <p>
+                            Displays the computer hostname.
+                        </p>
+
+                    </div>
+
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            cls
+                        </code>
+
+                        <p>
+                            Clears the Command Prompt screen.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY CONNECTION
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Cybersecurity Connection
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Basic Windows commands are useful in
+                    cybersecurity because security analysts
+                    often need to identify the operating system,
+                    current user, host information and network
+                    configuration during system analysis.
+
+                </p>
+
+
+                <div class="windows-key-concepts">
+
+                    <div class="windows-key-item">
+                        System Identification
+                    </div>
+
+                    <div class="windows-key-item">
+                        User Identification
+                    </div>
+
+                    <div class="windows-key-item">
+                        Host Information
+                    </div>
+
+                    <div class="windows-key-item">
+                        Network Information
+                    </div>
+
+                    <div class="windows-key-item">
+                        System Analysis
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB CHECKLIST
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lab Completion Checklist
+                    </h2>
+
+                </div>
+
+
+                <ul class="windows-checklist">
+
+                    <li>
+                        Opened Command Prompt.
+                    </li>
+
+                    <li>
+                        Checked Windows version using winver.
+                    </li>
+
+                    <li>
+                        Viewed system information using systeminfo.
+                    </li>
+
+                    <li>
+                        Identified the current user using whoami.
+                    </li>
+
+                    <li>
+                        Checked network configuration using ipconfig.
+                    </li>
+
+                    <li>
+                        Understood the cybersecurity relevance
+                        of basic Windows information.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 KEY TAKEAWAYS
+            ================================================== -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-card-heading">
+
+                    <div class="windows-lab-icon">
+                        ⭐
+                    </div>
+
+                    <h2>
+                        Key Takeaways
+                    </h2>
+
+                </div>
+
+
+                <div class="windows-key-concepts">
+
+                    <div class="windows-key-item">
+                        Windows Version
+                    </div>
+
+                    <div class="windows-key-item">
+                        System Information
+                    </div>
+
+                    <div class="windows-key-item">
+                        Current User
+                    </div>
+
+                    <div class="windows-key-item">
+                        Hostname
+                    </div>
+
+                    <div class="windows-key-item">
+                        IP Configuration
+                    </div>
+
+                    <div class="windows-key-item">
+                        CMD
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="windows-lab-navigation">
+
+                <a
+                    href="windows-labs.html"
+                    class="windows-lab-button"
+                >
+                    <span>←</span>
+                    <strong>Previous: Windows Practical Labs</strong>
+                </a>
+
+                <a
+                    href="../theory/windows-file-system.html"
+                    class="windows-lab-button theory"
+                >
+                    <span>📘</span>
+                    <strong>Theory: File System</strong>
+                </a>
+
+                <!-- <a
+                    href="lab02.html"
+                    class="windows-lab-button"
+                >
+                    <strong>Next: Lab 02: Windows File System</strong>
+                    <span>→</span>
+                </a> -->
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards = document.querySelectorAll(
+            ".windows-lab-card, .windows-task-card, .windows-command-card"
+        );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+                void card.offsetWidth;
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(
+                sweepTimeout
+            );
+
+
+            sweepTimeout = setTimeout(() => {
+
+                sweepCards.forEach(card => {
+
+                    card.classList.remove(
+                        "mobile-sweep"
+                    );
+
+                });
+
+            }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>  

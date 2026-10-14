@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberNexa | Lab 10: Windows Security Lab</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .windows-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(14, 165, 233, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .windows-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+
+        .windows-lab-header {
+
+            text-align: center;
+
+            margin-bottom: 45px;
+        }
+
+        .windows-lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #60a5fa;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .windows-lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 42px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+        .windows-lab-header h1 span {
+
+            color: #60a5fa;
+        }
+
+        .windows-lab-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+        .windows-lab-badges {
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 22px;
+        }
+
+        .windows-lab-badge {
+
+            padding: 8px 13px;
+
+            border: 1px solid rgba(96, 165, 250, 0.20);
+
+            border-radius: 20px;
+
+            color: #bfdbfe;
+
+            background: rgba(96, 165, 250, 0.055);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        /* CARD */
+
+        .windows-lab-card {
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+        }
+
+        .windows-lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .windows-lab-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: 1px solid rgba(96, 165, 250, 0.30);
+
+            border-radius: 10px;
+
+            color: #60a5fa;
+
+            background: rgba(96, 165, 250, 0.07);
+
+            font-size: 17px;
+
+            font-weight: 800;
+        }
+
+        .windows-lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+        }
+
+        .windows-lab-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+        .windows-lab-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+        /* OBJECTIVE */
+
+        .windows-objective {
+
+            padding: 20px;
+
+            border-left: 3px solid #60a5fa;
+
+            border-radius: 0 10px 10px 0;
+
+            background: rgba(96, 165, 250, 0.055);
+        }
+
+        .windows-objective strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+        .windows-objective span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+        /* STEPS */
+
+        .windows-step {
+
+            margin-top: 18px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.13);
+
+            border-radius: 11px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .windows-step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 30px;
+
+            height: 30px;
+
+            margin-right: 8px;
+
+            border-radius: 50%;
+
+            color: #dbeafe;
+
+            background: rgba(37, 99, 235, 0.18);
+
+            border: 1px solid rgba(96, 165, 250, 0.30);
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .windows-step h3 {
+
+            display: flex;
+
+            align-items: center;
+
+            margin-bottom: 10px;
+        }
+
+        /* COMMAND */
+
+        .windows-terminal {
+
+            margin-top: 15px;
+
+            padding: 18px 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+        .windows-terminal-label {
+
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .windows-terminal code {
+
+            color: #93c5fd;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+        /* CHECKLIST */
+
+        .windows-checklist {
+
+            list-style: none;
+
+            padding: 0;
+
+            margin: 15px 0 0;
+        }
+
+        .windows-checklist li {
+
+            position: relative;
+
+            padding: 9px 0 9px 25px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(96, 165, 250, 0.07);
+        }
+
+        .windows-checklist li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+
+            color: #60a5fa;
+
+            font-weight: 700;
+        }
+
+        /* RESULT */
+
+        .windows-result {
+
+            margin-top: 18px;
+
+            padding: 18px 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+
+            border-radius: 10px;
+
+            background: rgba(96, 165, 250, 0.04);
+        }
+
+        .windows-result strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+        }
+
+        .windows-result span {
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+        /* SAFETY */
+
+        .windows-safety {
+
+            padding: 20px;
+
+            border-left: 3px solid #60a5fa;
+
+            border-radius: 0 10px 10px 0;
+
+            background: rgba(96, 165, 250, 0.045);
+        }
+
+        .windows-safety strong {
+
+            color: #f8fafc;
+        }
+
+        .windows-safety p {
+
+            margin-top: 8px;
+
+            margin-bottom: 0;
+        }
+
+        /* NAV */
+
+        .windows-lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+        .windows-lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background: rgba(96, 165, 250, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .windows-lab-button:hover {
+
+            border-color: rgba(96, 165, 250, 0.65);
+
+            background: rgba(96, 165, 250, 0.10);
+
+            transform: translateY(-1px);
+        }
+
+        .windows-lab-button span {
+
+            color: #60a5fa;
+
+            font-size: 17px;
+        }
+
+        @media (max-width: 600px) {
+
+            .windows-lab-page {
+
+                padding: 45px 12px 55px;
+            }
+
+            .windows-lab-header h1 {
+
+                font-size: 30px;
+            }
+
+            .windows-lab-card {
+
+                padding: 21px 18px;
+            }
+
+            .windows-lab-card h2 {
+
+                font-size: 18px;
+            }
+
+            .windows-lab-card p {
+
+                font-size: 13px;
+            }
+
+            .windows-lab-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .windows-lab-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="windows-lab-page">
+
+        <div class="windows-lab-container">
+
+
+            <!-- HEADER -->
+
+            <header class="windows-lab-header">
+
+                <div class="windows-lab-category">
+                    WINDOWS PRACTICAL LAB
+                </div>
+
+                <h1>Windows Security <span>Lab 10</span></h1>
+
+                <p class="windows-lab-intro">
+
+                    Practice basic Windows security controls by
+                    reviewing Windows Security, Defender, Firewall,
+                    UAC, updates and security-related system settings.
+
+                </p>
+
+                <div class="windows-lab-badges">
+
+                    <div class="windows-lab-badge">
+                        Lab 08
+                    </div>
+
+                    <div class="windows-lab-badge">
+                        Beginner
+                    </div>
+
+                    <div class="windows-lab-badge">
+                        Windows
+                    </div>
+
+                    <div class="windows-lab-badge">
+                        Security
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- OBJECTIVE -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        🎯
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+                <div class="windows-objective">
+
+                    <strong>
+                        Objective
+                    </strong>
+
+                    <span>
+
+                        In this lab, you will inspect basic Windows
+                        security features and learn how to check
+                        security status, Windows Defender, firewall
+                        configuration, UAC and Windows update status.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 1 -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        01
+                    </div>
+
+                    <h2>
+                        Open Windows Security
+                    </h2>
+
+                </div>
+
+                <div class="windows-step">
+
+                    <h3>
+                        <span class="windows-step-number">
+                            1
+                        </span>
+
+                        Open Windows Security
+                    </h3>
+
+                    <p>
+
+                        Click the Windows Start menu and search for
+                        <strong>Windows Security</strong>.
+
+                    </p>
+
+                    <p>
+
+                        Open the Windows Security application.
+
+                    </p>
+
+                </div>
+
+                <div class="windows-result">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        The Windows Security dashboard should open
+                        and display the available security areas.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 2 -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        02
+                    </div>
+
+                    <h2>
+                        Check Virus &amp; Threat Protection
+                    </h2>
+
+                </div>
+
+                <div class="windows-step">
+
+                    <h3>
+                        <span class="windows-step-number">
+                            2
+                        </span>
+
+                        Open Virus &amp; Threat Protection
+                    </h3>
+
+                    <p>
+
+                        In Windows Security, select
+                        <strong>Virus &amp; threat protection</strong>.
+
+                    </p>
+
+                    <p>
+
+                        Review the displayed protection status and
+                        available scan options.
+
+                    </p>
+
+                </div>
+
+                <div class="windows-result">
+
+                    <strong>
+                        Observe
+                    </strong>
+
+                    <span>
+
+                        Check whether real-time protection and other
+                        available protection features are enabled.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 3 -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        03
+                    </div>
+
+                    <h2>
+                        Check Firewall &amp; Network Protection
+                    </h2>
+
+                </div>
+
+                <div class="windows-step">
+
+                    <h3>
+                        <span class="windows-step-number">
+                            3
+                        </span>
+
+                        Open Firewall Settings
+                    </h3>
+
+                    <p>
+
+                        Select
+                        <strong>Firewall &amp; network protection</strong>
+                        in Windows Security.
+
+                    </p>
+
+                    <p>
+
+                        Review the available network profiles such as
+                        Domain, Private and Public, depending on the
+                        Windows configuration.
+
+                    </p>
+
+                </div>
+
+                <div class="windows-result">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        You should be able to view the firewall status
+                        and network protection options.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 4 -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        04
+                    </div>
+
+                    <h2>
+                        Check Firewall Using PowerShell
+                    </h2>
+
+                </div>
+
+                <div class="windows-step">
+
+                    <h3>
+                        <span class="windows-step-number">
+                            4
+                        </span>
+
+                        Open PowerShell
+                    </h3>
+
+                    <p>
+
+                        Open PowerShell. Depending on the Windows
+                        configuration, administrator privileges may
+                        be required for some commands.
+
+                    </p>
+
+                </div>
+
+                <div class="windows-terminal">
+
+                    <span class="windows-terminal-label">
+                        PowerShell
+                    </span>
+
+                    <code>
+                        Get-NetFirewallProfile
+                    </code>
+
+                </div>
+
+                <div class="windows-result">
+
+                    <strong>
+                        What This Does
+                    </strong>
+
+                    <span>
+
+                        The command displays firewall profile
+                        configuration information.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 5 -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        05
+                    </div>
+
+                    <h2>
+                        Check Windows Defender Status
+                    </h2>
+
+                </div>
+
+                <div class="windows-step">
+
+                    <h3>
+                        <span class="windows-step-number">
+                            5
+                        </span>
+
+                        Run Defender Status Command
+                    </h3>
+
+                    <p>
+
+                        Open PowerShell and run the following command:
+
+                    </p>
+
+                </div>
+
+                <div class="windows-terminal">
+
+                    <span class="windows-terminal-label">
+                        PowerShell
+                    </span>
+
+                    <code>
+                        Get-MpComputerStatus
+                    </code>
+
+                </div>
+
+                <div class="windows-result">
+
+                    <strong>
+                        What to Observe
+                    </strong>
+
+                    <span>
+
+                        Review the displayed Microsoft Defender
+                        status information available on your system.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 6 -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        06
+                    </div>
+
+                    <h2>
+                        Check Windows Update
+                    </h2>
+
+                </div>
+
+                <div class="windows-step">
+
+                    <h3>
+                        <span class="windows-step-number">
+                            6
+                        </span>
+
+                        Open Windows Update
+                    </h3>
+
+                    <p>
+
+                        Open:
+
+                    </p>
+
+                    <div class="windows-terminal">
+
+                        <span class="windows-terminal-label">
+                            Windows Settings
+                        </span>
+
+                        <code>
+                            Settings → Windows Update
+                        </code>
+
+                    </div>
+
+                    <p>
+
+                        Review whether updates are available for
+                        your system.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 7 -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        07
+                    </div>
+
+                    <h2>
+                        Check UAC Configuration
+                    </h2>
+
+                </div>
+
+                <div class="windows-step">
+
+                    <h3>
+                        <span class="windows-step-number">
+                            7
+                        </span>
+
+                        Open User Account Control Settings
+                    </h3>
+
+                    <p>
+
+                        Search Windows for:
+
+                    </p>
+
+                    <div class="windows-terminal">
+
+                        <span class="windows-terminal-label">
+                            Windows Search
+                        </span>
+
+                        <code>
+                            User Account Control
+                        </code>
+
+                    </div>
+
+                    <p>
+
+                        Open
+                        <strong>Change User Account Control settings</strong>
+                        and review the current notification level.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 8 -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        08
+                    </div>
+
+                    <h2>
+                        Check Security Events
+                    </h2>
+
+                </div>
+
+                <div class="windows-step">
+
+                    <h3>
+                        <span class="windows-step-number">
+                            8
+                        </span>
+
+                        Open Event Viewer
+                    </h3>
+
+                    <p>
+
+                        Press:
+
+                    </p>
+
+                    <div class="windows-terminal">
+
+                        <span class="windows-terminal-label">
+                            Run
+                        </span>
+
+                        <code>
+                            Windows Key + R
+                        </code>
+
+                        <br>
+
+                        <code>
+                            eventvwr.msc
+                        </code>
+
+                    </div>
+
+                    <p>
+
+                        Navigate to:
+
+                    </p>
+
+                    <div class="windows-terminal">
+
+                        <span class="windows-terminal-label">
+                            Event Viewer
+                        </span>
+
+                        <code>
+                            Windows Logs → Security
+                        </code>
+
+                    </div>
+
+                </div>
+
+                <div class="windows-result">
+
+                    <strong>
+                        What to Observe
+                    </strong>
+
+                    <span>
+
+                        Review the security events available on your
+                        system. Do not delete or modify logs during
+                        this learning exercise.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- CHECKLIST -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lab Completion Checklist
+                    </h2>
+
+                </div>
+
+                <ul class="windows-checklist">
+
+                    <li>
+                        Opened Windows Security.
+                    </li>
+
+                    <li>
+                        Reviewed Virus &amp; Threat Protection.
+                    </li>
+
+                    <li>
+                        Reviewed Firewall &amp; Network Protection.
+                    </li>
+
+                    <li>
+                        Checked firewall profile information.
+                    </li>
+
+                    <li>
+                        Checked Microsoft Defender status.
+                    </li>
+
+                    <li>
+                        Reviewed Windows Update.
+                    </li>
+
+                    <li>
+                        Reviewed UAC configuration.
+                    </li>
+
+                    <li>
+                        Opened Windows Security logs in Event Viewer.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- SECURITY CONNECTION -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Cybersecurity Connection
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    These Windows security controls are important
+                    building blocks for cybersecurity. Security
+                    analysts may need to understand endpoint
+                    protection, firewall status, authentication
+                    activity, security events and system updates
+                    when investigating Windows systems.
+
+                </p>
+
+                <div class="windows-key-concepts">
+
+                    <div class="windows-lab-badge">
+                        Endpoint Security
+                    </div>
+
+                    <div class="windows-lab-badge">
+                        Firewall
+                    </div>
+
+                    <div class="windows-lab-badge">
+                        Malware Protection
+                    </div>
+
+                    <div class="windows-lab-badge">
+                        Authentication
+                    </div>
+
+                    <div class="windows-lab-badge">
+                        Event Logs
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SAFETY -->
+
+            <section class="windows-lab-card">
+
+                <div class="windows-lab-heading">
+
+                    <div class="windows-lab-icon">
+                        !
+                    </div>
+
+                    <h2>
+                        Lab Safety
+                    </h2>
+
+                </div>
+
+                <div class="windows-safety">
+
+                    <strong>
+                        Important
+                    </strong>
+
+                    <p>
+
+                        Perform this lab only on your own Windows
+                        computer or an authorized lab machine.
+                        Do not disable security controls or modify
+                        firewall rules unless you understand the
+                        change and are working in an authorized
+                        testing environment.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="windows-lab-navigation">
+
+                <a
+                    href="lab09.html"
+                    class="windows-lab-button"
+                >
+                    <span>←</span>
+                    <strong>Previous: Lab 09: Windows Firewall</strong>
+                </a>
+
+                <a
+                    href="../theory/active-directory-basics.html"
+                    class="windows-lab-button theory"
+                >
+                    <span>📘</span>
+                    <strong>Theory: Active Directory Basics</strong>
+                </a>
+
+                <!-- <a
+                    href="lab11.html"
+                    class="windows-lab-button"
+                >
+                    <strong>Next: Lab 11: Active Directory Basics</strong>
+                    <span>→</span>
+                </a> -->
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

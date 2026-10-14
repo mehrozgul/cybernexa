@@ -1,0 +1,1940 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Command Injection - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           WEB SECURITY PAGE
+        ====================================================== */
+
+        .ws-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 8%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 12%,
+                    rgba(0, 255, 176, 0.055),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .ws-container {
+
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .ws-hero {
+
+            position: relative;
+
+            padding: 42px 35px;
+            margin-bottom: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 22, 35, 0.98),
+                    rgba(2, 10, 21, 0.98)
+                );
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .ws-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .ws-hero-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(260px, 0.75fr);
+
+            gap: 35px;
+
+            align-items: center;
+        }
+
+        .ws-kicker {
+
+            display: inline-flex;
+
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .ws-kicker::before {
+
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00bfff;
+
+            box-shadow:
+                0 0 12px rgba(0, 191, 255, 0.7);
+        }
+
+        .ws-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 46px;
+            line-height: 1.12;
+
+            font-weight: 850;
+            letter-spacing: -1px;
+        }
+
+        .ws-hero h1 span {
+            color: #00bfff;
+        }
+
+        .ws-hero-description {
+
+            max-width: 700px;
+
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           WEB TERMINAL
+        ====================================================== */
+
+        .terminal-panel {
+
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            border-radius: 11px;
+
+            background:
+                rgba(0, 0, 0, 0.35);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            box-shadow:
+                inset 0 0 25px rgba(0, 191, 255, 0.025);
+        }
+
+        .terminal-top {
+
+            display: flex;
+
+            align-items: center;
+            gap: 6px;
+
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.09);
+        }
+
+        .terminal-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #405263;
+        }
+
+        .terminal-title {
+
+            margin-left: auto;
+
+            color: #52687c;
+
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+
+            margin-bottom: 9px;
+
+            color: #60788d;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .terminal-line .blue {
+            color: #00bfff;
+        }
+
+        .terminal-line .green {
+            color: #00ffb0;
+        }
+
+        .terminal-line .red {
+            color: #ff667a;
+        }
+
+        /* =====================================================
+           META
+        ====================================================== */
+
+        .ws-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .meta-value.blue {
+            color: #00bfff;
+        }
+
+        /* =====================================================
+           CONTENT CARD
+        ====================================================== */
+
+        .ws-card {
+
+            margin-bottom: 18px;
+
+            padding: 27px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .card-heading {
+
+            display: flex;
+
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .card-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .card-heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .ws-card p {
+
+            margin: 0 0 12px;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .ws-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .definition {
+
+            padding: 21px;
+
+            border-left:
+                3px solid #00bfff;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 191, 255, 0.055),
+                    rgba(0, 191, 255, 0.012)
+                );
+        }
+
+        .definition-label {
+
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .definition p {
+
+            margin: 0;
+
+            color: #cceef8;
+
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           CONCEPT GRID
+        ====================================================== */
+
+        .concept-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+        .concept-card {
+
+            min-height: 145px;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .concept-card:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(0, 191, 255, 0.28);
+        }
+
+        .concept-id {
+
+            color: #00bfff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .concept-card h3 {
+
+            margin: 11px 0 7px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .concept-card p {
+
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .flow {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 9px;
+
+            margin-top: 18px;
+        }
+
+        .flow-step {
+
+            padding: 16px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            text-align: center;
+        }
+
+        .flow-step strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #dce9f4;
+
+            font-size: 12px;
+        }
+
+        .flow-step span {
+
+            color: #71879b;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           CODE EXAMPLE
+        ====================================================== */
+
+        .code-box {
+
+            margin-top: 17px;
+
+            padding: 19px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                #01070e;
+
+            overflow-x: auto;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+        .code-comment {
+            color: #526b7f;
+        }
+
+        .code-key {
+            color: #00bfff;
+        }
+
+        .code-value {
+            color: #00ffb0;
+        }
+
+        .code-danger {
+            color: #ff687b;
+        }
+
+        /* =====================================================
+           WARNING
+        ====================================================== */
+
+        .authorization-box {
+
+            padding: 21px;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.17);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .authorization-title {
+
+            display: flex;
+
+            align-items: center;
+            gap: 9px;
+
+            margin-bottom: 9px;
+
+            color: #ffc44d;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .authorization-box p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           SAFE EXAMPLE
+        ====================================================== */
+
+        .scenario-box {
+
+            margin-top: 16px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, 0.20);
+        }
+
+        .scenario-label {
+
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .scenario-box p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           KEY TERMS
+        ====================================================== */
+
+        .key-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 11px;
+
+            margin-top: 17px;
+        }
+
+        .key-item {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .key-item h3 {
+
+            margin: 0 0 6px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .key-item p {
+
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .summary {
+
+            padding: 25px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.13);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.035),
+                    rgba(0, 255, 176, 0.025)
+                );
+        }
+
+        .summary-title {
+
+            margin-bottom: 9px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .summary h2 {
+
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .summary p {
+
+            max-width: 760px;
+
+            margin: 0 auto;
+
+            color: #7e94a8;
+
+            font-size: 12px;
+
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           LAB CTA
+        ====================================================== */
+
+        .lab-area {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 25px;
+
+            padding: 21px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.15);
+
+            border-radius: 12px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .lab-text strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .lab-text span {
+
+            color: #71879b;
+
+            font-size: 11px;
+        }
+
+        .lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 12px 20px;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 8px;
+
+            color: #ccefff;
+
+            background:
+                rgba(0, 191, 255, 0.055);
+
+            text-decoration: none;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .lab-button:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            background:
+                rgba(0, 191, 255, 0.09);
+        }
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .ws-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .concept-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .ws-meta {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .flow {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .ws-page {
+                padding: 45px 12px 60px;
+            }
+
+            .ws-hero {
+                padding: 27px 20px;
+            }
+
+            .ws-hero h1 {
+                font-size: 31px;
+            }
+
+            .ws-hero-description {
+                font-size: 12px;
+            }
+
+            .ws-card {
+                padding: 20px;
+            }
+
+            .concept-grid,
+            .flow,
+            .key-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-area {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                text-align: center;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="ws-page">
+
+        <div class="ws-container">
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="ws-hero">
+
+                <div class="ws-hero-grid">
+
+                    <div>
+
+                        <div class="ws-kicker">
+                            WEB SECURITY / 11
+                        </div>
+
+                        <h1>
+                            <span>Command Injection</span>
+                            in Web Applications
+                        </h1>
+
+                        <p class="ws-hero-description">
+                            Understand how unsafe handling of operating-system
+                            commands can allow attacker-controlled input to
+                            influence server-side command execution, why this
+                            vulnerability occurs, and how developers can
+                            prevent it through secure application design.
+                        </p>
+
+                    </div>
+
+
+                    <div class="terminal-panel">
+
+                        <div class="terminal-top">
+
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+
+                            <span class="terminal-title">
+                                WEB SECURITY LAB
+                            </span>
+
+                        </div>
+
+                        <div class="terminal-line">
+                            <span class="blue">web@cybernexa</span>:~$
+                            <span class="green">security-check</span>
+                        </div>
+
+                        <div class="terminal-line">
+                            Input: <span class="blue">USER CONTROLLED</span>
+                        </div>
+
+                        <div class="terminal-line">
+                            Validation:
+                            <span class="red">REQUIRED</span>
+                        </div>
+
+                        <div class="terminal-line">
+                            Mode:
+                            <span class="green">SAFE LAB</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 META
+            ================================================== -->
+
+            <div class="ws-meta">
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Domain
+                    </span>
+
+                    <span class="meta-value">
+                        Web Security
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Level
+                    </span>
+
+                    <span class="meta-value">
+                        Intermediate
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Environment
+                    </span>
+
+                    <span class="meta-value blue">
+                        Authorized Lab
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Focus
+                    </span>
+
+                    <span class="meta-value">
+                        Input Validation
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 01 — DEFINITION
+            ================================================== -->
+
+            <section class="ws-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        01
+                    </div>
+
+                    <h2>
+                        What is Command Injection?
+                    </h2>
+
+                </div>
+
+
+                <div class="definition">
+
+                    <div class="definition-label">
+                        Core Definition
+                    </div>
+
+                    <p>
+                        Command injection is a web-application vulnerability
+                        that occurs when untrusted user input is incorporated
+                        into an operating-system command in an unsafe manner.
+                        If the application does not properly separate data
+                        from commands, attacker-controlled input may influence
+                        what the server executes.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 02 — HOW IT OCCURS
+            ================================================== -->
+
+            <section class="ws-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        02
+                    </div>
+
+                    <h2>
+                        How Command Injection Occurs
+                    </h2>
+
+                </div>
+
+                <p>
+                    The vulnerability usually appears when a web application
+                    passes user-controlled data to a system command without
+                    using safe APIs, strict validation or appropriate
+                    separation between data and executable instructions.
+                </p>
+
+                <div class="flow">
+
+                    <div class="flow-step">
+
+                        <strong>
+                            01. User Input
+                        </strong>
+
+                        <span>
+                            Data enters through a web form,
+                            parameter or request.
+                        </span>
+
+                    </div>
+
+
+                    <div class="flow-step">
+
+                        <strong>
+                            02. Application
+                        </strong>
+
+                        <span>
+                            The server processes the
+                            supplied value.
+                        </span>
+
+                    </div>
+
+
+                    <div class="flow-step">
+
+                        <strong>
+                            03. Unsafe Command
+                        </strong>
+
+                        <span>
+                            Input becomes part of a
+                            system command.
+                        </span>
+
+                    </div>
+
+
+                    <div class="flow-step">
+
+                        <strong>
+                            04. Security Impact
+                        </strong>
+
+                        <span>
+                            Unexpected command behavior
+                            may occur.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 03 — ROOT CAUSES
+            ================================================== -->
+
+            <section class="ws-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        03
+                    </div>
+
+                    <h2>
+                        Common Root Causes
+                    </h2>
+
+                </div>
+
+                <p>
+                    Command injection is generally caused by insecure
+                    application design rather than by the operating system
+                    itself.
+                </p>
+
+
+                <div class="concept-grid">
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            CAUSE 01
+                        </div>
+
+                        <h3>
+                            Untrusted Input
+                        </h3>
+
+                        <p>
+                            User-controlled values are accepted without
+                            sufficient validation.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            CAUSE 02
+                        </div>
+
+                        <h3>
+                            Shell Invocation
+                        </h3>
+
+                        <p>
+                            Application logic invokes a shell or system
+                            command unnecessarily.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            CAUSE 03
+                        </div>
+
+                        <h3>
+                            Weak Validation
+                        </h3>
+
+                        <p>
+                            Input filtering is incomplete, inconsistent or
+                            based on unreliable blacklists.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 04 — IMPACT
+            ================================================== -->
+
+            <section class="ws-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        04
+                    </div>
+
+                    <h2>
+                        Potential Security Impact
+                    </h2>
+
+                </div>
+
+                <p>
+                    The impact depends on the application's privileges,
+                    operating environment and the actions available through
+                    the vulnerable functionality.
+                </p>
+
+
+                <div class="concept-grid">
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            IMPACT 01
+                        </div>
+
+                        <h3>
+                            Confidentiality
+                        </h3>
+
+                        <p>
+                            Sensitive information accessible to the affected
+                            process may potentially be exposed.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            IMPACT 02
+                        </div>
+
+                        <h3>
+                            Integrity
+                        </h3>
+
+                        <p>
+                            Unauthorized changes to application or system
+                            resources may become possible.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            IMPACT 03
+                        </div>
+
+                        <h3>
+                            Availability
+                        </h3>
+
+                        <p>
+                            Unsafe command execution may interfere with
+                            normal service operation.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 05 — SAFE CONCEPT EXAMPLE
+            ================================================== -->
+
+            <section class="ws-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        05
+                    </div>
+
+                    <h2>
+                        Conceptual Example
+                    </h2>
+
+                </div>
+
+                <p>
+                    Imagine a web application that provides a diagnostic
+                    feature. The application receives a hostname from the
+                    user and passes it to a server-side operating-system
+                    utility.
+                </p>
+
+
+                <div class="scenario-box">
+
+                    <div class="scenario-label">
+                        SAFE CONCEPT MODEL
+                    </div>
+
+                    <p>
+                        The secure design should treat the hostname strictly
+                        as data. The application should validate it against
+                        an expected format and, where possible, use a safe
+                        library API instead of constructing a shell command.
+                        This prevents special command syntax from being
+                        interpreted as executable instructions.
+                    </p>
+
+                </div>
+
+
+                <div class="code-box">
+
+                    <span class="code-comment">
+                        // Conceptual secure design
+                    </span><br>
+
+                    <span class="code-key">
+                        input
+                    </span>
+                    =
+                    <span class="code-value">
+                        validated_hostname
+                    </span>;<br>
+
+                    <span class="code-key">
+                        result
+                    </span>
+                    =
+                    <span class="code-value">
+                        safe_api(input)
+                    </span>;<br>
+
+                    <span class="code-comment">
+                        // Keep data separate from commands
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 06 — AUTHORIZED LAB WARNING
+            ================================================== -->
+
+            <section class="ws-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        06
+                    </div>
+
+                    <h2>
+                        Authorized Testing Only
+                    </h2>
+
+                </div>
+
+                <div class="authorization-box">
+
+                    <div class="authorization-title">
+                        ⚠ LAB ENVIRONMENT ONLY
+                    </div>
+
+                    <p>
+                        Command-injection testing must only be performed on
+                        applications you own or environments for which you
+                        have explicit authorization. For learning, use
+                        CyberNexa's simulated lab, local vulnerable
+                        applications, CTF platforms or dedicated security
+                        training machines. Do not test arbitrary public
+                        websites or systems.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 07 — PREVENTION
+            ================================================== -->
+
+            <section class="ws-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        07
+                    </div>
+
+                    <h2>
+                        How Developers Prevent It
+                    </h2>
+
+                </div>
+
+
+                <div class="concept-grid">
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            DEFENSE 01
+                        </div>
+
+                        <h3>
+                            Avoid Shells
+                        </h3>
+
+                        <p>
+                            Prefer dedicated programming-library APIs instead
+                            of invoking a command shell.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            DEFENSE 02
+                        </div>
+
+                        <h3>
+                            Allowlist Input
+                        </h3>
+
+                        <p>
+                            Accept only the characters and formats that are
+                            actually required by the application.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            DEFENSE 03
+                        </div>
+
+                        <h3>
+                            Least Privilege
+                        </h3>
+
+                        <p>
+                            Run application processes with only the
+                            permissions they genuinely require.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            DEFENSE 04
+                        </div>
+
+                        <h3>
+                            Secure Architecture
+                        </h3>
+
+                        <p>
+                            Keep user data separate from executable
+                            instructions throughout the application.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            DEFENSE 05
+                        </div>
+
+                        <h3>
+                            Error Handling
+                        </h3>
+
+                        <p>
+                            Avoid exposing detailed system errors or command
+                            output to untrusted users.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-id">
+                            DEFENSE 06
+                        </div>
+
+                        <h3>
+                            Monitoring
+                        </h3>
+
+                        <p>
+                            Log suspicious application behavior and review
+                            abnormal requests.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 08 — KEY TERMS
+            ================================================== -->
+
+            <section class="ws-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        08
+                    </div>
+
+                    <h2>
+                        Key Terms
+                    </h2>
+
+                </div>
+
+
+                <div class="key-grid">
+
+                    <div class="key-item">
+
+                        <h3>
+                            Command Injection
+                        </h3>
+
+                        <p>
+                            A vulnerability where untrusted input can
+                            influence operating-system command execution.
+                        </p>
+
+                    </div>
+
+
+                    <div class="key-item">
+
+                        <h3>
+                            Input Validation
+                        </h3>
+
+                        <p>
+                            The process of checking whether supplied data
+                            matches expected security and format rules.
+                        </p>
+
+                    </div>
+
+
+                    <div class="key-item">
+
+                        <h3>
+                            Shell
+                        </h3>
+
+                        <p>
+                            A program that interprets commands and interacts
+                            with an operating system.
+                        </p>
+
+                    </div>
+
+
+                    <div class="key-item">
+
+                        <h3>
+                            Least Privilege
+                        </h3>
+
+                        <p>
+                            Giving a process only the permissions required
+                            for its legitimate function.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 09 — SUMMARY
+            ================================================== -->
+
+            <section class="summary">
+
+                <div class="summary-title">
+                    Module Summary
+                </div>
+
+                <h2>
+                    Separate Data From Commands.
+                </h2>
+
+                <p>
+                    Command injection occurs when an application fails to
+                    maintain a strong boundary between untrusted input and
+                    operating-system instructions. Secure APIs, strict
+                    allowlist validation, least privilege and careful
+                    application architecture significantly reduce the risk.
+                    Practical testing should always remain inside an
+                    authorized security laboratory.
+                </p>
+
+            </section>
+<!-- =================================================
+     LESSON COMPLETION
+================================================== -->
+
+<section class="ws-card" id="lessonCompletion">
+
+    <div class="card-heading">
+        <div class="card-number">✓</div>
+        <h2>Lesson Completion</h2>
+    </div>
+
+    <p>
+        You have completed the Command Injection lesson.
+        Mark this lesson as complete to save your learning
+        progress to your CyberNexa account.
+    </p>
+
+    <div style="margin-top: 22px; text-align: center;">
+
+        <button
+            type="button"
+            class="lab-button"
+            data-lesson-progress
+            data-course-id="web-security"
+            data-lesson-id="command-injection"
+            data-dashboard-url="../learning-paths/web-security/theory/command-injection.html"
+            data-status-id="commandInjectionCompletionStatus">
+            ✓ Mark Lesson Complete
+        </button>
+
+        <p
+            id="commandInjectionCompletionStatus"
+            role="status"
+            aria-live="polite"
+            style="margin-top: 15px;">
+        </p>
+
+    </div>
+
+</section>
+            <!-- =================================================
+                 LAB CTA
+            ================================================== -->
+
+            <div class="lab-area">
+
+                <div class="lab-text">
+
+                    <strong>
+                        Ready for the Practical Lab?
+                    </strong>
+
+                    <span>
+                        Test your command-injection knowledge using a safe
+                        simulated Web Security environment.
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="../lab/command-injection-lab.html"
+                    class="lab-button"
+                >
+                    🧪 Launch Lab →
+                </a>
+
+            </div>
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

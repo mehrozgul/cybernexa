@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SOC Analyst | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn what a SOC Analyst is, their responsibilities, skills, workflow and role in a Security Operations Center.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        :root {
+            --soc-bg: #070d14;
+            --soc-panel: #0c151f;
+            --soc-panel-2: #101c28;
+
+            --soc-blue: #42a5ff;
+            --soc-cyan: #35d9ff;
+            --soc-purple: #8b7cff;
+
+            --soc-green: #43d19e;
+            --soc-yellow: #ffd166;
+            --soc-red: #ff5964;
+
+            --soc-text: #edf6fc;
+            --soc-muted: #91a5b6;
+            --soc-border: #1e3343;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 12% 12%,
+                    rgba(66, 165, 255, 0.10),
+                    transparent 30%),
+                radial-gradient(circle at 88% 20%,
+                    rgba(53, 217, 255, 0.07),
+                    transparent 28%),
+                var(--soc-bg);
+
+            color: var(--soc-text);
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .soc-container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+        
+        /* =========================================================
+   HERO
+   ========================================================= */
+
+        .soc-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 85px 0 70px;
+
+            border-bottom: 1px solid var(--soc-border);
+        }
+
+        .soc-hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 430px;
+            height: 430px;
+
+            right: -200px;
+            top: -200px;
+
+            border: 1px solid rgba(66, 165, 255, 0.13);
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 45px rgba(66, 165, 255, 0.025),
+                0 0 0 90px rgba(66, 165, 255, 0.015);
+        }
+
+        .soc-breadcrumb {
+            color: var(--soc-cyan);
+
+            font-size: 13px;
+
+            margin-bottom: 22px;
+
+            letter-spacing: 0.5px;
+        }
+
+        .soc-hero-grid {
+            display: grid;
+
+            grid-template-columns: 1.35fr 0.65fr;
+
+            gap: 45px;
+
+            align-items: center;
+        }
+
+        .soc-badge {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 13px;
+
+            margin-bottom: 18px;
+
+            border: 1px solid rgba(66, 165, 255, 0.35);
+            border-radius: 4px;
+
+            background: rgba(66, 165, 255, 0.06);
+
+            color: var(--soc-blue);
+
+            font-size: 12px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .soc-pulse {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--soc-cyan);
+
+            box-shadow:
+                0 0 12px rgba(53, 217, 255, 0.85);
+        }
+
+        .soc-hero h1 {
+            margin: 0 0 18px;
+
+            font-size: clamp(38px, 5vw, 62px);
+
+            line-height: 1.05;
+
+            letter-spacing: -1px;
+        }
+
+        .soc-hero h1 span {
+            color: var(--soc-cyan);
+        }
+
+        .soc-hero-description {
+            max-width: 720px;
+
+            color: var(--soc-muted);
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+        /* =========================================================
+   SOC COMMAND PANEL
+   ========================================================= */
+
+        .soc-command {
+            padding: 24px;
+
+            border: 1px solid var(--soc-border);
+
+            border-top: 2px solid var(--soc-blue);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(16, 28, 40, 0.98),
+                    rgba(8, 14, 21, 0.98));
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .soc-command-header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+        .soc-command-header strong {
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .soc-live {
+            color: var(--soc-green);
+
+            font-size: 11px;
+        }
+
+        .soc-divider {
+            height: 1px;
+
+            background: var(--soc-border);
+
+            margin: 15px 0;
+        }
+
+        .soc-status-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 8px 0;
+
+            color: var(--soc-muted);
+
+            font-size: 13px;
+        }
+
+        .soc-status-row strong {
+            color: var(--soc-text);
+            font-weight: normal;
+        }
+
+        .soc-active {
+            color: var(--soc-green) !important;
+        }
+
+        /* =========================================================
+   CONTENT
+   ========================================================= */
+
+        .soc-section {
+            padding: 70px 0;
+        }
+
+        .soc-section-title {
+            margin-bottom: 28px;
+        }
+
+        .soc-section-title h2 {
+            margin: 0 0 10px;
+
+            font-size: 32px;
+        }
+
+        .soc-section-title p {
+            color: var(--soc-muted);
+
+            line-height: 1.7;
+        }
+
+        .soc-card {
+            padding: 30px;
+
+            border: 1px solid var(--soc-border);
+
+            border-left: 3px solid var(--soc-blue);
+
+            border-radius: 7px;
+
+            background: var(--soc-panel);
+        }
+
+        .soc-card p {
+            margin: 0 0 16px;
+
+            color: var(--soc-muted);
+
+            line-height: 1.85;
+
+            font-size: 15px;
+        }
+
+        .soc-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* =========================================================
+   DEFINITION
+   ========================================================= */
+
+        .soc-definition {
+            padding: 28px;
+
+            border: 1px solid rgba(53, 217, 255, 0.25);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(53, 217, 255, 0.07),
+                    rgba(66, 165, 255, 0.025));
+        }
+
+        .soc-definition-label {
+            margin-bottom: 12px;
+
+            color: var(--soc-cyan);
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .soc-definition p {
+            margin: 0;
+
+            color: var(--soc-text);
+
+            font-size: 18px;
+
+            line-height: 1.75;
+        }
+
+        /* =========================================================
+   RESPONSIBILITIES
+   ========================================================= */
+
+        .soc-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .soc-item {
+            padding: 24px;
+
+            border: 1px solid var(--soc-border);
+
+            border-radius: 7px;
+
+            background: var(--soc-panel);
+
+            transition: 0.2s ease;
+        }
+
+        .soc-item:hover {
+            border-color: rgba(66, 165, 255, 0.4);
+
+            transform: translateY(-2px);
+        }
+
+        .soc-number {
+            display: block;
+
+            margin-bottom: 15px;
+
+            color: var(--soc-blue);
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .soc-item h3 {
+            margin: 0 0 10px;
+
+            font-size: 17px;
+        }
+
+        .soc-item p {
+            margin: 0;
+
+            color: var(--soc-muted);
+
+            line-height: 1.65;
+
+            font-size: 14px;
+        }
+
+        /* =========================================================
+   WORKFLOW
+   ========================================================= */
+
+        .soc-workflow {
+            display: grid;
+
+            grid-template-columns: repeat(5, 1fr);
+
+            gap: 12px;
+
+            margin-top: 30px;
+        }
+
+        .soc-step {
+            position: relative;
+
+            min-height: 125px;
+
+            padding: 18px 12px;
+
+            border: 1px solid var(--soc-border);
+
+            border-radius: 6px;
+
+            background: var(--soc-panel);
+
+            text-align: center;
+        }
+
+        .soc-step::after {
+            content: "→";
+
+            position: absolute;
+
+            right: -15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--soc-cyan);
+
+            z-index: 2;
+        }
+
+        .soc-step:last-child::after {
+            display: none;
+        }
+
+        .soc-step-number {
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: var(--soc-cyan);
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .soc-step strong {
+            font-size: 13px;
+        }
+
+        /* =========================================================
+   SCENARIO
+   ========================================================= */
+
+        .soc-scenario {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .soc-scenario-box {
+            padding: 25px;
+
+            border: 1px solid var(--soc-border);
+
+            border-radius: 7px;
+
+            background: var(--soc-panel);
+        }
+
+        .soc-scenario-box h3 {
+            margin: 0 0 15px;
+
+            font-size: 17px;
+        }
+
+        .soc-scenario-box p {
+            margin: 0;
+
+            color: var(--soc-muted);
+
+            line-height: 1.7;
+
+            font-size: 14px;
+        }
+
+        .soc-alert-box {
+            border-top: 2px solid var(--soc-red);
+        }
+
+        .soc-action-box {
+            border-top: 2px solid var(--soc-green);
+        }
+
+        /* =========================================================
+   SKILLS
+   ========================================================= */
+
+        .soc-skills {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .soc-skill {
+            padding: 17px 20px;
+
+            border: 1px solid var(--soc-border);
+
+            border-radius: 6px;
+
+            background: var(--soc-panel);
+        }
+
+        .soc-skill strong {
+            color: var(--soc-text);
+        }
+
+        .soc-skill span {
+            color: var(--soc-muted);
+
+            font-size: 14px;
+        }
+
+        /* =========================================================
+   SUMMARY
+   ========================================================= */
+
+        .soc-summary {
+            padding: 30px;
+
+            border: 1px solid rgba(67, 209, 158, 0.25);
+
+            border-radius: 7px;
+
+            background: rgba(67, 209, 158, 0.035);
+        }
+
+        .soc-summary h2 {
+            margin-top: 0;
+
+            color: var(--soc-green);
+        }
+
+        .soc-summary p {
+            margin: 0;
+
+            color: var(--soc-muted);
+
+            line-height: 1.8;
+        }
+
+        /* =========================================================
+   PRACTICAL LAB CTA
+   ========================================================= */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+
+            margin-top: 35px;
+            padding: 24px 26px;
+
+            border: 1px solid rgba(66, 165, 255, 0.22);
+            border-left: 3px solid var(--aa-blue);
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 208, 0.025));
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.20);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* Top scanning line */
+
+        .lab-area::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(66, 165, 255, 0.7),
+                    rgba(53, 214, 208, 0.6),
+                    transparent);
+        }
+
+
+        /* Lab text */
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 0;
+        }
+
+
+        .lab-text strong {
+            color: var(--aa-text);
+
+            font-size: 16px;
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .lab-text span {
+            color: var(--aa-muted);
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* Lab button */
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            min-width: 155px;
+
+            padding: 12px 20px;
+
+            border: 1px solid rgba(66, 165, 255, 0.40);
+            border-radius: 5px;
+
+            color: var(--aa-blue);
+
+            background:
+                rgba(66, 165, 255, 0.07);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            text-decoration: none;
+
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        /* Hover */
+
+        .lab-button:hover {
+            color: #ffffff;
+
+            border-color: rgba(66, 165, 255, 0.75);
+
+            background:
+                rgba(66, 165, 255, 0.14);
+
+            box-shadow:
+                0 0 18px rgba(66, 165, 255, 0.16);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* Active */
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* =========================================================
+   LAB CTA RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .lab-area {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 18px;
+
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+        }
+
+        /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 950px) {
+
+            .nav-container {
+                width: 92%;
+                min-height: 68px;
+            }
+
+            .brand-logo svg {
+                width: 42px;
+                height: 50px;
+            }
+
+            .soc-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .soc-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .soc-workflow {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .soc-step::after {
+                display: none;
+            }
+
+            .soc-scenario {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .nav-container {
+                width: 94%;
+                min-height: 64px;
+                padding: 8px 0;
+            }
+
+            .brand {
+                gap: 8px;
+            }
+
+            .brand-logo svg {
+                width: 38px;
+                height: 46px;
+            }
+
+            .brand-name {
+                font-size: 19px;
+            }
+
+            .brand-tagline {
+                font-size: 9px;
+            }
+
+            .soc-hero {
+                padding: 70px 0 55px;
+            }
+
+            .soc-section {
+                padding: 60px 0;
+            }
+
+            .soc-workflow {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer {
+                width: 100%;
+                overflow: hidden;
+            }
+
+            .footer-container {
+                width: 92%;
+                margin: auto;
+
+                display: flex;
+                flex-direction: column;
+
+                gap: 25px;
+            }
+
+            .footer-links {
+                display: flex;
+                flex-wrap: wrap;
+
+                gap: 10px 18px;
+            }
+
+            .footer-links a {
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .nav-container {
+                width: 92%;
+                min-height: 62px;
+                padding: 7px 0;
+            }
+
+            .brand {
+                gap: 7px;
+            }
+
+            .brand-logo svg {
+                width: 34px;
+                height: 42px;
+            }
+
+            .brand-name {
+                font-size: 17px;
+            }
+
+            .brand-tagline {
+                font-size: 8px;
+            }
+
+            .soc-hero {
+                padding: 55px 0 45px;
+            }
+
+            .soc-breadcrumb {
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .soc-badge {
+                font-size: 10px;
+                padding: 7px 10px;
+            }
+
+            .soc-hero h1 {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .soc-hero-description {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+
+            .soc-command {
+                padding: 20px;
+            }
+
+            .soc-section {
+                padding: 50px 0;
+            }
+
+            .soc-section-title h2 {
+                font-size: 26px;
+            }
+
+            .soc-section-title p {
+                font-size: 14px;
+            }
+
+            .soc-card {
+                padding: 22px;
+            }
+
+            .soc-card p {
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .soc-definition {
+                padding: 22px;
+            }
+
+            .soc-definition p {
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .soc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .soc-workflow {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .soc-step {
+                min-height: 95px;
+                padding: 15px 8px;
+            }
+
+            .soc-step strong {
+                font-size: 12px;
+            }
+
+            .soc-scenario {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .soc-scenario-box {
+                padding: 21px;
+            }
+
+            .soc-skills {
+                grid-template-columns: 1fr;
+            }
+
+            .soc-summary {
+                padding: 22px;
+            }
+
+            .soc-summary p {
+                font-size: 14px;
+                line-height: 1.75;
+            }
+
+            .soc-topic-nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .soc-nav-button {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .footer-container {
+                width: 92%;
+                gap: 22px;
+            }
+
+            .footer-links {
+                width: 100%;
+
+                display: grid;
+
+                grid-template-columns: 1fr 1fr;
+
+                gap: 12px 18px;
+            }
+
+            .footer-links a {
+                font-size: 13px;
+                white-space: normal;
+            }
+        }
+
+        @media (max-width: 380px) {
+
+            .nav-container {
+                width: 94%;
+            }
+
+            .brand-logo svg {
+                width: 30px;
+                height: 38px;
+            }
+
+            .brand-name {
+                font-size: 15px;
+            }
+
+            .brand-tagline {
+                font-size: 7px;
+            }
+
+            .soc-container {
+                width: 94%;
+            }
+
+            .soc-hero h1 {
+                font-size: 32px;
+            }
+
+            .soc-workflow {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <header class="soc-hero">
+
+        <div class="soc-container">
+
+            <div class="soc-breadcrumb">
+                CyberNexa / SOC / Blue Team / Theory
+            </div>
+
+            <div class="soc-hero-grid">
+
+                <div>
+
+                    <div class="soc-badge">
+
+                        <span class="soc-pulse"></span>
+
+                        SOC Career Training
+
+                    </div>
+
+                    <h1>
+                        SOC <span>Analyst</span>
+                    </h1>
+
+                    <p class="soc-hero-description">
+                        A SOC Analyst monitors security activity,
+                        investigates alerts, identifies suspicious
+                        behavior and helps protect an organization
+                        from cybersecurity threats.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-command">
+
+                    <div class="soc-command-header">
+
+                        <strong>
+                            SOC COMMAND CENTER
+                        </strong>
+
+                        <span class="soc-live">
+                            ● ACTIVE
+                        </span>
+
+                    </div>
+
+                    <div class="soc-divider"></div>
+
+                    <div class="soc-status-row">
+                        <span>Role</span>
+                        <strong>SOC Analyst</strong>
+                    </div>
+
+                    <div class="soc-status-row">
+                        <span>Team</span>
+                        <strong>Blue Team</strong>
+                    </div>
+
+                    <div class="soc-status-row">
+                        <span>Focus</span>
+                        <strong>Detection &amp; Analysis</strong>
+                    </div>
+
+                    <div class="soc-status-row">
+                        <span>Status</span>
+                        <strong class="soc-active">
+                            Monitoring
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+
+                    <h2>What is a SOC Analyst?</h2>
+
+                    <p>
+                        Understand the role of the security professional
+                        who monitors and investigates cybersecurity activity.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-definition">
+
+                    <div class="soc-definition-label">
+                        Core Definition
+                    </div>
+
+                    <p>
+                        A SOC Analyst is a cybersecurity professional who
+                        monitors security events, investigates alerts,
+                        analyzes suspicious activity and helps detect,
+                        respond to and prevent security incidents within
+                        an organization.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     CORE EXPLANATION
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+
+                    <h2>What Does a SOC Analyst Do?</h2>
+
+                    <p>
+                        A SOC Analyst continuously watches security data
+                        and investigates activity that may indicate a threat.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-card">
+
+                    <p>
+                        A SOC Analyst works inside a Security Operations
+                        Center and monitors security information coming
+                        from systems, endpoints, networks, applications
+                        and security tools.
+                    </p>
+
+                    <p>
+                        When a security tool generates an alert, the analyst
+                        examines the available evidence and determines
+                        whether the activity is normal, suspicious or
+                        potentially malicious.
+                    </p>
+
+                    <p>
+                        The analyst may investigate IP addresses, usernames,
+                        timestamps, login events, processes, network
+                        connections, malware indicators and other evidence.
+                    </p>
+
+                    <p>
+                        If the event appears to be a real security incident,
+                        the analyst escalates or responds according to the
+                        organization's incident response procedures.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     RESPONSIBILITIES
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+
+                    <h2>Core Responsibilities</h2>
+
+                    <p>
+                        Common activities performed by a SOC Analyst.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-grid">
+
+                    <div class="soc-item">
+
+                        <span class="soc-number">
+                            RESPONSIBILITY 01
+                        </span>
+
+                        <h3>Monitor Alerts</h3>
+
+                        <p>
+                            Review security alerts generated by monitoring
+                            and security tools.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-item">
+
+                        <span class="soc-number">
+                            RESPONSIBILITY 02
+                        </span>
+
+                        <h3>Investigate Events</h3>
+
+                        <p>
+                            Analyze logs, events and available evidence
+                            to understand suspicious activity.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-item">
+
+                        <span class="soc-number">
+                            RESPONSIBILITY 03
+                        </span>
+
+                        <h3>Analyze Threats</h3>
+
+                        <p>
+                            Identify indicators and patterns that may
+                            represent malicious behavior.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-item">
+
+                        <span class="soc-number">
+                            RESPONSIBILITY 04
+                        </span>
+
+                        <h3>Prioritize Alerts</h3>
+
+                        <p>
+                            Determine which alerts require immediate
+                            attention based on their potential impact.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-item">
+
+                        <span class="soc-number">
+                            RESPONSIBILITY 05
+                        </span>
+
+                        <h3>Escalate Incidents</h3>
+
+                        <p>
+                            Forward confirmed or serious security events
+                            to the appropriate response team.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-item">
+
+                        <span class="soc-number">
+                            RESPONSIBILITY 06
+                        </span>
+
+                        <h3>Document Findings</h3>
+
+                        <p>
+                            Record investigation results, evidence and
+                            actions taken during the analysis.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SOC ANALYST WORKFLOW
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+
+                    <h2>SOC Analyst Workflow</h2>
+
+                    <p>
+                        A simplified workflow showing how an analyst
+                        handles a security alert.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-workflow">
+
+                    <div class="soc-step">
+
+                        <span class="soc-step-number">
+                            01
+                        </span>
+
+                        <strong>
+                            Receive Alert
+                        </strong>
+
+                    </div>
+
+
+                    <div class="soc-step">
+
+                        <span class="soc-step-number">
+                            02
+                        </span>
+
+                        <strong>
+                            Validate
+                        </strong>
+
+                    </div>
+
+
+                    <div class="soc-step">
+
+                        <span class="soc-step-number">
+                            03
+                        </span>
+
+                        <strong>
+                            Investigate
+                        </strong>
+
+                    </div>
+
+
+                    <div class="soc-step">
+
+                        <span class="soc-step-number">
+                            04
+                        </span>
+
+                        <strong>
+                            Prioritize
+                        </strong>
+
+                    </div>
+
+
+                    <div class="soc-step">
+
+                        <span class="soc-step-number">
+                            05
+                        </span>
+
+                        <strong>
+                            Escalate / Respond
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SIMPLE SCENARIO
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+
+                    <h2>Simple SOC Scenario</h2>
+
+                    <p>
+                        Example of how a SOC Analyst may investigate
+                        suspicious login activity.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-scenario">
+
+                    <div class="soc-scenario-box soc-alert-box">
+
+                        <h3>⚠ Suspicious Alert</h3>
+
+                        <p>
+                            A monitoring system detects several failed
+                            login attempts followed by a successful login
+                            from an unusual IP address.
+                        </p>
+
+                    </div>
+
+
+                    <div class="soc-scenario-box soc-action-box">
+
+                        <h3>✓ Analyst Action</h3>
+
+                        <p>
+                            The analyst reviews the login logs, checks the
+                            source IP, verifies the affected account,
+                            searches for related activity and determines
+                            whether the event requires escalation.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SKILLS
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+
+                    <h2>Important SOC Analyst Skills</h2>
+
+                    <p>
+                        Technical and analytical skills commonly used
+                        during SOC operations.
+                    </p>
+
+                </div>
+
+
+                <div class="soc-skills">
+
+                    <div class="soc-skill">
+                        <strong>Log Analysis:</strong>
+                        <span>
+                            Understanding security and system logs.
+                        </span>
+                    </div>
+
+                    <div class="soc-skill">
+                        <strong>Alert Analysis:</strong>
+                        <span>
+                            Determining whether an alert represents
+                            suspicious activity.
+                        </span>
+                    </div>
+
+                    <div class="soc-skill">
+                        <strong>Networking:</strong>
+                        <span>
+                            Understanding IP addresses, ports,
+                            protocols and network behavior.
+                        </span>
+                    </div>
+
+                    <div class="soc-skill">
+                        <strong>SIEM:</strong>
+                        <span>
+                            Working with centralized security event data.
+                        </span>
+                    </div>
+
+                    <div class="soc-skill">
+                        <strong>Threat Intelligence:</strong>
+                        <span>
+                            Understanding indicators and known threat
+                            information.
+                        </span>
+                    </div>
+
+                    <div class="soc-skill">
+                        <strong>Critical Thinking:</strong>
+                        <span>
+                            Connecting multiple pieces of evidence
+                            during investigations.
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+        <section class="soc-section">
+
+            <div class="soc-container">
+
+                <div class="soc-summary">
+
+                    <h2>Summary</h2>
+
+                    <p>
+                        A SOC Analyst is responsible for monitoring,
+                        investigating and analyzing cybersecurity activity.
+                        The analyst reviews alerts, examines logs and other
+                        evidence, identifies suspicious behavior, prioritizes
+                        security events and escalates confirmed incidents.
+                        Strong networking, log analysis, SIEM, threat
+                        intelligence and analytical skills are important
+                        for SOC operations.
+                    </p>
+
+                </div>
+<!-- =====================================================
+     LESSON COMPLETION
+====================================================== -->
+
+<section class="soc-section" id="lesson-completion">
+
+    <div class="soc-container">
+
+        <div class="soc-card">
+
+            <div class="soc-section-title">
+                <h2>Lesson Completion</h2>
+
+                <p>
+                    You have completed the SOC Analyst lesson.
+                    Review the key concepts and mark this lesson
+                    as completed.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="soc-analyst"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/soc-analyst.html"
+                data-status-id="socAnalystCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="socAnalystCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+                <div class="lab-area">
+
+                    <div class="lab-text">
+                        <strong>Ready for the Practical Lab?</strong>
+
+                        <span>
+                            Test your understanding through an
+                            authorized SOC security-training simulation.
+                        </span>
+                    </div>
+
+                    <a href="../lab/soc-analyst-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

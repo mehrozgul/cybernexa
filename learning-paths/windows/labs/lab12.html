@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberNexa | Lab 12: Windows Logs Lab</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .windows-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(14, 165, 233, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .windows-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        .windows-topic-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+        .windows-topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #60a5fa;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .windows-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+        .windows-topic-header h1 span {
+            color: #60a5fa;
+        }
+
+        .windows-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+        .windows-badges {
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 22px;
+        }
+
+        .windows-badge {
+
+            padding: 8px 13px;
+
+            border: 1px solid rgba(96, 165, 250, 0.20);
+
+            border-radius: 20px;
+
+            color: #bfdbfe;
+
+            background: rgba(96, 165, 250, 0.055);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .windows-card {
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+        }
+
+        .windows-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .windows-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: 1px solid rgba(96, 165, 250, 0.30);
+
+            border-radius: 10px;
+
+            color: #60a5fa;
+
+            background: rgba(96, 165, 250, 0.07);
+
+            font-size: 17px;
+
+            font-weight: 800;
+        }
+
+        .windows-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+        .windows-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+        .windows-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+        .windows-step {
+
+            display: flex;
+
+            gap: 15px;
+
+            padding: 18px;
+
+            margin-top: 13px;
+
+            border: 1px solid rgba(96, 165, 250, 0.13);
+
+            border-radius: 10px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .windows-step-number {
+
+            width: 34px;
+
+            height: 34px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: #dbeafe;
+
+            background: rgba(37, 99, 235, 0.18);
+
+            border: 1px solid rgba(96, 165, 250, 0.30);
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .windows-step-content strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #60a5fa;
+
+            font-size: 14px;
+        }
+
+        .windows-step-content span {
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        .windows-command-box {
+
+            margin-top: 18px;
+
+            padding: 18px 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+        .windows-terminal-label {
+
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .windows-command-box code {
+
+            color: #93c5fd;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+        .windows-result-box {
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            border-left: 3px solid #60a5fa;
+
+            border-radius: 0 10px 10px 0;
+
+            background: rgba(96, 165, 250, 0.055);
+        }
+
+        .windows-result-box strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+        .windows-result-box span {
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+        .windows-checklist {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+        .windows-checklist li {
+
+            position: relative;
+
+            padding: 9px 0 9px 24px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        .windows-checklist li::before {
+
+            content: "□";
+
+            position: absolute;
+
+            left: 0;
+
+            color: #60a5fa;
+
+            font-size: 16px;
+        }
+
+        .windows-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+        .windows-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background: rgba(96, 165, 250, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .windows-button:hover {
+
+            border-color: rgba(96, 165, 250, 0.65);
+
+            background: rgba(96, 165, 250, 0.10);
+
+            transform: translateY(-1px);
+        }
+
+        .windows-button span {
+
+            color: #60a5fa;
+
+            font-size: 17px;
+        }
+
+        @media (max-width: 800px) {
+
+            .windows-learning-page {
+                padding: 55px 15px 65px;
+            }
+
+            .windows-topic-header h1 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .windows-learning-page {
+                padding: 45px 12px 55px;
+            }
+
+            .windows-topic-header h1 {
+                font-size: 30px;
+            }
+
+            .windows-card {
+                padding: 21px 18px;
+            }
+
+            .windows-card h2 {
+                font-size: 18px;
+            }
+
+            .windows-card p {
+                font-size: 13px;
+            }
+
+            .windows-step {
+                padding: 15px;
+            }
+
+            .windows-navigation {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .windows-button {
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+    
+        /* =====================================================
+           STANDARDIZED LAB NAVIGATION
+        ====================================================== */
+
+        .windows-lab-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .windows-lab-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 20px;
+            border: 1px solid rgba(103, 232, 249, 0.25);
+            border-radius: 9px;
+            color: #dbeafe;
+            background: rgba(103, 232, 249, 0.05);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .windows-lab-button:hover {
+            border-color: rgba(103, 232, 249, 0.65);
+            background: rgba(103, 232, 249, 0.12);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .windows-lab-button span {
+            color: #67e8f9;
+            font-size: 16px;
+        }
+
+        .windows-lab-button.theory {
+            border-color: rgba(96, 165, 250, 0.35);
+            background: rgba(96, 165, 250, 0.08);
+            color: #93c5fd;
+        }
+
+        .windows-lab-button.theory:hover {
+            border-color: rgba(96, 165, 250, 0.75);
+            background: rgba(96, 165, 250, 0.16);
+            color: #ffffff;
+        }
+
+        @media (max-width: 650px) {
+            .windows-lab-navigation {
+                flex-direction: column;
+                align-items: stretch;
+                margin-top: 25px;
+            }
+
+            .windows-lab-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="windows-learning-page">
+
+<div class="windows-learning-container">
+
+
+<header class="windows-topic-header">
+
+    <div class="windows-topic-category">
+        WINDOWS LAB
+    </div>
+
+    <h1>Windows Logs <span>Lab 12</span></h1>
+
+    <p class="windows-topic-intro">
+
+        Practice opening Event Viewer, identifying Windows logs,
+        inspecting event information and querying logs through
+        PowerShell.
+
+    </p>
+
+    <div class="windows-badges">
+
+        <div class="windows-badge">
+            Beginner
+        </div>
+
+        <div class="windows-badge">
+            Practical
+        </div>
+
+        <div class="windows-badge">
+            Event Viewer
+        </div>
+
+        <div class="windows-badge">
+            PowerShell
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- OBJECTIVE -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            🎯
+        </div>
+
+        <h2>
+            Lab Objective
+        </h2>
+
+    </div>
+
+    <p>
+
+        In this lab you will learn how to access Windows Event
+        Viewer, inspect different Windows logs, identify event
+        details and use PowerShell to retrieve recent events.
+
+    </p>
+
+    <div class="windows-result-box">
+
+        <strong>
+            Expected Outcome
+        </strong>
+
+        <span>
+
+            By the end of this lab, you should be able to locate
+            Windows logs and understand the basic information
+            contained inside a Windows event.
+
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 1 -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            1
+        </div>
+
+        <h2>
+            Open Event Viewer
+        </h2>
+
+    </div>
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            1
+        </div>
+
+        <div class="windows-step-content">
+
+            <strong>
+                Open Run
+            </strong>
+
+            <span>
+                Press Windows + R on your keyboard.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            2
+        </div>
+
+        <div class="windows-step-content">
+
+            <strong>
+                Enter Event Viewer Command
+            </strong>
+
+            <span>
+                Type the following command and press Enter.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            Run
+        </span>
+
+        <code>
+            eventvwr.msc
+        </code>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 2 -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            2
+        </div>
+
+        <h2>
+            Open Windows Logs
+        </h2>
+
+    </div>
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            1
+        </div>
+
+        <div class="windows-step-content">
+
+            <strong>
+                Locate Windows Logs
+            </strong>
+
+            <span>
+                In Event Viewer, expand the "Windows Logs"
+                section from the left-side navigation.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            2
+        </div>
+
+        <div class="windows-step-content">
+
+            <strong>
+                Inspect Available Logs
+            </strong>
+
+            <span>
+                You should see logs such as Application,
+                Security, Setup, System and Forwarded Events,
+                depending on the Windows configuration.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 3 -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            3
+        </div>
+
+        <h2>
+            Inspect System Log
+        </h2>
+
+    </div>
+
+    <p>
+
+        Select the System log and inspect the list of events.
+
+    </p>
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            1
+        </div>
+
+        <div class="windows-step-content">
+
+            <strong>
+                Select System
+            </strong>
+
+            <span>
+                Open Windows Logs → System.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            2
+        </div>
+
+        <div class="windows-step-content">
+
+            <strong>
+                Select an Event
+            </strong>
+
+            <span>
+                Click any available event and inspect its details.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="windows-result-box">
+
+        <strong>
+            Observe
+        </strong>
+
+        <span>
+
+            Look for the Event ID, Level, Source, Date and Time,
+            and the event description.
+
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 4 -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            4
+        </div>
+
+        <h2>
+            Inspect Application Log
+        </h2>
+
+    </div>
+
+    <p>
+
+        Open Windows Logs → Application and select an event.
+
+    </p>
+
+    <div class="windows-result-box">
+
+        <strong>
+            Goal
+        </strong>
+
+        <span>
+
+            Understand that application-related events can be
+            recorded separately from system events.
+
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 5 -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            5
+        </div>
+
+        <h2>
+            Query Logs with PowerShell
+        </h2>
+
+    </div>
+
+    <p>
+
+        Open PowerShell and retrieve the most recent System events.
+
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            Get-EventLog -LogName System -Newest 10
+        </code>
+
+    </div>
+
+    <div class="windows-result-box">
+
+        <strong>
+            Expected Result
+        </strong>
+
+        <span>
+
+            PowerShell should display recent System events with
+            information such as Index, Time, EntryType, Source
+            and InstanceId.
+
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 6 -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            6
+        </div>
+
+        <h2>
+            List Available Event Logs
+        </h2>
+
+    </div>
+
+    <p>
+
+        Use PowerShell to display available classic Windows event
+        logs.
+
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            Get-EventLog -List
+        </code>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 7 -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            7
+        </div>
+
+        <h2>
+            Retrieve Application Events
+        </h2>
+
+    </div>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            Get-EventLog -LogName Application -Newest 10
+        </code>
+
+    </div>
+
+    <div class="windows-result-box">
+
+        <strong>
+            Observe
+        </strong>
+
+        <span>
+
+            Compare the output with the System log and notice
+            that the source and event information can differ.
+
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- SECURITY -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            🔐
+        </div>
+
+        <h2>
+            Security Log Observation
+        </h2>
+
+    </div>
+
+    <p>
+
+        If you have appropriate permissions, open:
+
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            Event Viewer
+        </span>
+
+        <code>
+            Windows Logs → Security
+        </code>
+
+    </div>
+
+    <p>
+
+        Inspect the available events without modifying or deleting
+        any logs.
+
+    </p>
+
+    <div class="windows-result-box">
+
+        <strong>
+            Security Focus
+        </strong>
+
+        <span>
+
+            Security logs can contain auditing information related
+            to authentication and other security activity when
+            auditing is configured.
+
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- ANALYSIS -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            🔎
+        </div>
+
+        <h2>
+            Basic Event Analysis
+        </h2>
+
+    </div>
+
+    <p>
+        Select one event and identify the following information:
+    </p>
+
+    <ul class="windows-checklist">
+
+        <li>
+            Event ID
+        </li>
+
+        <li>
+            Event Level
+        </li>
+
+        <li>
+            Event Source
+        </li>
+
+        <li>
+            Date and Time
+        </li>
+
+        <li>
+            Event Description
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- TASK -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            ✓
+        </div>
+
+        <h2>
+            Lab Tasks
+        </h2>
+
+    </div>
+
+    <ul class="windows-checklist">
+
+        <li>
+            Open Event Viewer using eventvwr.msc.
+        </li>
+
+        <li>
+            Locate Windows Logs.
+        </li>
+
+        <li>
+            Open the System log.
+        </li>
+
+        <li>
+            Inspect one System event.
+        </li>
+
+        <li>
+            Open the Application log.
+        </li>
+
+        <li>
+            Inspect one Application event.
+        </li>
+
+        <li>
+            Open PowerShell.
+        </li>
+
+        <li>
+            Run Get-EventLog -List.
+        </li>
+
+        <li>
+            Run the System log command.
+        </li>
+
+        <li>
+            Identify Event ID, Level, Source and Time.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- COMPLETION -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">
+            ✓
+        </div>
+
+        <h2>
+            Lab Completion
+        </h2>
+
+    </div>
+
+    <div class="windows-result-box">
+
+        <strong>
+            Completion Checklist
+        </strong>
+
+        <span>
+
+            You have successfully completed the Windows Logs lab
+            when you can open Event Viewer, locate Windows Logs,
+            inspect an event and retrieve recent events using
+            PowerShell.
+
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- NAVIGATION -->
+
+<div class="windows-lab-navigation">
+
+                <a
+                    href="lab11.html"
+                    class="windows-lab-button"
+                >
+                    <span>←</span>
+                    <strong>Previous: Lab 11: Active Directory Basics</strong>
+                </a>
+
+                <a
+                    href="../theory/system-hardening.html"
+                    class="windows-lab-button theory"
+                >
+                    <span>📘</span>
+                    <strong>Theory: System Hardening</strong>
+                </a>
+
+                <!-- <a
+                    href="lab13.html"
+                    class="windows-lab-button"
+                >
+                    <strong>Next: Lab 13: System Hardening</strong>
+                    <span>→</span>
+                </a> -->
+
+            </div>
+
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<script src="../../../js/navbar.js"></script>
+
+
+</body>
+
+</html>

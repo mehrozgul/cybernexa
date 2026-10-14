@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab 03 - ICMP | CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .network-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 55px 15px 65px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(14, 165, 233, 0.13),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .network-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .network-lab-header {
+
+            text-align: center;
+
+            margin-bottom: 28px;
+        }
+
+        .network-lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 12px;
+
+            color: #22d3ee;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .network-lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 42px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+        .network-lab-header h1 span {
+
+            color: #38bdf8;
+        }
+
+        .network-lab-intro {
+
+            max-width: 720px;
+
+            margin: 14px auto 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           LAB INFO
+        ===================================================== */
+
+        .network-lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 8px;
+
+            margin-bottom: 22px;
+        }
+
+        .network-info-card {
+
+            padding: 14px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.15);
+
+            border-radius: 9px;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+        }
+
+        .network-info-icon {
+
+            margin-bottom: 7px;
+
+            color: #22d3ee;
+
+            font-size: 17px;
+        }
+
+        .network-info-label {
+
+            margin-bottom: 3px;
+
+            color: #71808c;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .network-info-value {
+
+            color: #e2e8f0;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .network-lab-progress {
+
+            margin-bottom: 25px;
+
+            padding: 14px 16px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.16);
+
+            border-radius: 10px;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+        }
+
+        .network-progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 9px;
+        }
+
+        .network-progress-title {
+
+            color: #f8fafc;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .network-progress-count {
+
+            color: #22d3ee;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .network-progress-track {
+
+            width: 100%;
+
+            height: 4px;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            background:
+                rgba(34, 211, 238, 0.10);
+        }
+
+        .network-progress-bar {
+
+            width: 25%;
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #38bdf8
+                );
+        }
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .network-section {
+
+            margin-bottom: 18px;
+
+            padding: 20px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.15);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+        }
+
+        .network-section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 12px;
+
+            color: #f8fafc;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+        .network-section-icon {
+
+            color: #22d3ee;
+
+            font-size: 18px;
+        }
+
+        .network-section p {
+
+            margin: 0 0 12px;
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           ICMP DIAGRAM
+        ===================================================== */
+
+        .network-diagram {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin: 20px 0;
+
+            flex-wrap: wrap;
+        }
+
+        .network-node {
+
+            min-width: 110px;
+
+            padding: 13px 10px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.20);
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            background:
+                rgba(34, 211, 238, 0.045);
+        }
+
+        .network-node-icon {
+
+            margin-bottom: 5px;
+
+            color: #22d3ee;
+
+            font-size: 20px;
+        }
+
+        .network-node-title {
+
+            color: #f8fafc;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .network-node-text {
+
+            margin-top: 3px;
+
+            color: #7f909d;
+
+            font-size: 8px;
+        }
+
+        .network-arrow {
+
+            color: #38bdf8;
+
+            font-size: 18px;
+
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           TASK
+        ===================================================== */
+
+        .network-task {
+
+            margin-top: 12px;
+
+            padding: 14px;
+
+            border-left: 3px solid #22d3ee;
+
+            border-radius: 7px;
+
+            background:
+                rgba(34, 211, 238, 0.045);
+        }
+
+        .network-task-title {
+
+            margin-bottom: 7px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .network-task p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           COMMAND BLOCK
+        ===================================================== */
+
+        .network-command {
+
+            position: relative;
+
+            margin: 12px 0;
+
+            padding: 15px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.13);
+
+            border-radius: 8px;
+
+            background: #010508;
+
+            overflow-x: auto;
+        }
+
+        .network-command-label {
+
+            margin-bottom: 8px;
+
+            color: #22d3ee;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.3px;
+
+            text-transform: uppercase;
+        }
+
+        .network-command code {
+
+            color: #dbeafe;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 10px;
+
+            line-height: 1.8;
+
+            white-space: pre;
+        }
+
+        .network-copy {
+
+            position: absolute;
+
+            top: 10px;
+            right: 10px;
+
+            padding: 5px 8px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.18);
+
+            border-radius: 5px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(34, 211, 238, 0.05);
+
+            font-size: 8px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .network-copy:hover {
+
+            border-color:
+                rgba(34, 211, 238, 0.55);
+
+            background:
+                rgba(34, 211, 238, 0.09);
+        }
+
+        /* =====================================================
+           OUTPUT
+        ===================================================== */
+
+        .network-output {
+
+            margin-top: 10px;
+
+            padding: 14px;
+
+            border: 1px solid
+                rgba(96, 165, 250, 0.15);
+
+            border-radius: 8px;
+
+            background: #010508;
+
+            overflow-x: auto;
+        }
+
+        .network-output-title {
+
+            margin-bottom: 7px;
+
+            color: #60a5fa;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .network-output pre {
+
+            margin: 0;
+
+            color: #94a3b8;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 9px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+        /* =====================================================
+           CHECKLIST
+        ===================================================== */
+
+        .network-checklist {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+            margin-top: 10px;
+        }
+
+        .network-check {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 9px;
+
+            padding: 10px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.10);
+
+            border-radius: 7px;
+
+            background:
+                rgba(34, 211, 238, 0.025);
+        }
+
+        .network-check input {
+
+            margin-top: 2px;
+
+            accent-color: #22d3ee;
+
+            cursor: pointer;
+        }
+
+        .network-check label {
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           KEY CONCEPTS
+        ===================================================== */
+
+        .network-concepts {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+        .network-concept {
+
+            padding: 12px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.12);
+
+            border-radius: 8px;
+
+            background:
+                rgba(34, 211, 238, 0.025);
+        }
+
+        .network-concept strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #67e8f9;
+
+            font-size: 10px;
+        }
+
+        .network-concept span {
+
+            color: #8999a5;
+
+            font-size: 9px;
+
+            line-height: 1.55;
+        }
+
+        /* =====================================================
+           SAFETY
+        ===================================================== */
+
+        .network-safety {
+
+            margin-top: 18px;
+
+            padding: 17px;
+
+            border: 1px solid
+                rgba(96, 165, 250, 0.18);
+
+            border-radius: 9px;
+
+            background:
+                rgba(96, 165, 250, 0.035);
+        }
+
+        .network-safety h2 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 13px;
+        }
+
+        .network-safety p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .network-navigation {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 18px;
+        }
+
+        .network-button {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.16);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .network-button:hover {
+
+            border-color:
+                rgba(34, 211, 238, 0.55);
+
+            background:
+                rgba(34, 211, 238, 0.08);
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .network-lab-page {
+
+                padding: 45px 10px 55px;
+            }
+
+            .network-lab-header h1 {
+
+                font-size: 30px;
+            }
+
+            .network-lab-intro {
+
+                font-size: 11px;
+            }
+
+            .network-lab-info {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .network-concepts {
+
+                grid-template-columns: 1fr;
+            }
+
+            .network-diagram {
+
+                flex-direction: column;
+            }
+
+            .network-arrow {
+
+                transform: rotate(90deg);
+            }
+
+            .network-navigation {
+
+                flex-direction: column;
+            }
+
+            .network-button {
+
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            .network-lab-info {
+
+                grid-template-columns: 1fr;
+            }
+
+            .network-section {
+
+                padding: 15px;
+            }
+
+            .network-lab-header h1 {
+
+                font-size: 27px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="network-lab-page">
+
+<div class="network-lab-container">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="network-lab-header">
+
+    <div class="network-lab-category">
+        🌐 NETWORKING PRACTICAL
+    </div>
+
+    <h1>
+        Lab 12 — <span>ICMP</span>
+    </h1>
+
+    <p class="network-lab-intro">
+
+        Explore how Internet Control Message Protocol (ICMP)
+        is used for network diagnostics and practice using
+        ping and tracert commands on Windows.
+
+    </p>
+
+</header>
+
+
+<!-- =====================================================
+     LAB INFO
+===================================================== -->
+
+<div class="network-lab-info">
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            🌐
+        </div>
+
+        <div class="network-info-label">
+            Category
+        </div>
+
+        <div class="network-info-value">
+            Networking
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            🧪
+        </div>
+
+        <div class="network-info-label">
+            Lab
+        </div>
+
+        <div class="network-info-value">
+            Practical 12
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            💻
+        </div>
+
+        <div class="network-info-label">
+            Environment
+        </div>
+
+        <div class="network-info-value">
+            Windows
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            📊
+        </div>
+
+        <div class="network-info-label">
+            Level
+        </div>
+
+        <div class="network-info-value">
+            Beginner
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PROGRESS
+===================================================== -->
+
+<div class="network-lab-progress">
+
+    <div class="network-progress-top">
+
+        <div class="network-progress-title">
+            Networking Practical Labs
+        </div>
+
+        <div class="network-progress-count">
+            Lab 12 / 21
+        </div>
+
+    </div>
+
+    <div class="network-progress-track">
+
+        <div class="network-progress-bar"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     OBJECTIVE
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🎯
+        </span>
+
+        Lab Objective
+
+    </div>
+
+    <p>
+
+        In this lab, you will learn how ICMP is used by network
+        devices to exchange control and diagnostic messages.
+
+    </p>
+
+    <p>
+
+        You will use Windows commands such as ping and tracert
+        to test connectivity, observe responses and understand
+        basic network troubleshooting.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     ICMP DIAGRAM
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📡
+        </span>
+
+        How ICMP Works
+
+    </div>
+
+    <p>
+
+        ICMP is a network-layer protocol used to send control,
+        error-reporting and diagnostic messages between network
+        devices. The ping utility commonly uses ICMP Echo Request
+        and Echo Reply messages.
+
+    </p>
+
+
+    <div class="network-diagram">
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                Your PC
+            </div>
+
+            <div class="network-node-text">
+                Source
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                📡
+            </div>
+
+            <div class="network-node-title">
+                ICMP
+            </div>
+
+            <div class="network-node-text">
+                Echo Request
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                🖥️
+            </div>
+
+            <div class="network-node-title">
+                Destination
+            </div>
+
+            <div class="network-node-text">
+                Echo Reply
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 Basic Idea
+        </div>
+
+        <p>
+
+            A host can send an ICMP Echo Request to another host.
+            If the destination is reachable and allows the request,
+            it can respond with an ICMP Echo Reply.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 01
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            01
+        </span>
+
+        Check Your Network Configuration
+
+    </div>
+
+    <p>
+
+        First, use ipconfig to view your computer's IPv4 address,
+        subnet mask and default gateway.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('ipconfig')"
+        >
+            Copy
+        </button>
+
+        <code>ipconfig</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+Ethernet adapter Ethernet:
+
+   IPv4 Address. . . . . . . : 192.168.1.20
+   Subnet Mask . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . : 192.168.1.1
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 What to Observe
+        </div>
+
+        <p>
+
+            Identify your IPv4 address and default gateway.
+            These values help you understand which network
+            your computer is connected to.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 02
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            02
+        </span>
+
+        Test Local Connectivity
+
+    </div>
+
+    <p>
+
+        Use the ping command to test connectivity with your
+        local default gateway.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('ping 192.168.1.1')"
+        >
+            Copy
+        </button>
+
+        <code>ping 192.168.1.1</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+Pinging 192.168.1.1 with 32 bytes of data:
+
+Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64
+Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64
+Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64
+Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64
+
+Ping statistics for 192.168.1.1:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 Why Do This?
+        </div>
+
+        <p>
+
+            The ping command helps determine whether the destination
+            responds to ICMP Echo Requests and provides basic
+            information about packet loss and response time.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 03
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            03
+        </span>
+
+        Test Internet Connectivity
+
+    </div>
+
+    <p>
+
+        You can use ping with a reachable public host to test
+        network connectivity beyond your local gateway.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('ping 8.8.8.8')"
+        >
+            Copy
+        </button>
+
+        <code>ping 8.8.8.8</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+Pinging 8.8.8.8 with 32 bytes of data:
+
+Reply from 8.8.8.8: bytes=32 time=25ms TTL=117
+Reply from 8.8.8.8: bytes=32 time=24ms TTL=117
+Reply from 8.8.8.8: bytes=32 time=26ms TTL=117
+Reply from 8.8.8.8: bytes=32 time=25ms TTL=117
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 Concept
+        </div>
+
+        <p>
+
+            A successful response indicates that ICMP Echo
+            communication with the destination is possible.
+            A failed ping does not always mean the destination
+            is offline because ICMP may be filtered.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 04
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            04
+        </span>
+
+        Trace the Network Path
+
+    </div>
+
+    <p>
+
+        The tracert command can be used to observe the network
+        path between your computer and a destination.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('tracert 8.8.8.8')"
+        >
+            Copy
+        </button>
+
+        <code>tracert 8.8.8.8</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+Tracing route to 8.8.8.8
+
+  1    &lt;1 ms    &lt;1 ms    &lt;1 ms    192.168.1.1
+  2     5 ms     6 ms     5 ms    10.20.0.1
+  3    12 ms    13 ms    12 ms    203.0.113.1
+  4    25 ms    24 ms    25 ms    8.8.8.8
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 What to Observe
+        </div>
+
+        <p>
+
+            Observe the hops between your computer and the
+            destination. Each hop represents a router or
+            network device encountered along the path.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 05
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            05
+        </span>
+
+        Test Name Resolution with Ping
+
+    </div>
+
+    <p>
+
+        Ping can also accept a hostname instead of an IP address.
+        This allows you to observe how a hostname is resolved
+        before connectivity is tested.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('ping google.com')"
+        >
+            Copy
+        </button>
+
+        <code>ping google.com</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+Pinging google.com [142.250.72.14] with 32 bytes of data:
+
+Reply from 142.250.72.14: bytes=32 time=24ms TTL=117
+Reply from 142.250.72.14: bytes=32 time=25ms TTL=117
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 Concept
+        </div>
+
+        <p>
+
+            When a hostname is used, the system normally resolves
+            the hostname to an IP address before sending the ICMP
+            Echo Requests.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 06
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            06
+        </span>
+
+        Test for Packet Loss
+
+    </div>
+
+    <p>
+
+        Use ping with a larger number of requests to observe
+        packet loss and response times.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('ping 8.8.8.8 -n 10')"
+        >
+            Copy
+        </button>
+
+        <code>ping 8.8.8.8 -n 10</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Result
+        </div>
+
+        <pre>
+Ping statistics for 8.8.8.8:
+
+    Packets: Sent = 10,
+    Received = 10,
+    Lost = 0 (0% loss)
+
+Approximate round trip times:
+    Minimum = 23ms
+    Maximum = 28ms
+    Average = 25ms
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 What to Understand
+        </div>
+
+        <p>
+
+            Packet loss represents packets that did not receive
+            a response. Response time represents the approximate
+            round-trip time for an ICMP message.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ICMP COMMUNICATION
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📡
+        </span>
+
+        ICMP Echo Request and Reply
+
+    </div>
+
+    <p>
+
+        The basic ping process uses ICMP Echo Request and
+        Echo Reply messages to test reachability.
+
+    </p>
+
+
+    <div class="network-diagram">
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                Host A
+            </div>
+
+            <div class="network-node-text">
+                Sends Request
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                📤
+            </div>
+
+            <div class="network-node-title">
+                Echo Request
+            </div>
+
+            <div class="network-node-text">
+                ICMP
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                🖥️
+            </div>
+
+            <div class="network-node-title">
+                Host B
+            </div>
+
+            <div class="network-node-text">
+                Receives Request
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            📩 Echo Reply
+        </div>
+
+        <p>
+
+            If the destination receives the Echo Request and is
+            configured to respond, it sends an ICMP Echo Reply
+            back to the requesting host.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     KEY CONCEPTS
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🧠
+        </span>
+
+        Key ICMP Concepts
+
+    </div>
+
+
+    <div class="network-concepts">
+
+
+        <div class="network-concept">
+
+            <strong>ICMP</strong>
+
+            <span>
+                Internet Control Message Protocol is used for
+                network control, diagnostics and error reporting.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Echo Request</strong>
+
+            <span>
+                An ICMP message commonly sent by ping to test
+                whether a destination responds.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Echo Reply</strong>
+
+            <span>
+                A response to an ICMP Echo Request when the
+                destination responds.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Ping</strong>
+
+            <span>
+                A diagnostic utility commonly used to test
+                reachability and measure response time.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Tracert</strong>
+
+            <span>
+                A Windows diagnostic command used to display
+                the network path toward a destination.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Packet Loss</strong>
+
+            <span>
+                The percentage of sent packets that do not
+                receive a corresponding response.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     COMPLETION CHECKLIST
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            ✓
+        </span>
+
+        Lab Completion Checklist
+
+    </div>
+
+
+    <div class="network-checklist">
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check1"
+            >
+
+            <label for="check1">
+
+                I checked my network configuration using ipconfig.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check2"
+            >
+
+            <label for="check2">
+
+                I tested local connectivity using ping.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check3"
+            >
+
+            <label for="check3">
+
+                I tested connectivity to a public IP address.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check4"
+            >
+
+            <label for="check4">
+
+                I used tracert to observe a network path.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check5"
+            >
+
+            <label for="check5">
+
+                I understood ICMP Echo Request and Echo Reply.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check6"
+            >
+
+            <label for="check6">
+
+                I observed packet loss and response time.
+
+            </label>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SUMMARY
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📘
+        </span>
+
+        Lab Summary
+
+    </div>
+
+    <p>
+
+        In this practical lab, you explored ICMP and its role
+        in network diagnostics. You used Windows commands to
+        test connectivity and observe network behavior.
+
+    </p>
+
+    <p>
+
+        You practiced ping, ipconfig and tracert and learned
+        how ICMP Echo Request and Echo Reply messages are used
+        to test network reachability.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     SAFETY
+===================================================== -->
+
+<section class="network-safety">
+
+    <h2>
+        🧪 Lab Safety
+    </h2>
+
+    <p>
+
+        Perform these exercises only on systems and networks that
+        you own or are explicitly authorized to test. The commands
+        in this lab are intended for basic network observation,
+        learning and troubleshooting.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<div class="network-navigation">
+
+    <a
+        href="lab12.html"
+        class="network-button"
+    >
+        Previous: Lab 
+    </a>
+
+
+    <a
+        href="../theory/tcp-vs-udp.html"
+        class="network-button"
+    >
+        ☰ TCP vs UDP
+    </a>
+
+<!-- 
+    <a
+        href="lab04.html"
+        class="network-button"
+    >
+        Next Lab →
+    </a> -->
+
+</div>
+
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="../../../js/navbar.js"></script>
+
+
+<script>
+
+function copyCommand(command) {
+
+    navigator.clipboard.writeText(command);
+
+    const buttons =
+        document.querySelectorAll(".network-copy");
+
+    buttons.forEach(button => {
+
+        if (button.innerText === "Copy") {
+
+            button.innerText = "Copied";
+
+            setTimeout(() => {
+
+                button.innerText = "Copy";
+
+            }, 1200);
+
+        }
+
+    });
+
+}
+
+</script>
+
+
+</body>
+
+</html>

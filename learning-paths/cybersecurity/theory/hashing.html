@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hashing - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .theory-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%
+                ),
+                #020714;
+        }
+
+        .theory-container {
+            width: 100%;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .topic-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .topic-label {
+            display: inline-block;
+            margin-bottom: 14px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .topic-header h1 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 44px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        .topic-header h1 span {
+            color: #00bfff;
+        }
+
+        .topic-intro {
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .theory-section {
+            margin-bottom: 22px;
+            padding: 26px;
+
+            border: 1px solid rgba(0, 191, 255, 0.14);
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.20);
+        }
+
+        .theory-section h2 {
+            margin: 0 0 13px;
+
+            color: #ffffff;
+            font-size: 21px;
+        }
+
+        .theory-section h3 {
+            margin: 22px 0 9px;
+
+            color: #00bfff;
+            font-size: 16px;
+        }
+
+        .theory-section p {
+            margin: 0 0 12px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+            line-height: 1.85;
+        }
+
+        .theory-section ul {
+            margin: 10px 0 0;
+            padding-left: 22px;
+        }
+
+        .theory-section li {
+            margin-bottom: 8px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .definition-box {
+            padding: 20px;
+
+            border-left: 3px solid #00bfff;
+            border-radius: 9px;
+
+            background: rgba(0, 191, 255, 0.045);
+        }
+
+        .definition-box p {
+            margin: 0;
+
+            color: #bfeaff;
+
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .concept-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 14px;
+
+            margin-top: 18px;
+        }
+
+        .concept-card {
+            padding: 20px;
+
+            border: 1px solid rgba(0, 191, 255, 0.12);
+            border-radius: 11px;
+
+            background: rgba(0, 191, 255, 0.035);
+        }
+
+        .concept-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 13px;
+
+            border: 1px solid rgba(0, 191, 255, 0.20);
+            border-radius: 9px;
+
+            color: #00bfff;
+            background: rgba(0, 191, 255, 0.06);
+
+            font-size: 18px;
+        }
+
+        .concept-card h3 {
+            margin: 0 0 8px;
+
+            color: #ffffff;
+            font-size: 15px;
+        }
+
+        .concept-card p {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .example-box {
+            padding: 20px;
+            margin-top: 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.12);
+            border-radius: 11px;
+
+            background: rgba(0, 0, 0, 0.18);
+        }
+
+        .example-box strong {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .example-box p {
+            margin: 0;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .summary-box {
+            padding: 23px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+            border-radius: 13px;
+
+            background: rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+        }
+
+        .summary-box strong {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #ffffff;
+            font-size: 15px;
+        }
+
+        .summary-box p {
+            max-width: 720px;
+
+            margin: 0 auto;
+
+            color: #8193aa;
+
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .lab-button-area {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            padding: 13px 22px;
+
+            border: 1px solid rgba(0, 191, 255, 0.30);
+            border-radius: 9px;
+
+            color: #bfeaff;
+
+            background: rgba(0, 191, 255, 0.06);
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition:
+                border-color 0.25s ease,
+                background 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .lab-button span {
+            color: #00bfff;
+            font-size: 16px;
+        }
+
+        .lab-button:hover {
+            border-color: rgba(0, 191, 255, 0.55);
+
+            background: rgba(0, 191, 255, 0.10);
+
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 700px) {
+
+            .theory-page {
+                padding: 45px 12px 55px;
+            }
+
+            .topic-header {
+                margin-bottom: 35px;
+            }
+
+            .topic-header h1 {
+                font-size: 30px;
+            }
+
+            .topic-intro {
+                font-size: 13px;
+            }
+
+            .theory-section {
+                padding: 20px;
+            }
+
+            .theory-section h2 {
+                font-size: 18px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+    <!-- HASHING THEORY -->
+
+    <main class="theory-page">
+
+        <div class="theory-container">
+
+            <!-- HEADER -->
+
+            <header class="topic-header">
+
+                <div class="topic-label">
+                    CYBERSECURITY FUNDAMENTALS
+                </div>
+
+                <h1>
+                    <span>Hashing</span>
+                </h1>
+
+                <p class="topic-intro">
+                    Learn how hashing converts data into a fixed-length
+                    value, why hashes are useful in cybersecurity and
+                    how they are used for integrity and password protection.
+                </p>
+
+            </header>
+
+
+            <!-- DEFINITION -->
+
+            <section class="theory-section">
+
+                <h2>
+                    What is Hashing?
+                </h2>
+
+                <div class="definition-box">
+
+                    <p>
+                        Hashing is a one-way process that converts input data
+                        into a fixed-length value called a hash or hash digest.
+                        A small change in the original data normally produces
+                        a different hash value.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- WHY IT MATTERS -->
+
+            <section class="theory-section">
+
+                <h2>
+                    Why Hashing Matters
+                </h2>
+
+                <p>
+                    Hashing is important because it can be used to verify
+                    data integrity and protect stored passwords. Instead of
+                    storing a password in plain text, a system can store a
+                    password hash and compare a newly calculated hash during
+                    login.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Helps verify whether data has been changed.
+                    </li>
+
+                    <li>
+                        Supports secure password storage when used correctly.
+                    </li>
+
+                    <li>
+                        Helps detect accidental or unauthorized modification.
+                    </li>
+
+                    <li>
+                        Used in digital signatures and many security systems.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- HOW HASHING WORKS -->
+
+            <section class="theory-section">
+
+                <h2>
+                    How Hashing Works
+                </h2>
+
+                <div class="concept-grid">
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            1️⃣
+                        </div>
+
+                        <h3>
+                            Input
+                        </h3>
+
+                        <p>
+                            The original data, such as a password,
+                            message or file, is provided as input.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            ⚙️
+                        </div>
+
+                        <h3>
+                            Hash Function
+                        </h3>
+
+                        <p>
+                            A cryptographic hash function processes the
+                            input data according to its algorithm.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            #️⃣
+                        </div>
+
+                        <h3>
+                            Hash Digest
+                        </h3>
+
+                        <p>
+                            The function produces a fixed-length output
+                            called a hash digest.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            🛡️
+                        </div>
+
+                        <h3>
+                            Verification
+                        </h3>
+
+                        <p>
+                            A system can calculate a hash again and compare
+                            it with the expected hash.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PROPERTIES -->
+
+            <section class="theory-section">
+
+                <h2>
+                    Important Properties of Cryptographic Hashing
+                </h2>
+
+                <h3>
+                    One-Way
+                </h3>
+
+                <p>
+                    A secure cryptographic hash function is designed so that
+                    obtaining the original input from the hash is computationally
+                    impractical.
+                </p>
+
+                <h3>
+                    Deterministic
+                </h3>
+
+                <p>
+                    The same input produces the same hash when the same hash
+                    algorithm and parameters are used.
+                </p>
+
+                <h3>
+                    Avalanche Effect
+                </h3>
+
+                <p>
+                    A small change in the input should cause a significant
+                    change in the resulting hash.
+                </p>
+
+                <h3>
+                    Collision Resistance
+                </h3>
+
+                <p>
+                    It should be computationally difficult to find two
+                    different inputs that produce the same hash.
+                </p>
+
+            </section>
+
+
+            <!-- HASH ALGORITHMS -->
+
+            <section class="theory-section">
+
+                <h2>
+                    Common Hash Algorithms
+                </h2>
+
+                <div class="concept-grid">
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            🔐
+                        </div>
+
+                        <h3>
+                            SHA-256
+                        </h3>
+
+                        <p>
+                            A member of the SHA-2 family that produces
+                            a 256-bit digest and is widely used today.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            🔒
+                        </div>
+
+                        <h3>
+                            SHA-512
+                        </h3>
+
+                        <p>
+                            A SHA-2 algorithm that produces a 512-bit
+                            digest.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            ⚠️
+                        </div>
+
+                        <h3>
+                            MD5
+                        </h3>
+
+                        <p>
+                            An older 128-bit hash algorithm that is
+                            considered unsuitable for modern security
+                            applications because practical collision
+                            attacks exist.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            ⚠️
+                        </div>
+
+                        <h3>
+                            SHA-1
+                        </h3>
+
+                        <p>
+                            An older hash algorithm that is no longer
+                            recommended for security-sensitive applications.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PASSWORD HASHING -->
+
+            <section class="theory-section">
+
+                <h2>
+                    Hashing and Password Security
+                </h2>
+
+                <p>
+                    Passwords should not normally be stored as plain text.
+                    Password-specific password hashing functions are designed
+                    to make large-scale password guessing more expensive.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Use a unique salt for each password.
+                    </li>
+
+                    <li>
+                        Use a password hashing algorithm designed for this purpose.
+                    </li>
+
+                    <li>
+                        Do not treat simple fast hashes such as SHA-256 as a
+                        complete password-storage solution by themselves.
+                    </li>
+
+                    <li>
+                        Protect password databases and access to authentication systems.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- HASHING VS ENCRYPTION -->
+
+            <section class="theory-section">
+
+                <h2>
+                    Hashing vs Encryption
+                </h2>
+
+                <div class="concept-grid">
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            #️⃣
+                        </div>
+
+                        <h3>
+                            Hashing
+                        </h3>
+
+                        <p>
+                            Primarily one-way. It produces a digest used
+                            for integrity verification and other security
+                            purposes.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            🔑
+                        </div>
+
+                        <h3>
+                            Encryption
+                        </h3>
+
+                        <p>
+                            Designed to protect confidentiality and can
+                            be reversed with the appropriate key.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- EXAMPLE -->
+
+            <section class="theory-section">
+
+                <h2>
+                    Simple Example
+                </h2>
+
+                <div class="example-box">
+
+                    <strong>
+                        Example: File Integrity
+                    </strong>
+
+                    <p>
+                        Suppose a software developer publishes a file together
+                        with its SHA-256 hash. A user can calculate the SHA-256
+                        hash of the downloaded file and compare the two values.
+                        If the values match, this provides evidence that the
+                        file contents are unchanged since the published hash
+                        was generated.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- KEY CONCEPTS -->
+
+            <section class="theory-section">
+
+                <h2>
+                    Key Concepts
+                </h2>
+
+                <div class="concept-grid">
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            🧂
+                        </div>
+
+                        <h3>
+                            Salt
+                        </h3>
+
+                        <p>
+                            Random data added to password hashing so that
+                            identical passwords do not produce identical
+                            stored hashes.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept-card">
+
+                        <div class="concept-icon">
+                            📦
+                        </div>
+
+                        <h3>
+                            Digest
+                        </h3>
+
+                        <p>
+                            The fixed-length output produced by a hash
+                            function.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUMMARY -->
+
+            <section class="theory-section">
+
+                <div class="summary-box">
+
+                    <strong>
+                        Summary
+                    </strong>
+
+                    <p>
+                        Hashing converts input data into a fixed-length digest.
+                        Cryptographic hashes are useful for integrity verification,
+                        password protection and security protocols. Hashing is
+                        fundamentally different from encryption because hashing
+                        is designed as a one-way transformation.
+                    </p>
+                </div>
+            </section>
+            
+<!-- LESSON COMPLETION -->
+<section class="theory-section" id="lessonCompletion">
+
+    <h2>Complete This Lesson</h2>
+
+    <p>
+        Mark this lesson as complete after studying the
+        Attack Surface topic. Your progress will be saved
+        to your CyberNexa account.
+    </p>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button
+            type="button"
+            class="lab-button"
+            data-lesson-progress
+            data-course-id="cybersecurity"
+            data-lesson-id="hashing"
+            data-dashboard-url="../learning-paths/cybersecurity/theory/hashing.html"
+            data-status-id="lessonCompletionStatus">
+
+            ✓ Mark Lesson Complete
+
+        </button>
+    </div>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite"
+        style="text-align: center; margin-top: 15px;">
+    </p>
+
+</section>
+            <!-- PRACTICAL LAB -->
+
+            <div class="lab-button-area">
+
+                <a
+                    href="../lab/hashing-lab.html"
+                    class="lab-button"
+                >
+                    🧪 Open Practical Lab
+                    <span>→</span>
+                </a>
+
+            </div>
+        </div>
+    </main>
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

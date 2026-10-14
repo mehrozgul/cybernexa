@@ -1,0 +1,2708 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DNS Practical Lab - CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL PAGE CONTROL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+
+
+        /* =====================================================
+           PRACTICAL LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%
+                ),
+                #020714;
+        }
+
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           LAB HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 42px;
+        }
+
+
+        .lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 13px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 43px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .lab-header h1 span {
+
+            color: #00bfff;
+        }
+
+
+        .lab-intro {
+
+            max-width: 760px;
+
+            margin: 17px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB INFORMATION GRID
+        ====================================================== */
+
+        .lab-info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 13px;
+
+            margin-bottom: 24px;
+        }
+
+
+        .lab-info-card {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            text-align: center;
+        }
+
+
+        .lab-info-card strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+
+        .lab-info-card span {
+
+            color: #00bfff;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           PROGRESS BAR
+        ====================================================== */
+
+        .lab-progress-box {
+
+            padding: 18px 20px;
+
+            margin-bottom: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+        }
+
+
+        .progress-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .progress-top strong {
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+
+        #progressText {
+
+            color: #00bfff;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .progress-track {
+
+            width: 100%;
+
+            height: 7px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255, 255, 255, 0.06);
+        }
+
+
+        .progress-fill {
+
+            width: 0%;
+
+            height: 100%;
+
+            border-radius: 20px;
+
+            background: #00bfff;
+
+            transition: width 0.3s ease;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 20px;
+
+            padding: 27px;
+
+            overflow: hidden;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.15);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 14px 38px rgba(0, 0, 0, 0.22);
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .lab-card:hover {
+
+                border-color:
+                    rgba(0, 191, 255, 0.34);
+
+                box-shadow:
+                    0 18px 42px rgba(0, 0, 0, 0.28),
+                    0 0 24px rgba(0, 191, 255, 0.06);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .lab-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 17px;
+        }
+
+
+        .lab-icon {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 41px;
+            height: 41px;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 9px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.06);
+
+            font-size: 17px;
+        }
+
+
+        .lab-card h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+
+            font-weight: 750;
+        }
+
+
+        .lab-card p {
+
+            margin: 0 0 13px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        .lab-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           OBJECTIVE BOX
+        ====================================================== */
+
+        .objective-box {
+
+            padding: 18px;
+
+            border-left:
+                3px solid #00bfff;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+        }
+
+
+        .objective-box strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+
+        .objective-box span {
+
+            color: #a9bad0;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           REQUIREMENTS
+        ====================================================== */
+
+        .requirements {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+
+        .requirement-item {
+
+            padding: 14px 16px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 9px;
+
+            color: #91a4bd;
+
+            background:
+                rgba(0, 191, 255, 0.03);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        .requirement-item strong {
+
+            color: #dbeafe;
+        }
+
+
+        /* =====================================================
+           STEP HEADER
+        ====================================================== */
+
+        .step-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-width: 36px;
+            height: 30px;
+
+            padding: 0 9px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.06);
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        .step-title {
+
+            flex: 1;
+
+            color: #ffffff;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .command-box {
+
+            position: relative;
+
+            margin-top: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            background:
+                #01050d;
+        }
+
+
+        .command-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 9px 12px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            background:
+                rgba(0, 191, 255, 0.035);
+        }
+
+
+        .command-label {
+
+            color: #8193aa;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .copy-button {
+
+            padding: 6px 10px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.20);
+
+            border-radius: 6px;
+
+            color: #bfeaff;
+
+            background:
+                rgba(0, 191, 255, 0.05);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .copy-button:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.50);
+
+            background:
+                rgba(0, 191, 255, 0.10);
+        }
+
+
+        .command-code {
+
+            margin: 0;
+
+            padding: 16px;
+
+            overflow-x: auto;
+
+            color: #dbeafe;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+
+        .prompt {
+
+            color: #00bfff;
+        }
+
+
+        /* =====================================================
+           OUTPUT BOX
+        ====================================================== */
+
+        .output-box {
+
+            margin-top: 15px;
+
+            padding: 16px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+
+        .output-title {
+
+            margin-bottom: 8px;
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .output-box pre {
+
+            margin: 0;
+
+            overflow-x: auto;
+
+            color: #8193aa;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+
+        /* =====================================================
+           EXPLANATION
+        ====================================================== */
+
+        .explanation-box {
+
+            margin-top: 15px;
+
+            padding: 15px 17px;
+
+            border-left:
+                2px solid rgba(0, 191, 255, 0.35);
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+
+        .explanation-box strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #ffffff;
+
+            font-size: 12px;
+        }
+
+
+        .explanation-box p {
+
+            margin: 0;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           CHECKBOX
+        ====================================================== */
+
+        .task-check {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin-top: 17px;
+
+            padding: 12px 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+
+            cursor: pointer;
+        }
+
+
+        .task-check input {
+
+            width: 16px;
+            height: 16px;
+
+            margin-top: 1px;
+
+            accent-color: #00bfff;
+
+            flex-shrink: 0;
+        }
+
+
+        .task-check span {
+
+            color: #91a4bd;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        .task-check input:checked + span {
+
+            color: #cfe8ff;
+        }
+
+
+        /* =====================================================
+           DNS RECORD TABLE
+        ====================================================== */
+
+        .record-table-wrap {
+
+            width: 100%;
+
+            margin-top: 18px;
+
+            overflow-x: auto;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 10px;
+        }
+
+
+        .record-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 500px;
+        }
+
+
+        .record-table th,
+        .record-table td {
+
+            padding: 12px 14px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.07);
+
+            text-align: left;
+
+            font-size: 12px;
+        }
+
+
+        .record-table th {
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            font-weight: 700;
+        }
+
+
+        .record-table td {
+
+            color: #91a4bd;
+        }
+
+
+        .record-table tr:last-child td {
+
+            border-bottom: none;
+        }
+
+
+        /* =====================================================
+           LAB RESULT
+        ====================================================== */
+
+        .result-box {
+
+            padding: 22px;
+
+            margin-top: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.17);
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.045),
+                    rgba(3, 16, 32, 0.90)
+                );
+        }
+
+
+        .result-box h3 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+
+        .result-box p {
+
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        .completion-message {
+
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.20);
+
+            border-radius: 8px;
+
+            color: #bfeaff;
+
+            background:
+                rgba(0, 191, 255, 0.05);
+
+            font-size: 12px;
+        }
+
+
+        .completion-message.show {
+
+            display: block;
+        }
+
+
+        /* =====================================================
+           HOW TO PRACTICE
+        ====================================================== */
+
+        .practice-list {
+
+            margin: 16px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .practice-list li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 23px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.07);
+
+            color: #91a4bd;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        .practice-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .practice-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 9px;
+
+            color: #00bfff;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           LAB NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-top: 30px;
+        }
+
+
+        .lab-nav-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.22);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .lab-nav-button:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            background:
+                rgba(0, 191, 255, 0.09);
+        }
+
+
+        .lab-nav-button span {
+
+            color: #00bfff;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           LIGHT SWEEP
+        ====================================================== */
+
+        .lab-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(0, 191, 255, 0.07),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(0, 191, 255, 0.07),
+                    transparent
+                );
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        .lab-card:hover::after {
+
+            animation:
+                labLightSweep 0.75s ease forwards;
+        }
+
+
+        @keyframes labLightSweep {
+
+            0% {
+
+                left: -120%;
+
+                opacity: 0;
+            }
+
+            20% {
+
+                opacity: 1;
+            }
+
+            80% {
+
+                opacity: 1;
+            }
+
+            100% {
+
+                left: 140%;
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-page {
+
+                padding: 55px 15px 65px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .lab-info-grid {
+
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 55px;
+            }
+
+
+            .lab-header {
+
+                margin-bottom: 32px;
+            }
+
+
+            .lab-category {
+
+                font-size: 10px;
+
+                letter-spacing: 1.7px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 29px;
+
+                line-height: 1.25;
+            }
+
+
+            .lab-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .lab-info-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 9px;
+            }
+
+
+            .lab-info-card {
+
+                padding: 14px;
+            }
+
+
+            .lab-progress-box {
+
+                padding: 15px;
+            }
+
+
+            .lab-card {
+
+                padding: 21px 18px;
+
+                margin-bottom: 15px;
+
+                border-radius: 12px;
+            }
+
+
+            .lab-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 14px;
+            }
+
+
+            .lab-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 15px;
+            }
+
+
+            .lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .lab-card p {
+
+                font-size: 12.5px;
+
+                line-height: 1.8;
+            }
+
+
+            .requirements {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .step-header {
+
+                align-items: flex-start;
+            }
+
+
+            .command-code {
+
+                font-size: 11px;
+            }
+
+
+            .record-table {
+
+                min-width: 470px;
+            }
+
+
+            .lab-navigation {
+
+                flex-direction: column;
+            }
+
+
+            .lab-nav-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+
+
+            .lab-card::after {
+
+                animation:
+                    mobileLabSweep 3.5s ease-in-out infinite;
+            }
+        }
+
+
+        @keyframes mobileLabSweep {
+
+            0% {
+
+                left: -120%;
+
+                opacity: 0;
+            }
+
+            20% {
+
+                opacity: 0;
+            }
+
+            35% {
+
+                opacity: 1;
+            }
+
+            55% {
+
+                opacity: 1;
+            }
+
+            70% {
+
+                left: 140%;
+
+                opacity: 0;
+            }
+
+            100% {
+
+                left: 140%;
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .lab-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .lab-card {
+
+                padding: 18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PRACTICAL LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 LAB HEADER
+            ================================================== -->
+
+            <header class="lab-header">
+
+                <div class="lab-category">
+                    NETWORKING PRACTICAL LAB
+                </div>
+
+                <h1>
+                    <span>DNS</span> Practical Lab
+                </h1>
+
+                <p class="lab-intro">
+                    Practice DNS name resolution using Windows
+                    networking commands. Learn how to query DNS,
+                    inspect records, clear the DNS cache and
+                    troubleshoot basic DNS resolution problems.
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LAB INFORMATION
+            ================================================== -->
+
+            <section class="lab-info-grid">
+
+                <div class="lab-info-card">
+
+                    <strong>
+                        Lab
+                    </strong>
+
+                    <span>
+                        09
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info-card">
+
+                    <strong>
+                        Difficulty
+                    </strong>
+
+                    <span>
+                        Beginner
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info-card">
+
+                    <strong>
+                        Platform
+                    </strong>
+
+                    <span>
+                        Windows
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PROGRESS
+            ================================================== -->
+
+            <section class="lab-progress-box">
+
+                <div class="progress-top">
+
+                    <strong>
+                        Lab Progress
+                    </strong>
+
+                    <span id="progressText">
+                        0 / 6 completed
+                    </span>
+
+                </div>
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill">
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 OBJECTIVE
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        ◎
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+
+                <div class="objective-box">
+
+                    <strong>
+                        What will you learn?
+                    </strong>
+
+                    <span>
+                        In this lab you will perform practical DNS
+                        queries, identify DNS records, inspect your
+                        DNS configuration, clear the local DNS cache
+                        and verify DNS name resolution using Windows
+                        command-line tools.
+                    </span>
+
+                </div>
+
+
+                <div class="requirements">
+
+                    <div class="requirement-item">
+
+                        <strong>
+                            Requirement:
+                        </strong>
+
+                        Windows PC or laptop
+
+                    </div>
+
+
+                    <div class="requirement-item">
+
+                        <strong>
+                            Tool:
+                        </strong>
+
+                        Command Prompt
+
+                    </div>
+
+
+                    <div class="requirement-item">
+
+                        <strong>
+                            Internet:
+                        </strong>
+
+                        Recommended
+
+                    </div>
+
+
+                    <div class="requirement-item">
+
+                        <strong>
+                            Knowledge:
+                        </strong>
+
+                        Basic Networking
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 01
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <span class="step-number">
+                        STEP 01
+                    </span>
+
+                    <div class="step-title">
+                        Check Your DNS Configuration
+                    </div>
+
+                </div>
+
+
+                <p>
+                    First, check which DNS server your computer
+                    is currently using.
+                </p>
+
+
+                <div class="command-box">
+
+                    <div class="command-top">
+
+                        <span class="command-label">
+                            Command Prompt
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this)">
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre class="command-code">ipconfig /all</pre>
+
+                </div>
+
+
+                <div class="output-box">
+
+                    <div class="output-title">
+                        Look for:
+                    </div>
+
+                    <pre>DNS Servers . . . . . . . . . . : 192.168.1.1</pre>
+
+                </div>
+
+
+                <div class="explanation-box">
+
+                    <strong>
+                        What does this show?
+                    </strong>
+
+                    <p>
+                        The DNS Servers field shows the DNS server
+                        configured for your network connection.
+                        Your actual DNS server address may be different.
+                    </p>
+
+                </div>
+
+
+                <label class="task-check">
+
+                    <input
+                        type="checkbox"
+                        class="lab-checkbox">
+
+                    <span>
+                        I checked my computer's DNS server configuration.
+                    </span>
+
+                </label>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 02
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <span class="step-number">
+                        STEP 02
+                    </span>
+
+                    <div class="step-title">
+                        Perform a Basic DNS Lookup
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Use <strong>nslookup</strong> to find the IP
+                    address associated with a domain name.
+                </p>
+
+
+                <div class="command-box">
+
+                    <div class="command-top">
+
+                        <span class="command-label">
+                            Command Prompt
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this)">
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre class="command-code">nslookup example.com</pre>
+
+                </div>
+
+
+                <div class="output-box">
+
+                    <div class="output-title">
+                        Example Output
+                    </div>
+
+                    <pre>Server:  your-dns-server
+Address:  192.168.1.1
+
+Non-authoritative answer:
+Name:    example.com
+Address: 93.184.216.34</pre>
+
+                </div>
+
+
+                <div class="explanation-box">
+
+                    <strong>
+                        What happened?
+                    </strong>
+
+                    <p>
+                        The DNS server received the query for
+                        example.com and returned the IP address
+                        associated with the domain.
+                    </p>
+
+                </div>
+
+
+                <label class="task-check">
+
+                    <input
+                        type="checkbox"
+                        class="lab-checkbox">
+
+                    <span>
+                        I successfully performed a DNS lookup.
+                    </span>
+
+                </label>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 03
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <span class="step-number">
+                        STEP 03
+                    </span>
+
+                    <div class="step-title">
+                        Query an A Record
+                    </div>
+
+                </div>
+
+
+                <p>
+                    An A record maps a domain name to an IPv4 address.
+                    Use nslookup to specifically request an A record.
+                </p>
+
+
+                <div class="command-box">
+
+                    <div class="command-top">
+
+                        <span class="command-label">
+                            Command Prompt
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this)">
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre class="command-code">nslookup -type=A example.com</pre>
+
+                </div>
+
+
+                <div class="explanation-box">
+
+                    <strong>
+                        Key Concept
+                    </strong>
+
+                    <p>
+                        The A record is used for IPv4 address
+                        resolution. The returned address can be
+                        used by applications to reach the destination
+                        server.
+                    </p>
+
+                </div>
+
+
+                <label class="task-check">
+
+                    <input
+                        type="checkbox"
+                        class="lab-checkbox">
+
+                    <span>
+                        I queried an A record and understood its purpose.
+                    </span>
+
+                </label>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 04
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <span class="step-number">
+                        STEP 04
+                    </span>
+
+                    <div class="step-title">
+                        Query an MX Record
+                    </div>
+
+                </div>
+
+
+                <p>
+                    MX records identify mail servers responsible
+                    for receiving email for a domain.
+                </p>
+
+
+                <div class="command-box">
+
+                    <div class="command-top">
+
+                        <span class="command-label">
+                            Command Prompt
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this)">
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre class="command-code">nslookup -type=MX example.com</pre>
+
+                </div>
+
+
+                <div class="explanation-box">
+
+                    <strong>
+                        Why is this useful?
+                    </strong>
+
+                    <p>
+                        DNS record queries help administrators and
+                        security learners understand which services
+                        are associated with a domain.
+                    </p>
+
+                </div>
+
+
+                <label class="task-check">
+
+                    <input
+                        type="checkbox"
+                        class="lab-checkbox">
+
+                    <span>
+                        I performed an MX record lookup.
+                    </span>
+
+                </label>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 05
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <span class="step-number">
+                        STEP 05
+                    </span>
+
+                    <div class="step-title">
+                        View and Clear DNS Cache
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Windows temporarily stores DNS responses in a
+                    local DNS cache. You can inspect and clear this
+                    cache using Command Prompt.
+                </p>
+
+
+                <div class="command-box">
+
+                    <div class="command-top">
+
+                        <span class="command-label">
+                            View DNS Cache
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this)">
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre class="command-code">ipconfig /displaydns</pre>
+
+                </div>
+
+
+                <div class="command-box">
+
+                    <div class="command-top">
+
+                        <span class="command-label">
+                            Clear DNS Cache
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this)">
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre class="command-code">ipconfig /flushdns</pre>
+
+                </div>
+
+
+                <div class="output-box">
+
+                    <div class="output-title">
+                        Typical Flush Result
+                    </div>
+
+                    <pre>Windows IP Configuration
+
+Successfully flushed the DNS Resolver Cache.</pre>
+
+                </div>
+
+
+                <div class="explanation-box">
+
+                    <strong>
+                        Troubleshooting Use
+                    </strong>
+
+                    <p>
+                        Clearing the DNS cache can help when an old
+                        or incorrect cached DNS response is causing
+                        name-resolution problems.
+                    </p>
+
+                </div>
+
+
+                <label class="task-check">
+
+                    <input
+                        type="checkbox"
+                        class="lab-checkbox">
+
+                    <span>
+                        I viewed and cleared the DNS cache.
+                    </span>
+
+                </label>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 06
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <span class="step-number">
+                        STEP 06
+                    </span>
+
+                    <div class="step-title">
+                        Test DNS Resolution
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Finally, verify that your system can resolve
+                    a domain name correctly.
+                </p>
+
+
+                <div class="command-box">
+
+                    <div class="command-top">
+
+                        <span class="command-label">
+                            Command Prompt
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this)">
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre class="command-code">nslookup google.com</pre>
+
+                </div>
+
+
+                <div class="output-box">
+
+                    <div class="output-title">
+                        Expected Result
+                    </div>
+
+                    <pre>Server:  your-dns-server
+Address:  your-dns-server-address
+
+Name:    google.com
+Address: returned-ip-address</pre>
+
+                </div>
+
+
+                <div class="explanation-box">
+
+                    <strong>
+                        Result
+                    </strong>
+
+                    <p>
+                        If nslookup returns an IP address for the
+                        domain, DNS name resolution is working.
+                        If the lookup fails, the DNS configuration
+                        or network connection should be investigated.
+                    </p>
+
+                </div>
+
+
+                <label class="task-check">
+
+                    <input
+                        type="checkbox"
+                        class="lab-checkbox">
+
+                    <span>
+                        I successfully tested DNS resolution.
+                    </span>
+
+                </label>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 COMMON DNS RECORDS
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        ▣
+                    </div>
+
+                    <h2>
+                        Common DNS Records
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    Use these record types as a quick reference
+                    while performing DNS queries.
+                </p>
+
+
+                <div class="record-table-wrap">
+
+                    <table class="record-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Record
+                                </th>
+
+                                <th>
+                                    Purpose
+                                </th>
+
+                                <th>
+                                    Example Query
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    A
+                                </td>
+
+                                <td>
+                                    Domain → IPv4
+                                </td>
+
+                                <td>
+                                    nslookup -type=A example.com
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    AAAA
+                                </td>
+
+                                <td>
+                                    Domain → IPv6
+                                </td>
+
+                                <td>
+                                    nslookup -type=AAAA example.com
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    MX
+                                </td>
+
+                                <td>
+                                    Mail server
+                                </td>
+
+                                <td>
+                                    nslookup -type=MX example.com
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    CNAME
+                                </td>
+
+                                <td>
+                                    Domain alias
+                                </td>
+
+                                <td>
+                                    nslookup -type=CNAME example.com
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL TROUBLESHOOTING
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        ⚙
+                    </div>
+
+                    <h2>
+                        DNS Troubleshooting Practice
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    If a website name is not resolving, follow these
+                    basic troubleshooting steps.
+                </p>
+
+
+                <ul class="practice-list">
+
+                    <li>
+                        Check the computer's DNS server using
+                        <strong>ipconfig /all</strong>.
+                    </li>
+
+                    <li>
+                        Test the domain using
+                        <strong>nslookup</strong>.
+                    </li>
+
+                    <li>
+                        Check whether the DNS server responds.
+                    </li>
+
+                    <li>
+                        Clear the local DNS cache using
+                        <strong>ipconfig /flushdns</strong>.
+                    </li>
+
+                    <li>
+                        Perform the DNS lookup again.
+                    </li>
+
+                    <li>
+                        Compare the result with another working
+                        DNS configuration if necessary.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB COMPLETION
+            ================================================== -->
+
+            <section class="result-box">
+
+                <h3>
+                    Complete the DNS Practical Lab
+                </h3>
+
+                <p>
+                    Complete all six practical tasks above.
+                    Your progress will be tracked automatically.
+                </p>
+
+
+                <div
+                    class="completion-message"
+                    id="completionMessage">
+
+                    ✓ DNS Practical Lab Completed Successfully.
+                    You have completed all required tasks.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="lab-navigation">
+
+                <a
+                    href="lab08.html"
+                    class="lab-nav-button">
+
+                    <span>
+                        ←
+                    </span>
+
+                    Previous: Lab 
+
+                </a>
+
+
+                <a
+                    href="../theory/dhcp.html"
+                    class="lab-nav-button">
+
+                    ☰ DHCP
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+    <script>
+
+        /* =====================================================
+           COPY COMMAND
+        ====================================================== */
+
+        function copyCommand(button) {
+
+            const commandBox =
+                button.closest(".command-box");
+
+            const code =
+                commandBox.querySelector(".command-code");
+
+            if (!code) return;
+
+            const text =
+                code.textContent.trim();
+
+            navigator.clipboard.writeText(text)
+                .then(function () {
+
+                    const oldText =
+                        button.textContent;
+
+                    button.textContent =
+                        "Copied!";
+
+                    setTimeout(function () {
+
+                        button.textContent =
+                            oldText;
+
+                    }, 1200);
+
+                })
+                .catch(function () {
+
+                    button.textContent =
+                        "Copy Failed";
+
+                    setTimeout(function () {
+
+                        button.textContent =
+                            "Copy";
+
+                    }, 1200);
+
+                });
+
+        }
+
+
+        /* =====================================================
+           LAB PROGRESS
+        ====================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const checkboxes =
+                    document.querySelectorAll(
+                        ".lab-checkbox"
+                    );
+
+                const progressText =
+                    document.getElementById(
+                        "progressText"
+                    );
+
+                const progressFill =
+                    document.getElementById(
+                        "progressFill"
+                    );
+
+                const completionMessage =
+                    document.getElementById(
+                        "completionMessage"
+                    );
+
+
+                function updateProgress() {
+
+                    const total =
+                        checkboxes.length;
+
+                    let completed = 0;
+
+
+                    checkboxes.forEach(
+                        function (checkbox) {
+
+                            if (checkbox.checked) {
+                                completed++;
+                            }
+
+                        }
+                    );
+
+
+                    const percentage =
+                        total === 0
+                            ? 0
+                            : (completed / total) * 100;
+
+
+                    progressFill.style.width =
+                        percentage + "%";
+
+
+                    progressText.textContent =
+                        completed +
+                        " / " +
+                        total +
+                        " completed";
+
+
+                    if (completed === total) {
+
+                        completionMessage.classList.add(
+                            "show"
+                        );
+
+                    } else {
+
+                        completionMessage.classList.remove(
+                            "show"
+                        );
+
+                    }
+
+                }
+
+
+                checkboxes.forEach(
+                    function (checkbox) {
+
+                        checkbox.addEventListener(
+                            "change",
+                            updateProgress
+                        );
+
+                    }
+                );
+
+
+                updateProgress();
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

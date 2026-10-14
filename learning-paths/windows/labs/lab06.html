@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberNexa | Lab 06: Windows Services Lab</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .windows-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(37,99,235,.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(14,165,233,.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .windows-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+
+        .windows-lab-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+        .windows-lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #60a5fa;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .windows-lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+        .windows-lab-header h1 span {
+
+            color: #60a5fa;
+        }
+
+        .windows-lab-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+        .windows-lab-badges {
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 22px;
+        }
+
+        .windows-lab-badge {
+
+            padding: 8px 13px;
+
+            border: 1px solid rgba(96,165,250,.20);
+
+            border-radius: 20px;
+
+            color: #bfdbfe;
+
+            background: rgba(96,165,250,.055);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        /* CARD */
+
+        .windows-lab-card {
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(96,165,250,.15);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7,22,38,.98),
+                    rgba(3,13,20,.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,.28);
+
+            transition: .25s ease;
+        }
+
+        .windows-lab-card:hover {
+
+            border-color: rgba(96,165,250,.40);
+
+            box-shadow:
+                0 18px 45px rgba(0,0,0,.32),
+                0 0 30px rgba(37,99,235,.08);
+
+            transform: translateY(-2px);
+        }
+
+        .windows-lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .windows-lab-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: 1px solid rgba(96,165,250,.30);
+
+            border-radius: 10px;
+
+            color: #60a5fa;
+
+            background: rgba(96,165,250,.07);
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+        .windows-lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+        .windows-lab-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+        .windows-lab-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+        /* OBJECTIVES */
+
+        .windows-objectives {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+        .windows-objective {
+
+            padding: 18px;
+
+            border: 1px solid rgba(96,165,250,.14);
+
+            border-radius: 10px;
+
+            background: rgba(96,165,250,.035);
+        }
+
+        .windows-objective strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #93c5fd;
+
+            font-size: 13px;
+        }
+
+        .windows-objective span {
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+        /* STEPS */
+
+        .windows-step {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(96,165,250,.13);
+
+            border-radius: 11px;
+
+            background: rgba(96,165,250,.035);
+        }
+
+        .windows-step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 30px;
+
+            height: 30px;
+
+            margin-bottom: 12px;
+
+            border-radius: 50%;
+
+            color: #dbeafe;
+
+            background: rgba(37,99,235,.25);
+
+            border: 1px solid rgba(96,165,250,.35);
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        /* TERMINAL */
+
+        .windows-terminal {
+
+            margin-top: 15px;
+
+            padding: 18px 20px;
+
+            border: 1px solid rgba(96,165,250,.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+        .windows-terminal-title {
+
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .windows-terminal code {
+
+            color: #93c5fd;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+        /* NOTE */
+
+        .windows-note {
+
+            padding: 18px 20px;
+
+            margin-top: 20px;
+
+            border-left: 3px solid #60a5fa;
+
+            border-radius: 0 10px 10px 0;
+
+            background: rgba(96,165,250,.055);
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        .windows-note strong {
+
+            color: #f8fafc;
+        }
+
+        /* CHECKLIST */
+
+        .windows-checklist {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+        .windows-checklist li {
+
+            position: relative;
+
+            padding: 10px 0 10px 25px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(96,165,250,.07);
+        }
+
+        .windows-checklist li::before {
+
+            content: "□";
+
+            position: absolute;
+
+            left: 0;
+
+            color: #60a5fa;
+
+            font-weight: 700;
+        }
+
+        /* NAVIGATION */
+
+        .windows-lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+        .windows-lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(96,165,250,.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background: rgba(96,165,250,.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: .2s ease;
+        }
+
+        .windows-lab-button:hover {
+
+            border-color: rgba(96,165,250,.65);
+
+            background: rgba(96,165,250,.10);
+
+            transform: translateY(-1px);
+        }
+
+        .windows-lab-button span {
+
+            color: #60a5fa;
+
+            font-size: 17px;
+        }
+
+        @media(max-width:800px) {
+
+            .windows-lab-page {
+
+                padding: 55px 15px 65px;
+            }
+
+            .windows-lab-header h1 {
+
+                font-size: 36px;
+            }
+
+        }
+
+        @media(max-width:600px) {
+
+            .windows-lab-page {
+
+                padding: 45px 12px 55px;
+            }
+
+            .windows-lab-header h1 {
+
+                font-size: 30px;
+            }
+
+            .windows-lab-card {
+
+                padding: 21px 18px;
+            }
+
+            .windows-objectives {
+
+                grid-template-columns: 1fr;
+            }
+
+            .windows-lab-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .windows-lab-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="windows-lab-page">
+
+<div class="windows-lab-container">
+
+
+<header class="windows-lab-header">
+
+    <div class="windows-lab-category">
+        WINDOWS PRACTICAL LAB
+    </div>
+
+    <h1>Windows Services <span>Lab 06</span></h1>
+
+    <p class="windows-lab-intro">
+
+        Practice identifying, inspecting and managing Windows
+        Services using the Services console, Command Prompt
+        and PowerShell.
+
+    </p>
+
+
+    <div class="windows-lab-badges">
+
+        <div class="windows-lab-badge">
+            Beginner
+        </div>
+
+        <div class="windows-lab-badge">
+            Windows
+        </div>
+
+        <div class="windows-lab-badge">
+            Services
+        </div>
+
+        <div class="windows-lab-badge">
+            Hands-on
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- LAB OBJECTIVES -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            ✓
+        </div>
+
+        <h2>
+            Lab Objectives
+        </h2>
+
+    </div>
+
+    <p>
+        By completing this lab, you will practice the basic
+        Windows Services concepts covered in the theory section.
+    </p>
+
+
+    <div class="windows-objectives">
+
+        <div class="windows-objective">
+
+            <strong>
+                Objective 01
+            </strong>
+
+            <span>
+                Open the Windows Services management console.
+            </span>
+
+        </div>
+
+
+        <div class="windows-objective">
+
+            <strong>
+                Objective 02
+            </strong>
+
+            <span>
+                Identify service names and current states.
+            </span>
+
+        </div>
+
+
+        <div class="windows-objective">
+
+            <strong>
+                Objective 03
+            </strong>
+
+            <span>
+                Query services using Command Prompt.
+            </span>
+
+        </div>
+
+
+        <div class="windows-objective">
+
+            <strong>
+                Objective 04
+            </strong>
+
+            <span>
+                Inspect services using PowerShell.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 1 -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            01
+        </div>
+
+        <h2>
+            Open Services Console
+        </h2>
+
+    </div>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            1
+        </div>
+
+        <p>
+
+            Press:
+
+            <strong>
+                Windows + R
+            </strong>
+
+            to open the Run dialog.
+
+        </p>
+
+    </div>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            2
+        </div>
+
+        <p>
+
+            Enter the following command:
+
+        </p>
+
+
+        <div class="windows-terminal">
+
+            <span class="windows-terminal-title">
+                Run
+            </span>
+
+            <code>
+                services.msc
+            </code>
+
+        </div>
+
+    </div>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            3
+        </div>
+
+        <p>
+
+            Press Enter. The Windows Services management
+            console should open.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 2 -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            02
+        </div>
+
+        <h2>
+            Inspect a Service
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        In the Services window, select a service such as
+        <strong>Windows Update</strong> if it is available.
+
+    </p>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            1
+        </div>
+
+        <p>
+            Right-click the selected service.
+        </p>
+
+    </div>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            2
+        </div>
+
+        <p>
+            Select <strong>Properties</strong>.
+        </p>
+
+    </div>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            3
+        </div>
+
+        <p>
+
+            Observe the service name, description,
+            current status and startup type.
+
+        </p>
+
+    </div>
+
+
+    <div class="windows-note">
+
+        <strong>Important:</strong>
+
+        Do not change or disable system services during this
+        beginner lab unless you understand the effect and are
+        working in a safe test environment.
+
+    </div>
+
+</section>
+
+
+<!-- STEP 3 CMD -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            CMD
+        </div>
+
+        <h2>
+            Query Services with CMD
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Open Command Prompt and run the following command:
+
+    </p>
+
+
+    <div class="windows-terminal">
+
+        <span class="windows-terminal-title">
+            Command Prompt
+        </span>
+
+        <code>
+            sc query
+        </code>
+
+    </div>
+
+
+    <p>
+
+        This command displays information about Windows
+        Services.
+
+    </p>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            1
+        </div>
+
+        <p>
+            Open Command Prompt.
+        </p>
+
+    </div>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            2
+        </div>
+
+        <p>
+            Run <strong>sc query</strong>.
+        </p>
+
+    </div>
+
+
+    <div class="windows-step">
+
+        <div class="windows-step-number">
+            3
+        </div>
+
+        <p>
+            Observe the service names and their states.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- STEP 4 -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            CMD
+        </div>
+
+        <h2>
+            Query a Specific Service
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Use the following command to inspect the Windows
+        Update service:
+
+    </p>
+
+
+    <div class="windows-terminal">
+
+        <span class="windows-terminal-title">
+            Command Prompt
+        </span>
+
+        <code>
+            sc query wuauserv
+        </code>
+
+    </div>
+
+
+    <p>
+
+        Observe the service state in the command output.
+
+    </p>
+
+</section>
+
+
+<!-- STEP 5 POWERSHELL -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            PS
+        </div>
+
+        <h2>
+            Inspect Services with PowerShell
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Open PowerShell and use the following command:
+
+    </p>
+
+
+    <div class="windows-terminal">
+
+        <span class="windows-terminal-title">
+            PowerShell
+        </span>
+
+        <code>
+            Get-Service
+        </code>
+
+    </div>
+
+
+    <p>
+
+        This command displays the services available on
+        the Windows system.
+
+    </p>
+
+</section>
+
+
+<!-- STEP 6 SPECIFIC -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            PS
+        </div>
+
+        <h2>
+            Inspect a Specific Service
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Run:
+
+    </p>
+
+
+    <div class="windows-terminal">
+
+        <span class="windows-terminal-title">
+            PowerShell
+        </span>
+
+        <code>
+            Get-Service wuauserv
+        </code>
+
+    </div>
+
+
+    <p>
+
+        Identify the service name and current status.
+
+    </p>
+
+
+    <div class="windows-note">
+
+        <strong>Expected learning:</strong>
+
+        You should be able to distinguish between a service
+        that is currently running and one that is stopped.
+
+    </div>
+
+</section>
+
+
+<!-- STEP 7 -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            🔎
+        </div>
+
+        <h2>
+            Filter Running Services
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        PowerShell can also be used to display services
+        according to their status.
+
+    </p>
+
+
+    <div class="windows-terminal">
+
+        <span class="windows-terminal-title">
+            PowerShell
+        </span>
+
+        <code>
+            Get-Service | Where-Object {$_.Status -eq "Running"}
+        </code>
+
+    </div>
+
+
+    <p>
+
+        The command filters the service list and displays
+        services whose status is Running.
+
+    </p>
+
+</section>
+
+
+<!-- SECURITY -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            🔐
+        </div>
+
+        <h2>
+            Security Observation
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        From a cybersecurity perspective, understanding
+        services helps an analyst determine what background
+        functionality is active on a Windows system.
+
+    </p>
+
+
+    <ul class="windows-checklist">
+
+        <li>
+            Identify services that are currently running.
+        </li>
+
+        <li>
+            Check whether the service is required.
+        </li>
+
+        <li>
+            Observe the service startup configuration.
+        </li>
+
+        <li>
+            Understand which services provide networking or
+            system functionality.
+        </li>
+
+        <li>
+            Investigate unexpected service changes in an
+            authorized security environment.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- LAB TASK -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            🧪
+        </div>
+
+        <h2>
+            Final Lab Task
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Complete the following tasks on your Windows machine:
+
+    </p>
+
+
+    <ul class="windows-checklist">
+
+        <li>
+            Open services.msc.
+        </li>
+
+        <li>
+            Find Windows Update.
+        </li>
+
+        <li>
+            Record its current status.
+        </li>
+
+        <li>
+            Record its startup type.
+        </li>
+
+        <li>
+            Run sc query from Command Prompt.
+        </li>
+
+        <li>
+            Run Get-Service from PowerShell.
+        </li>
+
+        <li>
+            Run Get-Service wuauserv.
+        </li>
+
+        <li>
+            Identify at least three running services.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- COMPLETION -->
+
+<section class="windows-lab-card">
+
+    <div class="windows-lab-heading">
+
+        <div class="windows-lab-icon">
+            ✓
+        </div>
+
+        <h2>
+            Lab Completion Checklist
+        </h2>
+
+    </div>
+
+
+    <ul class="windows-checklist">
+
+        <li>
+            I understand what a Windows Service is.
+        </li>
+
+        <li>
+            I can open services.msc.
+        </li>
+
+        <li>
+            I can identify a service's status.
+        </li>
+
+        <li>
+            I can query services using CMD.
+        </li>
+
+        <li>
+            I can query services using PowerShell.
+        </li>
+
+        <li>
+            I understand why services matter in cybersecurity.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- NAVIGATION -->
+
+<div class="windows-lab-navigation">
+
+                <a
+                    href="lab05.html"
+                    class="windows-lab-button"
+                >
+                    <span>←</span>
+                    <strong>Previous: Lab 05: Users & Groups</strong>
+                </a>
+
+                <a
+                    href="../theory/task-manager.html"
+                    class="windows-lab-button theory"
+                >
+                    <span>📘</span>
+                    <strong>Theory: Task Manager</strong>
+                </a>
+
+                <!-- <a
+                    href="lab07.html"
+                    class="windows-lab-button"
+                >
+                    <strong>Next: Lab 07: Task Manager</strong>
+                    <span>→</span>
+                </a> -->
+
+            </div>
+
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<script src="../../../js/navbar.js"></script>
+
+
+</body>
+
+</html>

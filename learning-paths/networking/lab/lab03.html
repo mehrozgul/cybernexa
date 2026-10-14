@@ -1,0 +1,1931 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TCP/IP Model Practical Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            width: 100%;
+            background: #020714;
+        }
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%
+                ),
+                #020714;
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+        .lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 12px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 42px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+        .lab-header h1 span {
+
+            color: #00bfff;
+        }
+
+        .lab-intro {
+
+            max-width: 760px;
+
+            margin: 15px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ====================================================== */
+
+        .lab-progress {
+
+            margin-bottom: 25px;
+
+            padding: 15px 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.035);
+        }
+
+        .lab-progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 9px;
+        }
+
+        .lab-progress-title {
+
+            color: #ffffff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .lab-progress-count {
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .lab-progress-track {
+
+            width: 100%;
+
+            height: 4px;
+
+            overflow: hidden;
+
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.10);
+        }
+
+        .lab-progress-bar {
+
+            width: 50%;
+
+            height: 100%;
+
+            background: linear-gradient(
+                90deg,
+                #00bfff,
+                #60a5fa
+            );
+        }
+
+        /* =====================================================
+           LAB INFO
+        ====================================================== */
+
+        .lab-info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 22px;
+        }
+
+        .lab-info-card {
+
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+        }
+
+        .lab-info-icon {
+
+            margin-bottom: 7px;
+
+            color: #00bfff;
+
+            font-size: 18px;
+        }
+
+        .lab-info-label {
+
+            margin-bottom: 4px;
+
+            color: #71849a;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.3px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-info-value {
+
+            color: #e5f6ff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           CONTENT CARD
+        ====================================================== */
+
+        .lab-card {
+
+            width: 100%;
+
+            margin-bottom: 18px;
+
+            padding: 27px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.20);
+        }
+
+        .lab-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 16px;
+        }
+
+        .lab-icon {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 34px;
+
+            height: 34px;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 8px;
+
+            color: #00bfff;
+
+            background: rgba(0, 191, 255, 0.06);
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+        .lab-card-heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 17px;
+
+            font-weight: 750;
+        }
+
+        .lab-card p {
+
+            margin: 0 0 14px;
+
+            color: #a5b5c7;
+
+            font-size: 11px;
+
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           OBJECTIVE
+        ====================================================== */
+
+        .objective-box {
+
+            padding: 17px;
+
+            border-left: 3px solid #00bfff;
+
+            border-radius: 8px;
+
+            background: rgba(0, 191, 255, 0.045);
+        }
+
+        .objective-box strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+        }
+
+        .objective-box span {
+
+            color: #a5b5c7;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           TCP/IP LAYERS
+        ====================================================== */
+
+        .osi-layer-list {
+
+            display: grid;
+
+            gap: 9px;
+
+            margin-top: 15px;
+        }
+
+        .osi-layer {
+
+            display: grid;
+
+            grid-template-columns: 42px 1fr auto;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 13px;
+
+            border: 1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 8px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .osi-number {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 30px;
+
+            height: 30px;
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background: rgba(0, 191, 255, 0.08);
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .osi-content h3 {
+
+            margin: 0 0 3px;
+
+            color: #f8fafc;
+
+            font-size: 11px;
+        }
+
+        .osi-content p {
+
+            margin: 0;
+
+            color: #91a4bd;
+
+            font-size: 9px;
+
+            line-height: 1.5;
+        }
+
+        .osi-tag {
+
+            color: #67e8f9;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            text-align: right;
+        }
+
+        /* =====================================================
+           PRACTICAL STEPS
+        ====================================================== */
+
+        .step {
+
+            margin-bottom: 15px;
+
+            padding: 16px;
+
+            border: 1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 9px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .step:last-child {
+
+            margin-bottom: 0;
+        }
+
+        .step-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 9px;
+        }
+
+        .step-number {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 25px;
+
+            height: 25px;
+
+            border-radius: 6px;
+
+            color: #020714;
+
+            background: #00bfff;
+
+            font-size: 9px;
+
+            font-weight: 900;
+        }
+
+        .step-title h3 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 12px;
+        }
+
+        .step p {
+
+            margin-bottom: 10px;
+        }
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .command-box {
+
+            position: relative;
+
+            margin: 10px 0;
+
+            padding: 14px 45px 14px 14px;
+
+            overflow-x: auto;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 8px;
+
+            background: #010a12;
+        }
+
+        .command-box code {
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 10px;
+
+            white-space: nowrap;
+        }
+
+        .copy-button {
+
+            position: absolute;
+
+            top: 8px;
+
+            right: 8px;
+
+            padding: 5px 8px;
+
+            border: 1px solid rgba(0, 191, 255, 0.20);
+
+            border-radius: 5px;
+
+            color: #67e8f9;
+
+            background: rgba(0, 191, 255, 0.05);
+
+            font-size: 8px;
+
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+
+            background: rgba(0, 191, 255, 0.12);
+        }
+
+        /* =====================================================
+           OUTPUT
+        ====================================================== */
+
+        .output-box {
+
+            margin-top: 10px;
+
+            padding: 14px;
+
+            border: 1px solid rgba(34, 197, 94, 0.15);
+
+            border-radius: 8px;
+
+            background: rgba(34, 197, 94, 0.025);
+        }
+
+        .output-label {
+
+            margin-bottom: 7px;
+
+            color: #86efac;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .output-box pre {
+
+            margin: 0;
+
+            overflow-x: auto;
+
+            color: #b8f7ca;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 9px;
+
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           CHECKLIST
+        ====================================================== */
+
+        .checklist {
+
+            display: grid;
+
+            gap: 8px;
+
+            margin-top: 14px;
+        }
+
+        .check-item {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 9px;
+
+            padding: 10px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 7px;
+
+            background: rgba(0, 191, 255, 0.025);
+
+            cursor: pointer;
+        }
+
+        .check-item input {
+
+            margin-top: 2px;
+
+            accent-color: #00bfff;
+
+            cursor: pointer;
+        }
+
+        .check-item span {
+
+            color: #a5b5c7;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+        }
+
+        .check-item:has(input:checked) span {
+
+            color: #67e8f9;
+
+        }
+
+        /* =====================================================
+           OBSERVATION
+        ====================================================== */
+
+        .observation-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
+            margin-top: 13px;
+        }
+
+        .observation-card {
+
+            padding: 14px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 8px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .observation-card h3 {
+
+            margin: 0 0 6px;
+
+            color: #67e8f9;
+
+            font-size: 10px;
+        }
+
+        .observation-card p {
+
+            margin: 0;
+
+            font-size: 9px;
+        }
+
+        /* =====================================================
+           IMPORTANT NOTE
+        ====================================================== */
+
+        .lab-note {
+
+            margin-top: 18px;
+
+            padding: 17px;
+
+            border: 1px solid rgba(96, 165, 250, 0.18);
+
+            border-radius: 9px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .lab-note h2 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .lab-note p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion-box {
+
+            margin-top: 18px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(34, 197, 94, 0.20);
+
+            border-radius: 10px;
+
+            background: rgba(34, 197, 94, 0.035);
+
+            text-align: center;
+        }
+
+        .completion-box h2 {
+
+            margin: 0 0 7px;
+
+            color: #86efac;
+
+            font-size: 14px;
+        }
+
+        .completion-box p {
+
+            margin: 0;
+
+            color: #9fb3a5;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            gap: 9px;
+
+            margin-top: 22px;
+        }
+
+        .lab-button {
+
+            flex: 1;
+
+            padding: 13px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background: rgba(0, 191, 255, 0.035);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .lab-button:hover {
+
+            border-color: rgba(0, 191, 255, 0.50);
+
+            background: rgba(0, 191, 255, 0.08);
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .lab-page {
+
+                padding: 45px 10px 55px;
+            }
+
+            .lab-header h1 {
+
+                font-size: 30px;
+            }
+
+            .lab-intro {
+
+                font-size: 11px;
+            }
+
+            .lab-info-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .lab-card {
+
+                padding: 18px;
+            }
+
+            .lab-card-heading h2 {
+
+                font-size: 14px;
+            }
+
+            .osi-layer {
+
+                grid-template-columns: 35px 1fr;
+            }
+
+            .osi-tag {
+
+                grid-column: 2;
+
+                text-align: left;
+            }
+
+            .observation-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .lab-navigation {
+
+                flex-direction: column;
+            }
+
+            .lab-button {
+
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN LAB
+===================================================== -->
+
+<main class="lab-page">
+
+<div class="lab-container">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="lab-header">
+
+    <div class="lab-category">
+        NETWORKING PRACTICAL
+    </div>
+
+    <h1>
+        TCP/IP Model <span>Practical Lab</span>
+    </h1>
+
+    <p class="lab-intro">
+
+        Understand the four layers of the TCP/IP Model by
+        observing real network communication and identifying
+        the protocols and networking functions associated
+        with each layer.
+
+    </p>
+
+</header>
+
+
+<!-- =====================================================
+     PROGRESS
+===================================================== -->
+
+<div class="lab-progress">
+
+    <div class="lab-progress-top">
+
+        <div class="lab-progress-title">
+            Networking Practical Labs
+        </div>
+
+        <div class="lab-progress-count">
+            Lab 03 / 21
+        </div>
+
+    </div>
+
+    <div class="lab-progress-track">
+
+        <div class="lab-progress-bar"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LAB INFORMATION
+===================================================== -->
+
+<div class="lab-info-grid">
+
+    <div class="lab-info-card">
+
+        <div class="lab-info-icon">
+            ◉
+        </div>
+
+        <div class="lab-info-label">
+            Category
+        </div>
+
+        <div class="lab-info-value">
+            Networking
+        </div>
+
+    </div>
+
+
+    <div class="lab-info-card">
+
+        <div class="lab-info-icon">
+            #
+        </div>
+
+        <div class="lab-info-label">
+            Lab Number
+        </div>
+
+        <div class="lab-info-value">
+            03
+        </div>
+
+    </div>
+
+
+    <div class="lab-info-card">
+
+        <div class="lab-info-icon">
+            ⏱
+        </div>
+
+        <div class="lab-info-label">
+            Difficulty
+        </div>
+
+        <div class="lab-info-value">
+            Beginner
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     OBJECTIVE
+===================================================== -->
+
+<section class="lab-card">
+
+    <div class="lab-card-heading">
+
+        <div class="lab-icon">
+            ◇
+        </div>
+
+        <h2>
+            Lab Objective
+        </h2>
+
+    </div>
+
+    <div class="objective-box">
+
+        <strong>
+            What will you learn?
+        </strong>
+
+        <span>
+
+            In this lab, you will understand the four layers
+            of the TCP/IP Model and connect common networking
+            commands and protocols with their corresponding
+            layers.
+
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TCP/IP MODEL
+===================================================== -->
+
+<section class="lab-card">
+
+    <div class="lab-card-heading">
+
+        <div class="lab-icon">
+            4
+        </div>
+
+        <h2>
+            Four TCP/IP Layers
+        </h2>
+
+    </div>
+
+    <p>
+        Review the four TCP/IP layers before performing the
+        practical exercises.
+    </p>
+
+
+    <div class="osi-layer-list">
+
+
+        <div class="osi-layer">
+
+            <div class="osi-number">
+                4
+            </div>
+
+            <div class="osi-content">
+
+                <h3>
+                    Application Layer
+                </h3>
+
+                <p>
+                    Provides network services directly to applications.
+                </p>
+
+            </div>
+
+            <div class="osi-tag">
+                HTTP / DNS
+            </div>
+
+        </div>
+
+
+        <div class="osi-layer">
+
+            <div class="osi-number">
+                3
+            </div>
+
+            <div class="osi-content">
+
+                <h3>
+                    Transport Layer
+                </h3>
+
+                <p>
+                    Provides end-to-end communication using TCP or UDP.
+                </p>
+
+            </div>
+
+            <div class="osi-tag">
+                TCP / UDP
+            </div>
+
+        </div>
+
+
+        <div class="osi-layer">
+
+            <div class="osi-number">
+                2
+            </div>
+
+            <div class="osi-content">
+
+                <h3>
+                    Internet Layer
+                </h3>
+
+                <p>
+                    Handles logical addressing and packet routing between networks.
+                </p>
+
+            </div>
+
+            <div class="osi-tag">
+                IP / ICMP
+            </div>
+
+        </div>
+
+
+        <div class="osi-layer">
+
+            <div class="osi-number">
+                1
+            </div>
+
+            <div class="osi-content">
+
+                <h3>
+                    Network Access Layer
+                </h3>
+
+                <p>
+                    Handles communication over the local physical network.
+                </p>
+
+            </div>
+
+            <div class="osi-tag">
+                Ethernet / MAC
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PRACTICAL STEP 01
+===================================================== -->
+
+<section class="lab-card">
+
+    <div class="lab-card-heading">
+
+        <div class="lab-icon">
+            01
+        </div>
+
+        <h2>
+            Identify Your TCP/IP Network Configuration
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <div class="step-title">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3>
+                Check IP Configuration
+            </h3>
+
+        </div>
+
+        <p>
+            Open Windows Command Prompt and run the following command.
+        </p>
+
+        <div class="command-box">
+
+            <code id="command1">
+                ipconfig
+            </code>
+
+            <button
+                class="copy-button"
+                onclick="copyCommand('command1', this)"
+            >
+                Copy
+            </button>
+
+        </div>
+
+        <p>
+            Observe your IPv4 address, subnet mask and default gateway.
+            These values demonstrate addressing and routing concepts
+            associated with the Internet Layer.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PRACTICAL STEP 02
+===================================================== -->
+
+<section class="lab-card">
+
+    <div class="lab-card-heading">
+
+        <div class="lab-icon">
+            02
+        </div>
+
+        <h2>
+            Test Internet Layer Connectivity
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <div class="step-title">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3>
+                Use Ping
+            </h3>
+
+        </div>
+
+        <p>
+            Use the ping command to test connectivity with a destination.
+        </p>
+
+        <div class="command-box">
+
+            <code id="command2">
+                ping 8.8.8.8
+            </code>
+
+            <button
+                class="copy-button"
+                onclick="copyCommand('command2', this)"
+            >
+                Copy
+            </button>
+
+        </div>
+
+        <div class="output-box">
+
+            <div class="output-label">
+                Expected Output
+            </div>
+
+            <pre>Reply from 8.8.8.8: bytes=32 time&lt;20ms TTL=...</pre>
+
+        </div>
+
+        <p>
+            Ping uses ICMP and demonstrates communication at the
+            Internet Layer of the TCP/IP Model.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PRACTICAL STEP 03
+===================================================== -->
+
+<section class="lab-card">
+
+    <div class="lab-card-heading">
+
+        <div class="lab-icon">
+            03
+        </div>
+
+        <h2>
+            Observe TCP/IP Routing
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <div class="step-title">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3>
+                Use Tracert
+            </h3>
+
+        </div>
+
+        <p>
+            Run tracert to observe the route toward a destination.
+        </p>
+
+        <div class="command-box">
+
+            <code id="command3">
+                tracert example.com
+            </code>
+
+            <button
+                class="copy-button"
+                onclick="copyCommand('command3', this)"
+            >
+                Copy
+            </button>
+
+        </div>
+
+        <div class="output-box">
+
+            <div class="output-label">
+                Example Output
+            </div>
+
+            <pre>Tracing route to example.com
+1    &lt;1 ms    192.168.1.1
+2    10 ms    ...
+3    20 ms    ...
+Trace complete.</pre>
+
+        </div>
+
+        <p>
+            Tracert helps demonstrate IP routing and the movement
+            of packets between different networks.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PRACTICAL STEP 04
+===================================================== -->
+
+<section class="lab-card">
+
+    <div class="lab-card-heading">
+
+        <div class="lab-icon">
+            04
+        </div>
+
+        <h2>
+            Identify TCP/IP Application Activity
+        </h2>
+
+    </div>
+
+    <div class="step">
+
+        <div class="step-title">
+
+            <div class="step-number">
+                4
+            </div>
+
+            <h3>
+                Use Nslookup
+            </h3>
+
+        </div>
+
+        <p>
+            Use DNS lookup to observe an Application Layer
+            network service.
+        </p>
+
+        <div class="command-box">
+
+            <code id="command4">
+                nslookup example.com
+            </code>
+
+            <button
+                class="copy-button"
+                onclick="copyCommand('command4', this)"
+            >
+                Copy
+            </button>
+
+        </div>
+
+        <div class="output-box">
+
+            <div class="output-label">
+                Expected Output
+            </div>
+
+            <pre>Server:  ...
+Address: ...
+
+Name:    example.com
+Addresses: ...</pre>
+
+        </div>
+
+        <p>
+            DNS is an Application Layer service in the TCP/IP Model.
+            The nslookup command allows you to observe DNS resolution.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     OBSERVATIONS
+===================================================== -->
+
+<section class="lab-card">
+
+    <div class="lab-card-heading">
+
+        <div class="lab-icon">
+            ⇄
+        </div>
+
+        <h2>
+            Practical Observations
+        </h2>
+
+    </div>
+
+    <div class="observation-grid">
+
+        <div class="observation-card">
+
+            <h3>
+                Application Layer
+            </h3>
+
+            <p>
+                DNS and HTTP are examples of services used
+                by applications over a network.
+            </p>
+
+        </div>
+
+
+        <div class="observation-card">
+
+            <h3>
+                Transport Layer
+            </h3>
+
+            <p>
+                TCP and UDP provide communication services
+                between applications and the network.
+            </p>
+
+        </div>
+
+
+        <div class="observation-card">
+
+            <h3>
+                Internet Layer
+            </h3>
+
+            <p>
+                IP, ICMP, ping and tracert demonstrate
+                Internet-layer communication and routing.
+            </p>
+
+        </div>
+
+
+        <div class="observation-card">
+
+            <h3>
+                Network Access Layer
+            </h3>
+
+            <p>
+                Ethernet frames and MAC addresses are used
+                for communication on the local network.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CHECKLIST
+===================================================== -->
+
+<section class="lab-card">
+
+    <div class="lab-card-heading">
+
+        <div class="lab-icon">
+            ✓
+        </div>
+
+        <h2>
+            Lab Completion Checklist
+        </h2>
+
+    </div>
+
+    <p>
+        Check each task after completing it.
+    </p>
+
+    <div class="checklist">
+
+        <label class="check-item">
+
+            <input type="checkbox">
+
+            <span>
+                I checked my IPv4 address and default gateway
+                using ipconfig.
+            </span>
+
+        </label>
+
+
+        <label class="check-item">
+
+            <input type="checkbox">
+
+            <span>
+                I tested connectivity using ping.
+            </span>
+
+        </label>
+
+
+        <label class="check-item">
+
+            <input type="checkbox">
+
+            <span>
+                I observed the network route using tracert.
+            </span>
+
+        </label>
+
+
+        <label class="check-item">
+
+            <input type="checkbox">
+
+            <span>
+                I performed a DNS lookup using nslookup.
+            </span>
+
+        </label>
+
+
+        <label class="check-item">
+
+            <input type="checkbox">
+
+            <span>
+                I can identify the purpose of all four
+                TCP/IP Model layers.
+            </span>
+
+        </label>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SAFETY NOTE
+===================================================== -->
+
+<section class="lab-note">
+
+    <h2>
+        🧪 Lab Safety
+    </h2>
+
+    <p>
+        Perform networking exercises only on systems and networks
+        you own or are explicitly authorized to test. These commands
+        are intended for basic network observation and troubleshooting
+        in a controlled learning environment.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     COMPLETION
+===================================================== -->
+
+<section class="completion-box">
+
+    <h2>
+        ✓ Lab 03 Completed
+    </h2>
+
+    <p>
+        You have practiced basic TCP/IP network observations
+        and connected common networking commands and protocols
+        with the four TCP/IP Model layers.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<div class="lab-navigation">
+
+    <a
+        href="lab02.html"
+        class="lab-button"
+    >
+        ← Previous: Lab 
+    </a>
+
+
+    <a
+        href="../theory/ip-addresses.html"
+        class="lab-button"
+    >
+        ☰ IP Addresses
+    </a>
+
+<!-- 
+    <a
+        href="lab04.html"
+        class="lab-button"
+    >
+        Next: Lab 04 →
+    </a> -->
+
+</div>
+
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     NAVBAR JS
+===================================================== -->
+
+<script src="../../../js/navbar.js"></script>
+
+
+<!-- =====================================================
+     COPY COMMAND
+===================================================== -->
+
+<script>
+
+function copyCommand(id, button) {
+
+    const command =
+        document.getElementById(id).innerText;
+
+    navigator.clipboard.writeText(command);
+
+    const originalText =
+        button.innerText;
+
+    button.innerText = "Copied!";
+
+    setTimeout(function () {
+
+        button.innerText = originalText;
+
+    }, 1200);
+
+}
+
+</script>
+
+
+</body>
+
+</html>

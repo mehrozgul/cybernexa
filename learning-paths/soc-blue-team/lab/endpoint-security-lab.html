@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Endpoint Security Lab | CyberNexa</title>
+
+<meta name="description"
+      content="CyberNexa practical Endpoint Security lab. Check endpoint security controls, identify weaknesses and investigate endpoint findings.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+/* =========================================================
+   CYBERNEXA SOC / BLUE TEAM
+   PRACTICAL LAB: ENDPOINT SECURITY
+   ========================================================= */
+
+:root {
+    --lab-bg: #071019;
+    --lab-panel: #0c151f;
+    --lab-panel-2: #101c27;
+
+    --lab-blue: #42a5ff;
+    --lab-cyan: #39d9ff;
+    --lab-green: #43d19e;
+    --lab-yellow: #ffd166;
+    --lab-red: #ff5b67;
+
+    --lab-text: #edf7fc;
+    --lab-muted: #91a6b7;
+
+    --lab-border: #1e3241;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 12% 10%,
+            rgba(66, 165, 255, 0.09),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 88% 25%,
+            rgba(67, 209, 158, 0.06),
+            transparent 28%
+        ),
+        var(--lab-bg);
+
+    color: var(--lab-text);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.es-container {
+    width: min(1150px, 92%);
+    margin: auto;
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+    width: 100%;
+    overflow: hidden;
+}
+
+.nav-container {
+    width: min(1150px, 92%);
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 70px;
+}
+
+.brand {
+    max-width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+}
+
+.brand-logo {
+    flex-shrink: 0;
+}
+
+.brand-text {
+    min-width: 0;
+}
+
+.brand-name,
+.brand-tagline {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.es-hero {
+    padding: 65px 0 55px;
+
+    border-bottom: 1px solid var(--lab-border);
+}
+
+.es-breadcrumb {
+    margin-bottom: 18px;
+
+    color: var(--lab-cyan);
+
+    font-size: 13px;
+}
+
+.es-hero-grid {
+    display: grid;
+
+    grid-template-columns: 1.3fr 0.7fr;
+
+    gap: 35px;
+
+    align-items: center;
+}
+
+.es-hero h1 {
+    margin: 0 0 15px;
+
+    font-size: clamp(36px, 5vw, 55px);
+
+    line-height: 1.08;
+}
+
+.es-hero h1 span {
+    color: var(--lab-blue);
+}
+
+.es-hero p {
+    max-width: 720px;
+
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    line-height: 1.8;
+
+    font-size: 16px;
+}
+
+.es-lab-status {
+    padding: 23px;
+
+    border: 1px solid var(--lab-border);
+
+    border-top: 2px solid var(--lab-green);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+}
+
+.es-status-title {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 16px;
+}
+
+.es-status-title strong {
+    font-size: 13px;
+
+    letter-spacing: 1px;
+}
+
+.es-status-live {
+    color: var(--lab-green);
+
+    font-size: 10px;
+}
+
+/* =========================================================
+   LAB PROGRESS
+   ========================================================= */
+
+.es-progress-box {
+    margin-top: 25px;
+
+    padding: 20px;
+
+    border: 1px solid var(--lab-border);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+}
+
+.es-progress-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+
+    color: var(--lab-muted);
+
+    font-size: 13px;
+}
+
+.es-progress-bar {
+    width: 100%;
+
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #172532;
+}
+
+.es-progress-fill {
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--lab-blue),
+            var(--lab-cyan)
+        );
+
+    transition: width 0.3s ease;
+}
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.es-section {
+    padding: 55px 0;
+}
+
+.es-section-title {
+    margin-bottom: 25px;
+}
+
+.es-section-title h2 {
+    margin: 0 0 9px;
+
+    font-size: 29px;
+}
+
+.es-section-title p {
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   SCENARIO
+   ========================================================= */
+
+.es-scenario {
+    padding: 25px;
+
+    border: 1px solid rgba(66, 165, 255, 0.25);
+
+    border-left: 3px solid var(--lab-blue);
+
+    border-radius: 7px;
+
+    background: rgba(66, 165, 255, 0.035);
+}
+
+.es-scenario h3 {
+    margin-top: 0;
+
+    color: var(--lab-blue);
+}
+
+.es-scenario p {
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    line-height: 1.8;
+}
+
+/* =========================================================
+   CHECK CARDS
+   ========================================================= */
+
+.es-check-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 15px;
+}
+
+.es-check-card {
+    padding: 21px;
+
+    border: 1px solid var(--lab-border);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+
+    transition: 0.2s ease;
+}
+
+.es-check-card:hover {
+    border-color: rgba(66, 165, 255, 0.4);
+}
+
+.es-check-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 14px;
+}
+
+.es-check-header h3 {
+    margin: 0;
+
+    font-size: 16px;
+}
+
+.es-check-number {
+    color: var(--lab-cyan);
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+.es-check-card p {
+    margin: 0 0 17px;
+
+    color: var(--lab-muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.es-check-button {
+    width: 100%;
+
+    padding: 11px 14px;
+
+    border: 1px solid rgba(66, 165, 255, 0.35);
+
+    border-radius: 5px;
+
+    background: rgba(66, 165, 255, 0.06);
+
+    color: var(--lab-blue);
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+.es-check-button:hover {
+    background: rgba(66, 165, 255, 0.12);
+}
+
+.es-check-button.done {
+    border-color: rgba(67, 209, 158, 0.4);
+
+    background: rgba(67, 209, 158, 0.06);
+
+    color: var(--lab-green);
+
+    cursor: default;
+}
+
+/* =========================================================
+   OUTPUT
+   ========================================================= */
+
+.es-output {
+    min-height: 80px;
+
+    margin-top: 13px;
+
+    padding: 16px;
+
+    border: 1px solid var(--lab-border);
+
+    border-radius: 5px;
+
+    background: #060d13;
+
+    color: var(--lab-muted);
+
+    font-family: Consolas, monospace;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+.es-output.success {
+    border-color: rgba(67, 209, 158, 0.3);
+
+    color: var(--lab-green);
+}
+
+.es-output.warning {
+    border-color: rgba(255, 209, 102, 0.3);
+
+    color: var(--lab-yellow);
+}
+
+.es-output.danger {
+    border-color: rgba(255, 91, 103, 0.3);
+
+    color: var(--lab-red);
+}
+
+/* =========================================================
+   FINDINGS
+   ========================================================= */
+
+.es-findings {
+    padding: 25px;
+
+    border: 1px solid var(--lab-border);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+}
+
+.es-finding-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid var(--lab-border);
+
+    color: var(--lab-muted);
+
+    font-size: 13px;
+}
+
+.es-finding-row:last-child {
+    border-bottom: 0;
+}
+
+.es-finding-status {
+    padding: 4px 8px;
+
+    border-radius: 4px;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background: rgba(145, 166, 183, 0.08);
+
+    color: var(--lab-muted);
+}
+
+.status-good {
+    background: rgba(67, 209, 158, 0.08);
+
+    color: var(--lab-green);
+}
+
+.status-warning {
+    background: rgba(255, 209, 102, 0.08);
+
+    color: var(--lab-yellow);
+}
+
+.status-danger {
+    background: rgba(255, 91, 103, 0.08);
+
+    color: var(--lab-red);
+}
+
+/* =========================================================
+   REMEDIATION
+   ========================================================= */
+
+.es-remediation {
+    margin-top: 20px;
+
+    padding: 25px;
+
+    border: 1px solid rgba(67, 209, 158, 0.25);
+
+    border-radius: 7px;
+
+    background: rgba(67, 209, 158, 0.035);
+}
+
+.es-remediation h3 {
+    margin-top: 0;
+
+    color: var(--lab-green);
+}
+
+.es-remediation ul {
+    margin: 0;
+
+    padding-left: 20px;
+
+    color: var(--lab-muted);
+
+    line-height: 1.9;
+
+    font-size: 14px;
+}
+
+/* =========================================================
+   COMPLETE
+   ========================================================= */
+
+.es-complete {
+    padding: 28px;
+
+    border: 1px solid rgba(67, 209, 158, 0.3);
+
+    border-radius: 7px;
+
+    background: rgba(67, 209, 158, 0.04);
+
+    text-align: center;
+}
+
+.es-complete h2 {
+    margin-top: 0;
+
+    color: var(--lab-green);
+}
+
+.es-complete p {
+    color: var(--lab-muted);
+
+    line-height: 1.7;
+}
+
+.es-complete-button {
+    padding: 12px 20px;
+
+    border: 1px solid rgba(67, 209, 158, 0.4);
+
+    border-radius: 5px;
+
+    background: rgba(67, 209, 158, 0.07);
+
+    color: var(--lab-green);
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.es-topic-nav {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+.es-nav-button {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 12px 17px;
+
+    border: 1px solid var(--lab-border);
+
+    border-radius: 5px;
+
+    color: var(--lab-muted);
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+.es-nav-button:hover {
+    color: var(--lab-blue);
+
+    border-color: rgba(66, 165, 255, 0.4);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .es-hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .es-check-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .nav-container {
+        width: 94%;
+
+        min-height: 64px;
+
+        padding: 8px 0;
+    }
+
+    .brand-logo svg {
+        width: 38px;
+        height: 46px;
+    }
+
+    .brand-name {
+        font-size: 19px;
+    }
+
+    .brand-tagline {
+        font-size: 9px;
+    }
+
+    .es-hero {
+        padding: 55px 0 45px;
+    }
+
+    .es-section {
+        padding: 48px 0;
+    }
+
+    .es-topic-nav {
+        flex-direction: column;
+    }
+
+    .es-nav-button {
+        justify-content: center;
+
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .es-container {
+        width: 92%;
+    }
+
+    .nav-container {
+        width: 92%;
+    }
+
+    .brand-logo svg {
+        width: 34px;
+        height: 42px;
+    }
+
+    .brand-name {
+        font-size: 17px;
+    }
+
+    .brand-tagline {
+        font-size: 8px;
+    }
+
+    .es-hero h1 {
+        font-size: 35px;
+    }
+
+    .es-hero p {
+        font-size: 14px;
+    }
+
+    .es-section-title h2 {
+        font-size: 25px;
+    }
+
+    .es-scenario,
+    .es-findings,
+    .es-remediation,
+    .es-complete {
+        padding: 21px;
+    }
+
+    .es-finding-row {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="../../../index.html" class="brand">
+
+<div class="brand-logo">
+
+<svg viewBox="0 0 50 60">
+
+<path
+d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+fill="none"
+stroke="currentColor"
+stroke-width="3"
+/>
+
+<rect
+x="18"
+y="25"
+width="14"
+height="14"
+rx="2"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<path
+d="M20 25 V20 C20 16 30 16 30 20 V25"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<circle
+cx="25"
+cy="31"
+r="2"
+fill="currentColor"
+/>
+
+<path
+d="M25 33 V36"
+stroke="currentColor"
+stroke-width="2"
+/>
+
+</svg>
+
+</div>
+
+<div class="brand-text">
+
+<div class="brand-name">
+Cyber<span>Nexa</span>
+</div>
+
+<div class="brand-tagline">
+Cybersecurity &amp; IT Learning
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="es-hero">
+
+<div class="es-container">
+
+<div class="es-breadcrumb">
+CyberNexa / SOC / Blue Team / Endpoint Security / Practical Lab
+</div>
+
+<div class="es-hero-grid">
+
+<div>
+
+<h1>
+Endpoint <span>Security Lab</span>
+</h1>
+
+<p>
+
+In this practical lab, analyze a simulated endpoint,
+check its security controls, identify weaknesses and
+determine the appropriate defensive actions.
+
+</p>
+
+</div>
+
+
+<div class="es-lab-status">
+
+<div class="es-status-title">
+
+<strong>
+ENDPOINT LAB
+</strong>
+
+<span class="es-status-live">
+● ACTIVE
+</span>
+
+</div>
+
+<div>
+Target: WORKSTATION-07
+</div>
+
+<div style="margin-top:8px;color:var(--lab-muted);font-size:12px;">
+SOC Training Environment
+</div>
+
+</div>
+
+</div>
+
+
+<div class="es-progress-box">
+
+<div class="es-progress-header">
+
+<span>
+Lab Progress
+</span>
+
+<span id="progressText">
+0 / 6
+</span>
+
+</div>
+
+<div class="es-progress-bar">
+
+<div
+class="es-progress-fill"
+id="progressFill">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     SCENARIO
+====================================================== -->
+
+<section class="es-section">
+
+<div class="es-container">
+
+<div class="es-section-title">
+
+<h2>Lab Scenario</h2>
+
+<p>
+You are working as a junior SOC analyst.
+A workstation has been selected for a basic endpoint
+security assessment.
+</p>
+
+</div>
+
+
+<div class="es-scenario">
+
+<h3>Target: WORKSTATION-07</h3>
+
+<p>
+
+The endpoint belongs to an employee workstation.
+Your task is to check important security controls,
+identify suspicious conditions and decide which
+security improvements should be applied.
+
+Do not assume that every abnormal condition is
+automatically a confirmed compromise. Investigate
+the available evidence before making a conclusion.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SECURITY CHECKS
+====================================================== -->
+
+<section class="es-section">
+
+<div class="es-container">
+
+<div class="es-section-title">
+
+<h2>Endpoint Security Checks</h2>
+
+<p>
+Run each check and analyze the simulated endpoint results.
+</p>
+
+</div>
+
+
+<div class="es-check-grid">
+
+
+<!-- CHECK 01 -->
+
+<div class="es-check-card">
+
+<div class="es-check-header">
+
+<h3>Firewall Status</h3>
+
+<span class="es-check-number">
+CHECK 01
+</span>
+
+</div>
+
+<p>
+Check whether the host firewall is enabled.
+</p>
+
+<button
+class="es-check-button"
+onclick="runCheck(1,this)">
+
+Run Check
+
+</button>
+
+<div
+class="es-output"
+id="output1">
+
+Waiting for check...
+
+</div>
+
+</div>
+
+
+<!-- CHECK 02 -->
+
+<div class="es-check-card">
+
+<div class="es-check-header">
+
+<h3>Endpoint Protection</h3>
+
+<span class="es-check-number">
+CHECK 02
+</span>
+
+</div>
+
+<p>
+Check the endpoint protection status.
+</p>
+
+<button
+class="es-check-button"
+onclick="runCheck(2,this)">
+
+Run Check
+
+</button>
+
+<div
+class="es-output"
+id="output2">
+
+Waiting for check...
+
+</div>
+
+</div>
+
+
+<!-- CHECK 03 -->
+
+<div class="es-check-card">
+
+<div class="es-check-header">
+
+<h3>System Updates</h3>
+
+<span class="es-check-number">
+CHECK 03
+</span>
+
+</div>
+
+<p>
+Check whether important operating system updates are missing.
+</p>
+
+<button
+class="es-check-button"
+onclick="runCheck(3,this)">
+
+Run Check
+
+</button>
+
+<div
+class="es-output"
+id="output3">
+
+Waiting for check...
+
+</div>
+
+</div>
+
+
+<!-- CHECK 04 -->
+
+<div class="es-check-card">
+
+<div class="es-check-header">
+
+<h3>Suspicious Process</h3>
+
+<span class="es-check-number">
+CHECK 04
+</span>
+
+</div>
+
+<p>
+Review a simulated running-process finding.
+</p>
+
+<button
+class="es-check-button"
+onclick="runCheck(4,this)">
+
+Run Check
+
+</button>
+
+<div
+class="es-output"
+id="output4">
+
+Waiting for check...
+
+</div>
+
+</div>
+
+
+<!-- CHECK 05 -->
+
+<div class="es-check-card">
+
+<div class="es-check-header">
+
+<h3>Unauthorized Software</h3>
+
+<span class="es-check-number">
+CHECK 05
+</span>
+
+</div>
+
+<p>
+Check for software that has not been approved.
+</p>
+
+<button
+class="es-check-button"
+onclick="runCheck(5,this)">
+
+Run Check
+
+</button>
+
+<div
+class="es-output"
+id="output5">
+
+Waiting for check...
+
+</div>
+
+</div>
+
+
+<!-- CHECK 06 -->
+
+<div class="es-check-card">
+
+<div class="es-check-header">
+
+<h3>Authentication Review</h3>
+
+<span class="es-check-number">
+CHECK 06
+</span>
+
+</div>
+
+<p>
+Review simulated endpoint authentication activity.
+</p>
+
+<button
+class="es-check-button"
+onclick="runCheck(6,this)">
+
+Run Check
+
+</button>
+
+<div
+class="es-output"
+id="output6">
+
+Waiting for check...
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     FINDINGS
+====================================================== -->
+
+<section class="es-section">
+
+<div class="es-container">
+
+<div class="es-section-title">
+
+<h2>Security Findings</h2>
+
+<p>
+Review the findings after completing the endpoint checks.
+</p>
+
+</div>
+
+
+<div class="es-findings">
+
+<div class="es-finding-row">
+
+<span>
+Host Firewall
+</span>
+
+<span
+id="finding1"
+class="es-finding-status status-pending">
+
+PENDING
+
+</span>
+
+</div>
+
+
+<div class="es-finding-row">
+
+<span>
+Endpoint Protection
+</span>
+
+<span
+id="finding2"
+class="es-finding-status status-pending">
+
+PENDING
+
+</span>
+
+</div>
+
+
+<div class="es-finding-row">
+
+<span>
+System Updates
+</span>
+
+<span
+id="finding3"
+class="es-finding-status status-pending">
+
+PENDING
+
+</span>
+
+</div>
+
+
+<div class="es-finding-row">
+
+<span>
+Process Activity
+</span>
+
+<span
+id="finding4"
+class="es-finding-status status-pending">
+
+PENDING
+
+</span>
+
+</div>
+
+
+<div class="es-finding-row">
+
+<span>
+Software Inventory
+</span>
+
+<span
+id="finding5"
+class="es-finding-status status-pending">
+
+PENDING
+
+</span>
+
+</div>
+
+
+<div class="es-finding-row">
+
+<span>
+Authentication Activity
+</span>
+
+<span
+id="finding6"
+class="es-finding-status status-pending">
+
+PENDING
+
+</span>
+
+</div>
+
+</div>
+
+
+<div class="es-remediation">
+
+<h3>Recommended Defensive Actions</h3>
+
+<ul>
+
+<li>
+Enable and properly configure the host firewall.
+</li>
+
+<li>
+Keep endpoint protection software active and updated.
+</li>
+
+<li>
+Apply missing operating-system security updates.
+</li>
+
+<li>
+Investigate suspicious processes before terminating them.
+</li>
+
+<li>
+Remove or review unauthorized software according to policy.
+</li>
+
+<li>
+Investigate unusual authentication activity and review
+account security when necessary.
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     COMPLETION
+====================================================== -->
+
+<section class="es-section">
+
+<div class="es-container">
+
+<div class="es-complete">
+
+<h2>
+Endpoint Assessment Complete
+</h2>
+
+<p id="completionText">
+
+Complete all six endpoint security checks to finish the lab.
+
+</p>
+
+<button
+class="es-complete-button"
+onclick="completeLab()">
+
+Complete Lab
+
+</button>
+
+</div>
+
+
+<div class="es-topic-nav">
+
+<a
+href="network-monitoring-lab.html"
+class="es-nav-button">
+
+← lab: Network Monitoring
+
+</a>
+
+<a
+href="../theory/detection-rules.html"
+class="es-nav-button">
+
+Next Theory: Detection Rules →
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div>
+
+<div class="footer-brand">
+Cyber<span>Nexa</span>
+</div>
+
+<p>
+Cybersecurity &amp; IT Learning
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="../../../index.html">
+Home
+</a>
+
+<a href="../../../footer/about.html">
+About
+</a>
+
+<a href="../../../footer/contact.html">
+Contact
+</a>
+
+<a href="../../../footer/privacy-policy.html">
+Privacy Policy
+</a>
+
+<a href="../../../footer/disclaimer.html">
+Disclaimer
+</a>
+
+</div>
+
+</div>
+
+
+<div class="copyright">
+
+© 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   ENDPOINT SECURITY LAB LOGIC
+   ========================================================= */
+
+const completedChecks = new Set();
+
+
+const checkResults = {
+
+1: {
+    text:
+    "[FIREWALL CHECK]\\n" +
+    "Host Firewall: ENABLED\\n" +
+    "Inbound filtering: ACTIVE\\n" +
+    "Status: SECURE",
+
+    type: "success",
+
+    finding: "GOOD"
+},
+
+2: {
+    text:
+    "[ENDPOINT PROTECTION]\\n" +
+    "Protection Agent: ACTIVE\\n" +
+    "Signature Status: UPDATED\\n" +
+    "Status: PROTECTED",
+
+    type: "success",
+
+    finding: "GOOD"
+},
+
+3: {
+    text:
+    "[UPDATE CHECK]\\n" +
+    "Security Updates: 2 MISSING\\n" +
+    "Patch Priority: HIGH\\n" +
+    "Status: ACTION REQUIRED",
+
+    type: "warning",
+
+    finding: "WARNING"
+},
+
+4: {
+    text:
+    "[PROCESS REVIEW]\\n" +
+    "Process: update-helper.exe\\n" +
+    "Location: C:\\\\Users\\\\Public\\\\\\n" +
+    "Network Activity: UNUSUAL\\n" +
+    "Status: INVESTIGATE",
+
+    type: "danger",
+
+    finding: "INVESTIGATE"
+},
+
+5: {
+    text:
+    "[SOFTWARE INVENTORY]\\n" +
+    "Unapproved Application: RemoteTool.exe\\n" +
+    "Installation: UNKNOWN\\n" +
+    "Status: REVIEW REQUIRED",
+
+    type: "warning",
+
+    finding: "WARNING"
+},
+
+6: {
+    text:
+    "[AUTHENTICATION REVIEW]\\n" +
+    "Failed Logins: 7\\n" +
+    "Successful Login: 1\\n" +
+    "Source: Unusual Location\\n" +
+    "Status: INVESTIGATE",
+
+    type: "danger",
+
+    finding: "INVESTIGATE"
+}
+
+};
+
+
+function runCheck(number, button) {
+
+    if (completedChecks.has(number)) {
+        return;
+    }
+
+
+    const output =
+        document.getElementById("output" + number);
+
+    const finding =
+        document.getElementById("finding" + number);
+
+
+    const result = checkResults[number];
+
+
+    output.textContent = result.text;
+
+    output.className =
+        "es-output " + result.type;
+
+
+    finding.textContent =
+        result.finding;
+
+
+    if (result.finding === "GOOD") {
+
+        finding.className =
+            "es-finding-status status-good";
+
+    }
+    else if (result.finding === "WARNING") {
+
+        finding.className =
+            "es-finding-status status-warning";
+
+    }
+    else {
+
+        finding.className =
+            "es-finding-status status-danger";
+
+    }
+
+
+    button.textContent =
+        "✓ Check Completed";
+
+    button.classList.add("done");
+
+
+    completedChecks.add(number);
+
+
+    updateProgress();
+
+}
+
+
+function updateProgress() {
+
+    const total = 6;
+
+    const completed =
+        completedChecks.size;
+
+
+    const percentage =
+        (completed / total) * 100;
+
+
+    document.getElementById("progressFill")
+        .style.width = percentage + "%";
+
+
+    document.getElementById("progressText")
+        .textContent =
+        completed + " / " + total;
+
+
+    if (completed === total) {
+
+        document.getElementById("completionText")
+            .textContent =
+            "All endpoint security checks are complete. Review the findings and recommended defensive actions.";
+
+    }
+
+}
+
+
+function completeLab() {
+
+    const completion =
+        document.getElementById("completionText");
+
+
+    if (completedChecks.size < 6) {
+
+        completion.textContent =
+            "Lab incomplete: run all six endpoint security checks first.";
+
+        return;
+    }
+
+
+    completion.textContent =
+        "✓ Lab completed successfully. Endpoint assessment findings have been reviewed.";
+
+}
+
+</script>
+
+</body>
+</html>

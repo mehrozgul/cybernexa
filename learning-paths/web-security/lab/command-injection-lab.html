@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Command Injection Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 8%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 12%,
+                    rgba(0, 255, 176, 0.055),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 38px 32px;
+
+            margin-bottom: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 22, 35, 0.98),
+                    rgba(2, 10, 21, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            margin-bottom: 12px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 38px;
+
+            line-height: 1.15;
+        }
+
+        .lab-hero h1 span {
+            color: #00bfff;
+        }
+
+        .lab-hero p {
+
+            max-width: 780px;
+
+            margin: 14px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           AUTHORIZED NOTICE
+        ====================================================== */
+
+        .notice {
+
+            margin-bottom: 18px;
+
+            padding: 17px 20px;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.18);
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 177, 0, 0.035);
+        }
+
+        .notice strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffc44d;
+
+            font-size: 12px;
+        }
+
+        .notice span {
+
+            color: #899bad;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           LAB GRID
+        ====================================================== */
+
+        .lab-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.15fr)
+                minmax(0, 0.85fr);
+
+            gap: 18px;
+        }
+
+        .lab-card {
+
+            padding: 24px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            margin-bottom: 16px;
+        }
+
+        .lab-number {
+
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.22);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .lab-heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .lab-card p {
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           SIMULATED INPUT
+        ====================================================== */
+
+        .input-label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #60788d;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-input {
+
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.18);
+
+            border-radius: 8px;
+
+            outline: none;
+
+            color: #dce9f4;
+
+            background: #01070e;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+        }
+
+        .lab-input:focus {
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            box-shadow:
+                0 0 0 2px rgba(0, 191, 255, 0.05);
+        }
+
+        .run-button {
+
+            width: 100%;
+
+            margin-top: 10px;
+
+            padding: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.28);
+
+            border-radius: 8px;
+
+            color: #ccefff;
+
+            background:
+                rgba(0, 191, 255, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .run-button:hover {
+
+            background:
+                rgba(0, 191, 255, 0.10);
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+        }
+
+        /* =====================================================
+           SIMULATED OUTPUT
+        ====================================================== */
+
+        .output {
+
+            min-height: 150px;
+
+            margin-top: 15px;
+
+            padding: 16px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                #01070e;
+
+            color: #7890a4;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+
+            white-space: pre-wrap;
+        }
+
+        .output .success {
+            color: #00ffb0;
+        }
+
+        .output .warning {
+            color: #ffc44d;
+        }
+
+        .output .danger {
+            color: #ff687b;
+        }
+
+        /* =====================================================
+           CONCEPT BOX
+        ====================================================== */
+
+        .concept-box {
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border-left:
+                3px solid #00bfff;
+
+            border-radius: 7px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+        }
+
+        .concept-box strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+        }
+
+        .concept-box span {
+
+            color: #71879b;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           MCQ
+        ====================================================== */
+
+        .question {
+
+            margin-bottom: 20px;
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .question:last-child {
+            margin-bottom: 0;
+        }
+
+        .question-text {
+
+            margin-bottom: 12px;
+
+            color: #dce9f4;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            line-height: 1.7;
+        }
+
+        .option {
+
+            display: block;
+
+            margin-top: 7px;
+
+            padding: 10px 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.07);
+
+            border-radius: 7px;
+
+            color: #71879b;
+
+            background:
+                rgba(0, 0, 0, 0.15);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            transition:
+                border-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .option:hover {
+
+            color: #ccefff;
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+        }
+
+        .option input {
+            margin-right: 7px;
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result {
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.13);
+
+            border-radius: 9px;
+
+            text-align: center;
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        .result h3 {
+
+            margin: 0 0 6px;
+
+            color: #00ffb0;
+
+            font-size: 13px;
+        }
+
+        .result p {
+
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           BUTTONS
+        ====================================================== */
+
+        .action-button {
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin-top: 15px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.25);
+
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.045);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .action-button:hover {
+
+            background:
+                rgba(0, 255, 176, 0.08);
+
+            border-color:
+                rgba(0, 255, 176, 0.50);
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+        .lab-navigation a {
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 8px;
+
+            color: #71879b;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            text-align: center;
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .lab-navigation a:hover {
+
+            color: #ccefff;
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+                font-size: 29px;
+            }
+
+            .lab-card {
+                padding: 20px;
+            }
+
+            .lab-navigation {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="lab-hero">
+
+                <div class="lab-kicker">
+                    WEB SECURITY LAB / 11
+                </div>
+
+                <h1>
+                    <span>Command Injection</span>
+                    — Safe Simulation Lab
+                </h1>
+
+                <p>
+                    Explore how applications should distinguish user data
+                    from operating-system commands. This CyberNexa exercise
+                    uses a simulated environment and does not execute
+                    operating-system commands on your device.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 AUTHORIZATION
+            ================================================== -->
+
+            <div class="notice">
+
+                <strong>
+                    ⚠ Authorized Training Environment
+                </strong>
+
+                <span>
+                    This lab is a simulated educational environment.
+                    Do not attempt command-injection testing against systems
+                    that you do not own or have explicit permission to test.
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 LAB GRID
+            ================================================== -->
+
+            <div class="lab-grid">
+
+
+                <!-- =================================================
+                     SIMULATION
+                ================================================== -->
+
+                <section class="lab-card">
+
+                    <div class="lab-heading">
+
+                        <div class="lab-number">
+                            01
+                        </div>
+
+                        <h2>
+                            Input Validation Simulation
+                        </h2>
+
+                    </div>
+
+                    <p>
+                        Imagine that a web application receives a hostname
+                        for a diagnostic operation. Enter a normal example
+                        and observe how the simulated application classifies
+                        the input.
+                    </p>
+
+
+                    <label class="input-label">
+                        Simulated Hostname
+                    </label>
+
+                    <input
+                        type="text"
+                        id="hostnameInput"
+                        class="lab-input"
+                        placeholder="example.local"
+                    >
+
+
+                    <button
+                        class="run-button"
+                        onclick="runSimulation()"
+                    >
+                        Run Safe Simulation
+                    </button>
+
+
+                    <div
+                        id="simulationOutput"
+                        class="output"
+                    >
+                        Waiting for input...
+
+                        This is a simulation only.
+                    </div>
+
+
+                    <div class="concept-box">
+
+                        <strong>
+                            What are you learning?
+                        </strong>
+
+                        <span>
+                            A secure application should validate input and
+                            pass data through safe APIs instead of constructing
+                            arbitrary shell commands.
+                        </span>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     KNOWLEDGE CHECK
+                ================================================== -->
+
+                <section class="lab-card">
+
+                    <div class="lab-heading">
+
+                        <div class="lab-number">
+                            02
+                        </div>
+
+                        <h2>
+                            Knowledge Check
+                        </h2>
+
+                    </div>
+
+
+                    <form id="quizForm">
+
+                        <div class="question">
+
+                            <div class="question-text">
+                                1. What is the main cause of command injection?
+                            </div>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q1"
+                                    value="a"
+                                >
+                                Strong password hashing
+                            </label>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q1"
+                                    value="b"
+                                >
+                                Unsafe handling of untrusted input
+                            </label>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q1"
+                                    value="c"
+                                >
+                                HTTPS encryption
+                            </label>
+
+                        </div>
+
+
+                        <div class="question">
+
+                            <div class="question-text">
+                                2. Which approach helps prevent command injection?
+                            </div>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q2"
+                                    value="a"
+                                >
+                                Allow every input character
+                            </label>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q2"
+                                    value="b"
+                                >
+                                Use safe APIs and strict validation
+                            </label>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q2"
+                                    value="c"
+                                >
+                                Disable authentication
+                            </label>
+
+                        </div>
+
+
+                        <div class="question">
+
+                            <div class="question-text">
+                                3. Why is least privilege useful?
+                            </div>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q3"
+                                    value="a"
+                                >
+                                It limits what a compromised process can access
+                            </label>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q3"
+                                    value="b"
+                                >
+                                It removes all input validation
+                            </label>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q3"
+                                    value="c"
+                                >
+                                It makes every user an administrator
+                            </label>
+
+                        </div>
+
+
+                        <div class="question">
+
+                            <div class="question-text">
+                                4. What should user-controlled data be treated as?
+                            </div>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q4"
+                                    value="a"
+                                >
+                                Executable instructions
+                            </label>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q4"
+                                    value="b"
+                                >
+                                Trusted commands
+                            </label>
+
+                            <label class="option">
+                                <input
+                                    type="radio"
+                                    name="q4"
+                                    value="c"
+                                >
+                                Untrusted data
+                            </label>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="action-button"
+                            onclick="checkQuiz()"
+                        >
+                            Check Answers
+                        </button>
+
+                    </form>
+
+
+                    <div
+                        id="quizResult"
+                        class="result"
+                    >
+
+                        <h3>
+                            Quiz Ready
+                        </h3>
+
+                        <p>
+                            Answer all four questions and check your result.
+                        </p>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- =================================================
+                 LEARNING NOTES
+            ================================================== -->
+
+            <section
+                class="lab-card"
+                style="margin-top:18px;"
+            >
+
+                <div class="lab-heading">
+
+                    <div class="lab-number">
+                        03
+                    </div>
+
+                    <h2>
+                        Security Takeaway
+                    </h2>
+
+                </div>
+
+                <p>
+                    The central security principle is simple:
+                    <strong style="color:#dce9f4;">
+                        data should remain data.
+                    </strong>
+                    Applications should not allow user-controlled values
+                    to become executable operating-system instructions.
+                </p>
+
+                <p>
+                    In professional development, prefer dedicated APIs,
+                    allowlist validation, least privilege, safe error
+                    handling and appropriate monitoring.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="lab-navigation">
+
+                <a href="file-upload-vulnerabilities-lab.html">
+                    ← Lab: File Upload 
+                </a>
+
+                <a href="web-security-lab.html">
+                    All Labs
+                </a>
+
+                <a href="../theory/path-traversal.html">
+                    Next Theory: Path Traversal →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+
+
+    <script>
+
+        /* =====================================================
+           SAFE COMMAND-INJECTION SIMULATION
+        ====================================================== */
+
+        function runSimulation() {
+
+            const input =
+                document
+                    .getElementById("hostnameInput")
+                    .value
+                    .trim();
+
+            const output =
+                document.getElementById("simulationOutput");
+
+            if (!input) {
+
+                output.innerHTML =
+                    '<span class="warning">' +
+                    'No input supplied.' +
+                    '</span>' +
+                    '\n\nEnter a hostname such as example.local.';
+
+                return;
+            }
+
+
+            /*
+             * This is intentionally NOT a real shell.
+             * The page only classifies the supplied string.
+             */
+
+            const suspiciousPattern =
+                /[;&|`$()<>{}\n\r]/;
+
+            if (suspiciousPattern.test(input)) {
+
+                output.innerHTML =
+                    '<span class="danger">' +
+                    '[SIMULATION] Suspicious command syntax detected.' +
+                    '</span>' +
+                    '\n\n' +
+                    'Security lesson: untrusted input should not be allowed ' +
+                    'to become executable command syntax.' +
+                    '\n\n' +
+                    'Recommended defense: validate input and use a safe API.';
+
+                return;
+            }
+
+
+            const hostnamePattern =
+                /^[a-zA-Z0-9.-]+$/;
+
+            if (hostnamePattern.test(input)) {
+
+                output.innerHTML =
+                    '<span class="success">' +
+                    '[SIMULATION] Input accepted.' +
+                    '</span>' +
+                    '\n\n' +
+                    'Classification: Valid hostname format' +
+                    '\n' +
+                    'Execution: SIMULATED ONLY' +
+                    '\n' +
+                    'Shell access: NOT USED' +
+                    '\n\n' +
+                    'The application keeps user data separate from commands.';
+
+                return;
+            }
+
+
+            output.innerHTML =
+                '<span class="warning">' +
+                '[SIMULATION] Input rejected.' +
+                '</span>' +
+                '\n\n' +
+                'Reason: input does not match the expected hostname format.';
+        }
+
+
+        /* =====================================================
+           QUIZ
+        ====================================================== */
+
+        function checkQuiz() {
+
+            const answers = {
+
+                q1: "b",
+                q2: "b",
+                q3: "a",
+                q4: "c"
+
+            };
+
+            let score = 0;
+
+            Object.keys(answers).forEach(function(question) {
+
+                const selected =
+                    document.querySelector(
+                        'input[name="' +
+                        question +
+                        '"]:checked'
+                    );
+
+                if (
+                    selected &&
+                    selected.value === answers[question]
+                ) {
+
+                    score++;
+
+                }
+
+            });
+
+
+            const result =
+                document.getElementById("quizResult");
+
+
+            if (score === 4) {
+
+                result.innerHTML =
+                    '<h3>Excellent — 4/4</h3>' +
+                    '<p>' +
+                    'You understand the core command-injection concepts.' +
+                    '</p>';
+
+            } else {
+
+                result.innerHTML =
+                    '<h3>Score: ' +
+                    score +
+                    '/4</h3>' +
+                    '<p>' +
+                    'Review the theory and try the quiz again.' +
+                    '</p>';
+
+            }
+
+        }
+
+    </script>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberNexa | PowerShell</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .windows-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(14, 165, 233, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .windows-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        .windows-topic-header {
+
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .windows-topic-category {
+
+            display: inline-block;
+            margin-bottom: 14px;
+
+            color: #60a5fa;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .windows-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        .windows-topic-header h1 span {
+            color: #60a5fa;
+        }
+
+        .windows-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .windows-badges {
+
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            gap: 8px;
+            margin-top: 22px;
+        }
+
+        .windows-badge {
+
+            padding: 8px 13px;
+
+            border: 1px solid rgba(96, 165, 250, 0.20);
+            border-radius: 20px;
+
+            color: #bfdbfe;
+            background: rgba(96, 165, 250, 0.055);
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .windows-topic-search {
+
+            display: flex;
+            align-items: center;
+
+            max-width: 650px;
+
+            margin: 25px auto 0;
+
+            gap: 10px;
+        }
+
+        .windows-topic-search input {
+
+            flex: 1;
+            min-width: 0;
+
+            padding: 13px 16px;
+
+            border: 1px solid rgba(96, 165, 250, 0.20);
+            border-radius: 9px;
+
+            outline: none;
+
+            color: #f8fafc;
+            background: rgba(96, 165, 250, 0.045);
+
+            font-size: 13px;
+        }
+
+        .windows-topic-search input::placeholder {
+            color: #7f909c;
+        }
+
+        .windows-topic-search input:focus {
+
+            border-color: rgba(96, 165, 250, 0.65);
+
+            background: rgba(96, 165, 250, 0.07);
+
+            box-shadow:
+                0 0 20px rgba(37, 99, 235, 0.10);
+        }
+
+        .windows-topic-search button {
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.30);
+            border-radius: 9px;
+
+            color: #dbeafe;
+            background: rgba(96, 165, 250, 0.07);
+
+            font-size: 13px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .windows-topic-search button:hover {
+
+            border-color: rgba(96, 165, 250, 0.70);
+            background: rgba(96, 165, 250, 0.13);
+        }
+
+        .windows-search-message {
+
+            min-height: 20px;
+            margin-top: 10px;
+
+            color: #60a5fa;
+
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .windows-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+            padding: 30px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .windows-card:hover {
+
+            border-color: rgba(96, 165, 250, 0.40);
+
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, 0.32),
+                0 0 30px rgba(37, 99, 235, 0.08);
+
+            transform: translateY(-2px);
+        }
+
+        .windows-card-heading {
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+            margin-bottom: 18px;
+        }
+
+        .windows-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(96, 165, 250, 0.30);
+            border-radius: 10px;
+
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.07);
+
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .windows-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+            font-weight: 750;
+        }
+
+        .windows-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .windows-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        .windows-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .windows-definition-box {
+
+            padding: 20px;
+            margin-top: 5px;
+
+            border-left: 3px solid #60a5fa;
+            border-radius: 0 10px 10px 0;
+
+            background: rgba(96, 165, 250, 0.055);
+        }
+
+        .windows-definition-box strong {
+
+            display: block;
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+        .windows-definition-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .windows-info-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .windows-info-card {
+
+            padding: 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.14);
+            border-radius: 11px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .windows-info-card:hover {
+
+            border-color: rgba(96, 165, 250, 0.35);
+
+            background: rgba(96, 165, 250, 0.06);
+
+            transform: translateY(-2px);
+        }
+
+        .windows-info-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        .windows-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+        .windows-terminal-label {
+
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: #64748b;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .windows-command-box code {
+
+            color: #93c5fd;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .windows-command-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+        .windows-command-card {
+
+            padding: 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.13);
+            border-radius: 10px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .windows-command-card code {
+
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #60a5fa;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .windows-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .windows-key-concepts {
+
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .windows-key-item {
+
+            padding: 10px 14px;
+
+            border: 1px solid rgba(96, 165, 250, 0.16);
+            border-radius: 8px;
+
+            color: #d7e4eb;
+            background: rgba(96, 165, 250, 0.04);
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .windows-comparison {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+        .windows-comparison-box {
+
+            padding: 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.14);
+            border-radius: 11px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .windows-comparison-box h3 {
+
+            color: #60a5fa;
+            margin-bottom: 12px;
+        }
+
+        .windows-comparison-box ul {
+
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .windows-comparison-box li {
+
+            margin-bottom: 7px;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .windows-summary-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+        .windows-summary-list li {
+
+            position: relative;
+
+            padding: 9px 0 9px 23px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(96, 165, 250, 0.07);
+        }
+
+        .windows-summary-list li:last-child {
+            border-bottom: none;
+        }
+
+        .windows-summary-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #60a5fa;
+
+            font-weight: 700;
+        }
+
+        .windows-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .windows-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background: rgba(96, 165, 250, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .windows-topic-button:hover {
+
+            border-color: rgba(96, 165, 250, 0.65);
+            background: rgba(96, 165, 250, 0.10);
+
+            transform: translateY(-1px);
+        }
+
+        .windows-topic-button.practical-lab {
+
+            border-color: rgba(37, 99, 235, 0.40);
+            background: rgba(37, 99, 235, 0.09);
+        }
+
+        .windows-topic-button span {
+
+            color: #60a5fa;
+            font-size: 17px;
+        }
+
+        @media (max-width: 800px) {
+
+            .windows-learning-page {
+                padding: 55px 15px 65px;
+            }
+
+            .windows-topic-header h1 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .windows-learning-page {
+                padding: 45px 12px 55px;
+            }
+
+            .windows-topic-header h1 {
+                font-size: 30px;
+            }
+
+            .windows-topic-intro {
+                font-size: 13px;
+            }
+
+            .windows-card {
+                padding: 21px 18px;
+                margin-bottom: 16px;
+            }
+
+            .windows-card h2 {
+                font-size: 18px;
+            }
+
+            .windows-card p {
+                font-size: 13px;
+            }
+
+            .windows-info-grid,
+            .windows-command-grid,
+            .windows-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .windows-topic-search {
+
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .windows-topic-search input,
+            .windows-topic-search button {
+                width: 100%;
+            }
+
+            .windows-topic-navigation {
+
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .windows-topic-button {
+
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<main class="windows-learning-page">
+
+<div class="windows-learning-container">
+
+
+<header class="windows-topic-header">
+
+    <div class="windows-topic-category">
+        WINDOWS
+    </div>
+
+    <h1>
+        Power<span>Shell</span>
+    </h1>
+
+    <p class="windows-topic-intro">
+
+        Learn the fundamentals of Windows PowerShell, understand
+        cmdlets, variables, pipelines, system administration and
+        basic PowerShell commands used in Windows environments.
+
+    </p>
+
+    <div class="windows-badges">
+
+        <div class="windows-badge">Beginner</div>
+        <div class="windows-badge">Theory</div>
+        <div class="windows-badge">PowerShell</div>
+        <div class="windows-badge">System Administration</div>
+        <div class="windows-badge">Practical Lab</div>
+
+    </div>
+
+
+    <div class="windows-topic-search">
+
+        <input
+            type="text"
+            id="windowsSearchInput"
+            placeholder="Search PowerShell topics..."
+            autocomplete="off"
+        >
+
+        <button
+            type="button"
+            id="windowsSearchButton"
+        >
+            🔍 Search
+        </button>
+
+    </div>
+
+    <div
+        id="windowsSearchMessage"
+        class="windows-search-message"
+    ></div>
+
+</header>
+
+
+<!-- WHAT IS POWERSHELL -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">PS</div>
+
+        <h2>
+            What is PowerShell?
+        </h2>
+
+    </div>
+
+    <div class="windows-definition-box">
+
+        <strong>
+            Simple Definition
+        </strong>
+
+        <span>
+
+            PowerShell is a command-line shell and scripting
+            environment developed by Microsoft. It is designed
+            for system administration, automation and configuration
+            management.
+
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- WHY POWERSHELL -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">?</div>
+
+        <h2>
+            Why is PowerShell Important?
+        </h2>
+
+    </div>
+
+    <p>
+
+        PowerShell allows administrators and security professionals
+        to manage Windows systems efficiently through commands and
+        scripts.
+
+    </p>
+
+    <div class="windows-info-grid">
+
+        <div class="windows-info-card">
+
+            <h3>Automation</h3>
+
+            <p>
+                Repeated administrative tasks can be automated
+                using PowerShell scripts.
+            </p>
+
+        </div>
+
+        <div class="windows-info-card">
+
+            <h3>System Management</h3>
+
+            <p>
+                PowerShell can be used to manage processes,
+                services, files, users and system configuration.
+            </p>
+
+        </div>
+
+        <div class="windows-info-card">
+
+            <h3>Security</h3>
+
+            <p>
+                Security professionals can use PowerShell to
+                inspect systems, processes, services and logs.
+            </p>
+
+        </div>
+
+        <div class="windows-info-card">
+
+            <h3>Administration</h3>
+
+            <p>
+                Administrators can manage Windows environments
+                efficiently from the command line.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- POWERSHELL VS CMD -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">↔</div>
+
+        <h2>
+            PowerShell vs CMD
+        </h2>
+
+    </div>
+
+    <div class="windows-comparison">
+
+        <div class="windows-comparison-box">
+
+            <h3>CMD</h3>
+
+            <ul>
+
+                <li>
+                    Traditional Windows command shell.
+                </li>
+
+                <li>
+                    Mainly designed for command execution.
+                </li>
+
+                <li>
+                    Common commands include dir, cd and ipconfig.
+                </li>
+
+                <li>
+                    Limited scripting capabilities compared
+                    with PowerShell.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="windows-comparison-box">
+
+            <h3>PowerShell</h3>
+
+            <ul>
+
+                <li>
+                    Modern command-line shell and scripting environment.
+                </li>
+
+                <li>
+                    Designed for administration and automation.
+                </li>
+
+                <li>
+                    Uses cmdlets such as Get-Process and Get-Service.
+                </li>
+
+                <li>
+                    Supports powerful scripting and object-based
+                    command processing.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- POWERSHELL PROMPT -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">$</div>
+
+        <h2>
+            Opening PowerShell
+        </h2>
+
+    </div>
+
+    <p>
+
+        PowerShell can be opened from the Start menu by searching
+        for PowerShell. On modern Windows systems, Windows Terminal
+        can also provide a PowerShell environment.
+
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            powershell
+        </code>
+
+    </div>
+
+</section>
+
+
+<!-- BASIC COMMANDS -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">C</div>
+
+        <h2>
+            Essential PowerShell Commands
+        </h2>
+
+    </div>
+
+    <p>
+        These commands provide a foundation for working with PowerShell.
+    </p>
+
+    <div class="windows-command-grid">
+
+        <div class="windows-command-card">
+
+            <code>Get-Location</code>
+
+            <p>
+                Displays the current working directory.
+            </p>
+
+        </div>
+
+        <div class="windows-command-card">
+
+            <code>Get-ChildItem</code>
+
+            <p>
+                Lists files and directories.
+            </p>
+
+        </div>
+
+        <div class="windows-command-card">
+
+            <code>Set-Location</code>
+
+            <p>
+                Changes the current location.
+            </p>
+
+        </div>
+
+        <div class="windows-command-card">
+
+            <code>New-Item</code>
+
+            <p>
+                Creates a new file or directory.
+            </p>
+
+        </div>
+
+        <div class="windows-command-card">
+
+            <code>Get-Process</code>
+
+            <p>
+                Displays running processes.
+            </p>
+
+        </div>
+
+        <div class="windows-command-card">
+
+            <code>Get-Service</code>
+
+            <p>
+                Displays Windows services.
+            </p>
+
+        </div>
+
+        <div class="windows-command-card">
+
+            <code>Get-ComputerInfo</code>
+
+            <p>
+                Displays detailed computer information.
+            </p>
+
+        </div>
+
+        <div class="windows-command-card">
+
+            <code>Get-Date</code>
+
+            <p>
+                Displays the current date and time.
+            </p>
+
+        </div>
+
+        <div class="windows-command-card">
+
+            <code>Clear-Host</code>
+
+            <p>
+                Clears the PowerShell console.
+            </p>
+
+        </div>
+
+        <div class="windows-command-card">
+
+            <code>Get-Help</code>
+
+            <p>
+                Displays help information for commands.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CMDLET -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">01</div>
+
+        <h2>
+            What is a Cmdlet?
+        </h2>
+
+    </div>
+
+    <div class="windows-definition-box">
+
+        <strong>
+            Simple Definition
+        </strong>
+
+        <span>
+
+            A cmdlet is a lightweight PowerShell command designed
+            to perform a specific task.
+
+        </span>
+
+    </div>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            Examples
+        </span>
+
+        <code>
+            Get-Process
+        </code>
+
+        <br>
+
+        <code>
+            Get-Service
+        </code>
+
+        <br>
+
+        <code>
+            Get-Location
+        </code>
+
+    </div>
+
+</section>
+
+
+<!-- VERB NOUN -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">V</div>
+
+        <h2>
+            PowerShell Verb-Noun Naming
+        </h2>
+
+    </div>
+
+    <p>
+
+        PowerShell cmdlets commonly follow a Verb-Noun naming
+        convention. The verb describes the action and the noun
+        describes the object.
+
+    </p>
+
+    <div class="windows-flow">
+
+        <div class="windows-flow-item">
+            Get
+        </div>
+
+        <div class="windows-flow-arrow">
+            +
+        </div>
+
+        <div class="windows-flow-item">
+            Process
+        </div>
+
+        <div class="windows-flow-arrow">
+            =
+        </div>
+
+        <div class="windows-flow-item">
+            Get-Process
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- VARIABLES -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">$</div>
+
+        <h2>
+            PowerShell Variables
+        </h2>
+
+    </div>
+
+    <p>
+
+        Variables are used to store values in PowerShell.
+        PowerShell variables begin with the dollar sign
+        <strong>$</strong>.
+
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            Example
+        </span>
+
+        <code>
+            $name = "CyberNexa"
+        </code>
+
+        <br>
+
+        <code>
+            $number = 10
+        </code>
+
+        <br>
+
+        <code>
+            $name
+        </code>
+
+    </div>
+
+</section>
+
+
+<!-- PIPELINE -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">|</div>
+
+        <h2>
+            PowerShell Pipeline
+        </h2>
+
+    </div>
+
+    <div class="windows-definition-box">
+
+        <strong>
+            Simple Definition
+        </strong>
+
+        <span>
+
+            The PowerShell pipeline uses the pipe symbol
+            <strong>|</strong> to pass the output of one command
+            to another command.
+
+        </span>
+
+    </div>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            Example
+        </span>
+
+        <code>
+            Get-Process | Where-Object {$_.CPU -gt 100}
+        </code>
+
+    </div>
+
+</section>
+
+
+<!-- FILE MANAGEMENT -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">📁</div>
+
+        <h2>
+            File and Directory Management
+        </h2>
+
+    </div>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            Get-Location
+        </code>
+
+        <br>
+
+        <code>
+            Get-ChildItem
+        </code>
+
+        <br>
+
+        <code>
+            New-Item -ItemType Directory CyberNexa
+        </code>
+
+        <br>
+
+        <code>
+            Set-Location CyberNexa
+        </code>
+
+    </div>
+
+</section>
+
+
+<!-- PROCESS MANAGEMENT -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">P</div>
+
+        <h2>
+            Process Management
+        </h2>
+
+    </div>
+
+    <p>
+
+        PowerShell provides commands for viewing and managing
+        processes running on a Windows system.
+
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            Get-Process
+        </code>
+
+        <br>
+
+        <code>
+            Get-Process | Select-Object Name, Id
+        </code>
+
+    </div>
+
+</section>
+
+
+<!-- SERVICES -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">S</div>
+
+        <h2>
+            Windows Services
+        </h2>
+
+    </div>
+
+    <p>
+
+        PowerShell can be used to inspect Windows services and
+        their current status.
+
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            Get-Service
+        </code>
+
+        <br>
+
+        <code>
+            Get-Service | Where-Object {$_.Status -eq "Running"}
+        </code>
+
+    </div>
+
+</section>
+
+
+<!-- HELP -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">?</div>
+
+        <h2>
+            PowerShell Help System
+        </h2>
+
+    </div>
+
+    <p>
+
+        PowerShell provides a built-in help system that helps
+        users understand commands and their available parameters.
+
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell
+        </span>
+
+        <code>
+            Get-Help Get-Process
+        </code>
+
+        <br>
+
+        <code>
+            Get-Help Get-Service
+        </code>
+
+    </div>
+
+</section>
+
+
+<!-- SECURITY -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">🔐</div>
+
+        <h2>
+            PowerShell in Cybersecurity
+        </h2>
+
+    </div>
+
+    <p>
+
+        PowerShell is important in cybersecurity because security
+        professionals may use it for system inspection, automation,
+        administration and security analysis.
+
+    </p>
+
+    <div class="windows-key-concepts">
+
+        <div class="windows-key-item">Process Analysis</div>
+        <div class="windows-key-item">Service Analysis</div>
+        <div class="windows-key-item">System Information</div>
+        <div class="windows-key-item">Automation</div>
+        <div class="windows-key-item">Log Analysis</div>
+        <div class="windows-key-item">Administration</div>
+
+    </div>
+
+</section>
+
+
+<!-- SUMMARY -->
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">✓</div>
+
+        <h2>
+            Quick Summary
+        </h2>
+
+    </div>
+
+    <ul class="windows-summary-list">
+
+        <li>
+            PowerShell is a command-line shell and scripting environment.
+        </li>
+
+        <li>
+            PowerShell is widely used for Windows administration and automation.
+        </li>
+
+        <li>
+            PowerShell commands are commonly called cmdlets.
+        </li>
+
+        <li>
+            Cmdlets generally follow a Verb-Noun naming convention.
+        </li>
+
+        <li>
+            Get-Process displays running processes.
+        </li>
+
+        <li>
+            Get-Service displays Windows services.
+        </li>
+
+        <li>
+            Get-ChildItem lists files and directories.
+        </li>
+
+        <li>
+            Variables begin with the $ symbol.
+        </li>
+
+        <li>
+            The pipeline symbol | passes output from one command to another.
+        </li>
+
+        <li>
+            Get-Help provides command documentation.
+        </li>
+
+        <li>
+            PowerShell knowledge is useful for Windows cybersecurity.
+        </li>
+
+    </ul>
+
+</section>
+<!-- =====================================================
+     LESSON COMPLETION
+====================================================== -->
+
+<section class="windows-card" id="lessonCompletion">
+
+    <div class="windows-card-heading">
+
+        <div class="windows-icon">✓</div>
+
+        <h2>Lesson Completion</h2>
+
+    </div>
+
+    <p>
+        You have completed the PowerShell lesson.
+        Mark this lesson as complete to save your learning
+        progress to your CyberNexa account.
+    </p>
+
+    <div style="margin-top: 22px; text-align: center;">
+
+        <button
+            type="button"
+            class="windows-topic-button"
+            data-lesson-progress
+            data-course-id="windows"
+            data-lesson-id="powershell"
+            data-dashboard-url="../learning-paths/windows/theory/powershell.html"
+            data-status-id="powershellCompletionStatus">
+
+            ✓ Mark Lesson Complete
+
+        </button>
+
+        <p
+            id="powershellCompletionStatus"
+            role="status"
+            aria-live="polite"
+            style="margin-top: 15px; font-size: 13px;">
+        </p>
+
+    </div>
+
+</section>
+<!-- NAVIGATION -->
+
+<div class="windows-topic-navigation">
+
+                <a
+                    href="cmd.html"
+                    class="windows-topic-button previous"
+                >
+                    <span>←</span>
+                    <strong>Previous: Command Prompt (CMD)</strong>
+                </a>
+
+                <a
+                    href="../labs/lab04.html"
+                    class="windows-topic-button practical-lab"
+                >
+                    <span>🧪</span>
+                    <strong>Perform Lab</strong>
+                </a>
+            </div>
+
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+
+<script>
+
+const windowsSearchInput =
+    document.getElementById("windowsSearchInput");
+
+const windowsSearchButton =
+    document.getElementById("windowsSearchButton");
+
+const windowsSearchMessage =
+    document.getElementById("windowsSearchMessage");
+
+
+function searchWindowsTopic() {
+
+    const searchText =
+        windowsSearchInput.value
+            .trim()
+            .toLowerCase();
+
+    const cards =
+        document.querySelectorAll(".windows-card");
+
+    let found = false;
+
+    cards.forEach(card => {
+
+        card.style.borderColor =
+            "rgba(96, 165, 250, 0.15)";
+
+        card.style.boxShadow =
+            "0 15px 40px rgba(0, 0, 0, 0.28)";
+
+    });
+
+
+    if (searchText === "") {
+
+        windowsSearchMessage.textContent =
+            "Please enter a PowerShell topic.";
+
+        return;
+
+    }
+
+
+    cards.forEach(card => {
+
+        const cardText =
+            card.innerText.toLowerCase();
+
+        if (cardText.includes(searchText) && !found) {
+
+            found = true;
+
+            card.style.borderColor =
+                "rgba(96, 165, 250, 0.75)";
+
+            card.style.boxShadow =
+                "0 0 25px rgba(37, 99, 235, 0.13)";
+
+            card.scrollIntoView({
+
+                behavior: "smooth",
+
+                block: "center"
+
+            });
+
+        }
+
+    });
+
+
+    if (found) {
+
+        windowsSearchMessage.textContent =
+            "Topic found.";
+
+    }
+    else {
+
+        windowsSearchMessage.textContent =
+            "No matching PowerShell topic found.";
+
+    }
+
+}
+
+
+windowsSearchButton.addEventListener(
+    "click",
+    searchWindowsTopic
+);
+
+
+windowsSearchInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            searchWindowsTopic();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

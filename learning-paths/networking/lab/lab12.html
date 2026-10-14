@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab 02 - ARP | CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .network-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 55px 15px 65px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(14, 165, 233, 0.13),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .network-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .network-lab-header {
+
+            text-align: center;
+
+            margin-bottom: 28px;
+        }
+
+        .network-lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 12px;
+
+            color: #22d3ee;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .network-lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 42px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+        .network-lab-header h1 span {
+
+            color: #38bdf8;
+        }
+
+        .network-lab-intro {
+
+            max-width: 720px;
+
+            margin: 14px auto 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           LAB INFO
+        ===================================================== */
+
+        .network-lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 8px;
+
+            margin-bottom: 22px;
+        }
+
+        .network-info-card {
+
+            padding: 14px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.15);
+
+            border-radius: 9px;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+        }
+
+        .network-info-icon {
+
+            margin-bottom: 7px;
+
+            color: #22d3ee;
+
+            font-size: 17px;
+        }
+
+        .network-info-label {
+
+            margin-bottom: 3px;
+
+            color: #71808c;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .network-info-value {
+
+            color: #e2e8f0;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .network-lab-progress {
+
+            margin-bottom: 25px;
+
+            padding: 14px 16px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.16);
+
+            border-radius: 10px;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+        }
+
+        .network-progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 9px;
+        }
+
+        .network-progress-title {
+
+            color: #f8fafc;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .network-progress-count {
+
+            color: #22d3ee;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .network-progress-track {
+
+            width: 100%;
+
+            height: 4px;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            background:
+                rgba(34, 211, 238, 0.10);
+        }
+
+        .network-progress-bar {
+
+            width: 16.66%;
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #38bdf8
+                );
+        }
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .network-section {
+
+            margin-bottom: 18px;
+
+            padding: 20px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.15);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+        }
+
+        .network-section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 12px;
+
+            color: #f8fafc;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+        .network-section-icon {
+
+            color: #22d3ee;
+
+            font-size: 18px;
+        }
+
+        .network-section p {
+
+            margin: 0 0 12px;
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           ARP DIAGRAM
+        ===================================================== */
+
+        .network-diagram {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin: 20px 0;
+
+            flex-wrap: wrap;
+        }
+
+        .network-node {
+
+            min-width: 110px;
+
+            padding: 13px 10px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.20);
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            background:
+                rgba(34, 211, 238, 0.045);
+        }
+
+        .network-node-icon {
+
+            margin-bottom: 5px;
+
+            color: #22d3ee;
+
+            font-size: 20px;
+        }
+
+        .network-node-title {
+
+            color: #f8fafc;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .network-node-text {
+
+            margin-top: 3px;
+
+            color: #7f909d;
+
+            font-size: 8px;
+        }
+
+        .network-arrow {
+
+            color: #38bdf8;
+
+            font-size: 18px;
+
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           TASK
+        ===================================================== */
+
+        .network-task {
+
+            margin-top: 12px;
+
+            padding: 14px;
+
+            border-left: 3px solid #22d3ee;
+
+            border-radius: 7px;
+
+            background:
+                rgba(34, 211, 238, 0.045);
+        }
+
+        .network-task-title {
+
+            margin-bottom: 7px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .network-task p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           COMMAND BLOCK
+        ===================================================== */
+
+        .network-command {
+
+            position: relative;
+
+            margin: 12px 0;
+
+            padding: 15px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.13);
+
+            border-radius: 8px;
+
+            background: #010508;
+
+            overflow-x: auto;
+        }
+
+        .network-command-label {
+
+            margin-bottom: 8px;
+
+            color: #22d3ee;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.3px;
+
+            text-transform: uppercase;
+        }
+
+        .network-command code {
+
+            color: #dbeafe;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 10px;
+
+            line-height: 1.8;
+
+            white-space: pre;
+        }
+
+        .network-copy {
+
+            position: absolute;
+
+            top: 10px;
+            right: 10px;
+
+            padding: 5px 8px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.18);
+
+            border-radius: 5px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(34, 211, 238, 0.05);
+
+            font-size: 8px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .network-copy:hover {
+
+            border-color:
+                rgba(34, 211, 238, 0.55);
+
+            background:
+                rgba(34, 211, 238, 0.09);
+        }
+
+        /* =====================================================
+           OUTPUT
+        ===================================================== */
+
+        .network-output {
+
+            margin-top: 10px;
+
+            padding: 14px;
+
+            border: 1px solid
+                rgba(96, 165, 250, 0.15);
+
+            border-radius: 8px;
+
+            background: #010508;
+
+            overflow-x: auto;
+        }
+
+        .network-output-title {
+
+            margin-bottom: 7px;
+
+            color: #60a5fa;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .network-output pre {
+
+            margin: 0;
+
+            color: #94a3b8;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 9px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+        /* =====================================================
+           CHECKLIST
+        ===================================================== */
+
+        .network-checklist {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+            margin-top: 10px;
+        }
+
+        .network-check {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 9px;
+
+            padding: 10px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.10);
+
+            border-radius: 7px;
+
+            background:
+                rgba(34, 211, 238, 0.025);
+        }
+
+        .network-check input {
+
+            margin-top: 2px;
+
+            accent-color: #22d3ee;
+
+            cursor: pointer;
+        }
+
+        .network-check label {
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           KEY CONCEPTS
+        ===================================================== */
+
+        .network-concepts {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+        .network-concept {
+
+            padding: 12px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.12);
+
+            border-radius: 8px;
+
+            background:
+                rgba(34, 211, 238, 0.025);
+        }
+
+        .network-concept strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #67e8f9;
+
+            font-size: 10px;
+        }
+
+        .network-concept span {
+
+            color: #8999a5;
+
+            font-size: 9px;
+
+            line-height: 1.55;
+        }
+
+        /* =====================================================
+           SAFETY
+        ===================================================== */
+
+        .network-safety {
+
+            margin-top: 18px;
+
+            padding: 17px;
+
+            border: 1px solid
+                rgba(96, 165, 250, 0.18);
+
+            border-radius: 9px;
+
+            background:
+                rgba(96, 165, 250, 0.035);
+        }
+
+        .network-safety h2 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 13px;
+        }
+
+        .network-safety p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .network-navigation {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 18px;
+        }
+
+        .network-button {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.16);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .network-button:hover {
+
+            border-color:
+                rgba(34, 211, 238, 0.55);
+
+            background:
+                rgba(34, 211, 238, 0.08);
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .network-lab-page {
+
+                padding: 45px 10px 55px;
+            }
+
+            .network-lab-header h1 {
+
+                font-size: 30px;
+            }
+
+            .network-lab-intro {
+
+                font-size: 11px;
+            }
+
+            .network-lab-info {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .network-concepts {
+
+                grid-template-columns: 1fr;
+            }
+
+            .network-diagram {
+
+                flex-direction: column;
+            }
+
+            .network-arrow {
+
+                transform: rotate(90deg);
+            }
+
+            .network-navigation {
+
+                flex-direction: column;
+            }
+
+            .network-button {
+
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            .network-lab-info {
+
+                grid-template-columns: 1fr;
+            }
+
+            .network-section {
+
+                padding: 15px;
+            }
+
+            .network-lab-header h1 {
+
+                font-size: 27px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="network-lab-page">
+
+<div class="network-lab-container">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="network-lab-header">
+
+    <div class="network-lab-category">
+        🌐 NETWORKING PRACTICAL
+    </div>
+
+    <h1>
+        Lab 11 — <span>ARP</span>
+    </h1>
+
+    <p class="network-lab-intro">
+
+        Explore how Address Resolution Protocol (ARP) maps an
+        IPv4 address to a MAC address and practice viewing,
+        clearing and observing the ARP cache on Windows.
+
+    </p>
+
+</header>
+
+
+<!-- =====================================================
+     LAB INFO
+===================================================== -->
+
+<div class="network-lab-info">
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            🌐
+        </div>
+
+        <div class="network-info-label">
+            Category
+        </div>
+
+        <div class="network-info-value">
+            Networking
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            🧪
+        </div>
+
+        <div class="network-info-label">
+            Lab
+        </div>
+
+        <div class="network-info-value">
+            Practical 11
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            💻
+        </div>
+
+        <div class="network-info-label">
+            Environment
+        </div>
+
+        <div class="network-info-value">
+            Windows
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            📊
+        </div>
+
+        <div class="network-info-label">
+            Level
+        </div>
+
+        <div class="network-info-value">
+            Beginner
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PROGRESS
+===================================================== -->
+
+<div class="network-lab-progress">
+
+    <div class="network-progress-top">
+
+        <div class="network-progress-title">
+            Networking Practical Labs
+        </div>
+
+        <div class="network-progress-count">
+            Lab 11 / 21
+        </div>
+
+    </div>
+
+    <div class="network-progress-track">
+
+        <div class="network-progress-bar"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     OBJECTIVE
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🎯
+        </span>
+
+        Lab Objective
+
+    </div>
+
+    <p>
+
+        In this lab, you will learn how ARP helps a device
+        determine the MAC address associated with an IPv4
+        address on the local network.
+
+    </p>
+
+    <p>
+
+        You will inspect the ARP cache, generate ARP activity,
+        identify IP-to-MAC mappings and clear the ARP cache.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     ARP DIAGRAM
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🔗
+        </span>
+
+        How ARP Works
+
+    </div>
+
+    <p>
+
+        When a computer needs to communicate with another device
+        on the same local network, it may need the destination
+        device's MAC address. ARP helps discover that mapping.
+
+    </p>
+
+
+    <div class="network-diagram">
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                Your PC
+            </div>
+
+            <div class="network-node-text">
+                192.168.1.20
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                🔍
+            </div>
+
+            <div class="network-node-title">
+                ARP
+            </div>
+
+            <div class="network-node-text">
+                IP → MAC
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                Local Host
+            </div>
+
+            <div class="network-node-text">
+                MAC Address
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 Basic Idea
+        </div>
+
+        <p>
+
+            ARP resolves a known IPv4 address into the
+            corresponding MAC address needed for local Ethernet
+            communication.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 01
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            01
+        </span>
+
+        View the ARP Cache
+
+    </div>
+
+    <p>
+
+        Open Windows Command Prompt and run the following command
+        to display the current ARP cache.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('arp -a')"
+        >
+            Copy
+        </button>
+
+        <code>arp -a</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+Interface: 192.168.1.20 --- 0x8
+  Internet Address      Physical Address      Type
+  192.168.1.1           aa-bb-cc-dd-ee-ff     dynamic
+  192.168.1.10          11-22-33-44-55-66     dynamic
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 What to Observe
+        </div>
+
+        <p>
+
+            Look for the Internet Address, Physical Address and
+            Type columns. The Internet Address represents the IPv4
+            address, while the Physical Address represents the MAC
+            address.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 02
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            02
+        </span>
+
+        Generate ARP Activity
+
+    </div>
+
+    <p>
+
+        First identify your default gateway using ipconfig.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('ipconfig')"
+        >
+            Copy
+        </button>
+
+        <code>ipconfig</code>
+
+    </div>
+
+
+    <p>
+
+        Then send a ping to your local gateway. Replace the
+        example address with the gateway shown on your computer.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('ping 192.168.1.1')"
+        >
+            Copy
+        </button>
+
+        <code>ping 192.168.1.1</code>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 Why Do This?
+        </div>
+
+        <p>
+
+            Communicating with a local host can cause your computer
+            to learn or refresh the IP-to-MAC mapping required for
+            local network communication.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 03
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            03
+        </span>
+
+        Check the ARP Entry
+
+    </div>
+
+    <p>
+
+        After communicating with the gateway, display the ARP
+        cache again.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('arp -a')"
+        >
+            Copy
+        </button>
+
+        <code>arp -a</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Entry
+        </div>
+
+        <pre>
+Internet Address      Physical Address      Type
+192.168.1.1           aa-bb-cc-dd-ee-ff     dynamic
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 Concept
+        </div>
+
+        <p>
+
+            The ARP table stores mappings between IPv4 addresses
+            and MAC addresses so that local communication can
+            take place at the link layer.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 04
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            04
+        </span>
+
+        View a Specific ARP Entry
+
+    </div>
+
+    <p>
+
+        You can display the ARP information associated with a
+        specific IP address.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('arp -a 192.168.1.1')"
+        >
+            Copy
+        </button>
+
+        <code>arp -a 192.168.1.1</code>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 What to Observe
+        </div>
+
+        <p>
+
+            Replace 192.168.1.1 with an IP address from your local
+            network. The command can be used to inspect the ARP
+            information for that interface/address.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 05
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            05
+        </span>
+
+        Clear the ARP Cache
+
+    </div>
+
+    <p>
+
+        Windows provides a command for deleting ARP cache entries.
+        Run Command Prompt as Administrator before using it.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Administrator Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('arp -d *')"
+        >
+            Copy
+        </button>
+
+        <code>arp -d *</code>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            ⚠️ Important
+        </div>
+
+        <p>
+
+            This removes dynamic ARP entries from the ARP cache.
+            The cache may be populated again when your computer
+            communicates with devices on the local network.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 06
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            06
+        </span>
+
+        Observe ARP Cache Again
+
+    </div>
+
+    <p>
+
+        After clearing the cache, display the ARP table again.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('arp -a')"
+        >
+            Copy
+        </button>
+
+        <code>arp -a</code>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 What to Understand
+        </div>
+
+        <p>
+
+            Some entries may disappear after the cache is cleared.
+            New mappings can appear again when your computer needs
+            to communicate with local devices.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ARP COMMUNICATION
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📡
+        </span>
+
+        ARP Request and Reply
+
+    </div>
+
+    <p>
+
+        ARP normally uses a request-and-reply process when a host
+        needs to discover the MAC address associated with a local
+        IPv4 address.
+
+    </p>
+
+
+    <div class="network-diagram">
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                Host A
+            </div>
+
+            <div class="network-node-text">
+                Needs MAC
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                📢
+            </div>
+
+            <div class="network-node-title">
+                ARP Request
+            </div>
+
+            <div class="network-node-text">
+                Who has IP?
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                Host B
+            </div>
+
+            <div class="network-node-text">
+                Owns IP
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            📩 ARP Reply
+        </div>
+
+        <p>
+
+            The device that owns the requested IPv4 address can
+            respond with its MAC address. The requesting host can
+            then use that information for local communication.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     KEY CONCEPTS
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🧠
+        </span>
+
+        Key ARP Concepts
+
+    </div>
+
+
+    <div class="network-concepts">
+
+
+        <div class="network-concept">
+
+            <strong>ARP</strong>
+
+            <span>
+                Address Resolution Protocol maps an IPv4 address
+                to a MAC address on a local network.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>IPv4 Address</strong>
+
+            <span>
+                A logical network-layer address used to identify
+                an interface on an IP network.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>MAC Address</strong>
+
+            <span>
+                A link-layer address associated with a network
+                interface.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>ARP Cache</strong>
+
+            <span>
+                A local table containing learned IP-to-MAC
+                address mappings.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>ARP Request</strong>
+
+            <span>
+                A request used to discover the MAC address
+                associated with a local IPv4 address.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>ARP Reply</strong>
+
+            <span>
+                A response that provides the requested MAC
+                address information.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     COMPLETION CHECKLIST
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            ✓
+        </span>
+
+        Lab Completion Checklist
+
+    </div>
+
+
+    <div class="network-checklist">
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check1"
+            >
+
+            <label for="check1">
+
+                I viewed the ARP cache using arp -a.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check2"
+            >
+
+            <label for="check2">
+
+                I identified IPv4 and MAC address mappings.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check3"
+            >
+
+            <label for="check3">
+
+                I generated local network activity using ping.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check4"
+            >
+
+            <label for="check4">
+
+                I inspected the ARP table again after network activity.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check5"
+            >
+
+            <label for="check5">
+
+                I learned how ARP requests and replies work.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check6"
+            >
+
+            <label for="check6">
+
+                I cleared and observed the ARP cache.
+
+            </label>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SUMMARY
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📘
+        </span>
+
+        Lab Summary
+
+    </div>
+
+    <p>
+
+        In this practical lab, you examined the ARP cache of a
+        Windows computer and observed how IPv4 addresses are
+        associated with MAC addresses on a local network.
+
+    </p>
+
+    <p>
+
+        You practiced using arp and ping commands and learned
+        the basic request-and-reply process used by ARP.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     SAFETY
+===================================================== -->
+
+<section class="network-safety">
+
+    <h2>
+        🧪 Lab Safety
+    </h2>
+
+    <p>
+
+        Perform these exercises only on systems and networks that
+        you own or are explicitly authorized to test. The commands
+        in this lab are intended for basic network observation,
+        learning and troubleshooting.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<div class="network-navigation">
+
+    <a
+        href="lab11.html"
+        class="network-button"
+    >
+         Previous: Lab 
+    </a>
+
+
+    <a
+        href="../theory/icmp.html"
+        class="network-button"
+    >
+        ☰ ICMP 
+    </a>
+
+<!-- 
+    <a
+        href="lab03.html"
+        class="network-button"
+    >
+        Next Lab →
+    </a> -->
+
+</div>
+
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="../../../js/navbar.js"></script>
+
+
+<script>
+
+function copyCommand(command) {
+
+    navigator.clipboard.writeText(command);
+
+    const buttons =
+        document.querySelectorAll(".network-copy");
+
+    buttons.forEach(button => {
+
+        if (button.innerText === "Copy") {
+
+            button.innerText = "Copied";
+
+            setTimeout(() => {
+
+                button.innerText = "Copy";
+
+            }, 1200);
+
+        }
+
+    });
+
+}
+
+</script>
+
+
+</body>
+
+</html>

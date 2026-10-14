@@ -1,0 +1,2712 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Commands Practical Lab | CyberNexa</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 230, 138, 0.08),
+                    transparent 32%
+                ),
+                #020914;
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #030c19;
+            border-bottom: 1px solid rgba(0,230,138,.18);
+        }
+
+        .nav-container {
+            width: min(1200px,100%);
+            margin: auto;
+            padding: 15px 24px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 48px;
+            color: #00e68a;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            color: white;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00e68a;
+        }
+
+        .brand-tagline {
+            color: #7890a8;
+            font-size: 10px;
+        }
+
+        /* ================= PAGE ================= */
+
+        .page {
+            width: min(1050px,calc(100% - 32px));
+            margin: auto;
+            padding: 42px 0 70px;
+        }
+
+        .breadcrumb {
+            color: #72879c;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .breadcrumb span {
+            color: #00e68a;
+            margin: 0 7px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .article-header {
+            padding: 34px;
+            border: 1px solid rgba(0,230,138,.24);
+            border-left: 4px solid #00e68a;
+            border-radius: 12px;
+            background: rgba(0,230,138,.035);
+            margin-bottom: 25px;
+        }
+
+        .label {
+            color: #00e68a;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            color: white;
+            font-size: clamp(30px,5vw,48px);
+            line-height: 1.15;
+            margin: 10px 0 15px;
+        }
+
+        .intro {
+            color: #a9bdd1;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        /* ================= LAB INFO ================= */
+
+        .lab-info {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .lab-info-card {
+            padding: 16px;
+            background: #041221;
+            border: 1px solid rgba(0,230,138,.14);
+            border-radius: 9px;
+        }
+
+        .lab-info-card strong {
+            display: block;
+            color: #00e68a;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .lab-info-card span {
+            color: #b3c3d3;
+            font-size: 13px;
+        }
+
+        /* ================= PROGRESS ================= */
+
+        .progress-box {
+            padding: 20px;
+            margin-bottom: 25px;
+            background: #041221;
+            border: 1px solid rgba(0,230,138,.18);
+            border-radius: 10px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-top strong {
+            color: white;
+        }
+
+        #progressText {
+            color: #00e68a;
+            font-weight: 700;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #01060c;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #00e68a;
+            transition: width .3s ease;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section {
+            margin-top: 22px;
+            padding: 28px;
+            background: #041221;
+            border: 1px solid rgba(0,230,138,.13);
+            border-radius: 11px;
+        }
+
+        .section h2 {
+            color: white;
+            font-size: clamp(21px,3vw,27px);
+            line-height: 1.3;
+            margin: 0 0 13px;
+        }
+
+        .section h3 {
+            color: #00e68a;
+            font-size: 18px;
+            margin: 22px 0 8px;
+        }
+
+        .section p {
+            color: #aebfd0;
+            font-size: 15px;
+            margin: 9px 0;
+        }
+
+        /* ================= OBJECTIVES ================= */
+
+        .list {
+            padding-left: 20px;
+        }
+
+        .list li {
+            color: #aebfd0;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        /* ================= TASK ================= */
+
+        .task {
+            margin-top: 20px;
+            padding: 22px;
+            background: #020b15;
+            border: 1px solid rgba(0,230,138,.14);
+            border-radius: 9px;
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task-number {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 50%;
+            border: 1px solid #00e68a;
+            color: #00e68a;
+            font-weight: 900;
+        }
+
+        .task-title h3 {
+            margin: 0;
+            color: white;
+        }
+
+        /* ================= CODE ================= */
+
+        .code-title {
+            margin-top: 18px;
+            margin-bottom: 7px;
+            color: #00e68a;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .code-container {
+            position: relative;
+        }
+
+        .code {
+            width: 100%;
+            padding: 16px;
+            padding-right: 75px;
+            background: #01060c;
+            border: 1px solid rgba(0,230,138,.15);
+            border-left: 3px solid #00e68a;
+            border-radius: 7px;
+            color: #7fffc0;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            overflow-x: auto;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 9px;
+            right: 9px;
+            padding: 7px 11px;
+            background: #041a16;
+            border: 1px solid rgba(0,230,138,.35);
+            border-radius: 6px;
+            color: #00e68a;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .copy-btn:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+
+        /* ================= TERMINAL ================= */
+
+        .terminal {
+            margin-top: 18px;
+            border: 1px solid rgba(0,230,138,.22);
+            border-radius: 9px;
+            overflow: hidden;
+        }
+
+        .terminal-bar {
+            padding: 9px 14px;
+            background: #071a16;
+            color: #00e68a;
+            font-family: Consolas,monospace;
+            font-size: 12px;
+        }
+
+        .terminal-body {
+            padding: 18px;
+            background: #01060c;
+            color: #b8ffd9;
+            font-family: Consolas,monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            overflow-x: auto;
+        }
+
+        /* ================= OUTPUT ================= */
+
+        .output {
+            margin-top: 15px;
+            padding: 17px;
+            border-left: 4px solid #00e68a;
+            background: rgba(0,230,138,.035);
+            border-radius: 7px;
+        }
+
+        .output-title {
+            color: #00e68a;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 7px;
+        }
+
+        .output pre {
+            margin: 0;
+            color: #b8d5c8;
+            font-family: Consolas,monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        /* ================= TIP ================= */
+
+        .tip {
+            margin-top: 18px;
+            padding: 18px;
+            border-left: 4px solid #00e68a;
+            border-radius: 7px;
+            background: rgba(0,230,138,.04);
+        }
+
+        .tip strong {
+            color: #00e68a;
+        }
+
+        /* ================= WARNING ================= */
+
+        .warning {
+            margin-top: 18px;
+            padding: 18px;
+            border-left: 4px solid #ffbd00;
+            border-radius: 7px;
+            background: rgba(255,189,0,.04);
+        }
+
+        .warning strong {
+            color: #ffbd00;
+        }
+
+        /* ================= CHECK ================= */
+
+        .complete-check {
+            margin-top: 18px;
+            padding: 14px;
+            border: 1px solid rgba(0,230,138,.18);
+            border-radius: 8px;
+            background: rgba(0,230,138,.025);
+        }
+
+        .complete-check label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #b8c9d9;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .complete-check input {
+            width: 18px;
+            height: 18px;
+            accent-color: #00e68a;
+        }
+
+        /* ================= GRID ================= */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .info-card {
+            padding: 18px;
+            background: #020b15;
+            border: 1px solid rgba(0,230,138,.13);
+            border-radius: 8px;
+        }
+
+        .info-card h3 {
+            margin-top: 0;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 550px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            text-align: left;
+        }
+
+        th {
+            color: #00e68a;
+            background: #020a13;
+        }
+
+        td {
+            color: #aebfd0;
+            font-size: 13px;
+        }
+
+        /* ================= QUIZ ================= */
+
+        .quiz-question {
+            margin-top: 18px;
+            padding: 18px;
+            background: #020b15;
+            border: 1px solid rgba(0,230,138,.12);
+            border-radius: 8px;
+        }
+
+        .quiz-question p {
+            color: white;
+            font-weight: 700;
+        }
+
+        .option {
+            display: block;
+            margin: 9px 0;
+            padding: 9px 11px;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 6px;
+            color: #aebfd0;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            border-color: rgba(0,230,138,.35);
+        }
+
+        .option input {
+            margin-right: 8px;
+        }
+
+        .quiz-button {
+            margin-top: 20px;
+            padding: 11px 20px;
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+            background: transparent;
+            color: #00e68a;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .quiz-button:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+
+        #quizResult {
+            margin-top: 15px;
+            font-weight: 700;
+        }
+
+        /* ================= COMPLETION ================= */
+
+        .completion {
+            margin-top: 25px;
+            padding: 28px;
+            text-align: center;
+            border: 1px solid rgba(0,230,138,.25);
+            border-left: 4px solid #00e68a;
+            border-radius: 11px;
+            background: rgba(0,230,138,.035);
+        }
+
+        .completion h2 {
+            color: #00e68a;
+            margin-top: 0;
+        }
+
+        .completion-status {
+            color: #00e68a;
+            font-weight: 800;
+        }
+
+        /* ================= NAVIGATION ================= */
+
+        .article-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .article-navigation a {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid rgba(0,230,138,.2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #9eb2c7;
+            font-size: 13px;
+        }
+
+        .article-navigation a:hover {
+            color: #00e68a;
+            border-color: #00e68a;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            border-top: 1px solid rgba(0,230,138,.15);
+            background: #020914;
+            padding: 38px 20px 20px;
+        }
+
+        .footer-container {
+            width: min(1050px,100%);
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00e68a;
+        }
+
+        .footer-container p {
+            color: #71869c;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .footer-links a:hover {
+            color: #00e68a;
+        }
+
+        .copyright {
+            width: min(1050px,100%);
+            margin: 25px auto 0;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,.05);
+            text-align: center;
+            color: #52667b;
+            font-size: 10px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width:850px) {
+
+            .lab-info {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+        }
+
+        @media (max-width:700px) {
+
+            .page {
+                width: calc(100% - 24px);
+                padding-top: 28px;
+            }
+
+            .article-header,
+            .section {
+                padding: 20px;
+            }
+
+            .lab-info {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-navigation {
+                flex-direction: column;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+            .command,
+            .terminal-body {
+                font-size: 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58
+                        C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="page">
+
+
+    <!-- BREADCRUMB -->
+
+    <div class="breadcrumb">
+
+        Practical Labs
+        <span>›</span>
+        Linux
+        <span>›</span>
+        Essential Linux Commands
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <section class="article-header">
+
+        <div class="label">
+            LINUX PRACTICAL LAB
+        </div>
+
+        <h1>
+            Essential Linux Commands Lab
+        </h1>
+
+        <p class="intro">
+            Practice essential Linux commands for file management,
+            navigation, user identification, permissions, process
+            monitoring, network inspection, log analysis and
+            basic cybersecurity investigation.
+        </p>
+
+    </section>
+
+
+    <!-- LAB INFO -->
+
+    <div class="lab-info">
+
+        <div class="lab-info-card">
+            <strong>LEVEL</strong>
+            <span>Beginner</span>
+        </div>
+
+        <div class="lab-info-card">
+            <strong>CATEGORY</strong>
+            <span>Linux</span>
+        </div>
+
+        <div class="lab-info-card">
+            <strong>PLATFORM</strong>
+            <span>Linux / VM</span>
+        </div>
+
+        <div class="lab-info-card">
+            <strong>TYPE</strong>
+            <span>Hands-on Lab</span>
+        </div>
+
+    </div>
+
+
+    <!-- PROGRESS -->
+
+    <div class="progress-box">
+
+        <div class="progress-top">
+
+            <strong>
+                Lab Progress
+            </strong>
+
+            <span id="progressText">
+                0 / 10 Tasks
+            </span>
+
+        </div>
+
+        <div class="progress-track">
+
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= OBJECTIVES ================= -->
+
+    <section class="section">
+
+        <h2>
+            Lab Objectives
+        </h2>
+
+        <p>
+            By completing this lab, you will practice the most
+            important Linux commands introduced in the tutorial.
+        </p>
+
+        <ul class="list">
+
+            <li>Navigate the Linux file system.</li>
+
+            <li>View files and directories.</li>
+
+            <li>Read text files and logs.</li>
+
+            <li>Search text with grep.</li>
+
+            <li>Find files with find.</li>
+
+            <li>Identify the current Linux user.</li>
+
+            <li>Understand user and group information.</li>
+
+            <li>Inspect file permissions.</li>
+
+            <li>Inspect running processes.</li>
+
+            <li>Inspect network configuration and connections.</li>
+
+        </ul>
+
+        <div class="warning">
+
+            <strong>Safety:</strong>
+
+            Perform this lab only on your own Linux machine,
+            virtual machine or another system where you have
+            authorization. Do not modify systems you do not own
+            or administer.
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 1 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 01 — Find Your Current Directory
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    1
+                </div>
+
+                <h3>
+                    Use pwd
+                </h3>
+
+            </div>
+
+            <p>
+                The <strong>pwd</strong> command displays the
+                directory in which you are currently working.
+            </p>
+
+            <div class="code-title">
+                COMMAND
+            </div>
+
+            <div class="code-container">
+
+                <pre class="code" id="code1">pwd</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code1',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="terminal">
+
+                <div class="terminal-bar">
+                    Linux Terminal
+                </div>
+
+                <div class="terminal-body">$ pwd
+/home/gul</div>
+
+            </div>
+
+            <p>
+                Your result may be different because it depends
+                on the username and current directory.
+            </p>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 01.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 2 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 02 — List Files and Directories
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    2
+                </div>
+
+                <h3>
+                    Use ls
+                </h3>
+
+            </div>
+
+            <p>
+                The <strong>ls</strong> command displays files
+                and directories in the current location.
+            </p>
+
+            <div class="code-title">
+                BASIC LIST
+            </div>
+
+            <div class="code-container">
+
+                <pre class="code" id="code2">ls</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code2',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="code-title">
+                DETAILED LIST
+            </div>
+
+            <div class="code-container">
+
+                <pre class="code" id="code3">ls -l</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code3',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="code-title">
+                SHOW HIDDEN FILES
+            </div>
+
+            <div class="code-container">
+
+                <pre class="code" id="code4">ls -la</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code4',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Security connection:</strong>
+
+                Security analysts may inspect directories
+                for configuration files, logs or unexpected files.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 02.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 3 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 03 — Navigate the File System
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    3
+                </div>
+
+                <h3>
+                    Use cd
+                </h3>
+
+            </div>
+
+            <p>
+                The <strong>cd</strong> command changes the
+                current working directory.
+            </p>
+
+            <div class="code-title">
+                CHANGE DIRECTORY
+            </div>
+
+            <div class="code-container">
+
+                <pre class="code" id="code5">cd /var/log</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code5',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="code-title">
+                GO TO PARENT DIRECTORY
+            </div>
+
+            <div class="code-container">
+
+                <pre class="code" id="code6">cd ..</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code6',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="code-title">
+                GO TO HOME DIRECTORY
+            </div>
+
+            <div class="code-container">
+
+                <pre class="code" id="code7">cd ~</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code7',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Practice:</strong>
+
+                Run <strong>pwd</strong> after each
+                <strong>cd</strong> command to verify your location.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 03.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 4 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 04 — Read a File
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    4
+                </div>
+
+                <h3>
+                    Use cat
+                </h3>
+
+            </div>
+
+            <p>
+                Create a small practice file first.
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code8">printf "Login successful\nLogin failed\nLogin failed\n" > security.log</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code8',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                Now display the file:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code9">cat security.log</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code9',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="terminal">
+
+                <div class="terminal-bar">
+                    Expected Example
+                </div>
+
+                <div class="terminal-body">$ cat security.log
+Login successful
+Login failed
+Login failed</div>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Why useful?</strong>
+
+                The cat command is useful for quickly viewing
+                small text files and logs.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 04.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 5 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 05 — Search a Security Log
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    5
+                </div>
+
+                <h3>
+                    Use grep
+                </h3>
+
+            </div>
+
+            <p>
+                Use grep to search for failed login messages.
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code10">grep "failed" security.log</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code10',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                Perform a case-insensitive search:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code11">grep -i "failed" security.log</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code11',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                Count matching lines:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code12">grep -c "failed" security.log</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code12',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="terminal">
+
+                <div class="terminal-bar">
+                    Example
+                </div>
+
+                <div class="terminal-body">$ grep -c "failed" security.log
+2</div>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Cybersecurity connection:</strong>
+
+                grep is frequently used during log analysis
+                to find events matching a specific pattern.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 05.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 6 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 06 — Find Log Files
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    6
+                </div>
+
+                <h3>
+                    Use find
+                </h3>
+
+            </div>
+
+            <p>
+                Search the current directory for log files.
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code13">find . -name "*.log"</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code13',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                You can also search for a specific file:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code14">find /etc -name "hosts"</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code14',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="warning">
+
+                <strong>Important:</strong>
+
+                When searching system directories, you may
+                encounter permission-denied messages. That
+                does not necessarily mean the command failed.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 06.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 7 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 07 — Identify the Current User
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    7
+                </div>
+
+                <h3>
+                    Use whoami and id
+                </h3>
+
+            </div>
+
+            <p>
+                First identify your current username.
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code15">whoami</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code15',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                Then display user and group information.
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code16">id</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code16',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="terminal">
+
+                <div class="terminal-bar">
+                    Example
+                </div>
+
+                <div class="terminal-body">$ whoami
+gul
+
+$ id
+uid=1000(gul) gid=1000(gul) groups=1000(gul)</div>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Security connection:</strong>
+
+                User and group information helps analysts
+                understand permissions and access control.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 07.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 8 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 08 — Inspect File Permissions
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    8
+                </div>
+
+                <h3>
+                    Use ls -l and chmod
+                </h3>
+
+            </div>
+
+            <p>
+                Create a practice script:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code17">printf '#!/bin/bash\necho "CyberNexa Lab"\n' > script.sh</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code17',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                View its permissions:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code18">ls -l script.sh</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code18',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                Add execute permission for the owner:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code19">chmod u+x script.sh</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code19',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                Check the permissions again:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code20">ls -l script.sh</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code20',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Remember:</strong>
+
+                Linux permissions commonly control read,
+                write and execute access for the owner,
+                group and others.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 08.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 9 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 09 — Inspect Running Processes
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    9
+                </div>
+
+                <h3>
+                    Use ps and top
+                </h3>
+
+            </div>
+
+            <p>
+                Display running processes:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code21">ps</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code21',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                Display a more detailed process list:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code22">ps aux</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code22',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                For live process monitoring:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code23">top</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code23',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Cybersecurity connection:</strong>
+
+                Process inspection can help identify unusual
+                programs, resource usage and suspicious activity
+                during an authorized investigation.
+
+            </div>
+
+            <div class="warning">
+
+                <strong>Exit top:</strong>
+
+                Press <strong>q</strong> to leave the top interface.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 09.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 10 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 10 — Inspect Network Information
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    10
+                </div>
+
+                <h3>
+                    Use ip, ss and ip route
+                </h3>
+
+            </div>
+
+            <p>
+                View network interfaces and IP addresses:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code24">ip addr</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code24',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                Use a concise format:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code25">ip -br addr</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code25',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                View the routing table:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code26">ip route</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code26',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                View listening TCP and UDP sockets:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code27">ss -tuln</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code27',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="terminal">
+
+                <div class="terminal-bar">
+                    Example
+                </div>
+
+                <div class="terminal-body">$ ip -br addr
+lo       UNKNOWN  127.0.0.1/8
+eth0     UP       192.168.1.20/24
+
+$ ip route
+default via 192.168.1.1 dev eth0
+
+$ ss -tuln
+Netid  State   Local Address:Port
+tcp    LISTEN  0.0.0.0:22</div>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Cybersecurity connection:</strong>
+
+                Network interfaces, routes and listening services
+                are important during authorized system inspection.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 10.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= BONUS NETWORK ================= -->
+
+    <section class="section">
+
+        <h2>
+            Bonus Task — curl
+        </h2>
+
+        <p>
+            curl can communicate with HTTP and other network
+            services.
+        </p>
+
+        <div class="code-container">
+
+            <pre class="code" id="code28">curl https://example.com</pre>
+
+            <button
+                class="copy-btn"
+                onclick="copyCode('code28',this)">
+                Copy
+            </button>
+
+        </div>
+
+        <p>
+            To display only HTTP headers:
+        </p>
+
+        <div class="code-container">
+
+            <pre class="code" id="code29">curl -I https://example.com</pre>
+
+            <button
+                class="copy-btn"
+                onclick="copyCode('code29',this)">
+                Copy
+            </button>
+
+        </div>
+
+        <div class="warning">
+
+            <strong>Important:</strong>
+
+            Only send requests to systems and services
+            you are authorized to access or test.
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= BONUS WGET ================= -->
+
+    <section class="section">
+
+        <h2>
+            Bonus Task — wget
+        </h2>
+
+        <p>
+            wget can retrieve resources from supported network
+            locations.
+        </p>
+
+        <div class="code-container">
+
+            <pre class="code" id="code30">wget https://example.com/file.txt</pre>
+
+            <button
+                class="copy-btn"
+                onclick="copyCode('code30',this)">
+                Copy
+            </button>
+
+        </div>
+
+        <div class="warning">
+
+            <strong>Security note:</strong>
+
+            Never download and execute files from untrusted
+            sources. Verify the source before opening downloaded
+            content.
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= INVESTIGATION ================= -->
+
+    <section class="section">
+
+        <h2>
+            Practical Security Investigation
+        </h2>
+
+        <p>
+            Now perform a basic local inspection using several
+            commands together.
+        </p>
+
+        <div class="code-container">
+
+            <pre class="code" id="code31">whoami
+pwd
+ip -br addr
+ip route
+ss -tuln
+ps aux</pre>
+
+            <button
+                class="copy-btn"
+                onclick="copyCode('code31',this)">
+                Copy
+            </button>
+
+        </div>
+
+        <h3>
+            What Information Did You Collect?
+        </h3>
+
+        <div class="info-grid">
+
+            <div class="info-card">
+
+                <h3>
+                    whoami
+                </h3>
+
+                <p>
+                    Current username.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>
+                    pwd
+                </h3>
+
+                <p>
+                    Current working directory.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>
+                    ip -br addr
+                </h3>
+
+                <p>
+                    Network interfaces and IP addresses.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>
+                    ip route
+                </h3>
+
+                <p>
+                    Routing information.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>
+                    ss -tuln
+                </h3>
+
+                <p>
+                    Listening TCP and UDP sockets.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>
+                    ps aux
+                </h3>
+
+                <p>
+                    Running processes.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="tip">
+
+            <strong>Investigation workflow:</strong>
+
+            These commands give an analyst a basic picture
+            of the local user's identity, filesystem location,
+            network configuration, routes, listening services
+            and running processes.
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= QUIZ ================= -->
+
+    <section class="section">
+
+        <h2>
+            Practical Quiz
+        </h2>
+
+        <div class="quiz-question">
+
+            <p>
+                1. Which command displays the current directory?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q1" value="a">
+                ls
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="b">
+                pwd
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="c">
+                cd
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                2. Which command searches text for a pattern?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q2" value="a">
+                grep
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="b">
+                pwd
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="c">
+                top
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                3. Which command finds files according to conditions?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q3" value="a">
+                find
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="b">
+                whoami
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="c">
+                id
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                4. Which command displays the current user?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q4" value="a">
+                cat
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q4" value="b">
+                whoami
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q4" value="c">
+                chmod
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                5. Which command is used to inspect running processes?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q5" value="a">
+                ps
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q5" value="b">
+                cd
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q5" value="c">
+                grep
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                6. Which command shows Linux IP information?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q6" value="a">
+                ip addr
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q6" value="b">
+                chmod
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q6" value="c">
+                cat
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                7. Which command can show listening TCP/UDP sockets?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q7" value="a">
+                ss -tuln
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q7" value="b">
+                pwd
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q7" value="c">
+                ls
+            </label>
+
+        </div>
+
+
+        <button
+            class="quiz-button"
+            onclick="checkQuiz()">
+
+            Check Answers
+
+        </button>
+
+
+        <div id="quizResult"></div>
+
+    </section>
+
+
+    <!-- ================= KEY POINTS ================= -->
+
+    <section class="section">
+
+        <h2>
+            Key Points to Remember
+        </h2>
+
+        <ul class="list">
+
+            <li>
+                <strong>pwd</strong> → current directory
+            </li>
+
+            <li>
+                <strong>ls</strong> → list files and directories
+            </li>
+
+            <li>
+                <strong>cd</strong> → change directory
+            </li>
+
+            <li>
+                <strong>cat</strong> → display file contents
+            </li>
+
+            <li>
+                <strong>grep</strong> → search text
+            </li>
+
+            <li>
+                <strong>find</strong> → search for files
+            </li>
+
+            <li>
+                <strong>whoami</strong> → current user
+            </li>
+
+            <li>
+                <strong>id</strong> → user and group information
+            </li>
+
+            <li>
+                <strong>chmod</strong> → change permissions
+            </li>
+
+            <li>
+                <strong>ps</strong> → process information
+            </li>
+
+            <li>
+                <strong>top</strong> → live process monitoring
+            </li>
+
+            <li>
+                <strong>ss</strong> → network sockets
+            </li>
+
+            <li>
+                <strong>ip</strong> → network configuration
+            </li>
+
+            <li>
+                <strong>curl</strong> → network/HTTP requests
+            </li>
+
+            <li>
+                <strong>wget</strong> → retrieve resources
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- ================= COMPLETION ================= -->
+
+    <section class="completion">
+
+        <h2>
+            Lab Completion
+        </h2>
+
+        <p>
+            Complete all ten main tasks and check each box.
+            Then attempt the practical quiz.
+        </p>
+
+        <p
+            id="completionStatus"
+            class="completion-status">
+
+            Complete all tasks to finish the lab.
+
+        </p>
+
+    </section>
+
+
+    <!-- ================= NAVIGATION ================= -->
+
+    <div class="article-navigation">
+<!-- 
+        <a href="ip-addresses-lab.html">
+            ← Previous Lab
+        </a> -->
+<!-- 
+        <a href="../index.html">
+            All Labs
+        </a> -->
+
+        <a href="../../index.html">
+            Back to Home →
+        </a>
+
+    </div>
+
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    /* ================= COPY BUTTON ================= */
+
+    function copyCode(id, button) {
+
+        const code =
+            document.getElementById(id);
+
+        navigator.clipboard
+            .writeText(code.innerText)
+            .then(function () {
+
+                const oldText =
+                    button.innerText;
+
+                button.innerText =
+                    "Copied!";
+
+                setTimeout(function () {
+
+                    button.innerText =
+                        oldText;
+
+                }, 1500);
+
+            })
+            .catch(function () {
+
+                button.innerText =
+                    "Error";
+
+                setTimeout(function () {
+
+                    button.innerText =
+                        "Copy";
+
+                }, 1500);
+
+            });
+
+    }
+
+
+    /* ================= PROGRESS ================= */
+
+    const checkboxes =
+        document.querySelectorAll(".task-check");
+
+    const progressFill =
+        document.getElementById("progressFill");
+
+    const progressText =
+        document.getElementById("progressText");
+
+    const completionStatus =
+        document.getElementById("completionStatus");
+
+
+    function updateProgress() {
+
+        let completed = 0;
+
+        checkboxes.forEach(function (checkbox) {
+
+            if (checkbox.checked) {
+                completed++;
+            }
+
+        });
+
+        const total =
+            checkboxes.length;
+
+        const percentage =
+            (completed / total) * 100;
+
+        progressFill.style.width =
+            percentage + "%";
+
+        progressText.innerText =
+            completed + " / " + total + " Tasks";
+
+
+        if (completed === total) {
+
+            completionStatus.innerText =
+                "Lab Completed — Excellent Work!";
+
+        } else {
+
+            completionStatus.innerText =
+                "Complete all ten tasks to finish the lab.";
+
+        }
+
+    }
+
+
+    checkboxes.forEach(function (checkbox) {
+
+        checkbox.addEventListener(
+            "change",
+            updateProgress
+        );
+
+    });
+
+
+    /* ================= QUIZ ================= */
+
+    function checkQuiz() {
+
+        const answers = {
+
+            q1: "b",
+            q2: "a",
+            q3: "a",
+            q4: "b",
+            q5: "a",
+            q6: "a",
+            q7: "a"
+
+        };
+
+
+        let score = 0;
+
+        const total =
+            Object.keys(answers).length;
+
+
+        for (const question in answers) {
+
+            const selected =
+                document.querySelector(
+                    'input[name="' +
+                    question +
+                    '"]:checked'
+                );
+
+
+            if (
+                selected &&
+                selected.value ===
+                answers[question]
+            ) {
+
+                score++;
+
+            }
+
+        }
+
+
+        const result =
+            document.getElementById(
+                "quizResult"
+            );
+
+
+        if (score === total) {
+
+            result.innerText =
+                "Excellent! You scored " +
+                score +
+                "/" +
+                total +
+                ".";
+
+            result.style.color =
+                "#00e68a";
+
+        } else {
+
+            result.innerText =
+                "Your score is " +
+                score +
+                "/" +
+                total +
+                ". Review the commands and try again.";
+
+            result.style.color =
+                "#ffbd00";
+
+        }
+
+    }
+
+
+    /* ================= INITIALIZE ================= */
+
+    updateProgress();
+
+</script>
+
+
+</body>
+
+</html>

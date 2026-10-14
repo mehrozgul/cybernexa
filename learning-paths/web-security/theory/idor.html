@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IDOR - Web Security - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .ws-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 191, 255, 0.065),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 255, 176, 0.055),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .ws-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        .ws-hero {
+            position: relative;
+            padding: 42px 35px;
+            margin-bottom: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 34, 0.98),
+                    rgba(2, 10, 21, 0.98)
+                );
+
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .ws-hero::before {
+            content: "";
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .ws-hero-grid {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(260px, 0.75fr);
+
+            gap: 35px;
+            align-items: center;
+        }
+
+        .ws-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .ws-kicker::before {
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00bfff;
+            box-shadow: 0 0 12px rgba(0, 191, 255, 0.65);
+        }
+
+        .ws-hero h1 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 46px;
+            line-height: 1.12;
+            font-weight: 850;
+            letter-spacing: -1px;
+        }
+
+        .ws-hero h1 span {
+            color: #00bfff;
+        }
+
+        .ws-description {
+            max-width: 700px;
+
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .terminal-panel {
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            border-radius: 11px;
+
+            background: rgba(0, 0, 0, 0.34);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            box-shadow:
+                inset 0 0 25px rgba(0, 191, 255, 0.025);
+        }
+
+        .terminal-top {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            padding-bottom: 13px;
+            margin-bottom: 13px;
+
+            border-bottom: 1px solid rgba(0, 191, 255, 0.09);
+        }
+
+        .terminal-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+            background: #405263;
+        }
+
+        .terminal-title {
+            margin-left: auto;
+
+            color: #52687c;
+
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+            margin-bottom: 9px;
+
+            color: #60788d;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .terminal-line .blue {
+            color: #00bfff;
+        }
+
+        .terminal-line .green {
+            color: #00ffb0;
+        }
+
+        .ws-meta {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: #dce9f4;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .meta-value.blue {
+            color: #00bfff;
+        }
+
+        .ws-card {
+            margin-bottom: 18px;
+            padding: 27px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .card-number {
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+            border-radius: 7px;
+
+            color: #00bfff;
+            background: rgba(0, 191, 255, 0.045);
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .card-heading h2 {
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .ws-card p {
+            margin: 0 0 12px;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .definition {
+            padding: 21px;
+
+            border-left: 3px solid #00bfff;
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 191, 255, 0.055),
+                    rgba(0, 191, 255, 0.012)
+                );
+        }
+
+        .definition-label {
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .definition p {
+            margin: 0;
+
+            color: #cce9f5;
+
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            gap: 11px;
+            margin-top: 17px;
+        }
+
+        .info-box {
+            padding: 17px;
+
+            border: 1px solid rgba(0, 191, 255, 0.09);
+            border-radius: 9px;
+
+            background: rgba(0, 191, 255, 0.018);
+        }
+
+        .info-box h3 {
+            margin: 0 0 7px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .info-box p {
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .flow {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .flow-item {
+            padding: 16px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 9px;
+
+            background: rgba(0, 191, 255, 0.02);
+
+            text-align: center;
+        }
+
+        .flow-number {
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .flow-item h3 {
+            margin: 9px 0 6px;
+
+            color: #ffffff;
+            font-size: 12px;
+        }
+
+        .flow-item p {
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .warning-box {
+            padding: 21px;
+
+            border: 1px solid rgba(255, 177, 0, 0.17);
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .warning-title {
+            margin-bottom: 9px;
+
+            color: #ffc44d;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .warning-box p {
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .scenario {
+            margin-top: 16px;
+            padding: 20px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 10px;
+
+            background: rgba(0, 0, 0, 0.20);
+
+            font-family: Consolas, monospace;
+        }
+
+        .scenario-label {
+            margin-bottom: 10px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .scenario-line {
+            margin-bottom: 7px;
+
+            color: #7890a5;
+
+            font-size: 11px;
+        }
+
+        .scenario-line span {
+            color: #00ffb0;
+        }
+
+        .summary {
+            padding: 25px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 191, 255, 0.13);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.035),
+                    rgba(0, 255, 176, 0.025)
+                );
+        }
+
+        .summary-title {
+            margin-bottom: 9px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .summary h2 {
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .summary p {
+            max-width: 760px;
+
+            margin: 0 auto;
+
+            color: #7e94a8;
+
+            font-size: 12px;
+            line-height: 1.85;
+        }
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 25px;
+            padding: 21px;
+
+            border: 1px solid rgba(0, 191, 255, 0.14);
+            border-radius: 12px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .lab-text strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .lab-text span {
+            color: #71879b;
+            font-size: 11px;
+        }
+
+        .lab-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 12px 20px;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.30);
+            border-radius: 8px;
+
+            color: #d4f5ff;
+
+            background: rgba(0, 191, 255, 0.055);
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .lab-button:hover {
+            transform: translateY(-2px);
+
+            border-color: rgba(0, 191, 255, 0.55);
+
+            background: rgba(0, 191, 255, 0.09);
+        }
+
+        @media (max-width: 800px) {
+
+            .ws-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ws-meta {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .flow {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .ws-page {
+                padding: 45px 12px 60px;
+            }
+
+            .ws-hero {
+                padding: 27px 20px;
+            }
+
+            .ws-hero h1 {
+                font-size: 31px;
+            }
+
+            .ws-description {
+                font-size: 12px;
+            }
+
+            .ws-card {
+                padding: 20px;
+            }
+
+            .info-grid,
+            .flow {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-area {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<main class="ws-page">
+
+<div class="ws-container">
+
+
+<section class="ws-hero">
+
+    <div class="ws-hero-grid">
+
+        <div>
+
+            <div class="ws-kicker">
+                WEB SECURITY / 09
+            </div>
+
+            <h1>
+                <span>IDOR</span>
+                &amp; Access Control
+            </h1>
+
+            <p class="ws-description">
+                Understand Insecure Direct Object References, why they occur
+                when applications fail to enforce authorization, how object
+                identifiers expose resources, and how developers can prevent
+                unauthorized access.
+            </p>
+
+        </div>
+
+
+        <div class="terminal-panel">
+
+            <div class="terminal-top">
+
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+                <span class="terminal-dot"></span>
+
+                <span class="terminal-title">
+                    WEB SECURITY LAB
+                </span>
+
+            </div>
+
+            <div class="terminal-line">
+                <span class="blue">request</span>:
+                /profile?id=<span class="green">1001</span>
+            </div>
+
+            <div class="terminal-line">
+                Authorization:
+                <span class="green">CHECK REQUIRED</span>
+            </div>
+
+            <div class="terminal-line">
+                Object:
+                <span class="blue">USER_PROFILE</span>
+            </div>
+
+            <div class="terminal-line">
+                Status:
+                <span class="green">ANALYSIS READY</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="ws-meta">
+
+    <div class="meta-item">
+        <span class="meta-label">Domain</span>
+        <span class="meta-value">Web Security</span>
+    </div>
+
+    <div class="meta-item">
+        <span class="meta-label">Level</span>
+        <span class="meta-value">Intermediate</span>
+    </div>
+
+    <div class="meta-item">
+        <span class="meta-label">Focus</span>
+        <span class="meta-value blue">Access Control</span>
+    </div>
+
+    <div class="meta-item">
+        <span class="meta-label">Environment</span>
+        <span class="meta-value">Authorized Lab</span>
+    </div>
+
+</div>
+
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">01</div>
+
+        <h2>What is IDOR?</h2>
+
+    </div>
+
+
+    <div class="definition">
+
+        <div class="definition-label">
+            Core Definition
+        </div>
+
+        <p>
+            Insecure Direct Object Reference (IDOR) is an access-control
+            vulnerability that occurs when an application exposes a direct
+            reference to an internal object, such as a user ID, document ID,
+            order ID or file ID, without properly verifying whether the
+            current user is authorized to access that object.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">02</div>
+
+        <h2>How IDOR Happens</h2>
+
+    </div>
+
+    <p>
+        A web application often uses identifiers to retrieve resources from
+        a database. The identifier itself is not necessarily a vulnerability.
+        The security problem appears when the server trusts the identifier
+        without checking the user's authorization.
+    </p>
+
+    <div class="flow">
+
+        <div class="flow-item">
+
+            <div class="flow-number">01</div>
+
+            <h3>User Request</h3>
+
+            <p>
+                User requests an object using an identifier.
+            </p>
+
+        </div>
+
+        <div class="flow-item">
+
+            <div class="flow-number">02</div>
+
+            <h3>Object Lookup</h3>
+
+            <p>
+                Server locates the requested object.
+            </p>
+
+        </div>
+
+        <div class="flow-item">
+
+            <div class="flow-number">03</div>
+
+            <h3>Authorization</h3>
+
+            <p>
+                Server must verify ownership or permission.
+            </p>
+
+        </div>
+
+        <div class="flow-item">
+
+            <div class="flow-number">04</div>
+
+            <h3>Response</h3>
+
+            <p>
+                Only authorized data should be returned.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">03</div>
+
+        <h2>Common IDOR Examples</h2>
+
+    </div>
+
+    <div class="info-grid">
+
+        <div class="info-box">
+
+            <h3>User Profiles</h3>
+
+            <p>
+                An application retrieves profiles using user identifiers
+                without verifying whether the requester can view them.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>Documents</h3>
+
+            <p>
+                A document identifier may reference another user's private
+                document if server-side authorization is missing.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>Orders</h3>
+
+            <p>
+                Order IDs can become an access-control issue when users are
+                allowed to retrieve orders that do not belong to them.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>Files</h3>
+
+            <p>
+                File references should always be checked against the
+                authenticated user's permissions.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">04</div>
+
+        <h2>Why IDOR is a Security Problem</h2>
+
+    </div>
+
+    <p>
+        IDOR can expose resources belonging to another user or security
+        principal. Depending on the affected object, the impact may include
+        unauthorized disclosure, modification or deletion of information.
+    </p>
+
+    <div class="info-grid">
+
+        <div class="info-box">
+
+            <h3>Confidentiality</h3>
+
+            <p>
+                Unauthorized users may gain access to private information.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>Integrity</h3>
+
+            <p>
+                Weak authorization may allow unauthorized modification of
+                resources.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>Availability</h3>
+
+            <p>
+                If sensitive operations are exposed, unauthorized actions
+                could affect resource availability.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>Privacy</h3>
+
+            <p>
+                Personal information may be exposed to users who should not
+                have access to it.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">05</div>
+
+        <h2>IDOR vs Authentication</h2>
+
+    </div>
+
+    <p>
+        Authentication answers the question:
+        <strong>Who are you?</strong>
+    </p>
+
+    <p>
+        Authorization answers:
+        <strong>What are you allowed to access?</strong>
+    </p>
+
+    <p>
+        A user can be correctly authenticated and still be vulnerable to IDOR
+        if the application fails to enforce authorization for individual
+        objects.
+    </p>
+
+</section>
+
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">06</div>
+
+        <h2>How to Prevent IDOR</h2>
+
+    </div>
+
+    <div class="info-grid">
+
+        <div class="info-box">
+
+            <h3>Server-Side Authorization</h3>
+
+            <p>
+                Always perform authorization checks on the server before
+                returning or modifying an object.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>Object Ownership</h3>
+
+            <p>
+                Verify that the authenticated user owns the requested object
+                or has explicit permission to access it.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>Least Privilege</h3>
+
+            <p>
+                Give users only the permissions required for their role and
+                intended tasks.
+            </p>
+
+        </div>
+
+        <div class="info-box">
+
+            <h3>Centralized Access Control</h3>
+
+            <p>
+                Apply consistent authorization logic instead of relying on
+                individual client-side checks.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">07</div>
+
+        <h2>Authorized Lab Scenario</h2>
+
+    </div>
+
+    <p>
+        The CyberNexa lab simulates a small application containing several
+        user profiles. Each profile has an object identifier.
+    </p>
+
+    <div class="scenario">
+
+        <div class="scenario-label">
+            SIMULATED REQUEST FLOW
+        </div>
+
+        <div class="scenario-line">
+            Current user → <span>Student A</span>
+        </div>
+
+        <div class="scenario-line">
+            Requested object → <span>Profile 1001</span>
+        </div>
+
+        <div class="scenario-line">
+            Expected result → <span>Access allowed</span>
+        </div>
+
+        <div class="scenario-line">
+            Unauthorized object → <span>Profile 1002</span>
+        </div>
+
+        <div class="scenario-line">
+            Secure application → <span>Access denied</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="ws-card">
+
+    <div class="card-heading">
+
+        <div class="card-number">08</div>
+
+        <h2>Security Principle</h2>
+
+    </div>
+
+    <div class="warning-box">
+
+        <div class="warning-title">
+            ⚠ Never Trust an Object ID Alone
+        </div>
+
+        <p>
+            An identifier is only a reference. It should never be treated as
+            proof that the requester is authorized to access the referenced
+            resource. Authorization must be enforced on the server.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="summary">
+
+    <div class="summary-title">
+        Module Summary
+    </div>
+
+    <h2>
+        Identify the Object. Verify the Permission.
+    </h2>
+
+    <p>
+        IDOR is fundamentally an authorization problem. Secure web
+        applications must verify the relationship between the authenticated
+        user and the requested object before allowing access or modification.
+        Testing should always be performed in authorized environments.
+    </p>
+
+</section>
+<!-- LESSON COMPLETION -->
+<section class="ws-card" id="lessonCompletion">
+
+    <div class="card-heading">
+        <div class="card-number">09</div>
+        <h2>Lesson Completion</h2>
+    </div>
+
+    <p>
+        You have completed the IDOR and Access Control lesson.
+        Mark this lesson as complete to track your learning progress.
+    </p>
+
+    <button
+        type="button"
+        class="lab-button"
+        data-lesson-progress
+        data-course-id="web-security"
+        data-lesson-id="idor"
+        data-dashboard-url="../learning-paths/web-security/theory/idor.html"
+        data-status-id="idorCompletionStatus">
+        Mark Lesson as Complete
+    </button>
+
+    <p
+        id="idorCompletionStatus"
+        role="status"
+        aria-live="polite"
+        style="margin-top: 15px;">
+    </p>
+
+</section>
+<div class="lab-area">
+
+    <div class="lab-text">
+
+        <strong>
+            Ready for the Practical Lab?
+        </strong>
+
+        <span>
+            Test IDOR concepts using the CyberNexa simulated authorization
+            environment.
+        </span>
+
+    </div>
+
+    <a
+        href="../lab/idor-lab.html"
+        class="lab-button"
+    >
+        🧪 Launch Lab →
+    </a>
+
+</div>
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

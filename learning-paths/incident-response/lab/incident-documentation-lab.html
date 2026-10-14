@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Incident Documentation Lab | CyberNexa</title>
+
+<meta name="description"
+content="Practice documenting a cybersecurity incident using a structured incident record, timeline, evidence and response actions.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+:root {
+    --lab-bg: #080d14;
+    --lab-panel: #0d141d;
+    --lab-panel-2: #111b26;
+
+    --lab-red: #ff4d5a;
+    --lab-orange: #ff9f43;
+    --lab-yellow: #ffd166;
+    --lab-green: #43d19e;
+    --lab-blue: #42a5ff;
+    --lab-purple: #a970ff;
+
+    --lab-text: #edf5fb;
+    --lab-muted: #91a4b5;
+    --lab-border: #20303e;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(255, 77, 90, 0.09),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(66, 165, 255, 0.06),
+            transparent 28%
+        ),
+        var(--lab-bg);
+
+    color: var(--lab-text);
+    font-family: Arial, Helvetica, sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.lab-container {
+    width: min(1150px, 92%);
+    margin: auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.navbar {
+    width: 100%;
+    overflow: hidden;
+}
+
+.nav-container {
+    width: min(1150px, 92%);
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 70px;
+}
+
+.brand {
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.brand-logo {
+    flex-shrink: 0;
+}
+
+.brand-text {
+    min-width: 0;
+}
+
+.brand-name,
+.brand-tagline {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.lab-hero {
+    padding: 75px 0 55px;
+
+    border-bottom: 1px solid var(--lab-border);
+}
+
+.lab-breadcrumb {
+    margin-bottom: 20px;
+
+    color: var(--lab-orange);
+    font-size: 13px;
+    letter-spacing: 0.4px;
+}
+
+.lab-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 8px 13px;
+    margin-bottom: 18px;
+
+    border: 1px solid rgba(66, 165, 255, 0.35);
+    border-radius: 4px;
+
+    background: rgba(66, 165, 255, 0.06);
+    color: var(--lab-blue);
+
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.lab-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+    background: var(--lab-blue);
+
+    box-shadow: 0 0 12px rgba(66, 165, 255, 0.8);
+}
+
+.lab-hero h1 {
+    margin: 0 0 15px;
+
+    font-size: clamp(38px, 5vw, 58px);
+    line-height: 1.05;
+}
+
+.lab-hero h1 span {
+    color: var(--lab-red);
+}
+
+.lab-description {
+    max-width: 760px;
+
+    color: var(--lab-muted);
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.lab-progress {
+    margin-top: 30px;
+
+    padding: 18px 20px;
+
+    border: 1px solid var(--lab-border);
+    border-radius: 6px;
+
+    background: var(--lab-panel);
+}
+
+.lab-progress-top {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+
+    color: var(--lab-muted);
+    font-size: 12px;
+}
+
+.lab-progress-top strong {
+    color: var(--lab-text);
+}
+
+.lab-progress-bar {
+    width: 100%;
+    height: 6px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+    background: #17232f;
+}
+
+.lab-progress-fill {
+    width: 0%;
+    height: 100%;
+
+    background: var(--lab-blue);
+
+    transition: width 0.3s ease;
+}
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.lab-section {
+    padding: 60px 0;
+}
+
+.lab-section-title {
+    margin-bottom: 25px;
+}
+
+.lab-section-title h2 {
+    margin: 0 0 9px;
+    font-size: 30px;
+}
+
+.lab-section-title p {
+    margin: 0;
+
+    color: var(--lab-muted);
+    line-height: 1.7;
+}
+
+/* =========================================================
+   SCENARIO
+========================================================= */
+
+.lab-scenario {
+    padding: 25px;
+
+    border: 1px solid rgba(255, 77, 90, 0.3);
+    border-left: 3px solid var(--lab-red);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+}
+
+.lab-scenario h3 {
+    margin: 0 0 14px;
+
+    color: var(--lab-red);
+    font-size: 17px;
+}
+
+.lab-scenario p {
+    margin: 0;
+
+    color: var(--lab-muted);
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+/* =========================================================
+   INFORMATION GRID
+========================================================= */
+
+.lab-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.lab-info-card {
+    padding: 20px;
+
+    border: 1px solid var(--lab-border);
+    border-radius: 6px;
+
+    background: var(--lab-panel);
+}
+
+.lab-info-card label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--lab-muted);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.lab-info-card strong {
+    color: var(--lab-text);
+    font-size: 14px;
+}
+
+/* =========================================================
+   TIMELINE
+========================================================= */
+
+.lab-timeline {
+    display: grid;
+    gap: 12px;
+}
+
+.lab-timeline-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+
+    border: 1px solid var(--lab-border);
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    background: var(--lab-panel);
+}
+
+.lab-time {
+    padding: 18px;
+
+    background: rgba(66, 165, 255, 0.06);
+
+    color: var(--lab-blue);
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.lab-event {
+    padding: 18px;
+
+    color: var(--lab-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   EVIDENCE
+========================================================= */
+
+.lab-evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.lab-evidence {
+    padding: 20px;
+
+    border: 1px solid var(--lab-border);
+    border-radius: 6px;
+
+    background: var(--lab-panel);
+}
+
+.lab-evidence strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--lab-yellow);
+}
+
+.lab-evidence span {
+    color: var(--lab-muted);
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.lab-action-list {
+    display: grid;
+    gap: 10px;
+}
+
+.lab-action {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    padding: 17px;
+
+    border: 1px solid var(--lab-border);
+    border-radius: 6px;
+
+    background: var(--lab-panel);
+}
+
+.lab-action input {
+    margin-top: 3px;
+    accent-color: var(--lab-green);
+}
+
+.lab-action span {
+    color: var(--lab-muted);
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   DOCUMENTATION RECORD
+========================================================= */
+
+.lab-record {
+    padding: 25px;
+
+    border: 1px solid var(--lab-border);
+    border-top: 2px solid var(--lab-purple);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+}
+
+.lab-record-title {
+    margin-bottom: 20px;
+
+    color: var(--lab-purple);
+
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.lab-field {
+    margin-bottom: 16px;
+}
+
+.lab-field:last-child {
+    margin-bottom: 0;
+}
+
+.lab-field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--lab-muted);
+
+    font-size: 12px;
+}
+
+.lab-field input,
+.lab-field textarea,
+.lab-field select {
+    width: 100%;
+
+    padding: 12px 13px;
+
+    border: 1px solid var(--lab-border);
+    border-radius: 5px;
+
+    outline: none;
+
+    background: #09111a;
+    color: var(--lab-text);
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.lab-field textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.lab-field input:focus,
+.lab-field textarea:focus,
+.lab-field select:focus {
+    border-color: rgba(66, 165, 255, 0.55);
+}
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.lab-button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+.lab-button {
+    padding: 12px 18px;
+
+    border: 1px solid var(--lab-blue);
+    border-radius: 5px;
+
+    background: rgba(66, 165, 255, 0.06);
+
+    color: var(--lab-blue);
+
+    cursor: pointer;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    transition: 0.2s ease;
+}
+
+.lab-button:hover {
+    background: rgba(66, 165, 255, 0.12);
+}
+
+.lab-button.complete {
+    border-color: var(--lab-green);
+    color: var(--lab-green);
+}
+
+/* =========================================================
+   OUTPUT
+========================================================= */
+
+.lab-output {
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border: 1px solid rgba(67, 209, 158, 0.3);
+    border-radius: 6px;
+
+    background: rgba(67, 209, 158, 0.035);
+}
+
+.lab-output.show {
+    display: block;
+}
+
+.lab-output h3 {
+    margin: 0 0 12px;
+
+    color: var(--lab-green);
+    font-size: 16px;
+}
+
+.lab-output p {
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   HOW TO
+========================================================= */
+
+.lab-howto {
+    padding: 25px;
+
+    border: 1px solid rgba(255, 159, 67, 0.25);
+    border-radius: 7px;
+
+    background: rgba(255, 159, 67, 0.035);
+}
+
+.lab-howto h3 {
+    margin-top: 0;
+    color: var(--lab-orange);
+}
+
+.lab-howto ol {
+    margin: 0;
+    padding-left: 20px;
+
+    color: var(--lab-muted);
+}
+
+.lab-howto li {
+    margin-bottom: 9px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   COMPLETION
+========================================================= */
+
+.lab-completion {
+    padding: 28px;
+
+    border: 1px solid rgba(67, 209, 158, 0.3);
+    border-radius: 7px;
+
+    background: rgba(67, 209, 158, 0.035);
+}
+
+.lab-completion h2 {
+    margin-top: 0;
+    color: var(--lab-green);
+}
+
+.lab-completion p {
+    color: var(--lab-muted);
+    line-height: 1.7;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.lab-topic-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-top: 30px;
+}
+
+.lab-nav-button {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 12px 17px;
+
+    border: 1px solid var(--lab-border);
+    border-radius: 5px;
+
+    color: var(--lab-muted);
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+.lab-nav-button:hover {
+    color: var(--lab-blue);
+    border-color: rgba(66, 165, 255, 0.4);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .nav-container {
+        width: 92%;
+        min-height: 68px;
+    }
+
+    .brand-logo svg {
+        width: 42px;
+        height: 50px;
+    }
+
+    .lab-evidence-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .nav-container {
+        width: 94%;
+        min-height: 64px;
+        padding: 8px 0;
+    }
+
+    .brand {
+        gap: 8px;
+    }
+
+    .brand-logo svg {
+        width: 38px;
+        height: 46px;
+    }
+
+    .brand-name {
+        font-size: 19px;
+    }
+
+    .brand-tagline {
+        font-size: 9px;
+    }
+
+    .lab-hero {
+        padding: 65px 0 50px;
+    }
+
+    .lab-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lab-evidence-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lab-timeline-item {
+        grid-template-columns: 85px 1fr;
+    }
+
+    .lab-topic-nav {
+        flex-direction: column;
+    }
+
+    .lab-nav-button {
+        justify-content: center;
+    }
+
+    .footer {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .footer-container {
+        width: 92%;
+        margin: 0 auto;
+
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 18px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .nav-container {
+        width: 92%;
+        min-height: 62px;
+    }
+
+    .brand-logo svg {
+        width: 34px;
+        height: 42px;
+    }
+
+    .brand-name {
+        font-size: 17px;
+    }
+
+    .brand-tagline {
+        font-size: 8px;
+    }
+
+    .lab-hero {
+        padding: 55px 0 45px;
+    }
+
+    .lab-hero h1 {
+        font-size: clamp(34px, 10vw, 48px);
+    }
+
+    .lab-description {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .lab-section {
+        padding: 50px 0;
+    }
+
+    .lab-section-title h2 {
+        font-size: 26px;
+    }
+
+    .lab-scenario,
+    .lab-record,
+    .lab-howto,
+    .lab-completion {
+        padding: 21px;
+    }
+
+    .lab-timeline-item {
+        grid-template-columns: 1fr;
+    }
+
+    .lab-time {
+        padding: 12px 15px;
+    }
+
+    .lab-event {
+        padding: 15px;
+    }
+
+    .lab-button-row {
+        flex-direction: column;
+    }
+
+    .lab-button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .lab-topic-nav {
+        flex-direction: column;
+    }
+
+    .lab-nav-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .footer-container {
+        width: 92%;
+    }
+
+    .footer-links {
+        width: 100%;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        gap: 12px 18px;
+    }
+
+    .footer-links a {
+        font-size: 13px;
+        white-space: normal;
+    }
+
+    .copyright {
+        width: 92%;
+        margin: auto;
+
+        padding: 18px 0;
+
+        font-size: 11px;
+        line-height: 1.6;
+        text-align: center;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .nav-container {
+        width: 94%;
+    }
+
+    .brand-logo svg {
+        width: 30px;
+        height: 38px;
+    }
+
+    .brand-name {
+        font-size: 15px;
+    }
+
+    .brand-tagline {
+        font-size: 7px;
+    }
+
+    .lab-container {
+        width: 94%;
+    }
+
+    .footer-links {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="../../../index.html" class="brand">
+
+<div class="brand-logo">
+
+<svg viewBox="0 0 50 60">
+
+<path
+d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+fill="none"
+stroke="currentColor"
+stroke-width="3"
+/>
+
+<rect
+x="18"
+y="25"
+width="14"
+height="14"
+rx="2"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<path
+d="M20 25 V20 C20 16 30 16 30 20 V25"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<circle
+cx="25"
+cy="31"
+r="2"
+fill="currentColor"
+/>
+
+<path
+d="M25 33 V36"
+stroke="currentColor"
+stroke-width="2"
+/>
+
+</svg>
+
+</div>
+
+<div class="brand-text">
+
+<div class="brand-name">
+Cyber<span>Nexa</span>
+</div>
+
+<div class="brand-tagline">
+Cybersecurity &amp; IT Learning
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="lab-hero">
+
+<div class="lab-container">
+
+<div class="lab-breadcrumb">
+CyberNexa / Incident Response / Practical Lab / Incident Documentation
+</div>
+
+<div class="lab-label">
+
+<span class="lab-dot"></span>
+
+Incident Documentation Practical Lab
+
+</div>
+
+<h1>
+Document a <span>Security Incident</span>
+</h1>
+
+<p class="lab-description">
+In this practical lab, you will practice creating a structured
+incident record by identifying the incident, recording important
+events, documenting evidence, recording response actions and
+summarizing the final findings.
+</p>
+
+<div class="lab-progress">
+
+<div class="lab-progress-top">
+
+<span>Lab Progress</span>
+
+<strong id="progressText">
+0%
+</strong>
+
+</div>
+
+<div class="lab-progress-bar">
+
+<div
+class="lab-progress-fill"
+id="progressFill">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<main>
+
+<!-- =====================================================
+     SCENARIO
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Incident Scenario</h2>
+
+<p>
+Read the scenario carefully before creating the incident record.
+</p>
+
+</div>
+
+<div class="lab-scenario">
+
+<h3>🚨 Suspicious Account Activity</h3>
+
+<p>
+At 10:15 AM, the organization's security monitoring system
+detects multiple failed login attempts against the account
+<strong>analyst01</strong>. At 10:18 AM, a successful login is
+detected from an unusual location. The security team begins an
+investigation and decides to document the event as a security
+incident.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     INCIDENT INFORMATION
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Incident Information</h2>
+
+<p>
+Identify the basic information that should be recorded.
+</p>
+
+</div>
+
+<div class="lab-info-grid">
+
+<div class="lab-info-card">
+
+<label>Incident ID</label>
+
+<strong>IR-2026-001</strong>
+
+</div>
+
+<div class="lab-info-card">
+
+<label>Detection Time</label>
+
+<strong>10:15 AM</strong>
+
+</div>
+
+<div class="lab-info-card">
+
+<label>Affected Account</label>
+
+<strong>analyst01</strong>
+
+</div>
+
+<div class="lab-info-card">
+
+<label>Incident Type</label>
+
+<strong>Suspicious Account Activity</strong>
+
+</div>
+
+<div class="lab-info-card">
+
+<label>Initial Priority</label>
+
+<strong>Medium</strong>
+
+</div>
+
+<div class="lab-info-card">
+
+<label>Current Status</label>
+
+<strong>Under Investigation</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     TIMELINE
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Incident Timeline</h2>
+
+<p>
+Arrange the important events in chronological order.
+</p>
+
+</div>
+
+<div class="lab-timeline">
+
+<div class="lab-timeline-item">
+
+<div class="lab-time">
+10:15 AM
+</div>
+
+<div class="lab-event">
+Multiple failed login attempts detected for account
+<strong>analyst01</strong>.
+</div>
+
+</div>
+
+<div class="lab-timeline-item">
+
+<div class="lab-time">
+10:18 AM
+</div>
+
+<div class="lab-event">
+A successful login is detected from an unusual location.
+</div>
+
+</div>
+
+<div class="lab-timeline-item">
+
+<div class="lab-time">
+10:22 AM
+</div>
+
+<div class="lab-event">
+Security analyst begins investigating the suspicious activity.
+</div>
+
+</div>
+
+<div class="lab-timeline-item">
+
+<div class="lab-time">
+10:30 AM
+</div>
+
+<div class="lab-event">
+The affected account is reviewed and additional activity is checked.
+</div>
+
+</div>
+
+<div class="lab-timeline-item">
+
+<div class="lab-time">
+10:45 AM
+</div>
+
+<div class="lab-event">
+Response findings and actions are recorded in the incident documentation.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     EVIDENCE
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Evidence to Document</h2>
+
+<p>
+Identify the important information that supports the investigation.
+</p>
+
+</div>
+
+<div class="lab-evidence-grid">
+
+<div class="lab-evidence">
+
+<strong>Login Logs</strong>
+
+<span>
+Records showing failed and successful login attempts.
+</span>
+
+</div>
+
+<div class="lab-evidence">
+
+<strong>Source Location</strong>
+
+<span>
+Location information associated with the suspicious login.
+</span>
+
+</div>
+
+<div class="lab-evidence">
+
+<strong>Account Details</strong>
+
+<span>
+Information about the affected user account and its activity.
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     RESPONSE ACTIONS
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Response Actions</h2>
+
+<p>
+Select the actions that should be documented for this incident.
+</p>
+
+</div>
+
+<div class="lab-action-list">
+
+<label class="lab-action">
+
+<input type="checkbox" class="lab-check">
+
+<span>
+Record the failed and successful login events.
+</span>
+
+</label>
+
+<label class="lab-action">
+
+<input type="checkbox" class="lab-check">
+
+<span>
+Document the unusual login location and affected account.
+</span>
+
+</label>
+
+<label class="lab-action">
+
+<input type="checkbox" class="lab-check">
+
+<span>
+Record the investigation findings.
+</span>
+
+</label>
+
+<label class="lab-action">
+
+<input type="checkbox" class="lab-check">
+
+<span>
+Document any containment or account protection actions.
+</span>
+
+</label>
+
+<label class="lab-action">
+
+<input type="checkbox" class="lab-check">
+
+<span>
+Record the final status and lessons learned.
+</span>
+
+</label>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     INTERACTIVE INCIDENT RECORD
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Build an Incident Record</h2>
+
+<p>
+Enter your own documentation based on the incident scenario.
+</p>
+
+</div>
+
+<div class="lab-record">
+
+<div class="lab-record-title">
+Incident Documentation Record
+</div>
+
+<div class="lab-field">
+
+<label for="incidentTitle">
+Incident Title
+</label>
+
+<input
+type="text"
+id="incidentTitle"
+placeholder="Example: Suspicious Account Login"
+
+>
+
+</div>
+
+<div class="lab-field">
+
+<label for="incidentDescription">
+Incident Description
+</label>
+
+<textarea
+id="incidentDescription"
+placeholder="Describe what happened..."
+></textarea>
+
+</div>
+
+<div class="lab-field">
+
+<label for="incidentEvidence">
+Evidence Collected
+</label>
+
+<textarea
+id="incidentEvidence"
+placeholder="List the evidence collected..."
+></textarea>
+
+</div>
+
+<div class="lab-field">
+
+<label for="incidentActions">
+Response Actions
+</label>
+
+<textarea
+id="incidentActions"
+placeholder="Describe the response actions..."
+></textarea>
+
+</div>
+
+<div class="lab-field">
+
+<label for="incidentFindings">
+Investigation Findings
+</label>
+
+<textarea
+id="incidentFindings"
+placeholder="Write the main findings..."
+></textarea>
+
+</div>
+
+<div class="lab-button-row">
+
+<button
+class="lab-button"
+id="generateBtn"
+type="button">
+Generate Documentation </button>
+
+<button
+class="lab-button"
+id="completeBtn"
+type="button">
+Mark Lab Complete </button>
+
+</div>
+
+<div
+class="lab-output"
+id="labOutput">
+
+<h3>✓ Incident Documentation Generated</h3>
+
+<p id="outputText"></p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     HOW TO COMPLETE
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-howto">
+
+<h3>How to Complete This Lab</h3>
+
+<ol>
+
+<li>
+Read the incident scenario carefully.
+</li>
+
+<li>
+Review the incident information and timeline.
+</li>
+
+<li>
+Identify the evidence that should be documented.
+</li>
+
+<li>
+Select the appropriate response actions.
+</li>
+
+<li>
+Create your own incident documentation record.
+</li>
+
+<li>
+Click <strong>Generate Documentation</strong> to review your entry.
+</li>
+
+<li>
+Click <strong>Mark Lab Complete</strong> after completing the activity.
+</li>
+
+</ol>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     COMPLETION
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-completion">
+
+<h2>Lab Completion</h2>
+
+<p id="completionText">
+Complete the required documentation activity to finish this lab.
+</p>
+
+</div>
+
+<div class="lab-topic-nav">
+
+<a
+href="recovery-lab.html"
+class="lab-nav-button">
+
+← Lab: Recovery
+
+</a>
+
+<a
+href="../theory/ioc.html"
+class="lab-nav-button">
+
+Next Theory: IOC →
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div>
+
+<div class="footer-brand">
+Cyber<span>Nexa</span>
+</div>
+
+<p>
+Cybersecurity &amp; IT Learning
+</p>
+
+</div>
+
+<div class="footer-links">
+
+<a href="../../../index.html">
+Home
+</a>
+
+<a href="../../../footer/about.html">
+About
+</a>
+
+<a href="../../../footer/contact.html">
+Contact
+</a>
+
+<a href="../../../footer/privacy-policy.html">
+Privacy Policy
+</a>
+
+<a href="../../../footer/disclaimer.html">
+Disclaimer
+</a>
+
+</div>
+
+</div>
+
+<div class="copyright">
+
+© 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+
+<script>
+
+/* =========================================================
+   INCIDENT DOCUMENTATION LAB
+========================================================= */
+
+const checks = document.querySelectorAll(".lab-check");
+
+const progressFill =
+document.getElementById("progressFill");
+
+const progressText =
+document.getElementById("progressText");
+
+const generateBtn =
+document.getElementById("generateBtn");
+
+const completeBtn =
+document.getElementById("completeBtn");
+
+const labOutput =
+document.getElementById("labOutput");
+
+const outputText =
+document.getElementById("outputText");
+
+const completionText =
+document.getElementById("completionText");
+
+
+function updateProgress() {
+
+    const total = checks.length;
+
+    const checked =
+        document.querySelectorAll(
+            ".lab-check:checked"
+        ).length;
+
+    const progress =
+        Math.round((checked / total) * 100);
+
+    progressFill.style.width =
+        progress + "%";
+
+    progressText.textContent =
+        progress + "%";
+}
+
+
+checks.forEach(check => {
+
+    check.addEventListener(
+        "change",
+        updateProgress
+    );
+
+});
+
+
+generateBtn.addEventListener(
+    "click",
+    function () {
+
+        const title =
+            document.getElementById(
+                "incidentTitle"
+            ).value.trim();
+
+        const description =
+            document.getElementById(
+                "incidentDescription"
+            ).value.trim();
+
+        const evidence =
+            document.getElementById(
+                "incidentEvidence"
+            ).value.trim();
+
+        const actions =
+            document.getElementById(
+                "incidentActions"
+            ).value.trim();
+
+        const findings =
+            document.getElementById(
+                "incidentFindings"
+            ).value.trim();
+
+
+        if (
+            !title ||
+            !description ||
+            !evidence ||
+            !actions ||
+            !findings
+        ) {
+
+            alert(
+                "Please complete all incident documentation fields."
+            );
+
+            return;
+        }
+
+
+        outputText.textContent =
+            "Incident Title: " + title +
+            " | Description: " + description +
+            " | Evidence: " + evidence +
+            " | Response Actions: " + actions +
+            " | Findings: " + findings;
+
+
+        labOutput.classList.add("show");
+
+    }
+);
+
+
+completeBtn.addEventListener(
+    "click",
+    function () {
+
+        const checked =
+            document.querySelectorAll(
+                ".lab-check:checked"
+            ).length;
+
+
+        if (checked < checks.length) {
+
+            alert(
+                "Please complete all response action checkboxes first."
+            );
+
+            return;
+        }
+
+
+        completionText.textContent =
+            "✓ Lab completed successfully. " +
+            "You practiced recording an incident timeline, " +
+            "evidence, response actions, findings and final documentation.";
+
+        completionText.style.color =
+            "var(--lab-green)";
+
+        completeBtn.classList.add("complete");
+
+        completeBtn.textContent =
+            "✓ Lab Completed";
+
+        updateProgress();
+
+    }
+);
+
+updateProgress();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hashcat Lab | CyberNexa</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(255, 121, 0, 0.10),
+                    transparent 32%
+                ),
+                #05080d;
+
+            color: #e5edf5;
+            font-family: Arial, sans-serif;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #070b11;
+            border-bottom: 1px solid rgba(255,121,0,.20);
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 15px 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #ff7900;
+            flex-shrink: 0;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #ff7900;
+        }
+
+        .brand-tagline {
+            color: #718196;
+            font-size: 10px;
+        }
+
+        /* ================= PAGE ================= */
+
+        .lab-page {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        .breadcrumb {
+            color: #718196;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb span {
+            color: #ff7900;
+            padding: 0 7px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .lab-header {
+            padding: 30px;
+
+            border: 1px solid rgba(255,121,0,.30);
+            border-left: 5px solid #ff7900;
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,121,0,.08),
+                    rgba(255,60,0,.025)
+                );
+        }
+
+        .lab-label {
+            color: #ff7900;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .lab-header h1 {
+            color: white;
+            font-size: clamp(29px,5vw,43px);
+            margin: 10px 0;
+        }
+
+        .lab-header p {
+            color: #a9b8c8;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* ================= LAB BOX ================= */
+
+        .lab-box {
+            margin-top: 22px;
+            padding: 23px;
+
+            background: #080e16;
+
+            border: 1px solid rgba(255,121,0,.15);
+            border-radius: 9px;
+        }
+
+        .lab-box h2 {
+            margin-top: 0;
+            color: white;
+            font-size: 19px;
+        }
+
+        .instructions {
+            color: #a9b8c8;
+            padding-left: 20px;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .instructions li {
+            margin-bottom: 7px;
+        }
+
+        /* ================= TERMINAL ================= */
+
+        .terminal {
+            margin-top: 18px;
+
+            background: #020408;
+
+            border: 1px solid rgba(255,121,0,.18);
+            border-radius: 8px;
+
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 10px 13px;
+
+            background: #0a1018;
+            border-bottom: 1px solid rgba(255,255,255,.05);
+        }
+
+        .terminal-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .red {
+            background: #ff5c5c;
+        }
+
+        .yellow {
+            background: #ffbd00;
+        }
+
+        .green {
+            background: #00d084;
+        }
+
+        .terminal-title {
+            margin-left: 7px;
+            color: #728196;
+            font-size: 10px;
+        }
+
+        .terminal-body {
+            padding: 17px;
+
+            color: #ffae68;
+
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .prompt {
+            color: #ff7900;
+        }
+
+        /* ================= STEP ================= */
+
+        .step {
+            margin-top: 18px;
+            padding: 18px;
+
+            border-left: 3px solid #ff7900;
+            background: rgba(255,121,0,.035);
+        }
+
+        .step h3 {
+            margin-top: 0;
+            color: #ff9a42;
+            font-size: 15px;
+        }
+
+        .step p {
+            color: #a9b8c8;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* ================= WARNING ================= */
+
+        .warning {
+            margin-top: 22px;
+            padding: 18px;
+
+            border-left: 4px solid #ffb000;
+            border-radius: 7px;
+
+            background: rgba(255,176,0,.04);
+        }
+
+        .warning h3 {
+            color: #ffb000;
+            margin-top: 0;
+        }
+
+        .warning p {
+            color: #a9b8c8;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* ================= NAVIGATION ================= */
+
+        .topic-navigation {
+            display: grid;
+            grid-template-columns:
+                repeat(3,minmax(0,1fr));
+
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .topic-navigation a {
+            padding: 12px;
+
+            text-align: center;
+
+            color: #91a2b5;
+            text-decoration: none;
+
+            font-size: 11px;
+
+            background: #080e16;
+
+            border: 1px solid rgba(255,121,0,.16);
+            border-radius: 7px;
+        }
+
+        .topic-navigation a:hover {
+            color: #ff9a42;
+            border-color: #ff7900;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            border-top: 1px solid rgba(255,121,0,.15);
+            background: #03070c;
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #ff7900;
+        }
+
+        .footer-container p {
+            color: #65778b;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 17px;
+        }
+
+        .footer-links a {
+            color: #8293a6;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #ff7900;
+        }
+
+        .copyright {
+            width: 100%;
+            max-width: 1050px;
+            margin: 25px auto 0;
+
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255,255,255,.05);
+
+            text-align: center;
+            color: #4d5d6e;
+            font-size: 10px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 800px) {
+
+            .lab-page {
+                padding: 25px 15px 55px;
+            }
+
+            .lab-header,
+            .lab-box {
+                padding: 20px;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .nav-container {
+                padding: 13px 15px;
+            }
+
+            .brand-name {
+                font-size: 18px;
+            }
+
+            .brand-tagline {
+                font-size: 9px;
+            }
+
+            .terminal-body {
+                font-size: 11px;
+                padding: 13px;
+            }
+
+            .lab-header h1 {
+                font-size: 29px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58
+                        C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+    <div class="breadcrumb">
+
+        Cybersecurity Tools
+        <span>›</span>
+        Hashcat
+        <span>›</span>
+        Practical Lab
+
+    </div>
+
+
+    <section class="lab-header">
+
+        <div class="lab-label">
+            HASHCAT PRACTICAL LAB
+        </div>
+
+        <h1>
+            Password Hash Auditing
+        </h1>
+
+        <p>
+            Learn the basic Hashcat workflow by creating and auditing
+            a test hash that belongs to your own controlled laboratory
+            environment.
+        </p>
+
+    </section>
+
+
+    <!-- ================= TASK ================= -->
+
+    <section class="lab-box">
+
+        <h2>
+            Lab Objective
+        </h2>
+
+        <ol class="instructions">
+
+            <li>
+                Create a small local wordlist containing test values.
+            </li>
+
+            <li>
+                Generate an MD5 hash from your own test value.
+            </li>
+
+            <li>
+                Store the hash in a local hash file.
+            </li>
+
+            <li>
+                Use Hashcat with the appropriate hash mode.
+            </li>
+
+            <li>
+                Verify the result inside your authorized lab.
+            </li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- ================= STEP 1 ================= -->
+
+    <section class="lab-box">
+
+        <h2>
+            Step 1 — Create a Test Wordlist
+        </h2>
+
+        <p style="color:#a9b8c8;font-size:13px;">
+            Create a file named
+            <strong>lab-wordlist.txt</strong>
+            and put only your own test values inside it.
+        </p>
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+
+                <span class="terminal-title">
+                    Linux Terminal
+                </span>
+
+            </div>
+
+            <div class="terminal-body"><span class="prompt">$</span> nano lab-wordlist.txt
+
+security123
+CyberNexa123
+training2026
+testpass</div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STEP 2 ================= -->
+
+    <section class="lab-box">
+
+        <h2>
+            Step 2 — Generate Your Test Hash
+        </h2>
+
+        <p style="color:#a9b8c8;font-size:13px;">
+            For this demonstration, use a test value that you created
+            specifically for this lab.
+        </p>
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+
+                <span class="terminal-title">
+                    Linux Terminal
+                </span>
+
+            </div>
+
+            <div class="terminal-body"><span class="prompt">$</span> printf "security123" | md5sum
+
+YOUR_GENERATED_HASH  -</div>
+
+        </div>
+
+        <p style="color:#718196;font-size:11px;">
+            Replace YOUR_GENERATED_HASH with the hash produced by
+            your own system.
+        </p>
+
+    </section>
+
+
+    <!-- ================= STEP 3 ================= -->
+
+    <section class="lab-box">
+
+        <h2>
+            Step 3 — Create the Hash File
+        </h2>
+
+        <p style="color:#a9b8c8;font-size:13px;">
+            Put your generated hash into a file named
+            <strong>test-hash.txt</strong>.
+        </p>
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+
+                <span class="terminal-title">
+                    Linux Terminal
+                </span>
+
+            </div>
+
+            <div class="terminal-body"><span class="prompt">$</span> nano test-hash.txt
+
+YOUR_GENERATED_HASH</div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STEP 4 ================= -->
+
+    <section class="lab-box">
+
+        <h2>
+            Step 4 — Run Hashcat
+        </h2>
+
+        <p style="color:#a9b8c8;font-size:13px;">
+            MD5 uses Hashcat mode
+            <strong>0</strong>.
+            Run this only against the test hash created for this lab.
+        </p>
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+
+                <span class="terminal-title">
+                    Hashcat
+                </span>
+
+            </div>
+
+            <div class="terminal-body"><span class="prompt">$</span> hashcat -m 0 test-hash.txt lab-wordlist.txt</div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STEP 5 ================= -->
+
+    <section class="lab-box">
+
+        <h2>
+            Step 5 — Display the Recovered Test Value
+        </h2>
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+
+                <span class="terminal-title">
+                    Hashcat Result
+                </span>
+
+            </div>
+
+            <div class="terminal-body"><span class="prompt">$</span> hashcat -m 0 test-hash.txt lab-wordlist.txt --show
+
+YOUR_GENERATED_HASH:security123</div>
+
+        </div>
+
+        <p style="color:#a9b8c8;font-size:12px;">
+            The exact output depends on the test value and the wordlist
+            you created.
+        </p>
+
+    </section>
+
+
+    <!-- ================= LEARNING ================= -->
+
+    <section class="lab-box">
+
+        <h2>
+            What Did You Learn?
+        </h2>
+
+        <ul class="instructions">
+
+            <li>
+                A password can be represented by a hash.
+            </li>
+
+            <li>
+                Hashcat needs the correct hash mode.
+            </li>
+
+            <li>
+                A wordlist contains candidate values.
+            </li>
+
+            <li>
+                Hashcat compares candidates against the supplied hash.
+            </li>
+
+            <li>
+                Password auditing should be performed only on
+                authorized test data.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- ================= WARNING ================= -->
+
+    <section class="warning">
+
+        <h3>
+            Authorized Security Testing
+        </h3>
+
+        <p>
+            Do not use Hashcat against passwords, hashes, accounts or
+            systems that you do not own or have explicit permission to
+            audit. The purpose of this CyberNexa exercise is to understand
+            password security and defensive auditing in a controlled lab.
+        </p>
+
+    </section>
+
+
+    <!-- ================= NAVIGATION ================= -->
+
+    <div class="topic-navigation">
+
+        <a href="john-the-ripper-lab.html">
+            ← Previous
+        </a>
+
+        <a href="cyber-tools-lab.html">
+            All Cybersecurity Tools
+        </a>
+
+        <a href="../theory/openssl.html">
+            Next: OpenSSL →
+        </a>
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+</body>
+</html>

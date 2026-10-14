@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gobuster Lab | CyberNexa</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 230, 138, 0.09),
+                    transparent 30%
+                ),
+                #020a12;
+
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* ============================
+           NAVBAR
+        ============================ */
+
+        .navbar {
+
+            width: 100%;
+
+            border-bottom:
+                1px solid rgba(0, 230, 138, 0.18);
+
+            background: #020b14;
+        }
+
+
+        .nav-container {
+
+            width: 100%;
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 15px 25px;
+        }
+
+
+        .brand {
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            color: white;
+            text-decoration: none;
+
+            max-width: 100%;
+        }
+
+
+        .brand-logo {
+
+            width: 38px;
+            height: 45px;
+
+            color: #00e68a;
+
+            flex-shrink: 0;
+        }
+
+
+        .brand-logo svg {
+
+            width: 100%;
+            height: 100%;
+        }
+
+
+        .brand-name {
+
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+
+        .brand-name span {
+
+            color: #00e68a;
+        }
+
+
+        .brand-tagline {
+
+            color: #71869a;
+            font-size: 10px;
+        }
+
+
+        /* ============================
+           LAB PAGE
+        ============================ */
+
+        .lab-page {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: auto;
+
+            padding: 35px 20px 70px;
+        }
+
+
+        .breadcrumb {
+
+            color: #71869a;
+
+            font-size: 12px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .breadcrumb span {
+
+            color: #00e68a;
+
+            padding: 0 7px;
+        }
+
+
+        /* ============================
+           HEADER
+        ============================ */
+
+        .lab-header {
+
+            padding: 30px;
+
+            border:
+                1px solid rgba(0, 230, 138, 0.30);
+
+            border-left:
+                4px solid #00e68a;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 230, 138, 0.07),
+                    transparent
+                );
+        }
+
+
+        .lab-label {
+
+            color: #00e68a;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+        }
+
+
+        .lab-header h1 {
+
+            color: white;
+
+            font-size:
+                clamp(27px, 5vw, 40px);
+
+            margin: 8px 0;
+        }
+
+
+        .lab-header p {
+
+            color: #9db0c2;
+
+            font-size: 14px;
+
+            margin: 0;
+        }
+
+
+        /* ============================
+           LAB BOX
+        ============================ */
+
+        .lab-box {
+
+            margin-top: 22px;
+
+            padding: 24px;
+
+            border:
+                1px solid rgba(0, 230, 138, 0.16);
+
+            border-radius: 9px;
+
+            background: #03111d;
+        }
+
+
+        .lab-box h2 {
+
+            margin-top: 0;
+
+            color: white;
+
+            font-size: 20px;
+        }
+
+
+        .instructions {
+
+            color: #a7b8c9;
+
+            font-size: 13px;
+        }
+
+
+        .instructions li {
+
+            margin-bottom: 7px;
+        }
+
+
+        /* ============================
+           TERMINAL
+        ============================ */
+
+        .terminal {
+
+            margin-top: 18px;
+
+            border:
+                1px solid rgba(0, 230, 138, 0.20);
+
+            border-radius: 8px;
+
+            background: #01070c;
+
+            overflow: hidden;
+        }
+
+
+        .terminal-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 10px 14px;
+
+            border-bottom:
+                1px solid rgba(0, 230, 138, 0.12);
+
+            color: #73889a;
+
+            font-family: Consolas, monospace;
+
+            font-size: 11px;
+        }
+
+
+        .terminal-dot {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #00e68a;
+        }
+
+
+        .terminal-body {
+
+            padding: 18px;
+
+            color: #79ffc0;
+
+            font-family: Consolas, monospace;
+
+            font-size: 13px;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: anywhere;
+        }
+
+
+        .prompt {
+
+            color: #00e68a;
+        }
+
+
+        /* ============================
+           COMMAND
+        ============================ */
+
+        .command-box {
+
+            margin-top: 18px;
+
+            padding: 16px;
+
+            border:
+                1px solid rgba(0, 230, 138, 0.20);
+
+            border-radius: 7px;
+
+            background: #01070c;
+
+            overflow-x: auto;
+        }
+
+
+        .command-box code {
+
+            color: #79ffc0;
+
+            font-family: Consolas, monospace;
+
+            font-size: 13px;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: anywhere;
+        }
+
+
+        /* ============================
+           OUTPUT
+        ============================ */
+
+        .output-title {
+
+            margin-top: 22px;
+
+            color: #00e68a;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        .output {
+
+            min-height: 150px;
+
+            margin-top: 8px;
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 230, 138, 0.18);
+
+            border-radius: 7px;
+
+            background: #01070c;
+
+            color: #79ffc0;
+
+            font-family: Consolas, monospace;
+
+            font-size: 12px;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: anywhere;
+        }
+
+
+        /* ============================
+           BUTTONS
+        ============================ */
+
+        .button-row {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+
+        button {
+
+            padding: 10px 19px;
+
+            border-radius: 22px;
+
+            cursor: pointer;
+
+            font-weight: 800;
+
+            font-size: 12px;
+        }
+
+
+        .run-btn {
+
+            border:
+                1px solid #00e68a;
+
+            background:
+                rgba(0, 230, 138, 0.07);
+
+            color: #00e68a;
+        }
+
+
+        .run-btn:hover {
+
+            background: #00e68a;
+
+            color: #02100a;
+        }
+
+
+        .clear-btn {
+
+            border:
+                1px solid rgba(0, 230, 138, 0.25);
+
+            background:
+                rgba(0, 230, 138, 0.03);
+
+            color: #8da5b8;
+        }
+
+
+        .clear-btn:hover {
+
+            color: #00e68a;
+        }
+
+
+        /* ============================
+           TASK
+        ============================ */
+
+        .challenge {
+
+            margin-top: 22px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(255, 189, 0, 0.25);
+
+            border-left:
+                4px solid #ffbd00;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255, 189, 0, 0.04);
+        }
+
+
+        .challenge h3 {
+
+            color: #ffbd00;
+
+            margin-top: 0;
+        }
+
+
+        .challenge p,
+        .challenge li {
+
+            color: #aabbd0;
+
+            font-size: 13px;
+        }
+
+
+        /* ============================
+           NAVIGATION
+        ============================ */
+
+        .lab-navigation {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 30px;
+        }
+
+
+        .lab-navigation a {
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 12px;
+
+            border:
+                1px solid rgba(0, 230, 138, 0.18);
+
+            border-radius: 7px;
+
+            color: #9db0c2;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            font-size: 12px;
+        }
+
+
+        .lab-navigation a:hover {
+
+            color: #00e68a;
+
+            border-color: #00e68a;
+        }
+
+
+        /* ============================
+           FOOTER
+        ============================ */
+
+        .footer {
+
+            width: 100%;
+
+            border-top:
+                1px solid rgba(0, 230, 138, 0.15);
+
+            background: #010810;
+
+            padding: 35px 20px 20px;
+        }
+
+
+        .footer-container {
+
+            width: 100%;
+
+            max-width: 1050px;
+
+            margin: auto;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+
+        .footer-brand {
+
+            color: white;
+
+            font-size: 20px;
+
+            font-weight: 900;
+        }
+
+
+        .footer-brand span {
+
+            color: #00e68a;
+        }
+
+
+        .footer-container p {
+
+            color: #62778a;
+
+            font-size: 11px;
+        }
+
+
+        .footer-links {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 18px;
+        }
+
+
+        .footer-links a {
+
+            color: #8297aa;
+
+            text-decoration: none;
+
+            font-size: 11px;
+        }
+
+
+        .footer-links a:hover {
+
+            color: #00e68a;
+        }
+
+
+        .copyright {
+
+            width: 100%;
+
+            max-width: 1050px;
+
+            margin: 25px auto 0;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.05);
+
+            text-align: center;
+
+            color: #4e6275;
+
+            font-size: 10px;
+        }
+
+
+        /* ============================
+           RESPONSIVE
+        ============================ */
+
+        @media (max-width: 700px) {
+
+            .nav-container {
+
+                padding: 14px 15px;
+            }
+
+
+            .lab-page {
+
+                padding:
+                    25px 14px 55px;
+            }
+
+
+            .lab-header {
+
+                padding: 22px;
+            }
+
+
+            .lab-box {
+
+                padding: 19px;
+            }
+
+
+            .button-row {
+
+                flex-direction: column;
+            }
+
+
+            button {
+
+                width: 100%;
+            }
+
+
+            .lab-navigation {
+
+                flex-direction: column;
+            }
+
+
+            .lab-navigation a {
+
+                width: 100%;
+            }
+
+
+            .footer-container {
+
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58
+                        C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<main class="lab-page">
+
+
+    <div class="breadcrumb">
+
+        Cybersecurity Tools
+        <span>›</span>
+        Gobuster
+        <span>›</span>
+        Practical Lab
+
+    </div>
+
+
+
+    <!-- HEADER -->
+
+    <section class="lab-header">
+
+        <div class="lab-label">
+            GOBUSTER PRACTICAL LAB
+        </div>
+
+        <h1>
+            Web Content Discovery Lab
+        </h1>
+
+        <p>
+            Practice directory and file enumeration against a
+            local training web server using Gobuster.
+        </p>
+
+    </section>
+
+
+
+    <!-- OBJECTIVE -->
+
+    <section class="lab-box">
+
+        <h2>Lab Objective</h2>
+
+        <ol class="instructions">
+
+            <li>
+                Start a local web server.
+            </li>
+
+            <li>
+                Create a small training directory structure.
+            </li>
+
+            <li>
+                Create a wordlist containing possible paths.
+            </li>
+
+            <li>
+                Run Gobuster against the local server.
+            </li>
+
+            <li>
+                Analyze the discovered resources.
+            </li>
+
+        </ol>
+
+    </section>
+
+
+
+    <!-- TERMINAL SETUP -->
+
+    <section class="lab-box">
+
+        <h2>Step 1 — Create Training Environment</h2>
+
+        <p>
+            Create a temporary directory for the lab:
+        </p>
+
+
+        <div class="command-box">
+
+<code>mkdir -p ~/cybernexa-gobuster-lab/site</code>
+
+        </div>
+
+
+        <p>
+            Move into the training website:
+        </p>
+
+
+        <div class="command-box">
+
+<code>cd ~/cybernexa-gobuster-lab/site</code>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- CREATE CONTENT -->
+
+    <section class="lab-box">
+
+        <h2>Step 2 — Create Test Resources</h2>
+
+        <p>
+            Create directories that Gobuster can discover:
+        </p>
+
+
+        <div class="command-box">
+
+<code>mkdir admin
+mkdir uploads
+mkdir login</code>
+
+        </div>
+
+
+        <p>
+            Create a simple page:
+        </p>
+
+
+        <div class="command-box">
+
+<code>echo "CyberNexa Local Training Server" > index.html</code>
+
+        </div>
+
+
+        <p>
+            Create another test file:
+        </p>
+
+
+        <div class="command-box">
+
+<code>echo "Training login page" > login/index.html</code>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- WORDLIST -->
+
+    <section class="lab-box">
+
+        <h2>Step 3 — Create a Wordlist</h2>
+
+        <p>
+            Create a small wordlist containing possible resources:
+        </p>
+
+
+        <div class="command-box">
+
+<code>printf "admin\nlogin\nuploads\nimages\nbackup\nconfig\n" > wordlist.txt</code>
+
+        </div>
+
+
+        <p>
+            View the wordlist:
+        </p>
+
+
+        <div class="command-box">
+
+<code>cat wordlist.txt</code>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- SERVER -->
+
+    <section class="lab-box">
+
+        <h2>Step 4 — Start Local Web Server</h2>
+
+        <p>
+            From inside the <strong>site</strong> directory, start
+            Python's local HTTP server:
+        </p>
+
+
+        <div class="command-box">
+
+<code>python3 -m http.server 8000</code>
+
+        </div>
+
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+
+                <span class="terminal-dot"></span>
+
+                LOCAL SERVER
+
+            </div>
+
+
+            <div class="terminal-body">
+
+<span class="prompt">Serving HTTP on</span> 0.0.0.0 port 8000 ...
+
+            </div>
+
+        </div>
+
+
+        <p>
+            Keep this terminal running and use another terminal
+            for Gobuster.
+        </p>
+
+    </section>
+
+
+
+    <!-- GOBUSTER -->
+
+    <section class="lab-box">
+
+        <h2>Step 5 — Run Gobuster</h2>
+
+        <p>
+            Run directory enumeration against your local server:
+        </p>
+
+
+        <div class="command-box">
+
+<code>gobuster dir -u http://127.0.0.1:8000 -w wordlist.txt</code>
+
+        </div>
+
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+
+                <span class="terminal-dot"></span>
+
+                GOBUSTER
+
+            </div>
+
+
+            <div class="terminal-body">
+
+<span class="prompt">$</span> gobuster dir -u http://127.0.0.1:8000 -w wordlist.txt
+
+===============================================================
+Gobuster
+===============================================================
+
+/admin       (Status: 301)
+/login       (Status: 301)
+/uploads     (Status: 301)
+
+===============================================================
+Finished
+===============================================================
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ANALYSIS -->
+
+    <section class="lab-box">
+
+        <h2>Step 6 — Understand the Results</h2>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+
+                <h3>/admin</h3>
+
+                <p>
+                    Gobuster discovered the directory because
+                    "admin" existed in the wordlist.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>/login</h3>
+
+                <p>
+                    The login directory responded to the request.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>/uploads</h3>
+
+                <p>
+                    The uploads directory was also discovered.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>301 Status</h3>
+
+                <p>
+                    HTTP 301 indicates that the requested resource
+                    redirects to another location.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ADVANCED -->
+
+    <section class="lab-box">
+
+        <h2>Step 7 — File Extension Enumeration</h2>
+
+        <p>
+            You can test selected extensions in an authorized
+            local environment:
+        </p>
+
+
+        <div class="command-box">
+
+<code>gobuster dir -u http://127.0.0.1:8000 -w wordlist.txt -x txt,html</code>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- CHALLENGE -->
+
+    <section class="challenge">
+
+        <h3>Challenge</h3>
+
+        <p>
+            Expand the local training website and try to discover
+            additional resources.
+        </p>
+
+        <ul>
+
+            <li>
+                Create an <strong>images</strong> directory.
+            </li>
+
+            <li>
+                Create a <strong>backup</strong> directory.
+            </li>
+
+            <li>
+                Add their names to the wordlist.
+            </li>
+
+            <li>
+                Run Gobuster again.
+            </li>
+
+            <li>
+                Compare the new results with the previous scan.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+
+    <!-- SAFETY -->
+
+    <section class="challenge">
+
+        <h3>Security Rule</h3>
+
+        <p>
+            Use Gobuster only against systems you own or have
+            explicit authorization to test. This lab intentionally
+            uses <strong>127.0.0.1</strong> so the enumeration stays
+            inside your local training environment.
+        </p>
+
+    </section>
+
+
+
+    <!-- NAVIGATION -->
+
+    <div class="lab-navigation">
+
+        <a href="netcat-lab.html">
+            ← Previous: Netcat
+        </a>
+
+
+        <a href="cyber-tools-lab.html">
+            All Tools
+        </a>
+
+
+        <a href="../theory/john-the-ripper.html">
+            Next: John the Ripper →
+        </a>
+
+    </div>
+
+
+</main>
+
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+</body>
+</html>

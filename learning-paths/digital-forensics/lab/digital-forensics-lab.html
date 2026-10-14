@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Forensics Labs | CyberNexa</title>
+
+    <meta name="description"
+        content="CyberNexa Digital Forensics practical labs for evidence analysis, metadata, Windows, Linux, browser, logs, network and disk forensics.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =========================================================
+           DIGITAL FORENSICS - LAB PAGE
+           CyberNexa
+           ========================================================= */
+
+        :root {
+            --df-bg: #071018;
+            --df-panel: #0b1722;
+            --df-panel-2: #0e1d2a;
+            --df-border: #183246;
+            --df-cyan: #39d9ff;
+            --df-blue: #198cff;
+            --df-green: #45e0a8;
+            --df-text: #e8f7ff;
+            --df-muted: #91a8b8;
+            --df-orange: #ffb84d;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at 20% 10%,
+                    rgba(57, 217, 255, 0.08),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 25%,
+                    rgba(25, 140, 255, 0.08),
+                    transparent 28%
+                ),
+                var(--df-bg);
+            color: var(--df-text);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .df-container {
+            width: min(1180px, 92%);
+            margin: auto;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .df-lab-hero {
+            padding: 85px 20px 65px;
+            border-bottom: 1px solid var(--df-border);
+        }
+
+        .df-breadcrumb {
+            color: var(--df-cyan);
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+
+        .df-lab-hero h1 {
+            margin: 0 0 15px;
+            font-size: clamp(38px, 5vw, 60px);
+        }
+
+        .df-lab-hero h1 span {
+            color: var(--df-cyan);
+        }
+
+        .df-lab-hero p {
+            max-width: 760px;
+            color: var(--df-muted);
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+        .df-lab-badge {
+            display: inline-block;
+            padding: 8px 13px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(69, 224, 168, 0.3);
+            border-radius: 5px;
+            color: var(--df-green);
+            background: rgba(69, 224, 168, 0.05);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+
+        /* ================= LAB INFO ================= */
+
+        .df-lab-info {
+            padding: 35px 0 15px;
+        }
+
+        .df-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .df-info-card {
+            padding: 20px;
+            border: 1px solid var(--df-border);
+            border-radius: 7px;
+            background: var(--df-panel);
+        }
+
+        .df-info-card span {
+            display: block;
+            color: var(--df-muted);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .df-info-card strong {
+            color: var(--df-text);
+            font-size: 15px;
+        }
+
+
+        /* ================= TOPICS ================= */
+
+        .df-lab-section {
+            padding: 65px 0;
+        }
+
+        .df-heading {
+            margin-bottom: 38px;
+        }
+
+        .df-heading h2 {
+            margin: 0 0 10px;
+            font-size: 32px;
+        }
+
+        .df-heading p {
+            color: var(--df-muted);
+            line-height: 1.7;
+        }
+
+        .df-lab-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .df-lab-card {
+            position: relative;
+            display: grid;
+            grid-template-columns: 60px 1fr auto;
+            gap: 18px;
+            align-items: center;
+            padding: 23px;
+            border: 1px solid var(--df-border);
+            border-radius: 8px;
+            background: var(--df-panel);
+            transition: 0.25s ease;
+        }
+
+        .df-lab-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(57, 217, 255, 0.45);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .df-lab-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            border: 1px solid rgba(57, 217, 255, 0.3);
+            border-radius: 7px;
+            color: var(--df-cyan);
+            font-weight: bold;
+        }
+
+        .df-lab-content h3 {
+            margin: 0 0 7px;
+            font-size: 17px;
+        }
+
+        .df-lab-content p {
+            margin: 0;
+            color: var(--df-muted);
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .df-lab-open {
+            padding: 10px 13px;
+            border: 1px solid rgba(57, 217, 255, 0.3);
+            border-radius: 5px;
+            color: var(--df-cyan);
+            font-size: 12px;
+            white-space: nowrap;
+            transition: 0.2s ease;
+        }
+
+        .df-lab-open:hover {
+            background: rgba(57, 217, 255, 0.08);
+        }
+
+
+        /* ================= SAFETY ================= */
+
+        .df-note {
+            margin-top: 40px;
+            padding: 25px;
+            border-left: 3px solid var(--df-orange);
+            border-top: 1px solid var(--df-border);
+            border-right: 1px solid var(--df-border);
+            border-bottom: 1px solid var(--df-border);
+            border-radius: 6px;
+            background: rgba(255, 184, 77, 0.04);
+        }
+
+        .df-note strong {
+            color: var(--df-orange);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .df-note p {
+            margin: 0;
+            color: var(--df-muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+
+        /* ================= BACK ================= */
+
+        .df-back {
+            display: inline-flex;
+            margin-top: 30px;
+            padding: 12px 18px;
+            border: 1px solid var(--df-border);
+            border-radius: 5px;
+            color: var(--df-muted);
+            transition: 0.2s ease;
+        }
+
+        .df-back:hover {
+            color: var(--df-cyan);
+            border-color: rgba(57, 217, 255, 0.4);
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 950px) {
+
+            .df-info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .df-lab-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .df-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .df-lab-card {
+                grid-template-columns: 48px 1fr;
+            }
+
+            .df-lab-open {
+                grid-column: 2;
+                justify-self: start;
+            }
+
+            .df-lab-hero {
+                padding: 65px 0 50px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         NAVBAR
+    ========================================================= -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         HERO
+    ========================================================= -->
+
+    <header class="df-lab-hero">
+
+        <div class="df-container">
+
+            <div class="df-breadcrumb">
+                CyberNexa / Digital Forensics / Practical Labs
+            </div>
+
+            <div class="df-lab-badge">
+                🧪 Practical Investigation Environment
+            </div>
+
+            <h1>
+                Digital <span>Forensics Labs</span>
+            </h1>
+
+            <p>
+                Practice the concepts learned in the Digital Forensics
+                theory track through safe, educational and controlled
+                forensic exercises.
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         LAB INFORMATION
+    ========================================================= -->
+
+    <section class="df-lab-info">
+
+        <div class="df-container">
+
+            <div class="df-info-grid">
+
+                <div class="df-info-card">
+                    <span>LAB TYPE</span>
+                    <strong>Digital Forensics</strong>
+                </div>
+
+                <div class="df-info-card">
+                    <span>LEVEL</span>
+                    <strong>Beginner → Intermediate</strong>
+                </div>
+
+                <div class="df-info-card">
+                    <span>FORMAT</span>
+                    <strong>Interactive Practice</strong>
+                </div>
+
+                <div class="df-info-card">
+                    <span>ENVIRONMENT</span>
+                    <strong>Controlled / Educational</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         LAB TOPICS
+    ========================================================= -->
+
+    <main>
+
+        <section class="df-lab-section">
+
+            <div class="df-container">
+
+                <div class="df-heading">
+
+                    <h2>Forensic Practical Labs</h2>
+
+                    <p>
+                        Select a lab to practice the corresponding
+                        Digital Forensics concept.
+                    </p>
+
+                </div>
+
+
+                <div class="df-lab-grid">
+
+
+                    <!-- 01 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            01
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                Digital Forensics Introduction
+                            </h3>
+
+                            <p>
+                                Practice the basic forensic investigation
+                                workflow and identify investigation stages.
+                            </p>
+
+                        </div>
+
+                        <a href="digital-forensics-introduction-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 02 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            02
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                Evidence
+                            </h3>
+
+                            <p>
+                                Identify different forms and sources
+                                of digital evidence.
+                            </p>
+
+                        </div>
+
+                        <a href="evidence-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 03 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            03
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                File Metadata
+                            </h3>
+
+                            <p>
+                                Examine file metadata and understand
+                                how timestamps and properties assist investigations.
+                            </p>
+
+                        </div>
+
+                        <a href="file-metadata-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 04 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            04
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                Windows Forensics
+                            </h3>
+
+                            <p>
+                                Practice identifying important Windows
+                                forensic artifacts.
+                            </p>
+
+                        </div>
+
+                        <a href="windows-forensics-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 05 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            05
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                Linux Forensics
+                            </h3>
+
+                            <p>
+                                Practice Linux commands, logs and
+                                forensic artifact analysis.
+                            </p>
+
+                        </div>
+
+                        <a href="linux-forensics-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 06 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            06
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                Browser Forensics
+                            </h3>
+
+                            <p>
+                                Investigate browser history, cache,
+                                cookies and related artifacts.
+                            </p>
+
+                        </div>
+
+                        <a href="browser-forensics-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 07 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            07
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                Log Analysis
+                            </h3>
+
+                            <p>
+                                Analyze sample logs and identify
+                                important security events.
+                            </p>
+
+                        </div>
+
+                        <a href="log-analysis-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 08 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            08
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                Network Forensics
+                            </h3>
+
+                            <p>
+                                Examine network evidence and
+                                understand packet-level investigation.
+                            </p>
+
+                        </div>
+
+                        <a href="network-forensics-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 09 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            09
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                Disk Forensics
+                            </h3>
+
+                            <p>
+                                Practice disk evidence analysis,
+                                file systems and deleted-file concepts.
+                            </p>
+
+                        </div>
+
+                        <a href="disk-forensics-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 10 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            10
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                Incident Timeline
+                            </h3>
+
+                            <p>
+                                Build a timeline from sample forensic
+                                events and determine their sequence.
+                            </p>
+
+                        </div>
+
+                        <a href="incident-timeline-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                    <!-- 11 -->
+
+                    <div class="df-lab-card">
+
+                        <div class="df-lab-number">
+                            11
+                        </div>
+
+                        <div class="df-lab-content">
+
+                            <h3>
+                                Evidence Preservation
+                            </h3>
+
+                            <p>
+                                Practice evidence preservation,
+                                documentation and integrity concepts.
+                            </p>
+
+                        </div>
+
+                        <a href="evidence-preservation-lab.html"
+                           class="df-lab-open">
+                            Open Lab →
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- SAFETY NOTE -->
+
+                <div class="df-note">
+
+                    <strong>
+                        ⚠ Forensic Lab Notice
+                    </strong>
+
+                    <p>
+                        These labs are designed for educational purposes.
+                        Use forensic techniques only on systems, files
+                        and network data that you own or are explicitly
+                        authorized to investigate.
+                    </p>
+
+                </div>
+
+
+                <a href="../theory/digital-forensics.html"
+                   class="df-back">
+                    ← Back to Digital Forensics Theory
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+</body>
+</html>

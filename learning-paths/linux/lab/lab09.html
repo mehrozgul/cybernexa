@@ -1,0 +1,2933 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Package Management Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1000px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           LAB HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 45px;
+        }
+
+
+        .lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 13px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 42px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .lab-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .lab-intro {
+
+            max-width: 750px;
+
+            margin: 17px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB INFO
+        ====================================================== */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .lab-info-card {
+
+            padding: 16px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.14);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            text-align: center;
+        }
+
+
+        .lab-info-card strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-info-card span {
+
+            color: #dbeafe;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 20px;
+
+            padding: 28px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px
+                rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .lab-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.40);
+
+                box-shadow:
+                    0 18px 45px
+                    rgba(0, 0, 0, 0.32),
+                    0 0 28px
+                    rgba(103, 232, 249, 0.08);
+
+                transform:
+                    translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           LIGHT SWEEP
+        ====================================================== */
+
+        .lab-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent
+                );
+
+            transform:
+                skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .lab-card:hover::after {
+
+                animation:
+                    labLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                labMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes labLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes labMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 17px;
+        }
+
+
+        .lab-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 17px;
+
+            font-weight: 700;
+        }
+
+
+        .lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 20px;
+
+            font-weight: 750;
+        }
+
+
+        .lab-card p {
+
+            margin: 0 0 13px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+
+
+        .lab-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           STEP NUMBER
+        ====================================================== */
+
+        .step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            margin-bottom: 13px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 8px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           INSTRUCTION BOX
+        ====================================================== */
+
+        .instruction-box {
+
+            margin-top: 15px;
+
+            padding: 17px 19px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .instruction-box strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #f8fafc;
+
+            font-size: 13px;
+        }
+
+
+        .instruction-box span {
+
+            color: #c3cdd5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           TERMINAL
+        ====================================================== */
+
+        .terminal-box {
+
+            position: relative;
+
+            margin-top: 17px;
+
+            padding: 17px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .terminal-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .terminal-title {
+
+            color: #71808c;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 11px;
+        }
+
+
+        .copy-button {
+
+            padding: 7px 11px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.22);
+
+            border-radius: 7px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .copy-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        .terminal-box pre {
+
+            margin: 0;
+
+            white-space: pre-wrap;
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        .terminal-box code {
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+
+        /* =====================================================
+           EXPECTED RESULT
+        ====================================================== */
+
+        .expected-box {
+
+            margin-top: 15px;
+
+            padding: 15px 17px;
+
+            border:
+                1px solid
+                rgba(34, 197, 94, 0.18);
+
+            border-left:
+                3px solid #4ade80;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(34, 197, 94, 0.045);
+        }
+
+
+        .expected-box strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #86efac;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .expected-box span {
+
+            color: #b9c7c0;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           SAFETY NOTE
+        ====================================================== */
+
+        .safety-box {
+
+            margin-top: 15px;
+
+            padding: 16px 18px;
+
+            border:
+                1px solid
+                rgba(250, 204, 21, 0.18);
+
+            border-left:
+                3px solid #facc15;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(250, 204, 21, 0.045);
+        }
+
+
+        .safety-box strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #fde68a;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .safety-box span {
+
+            color: #c7c5b5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           COMMAND GRID
+        ====================================================== */
+
+        .command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+
+        .command-card {
+
+            padding: 16px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.13);
+
+            border-radius: 9px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .command-card code {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .command-card span {
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .lab-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-top: 20px;
+        }
+
+
+        .flow-item {
+
+            padding: 11px 14px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.18);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.045);
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY POINTS
+        ====================================================== */
+
+        .key-points {
+
+            margin: 17px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .key-points li {
+
+            position: relative;
+
+            padding:
+                8px 0 8px 22px;
+
+            color: #b6c2cc;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid
+                rgba(103, 232, 249, 0.06);
+        }
+
+
+        .key-points li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .key-points li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 8px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion-card {
+
+            text-align: center;
+
+            padding: 30px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.22);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(8, 31, 42, 0.98),
+                    rgba(3, 14, 21, 0.98)
+                );
+
+            margin-bottom: 25px;
+        }
+
+
+        .completion-icon {
+
+            width: 50px;
+            height: 50px;
+
+            margin: 0 auto 13px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.35);
+
+            border-radius: 50%;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 21px;
+        }
+
+
+        .completion-card h2 {
+
+            margin: 0 0 9px;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+        }
+
+
+        .completion-card p {
+
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        .complete-button {
+
+            margin-top: 18px;
+
+            padding: 11px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .complete-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.12);
+        }
+
+
+        .completion-status {
+
+            display: none;
+
+            margin-top: 12px;
+
+            color: #86efac;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 30px;
+        }
+
+
+        .lab-nav-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 12px 17px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.24);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .lab-nav-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .lab-nav-button span {
+
+            color: #67e8f9;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 35px;
+            }
+
+
+            .lab-info {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .lab-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 29px;
+
+                line-height: 1.25;
+            }
+
+
+            .lab-intro {
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .lab-info {
+
+                grid-template-columns: 1fr;
+
+                gap: 8px;
+            }
+
+
+            .lab-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 15px;
+
+                border-radius: 12px;
+            }
+
+
+            .lab-heading {
+
+                gap: 10px;
+            }
+
+
+            .lab-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 15px;
+            }
+
+
+            .lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .lab-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 9px;
+            }
+
+
+            .lab-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .flow-item {
+
+                width: 100%;
+            }
+
+
+            .flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 17px;
+            }
+
+
+            .terminal-box {
+
+                padding:
+                    15px;
+            }
+
+
+            .terminal-box pre {
+
+                font-size: 12px;
+            }
+
+
+            .terminal-header {
+
+                align-items: flex-start;
+            }
+
+
+            .lab-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .lab-nav-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+
+
+            .completion-card {
+
+                padding:
+                    25px 18px;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .lab-header h1 {
+
+                font-size: 26px;
+            }
+
+
+            .lab-page {
+
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+
+            .lab-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="lab-header">
+
+                <div class="lab-category">
+                    LINUX PRACTICAL LAB
+                </div>
+
+                <h1>
+                    Lab 09 -  <span>Package Management</span>
+                </h1>
+
+                <p class="lab-intro">
+
+                    In this practical lab, you will learn how to
+                    update package repositories, search for packages,
+                    install software, check installed packages,
+                    upgrade packages and safely remove software
+                    using the APT package manager.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LAB INFORMATION
+            ================================================== -->
+
+            <section class="lab-info">
+
+                <div class="lab-info-card">
+
+                    <strong>Platform</strong>
+
+                    <span>Ubuntu / Debian Linux</span>
+
+                </div>
+
+
+                <div class="lab-info-card">
+
+                    <strong>Tool</strong>
+
+                    <span>APT Package Manager</span>
+
+                </div>
+
+
+                <div class="lab-info-card">
+
+                    <strong>Level</strong>
+
+                    <span>Beginner</span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 INTRODUCTION
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        📦
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The objective of this lab is to understand the
+                    basic practical use of Linux package management.
+
+                    You will use APT commands to manage software
+                    packages from the Linux terminal.
+
+                </p>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What You Will Practice
+                    </strong>
+
+                    <span>
+
+                        Repository update, package search,
+                        package installation, package information,
+                        package upgrade and package removal.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 01
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Open the Linux Terminal
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Open the Terminal application in your Ubuntu
+                    or Debian-based Linux system.
+
+                </p>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Instruction
+                    </strong>
+
+                    <span>
+
+                        Press
+                        <strong>Ctrl + Alt + T</strong>
+                        to open the terminal.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        A Linux terminal window should appear and
+                        you should be ready to enter commands.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 02
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        ↻
+                    </div>
+
+                    <h2>
+                        Update Package Information
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    First, update the local package information
+                    from the configured software repositories.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo apt update')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>sudo apt update</code></pre>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        APT contacts the configured repositories and
+                        refreshes available package information.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 03
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        ?
+                    </div>
+
+                    <h2>
+                        Search for a Package
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    You can search the package repositories to find
+                    available software.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'apt search nginx')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>apt search nginx</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        This command searches the configured package
+                        repositories for packages related to Nginx.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        A list of matching packages and their
+                        descriptions should be displayed.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 04
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        i
+                    </div>
+
+                    <h2>
+                        View Package Information
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Before installing software, you can view
+                    information about a package.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'apt show nginx')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>apt show nginx</code></pre>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        Information such as package version,
+                        description, dependencies and package
+                        details should be displayed.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 05
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    05
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        +
+                    </div>
+
+                    <h2>
+                        Install a Package
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Now install the Nginx web server package using
+                    APT.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo apt install nginx')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>sudo apt install nginx</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Instruction
+                    </strong>
+
+                    <span>
+
+                        If APT asks for confirmation, type
+                        <strong>Y</strong>
+                        and press Enter.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        APT downloads the required package and
+                        dependencies and installs Nginx.
+
+                    </span>
+
+                </div>
+
+
+                <div class="safety-box">
+
+                    <strong>
+                        Safety Note
+                    </strong>
+
+                    <span>
+
+                        Only install packages from trusted
+                        repositories and verify the package name
+                        before confirming installation.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 06
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    06
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Verify the Installation
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    After installation, verify that the Nginx
+                    package is installed on the system.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'apt list --installed 2>/dev/null | grep nginx')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>apt list --installed 2&gt;/dev/null | grep nginx</code></pre>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        The installed Nginx package should appear
+                        in the command output.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 07
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    07
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        ↑
+                    </div>
+
+                    <h2>
+                        Upgrade Installed Packages
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    APT can upgrade installed packages when newer
+                    versions are available in the repositories.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo apt upgrade')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>sudo apt upgrade</code></pre>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        APT checks for available upgrades and
+                        installs them after confirmation.
+
+                    </span>
+
+                </div>
+
+
+                <div class="safety-box">
+
+                    <strong>
+                        Safety Note
+                    </strong>
+
+                    <span>
+
+                        Review the packages that will be upgraded
+                        before confirming important system changes.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 08
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    08
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        -
+                    </div>
+
+                    <h2>
+                        Remove a Package
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    APT can remove software packages that are no
+                    longer required.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo apt remove nginx')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>sudo apt remove nginx</code></pre>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        The Nginx package is removed from the system.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 09
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    09
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        C
+                    </div>
+
+                    <h2>
+                        Remove Unused Dependencies
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    After removing software, some dependencies may
+                    no longer be required.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo apt autoremove')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+
+                    <pre><code>sudo apt autoremove</code></pre>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        APT identifies packages that are no longer
+                        required and offers them for removal.
+
+                    </span>
+
+                </div>
+
+
+                <div class="safety-box">
+
+                    <strong>
+                        Safety Note
+                    </strong>
+
+                    <span>
+
+                        Always review the removal list before
+                        confirming an autoremove operation.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 COMMON COMMANDS
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Important APT Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="command-grid">
+
+                    <div class="command-card">
+
+                        <code>sudo apt update</code>
+
+                        <span>
+                            Updates package repository information.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>sudo apt upgrade</code>
+
+                        <span>
+                            Upgrades installed packages.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>apt search package</code>
+
+                        <span>
+                            Searches for available packages.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>apt show package</code>
+
+                        <span>
+                            Displays package information.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>sudo apt install package</code>
+
+                        <span>
+                            Installs a package.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>sudo apt remove package</code>
+
+                        <span>
+                            Removes a package.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>sudo apt autoremove</code>
+
+                        <span>
+                            Removes unused dependencies.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>apt list --installed</code>
+
+                        <span>
+                            Lists installed packages.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PACKAGE MANAGEMENT FLOW
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        →
+                    </div>
+
+                    <h2>
+                        Package Management Workflow
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The basic workflow for managing a package can
+                    be remembered as follows:
+
+                </p>
+
+
+                <div class="lab-flow">
+
+                    <div class="flow-item">
+                        Update
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Search
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Show
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Install
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Verify
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY CONNECTION
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why Package Management Matters in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Package management is important in cybersecurity
+                    because Linux systems need regular security updates
+                    and vulnerability patches.
+
+                </p>
+
+
+                <ul class="key-points">
+
+                    <li>
+                        Security updates can fix known vulnerabilities.
+                    </li>
+
+                    <li>
+                        Updated software reduces exposure to known
+                        security issues.
+                    </li>
+
+                    <li>
+                        Trusted repositories help maintain software
+                        integrity.
+                    </li>
+
+                    <li>
+                        Dependency management helps keep required
+                        software components organized.
+                    </li>
+
+                    <li>
+                        Security professionals frequently use package
+                        managers when maintaining Linux systems.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL TASK
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        !
+                    </div>
+
+                    <h2>
+                        Practical Task
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Perform the following tasks in your Linux
+                    terminal:
+
+                </p>
+
+
+                <ul class="key-points">
+
+                    <li>
+                        Update the package repository information.
+                    </li>
+
+                    <li>
+                        Search for the Nginx package.
+                    </li>
+
+                    <li>
+                        Display Nginx package information.
+                    </li>
+
+                    <li>
+                        Install Nginx.
+                    </li>
+
+                    <li>
+                        Verify that Nginx is installed.
+                    </li>
+
+                    <li>
+                        Remove Nginx.
+                    </li>
+
+                    <li>
+                        Check for unused dependencies.
+                    </li>
+
+                </ul>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Practical Goal
+                    </strong>
+
+                    <span>
+
+                        Complete the complete package-management
+                        lifecycle: search → inspect → install →
+                        verify → remove.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 COMPLETION
+            ================================================== -->
+
+            <section class="completion-card">
+
+                <div class="completion-icon">
+                    ✓
+                </div>
+
+
+                <h2>
+                    Lab Completion
+                </h2>
+
+
+                <p>
+
+                    If you successfully completed the package
+                    management tasks, mark this lab as completed.
+
+                    This lab covered the basic APT workflow used
+                    for Linux software management.
+
+                </p>
+
+
+                <button
+                    type="button"
+                    class="complete-button"
+                    onclick="completeLab()"
+                >
+                    Mark Lab as Completed
+                </button>
+
+
+                <div
+                    id="completionStatus"
+                    class="completion-status"
+                >
+                    ✓ Lab completed successfully.
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="lab-navigation">
+
+
+                <a
+                    href="lab08.html"
+                    class="lab-nav-button"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: SSH Lab
+                    </strong>
+
+                </a>
+
+
+                <a
+                    href="../theory/linux-networking-commands.html"
+                    class="lab-nav-button"
+                >
+
+                    <strong>
+                        Next Topic: Networking Commands 
+                    </strong>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+
+    <!-- =====================================================
+         COPY COMMAND
+    ====================================================== -->
+
+    <script>
+
+        function copyCommand(button, command) {
+
+            navigator.clipboard.writeText(command)
+                .then(() => {
+
+                    const oldText =
+                        button.textContent;
+
+                    button.textContent =
+                        "✓ Copied";
+
+                    button.style.borderColor =
+                        "rgba(34, 197, 94, 0.55)";
+
+                    button.style.color =
+                        "#86efac";
+
+
+                    setTimeout(() => {
+
+                        button.textContent =
+                            oldText;
+
+                        button.style.borderColor =
+                            "";
+
+                        button.style.color =
+                            "";
+
+                    }, 1500);
+
+                })
+                .catch(() => {
+
+                    button.textContent =
+                        "Copy failed";
+
+                });
+
+        }
+
+    </script>
+
+
+
+    <!-- =====================================================
+         LAB COMPLETION + LOCAL STORAGE
+    ====================================================== -->
+
+    <script>
+
+        const LAB_STORAGE_KEY =
+            "cybernexa_linux_package_management_lab_completed";
+
+
+        function completeLab() {
+
+            localStorage.setItem(
+                LAB_STORAGE_KEY,
+                "true"
+            );
+
+
+            const status =
+                document.getElementById(
+                    "completionStatus"
+                );
+
+
+            status.style.display =
+                "block";
+
+        }
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const completed =
+                    localStorage.getItem(
+                        LAB_STORAGE_KEY
+                    );
+
+
+                if (completed === "true") {
+
+                    document.getElementById(
+                        "completionStatus"
+                    ).style.display =
+                        "block";
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+    ====================================================== -->
+
+    <script>
+
+        const labCards =
+            document.querySelectorAll(
+                ".lab-card"
+            );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+
+            labCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+
+                void card.offsetWidth;
+
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(
+                sweepTimeout
+            );
+
+
+            sweepTimeout =
+                setTimeout(() => {
+
+                    labCards.forEach(card => {
+
+                        card.classList.remove(
+                            "mobile-sweep"
+                        );
+
+                    });
+
+                }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            triggerMobileSweep,
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

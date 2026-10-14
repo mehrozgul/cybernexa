@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberNexa | Windows File System</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .windows-learning-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(14, 165, 233, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .windows-learning-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        .windows-topic-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .windows-topic-category {
+            display: inline-block;
+            margin-bottom: 14px;
+            color: #60a5fa;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .windows-topic-header h1 {
+            margin: 0;
+            color: #f8fafc;
+            font-size: 44px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        .windows-topic-header h1 span {
+            color: #60a5fa;
+        }
+
+        .windows-topic-intro {
+            max-width: 760px;
+            margin: 18px auto 0;
+            color: #b6c2cc;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .windows-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 22px;
+        }
+
+        .windows-badge {
+            padding: 8px 13px;
+            border: 1px solid rgba(96, 165, 250, 0.20);
+            border-radius: 20px;
+            color: #bfdbfe;
+            background: rgba(96, 165, 250, 0.055);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .windows-topic-search {
+            display: flex;
+            align-items: center;
+            max-width: 650px;
+            margin: 25px auto 0;
+            gap: 10px;
+        }
+
+        .windows-topic-search input {
+            flex: 1;
+            min-width: 0;
+            padding: 13px 16px;
+            border: 1px solid rgba(96, 165, 250, 0.20);
+            border-radius: 9px;
+            outline: none;
+            color: #f8fafc;
+            background: rgba(96, 165, 250, 0.045);
+            font-size: 13px;
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .windows-topic-search input::placeholder {
+            color: #7f909c;
+        }
+
+        .windows-topic-search input:focus {
+            border-color: rgba(96, 165, 250, 0.65);
+            background: rgba(96, 165, 250, 0.07);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.10);
+        }
+
+        .windows-topic-search button {
+            padding: 13px 18px;
+            border: 1px solid rgba(96, 165, 250, 0.30);
+            border-radius: 9px;
+            color: #dbeafe;
+            background: rgba(96, 165, 250, 0.07);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .windows-topic-search button:hover {
+            border-color: rgba(96, 165, 250, 0.70);
+            background: rgba(96, 165, 250, 0.13);
+            transform: translateY(-1px);
+        }
+
+        .windows-search-message {
+            min-height: 20px;
+            margin-top: 10px;
+            color: #60a5fa;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .windows-card {
+            position: relative;
+            width: 100%;
+            margin-bottom: 22px;
+            padding: 30px;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.28);
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .windows-card:hover {
+                border-color: rgba(96, 165, 250, 0.40);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 30px rgba(37, 99, 235, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+        .windows-card::after,
+        .windows-info-card::after,
+        .windows-command-card::after {
+
+            content: "";
+
+            position: absolute;
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(96, 165, 250, 0.05),
+                    rgba(255, 255, 255, 0.08),
+                    rgba(96, 165, 250, 0.05),
+                    transparent
+                );
+
+            transform: skewX(-18deg);
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .windows-card:hover::after,
+            .windows-info-card:hover::after,
+            .windows-command-card:hover::after {
+
+                animation: windowsLightSweep 0.75s ease forwards;
+            }
+        }
+
+        .mobile-sweep::after {
+            animation:
+                windowsMobileSweep 0.75s ease forwards !important;
+        }
+
+        @keyframes windowsLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+        @keyframes windowsMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+        .windows-card-heading {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 18px;
+        }
+
+        .windows-icon {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(96, 165, 250, 0.30);
+            border-radius: 10px;
+
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.07);
+
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .windows-card h2 {
+            margin: 0;
+            color: #f8fafc;
+            font-size: 21px;
+            font-weight: 750;
+        }
+
+        .windows-card h3 {
+            margin: 0 0 8px;
+            color: #f8fafc;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .windows-card p {
+            margin: 0 0 14px;
+            color: #b6c2cc;
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        .windows-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .windows-definition-box {
+            padding: 20px;
+            margin-top: 5px;
+
+            border-left: 3px solid #60a5fa;
+            border-radius: 0 10px 10px 0;
+
+            background: rgba(96, 165, 250, 0.055);
+        }
+
+        .windows-definition-box strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #f8fafc;
+            font-size: 14px;
+        }
+
+        .windows-definition-box span {
+            color: #c3cdd5;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .windows-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .windows-info-card {
+            position: relative;
+            padding: 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.14);
+            border-radius: 11px;
+
+            background: rgba(96, 165, 250, 0.035);
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .windows-info-card:hover {
+            border-color: rgba(96, 165, 250, 0.35);
+            background: rgba(96, 165, 250, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .windows-info-card p {
+            margin: 0;
+            color: #aebbc5;
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        .windows-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .windows-flow-item {
+            padding: 12px 16px;
+
+            border: 1px solid rgba(96, 165, 250, 0.20);
+            border-radius: 9px;
+
+            color: #dbeafe;
+            background: rgba(96, 165, 250, 0.05);
+
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .windows-flow-arrow {
+            color: #60a5fa;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .windows-command-box {
+            margin-top: 20px;
+            padding: 18px 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 10px;
+
+            background: #01060a;
+            overflow-x: auto;
+        }
+
+        .windows-terminal-label {
+            display: block;
+            margin-bottom: 12px;
+
+            color: #64748b;
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .windows-command-box code {
+            color: #93c5fd;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .windows-command-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 13px;
+            margin-top: 20px;
+        }
+
+        .windows-command-card {
+            position: relative;
+            padding: 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.13);
+            border-radius: 10px;
+
+            background: rgba(96, 165, 250, 0.035);
+            overflow: hidden;
+        }
+
+        .windows-command-card code {
+            display: inline-block;
+            margin-bottom: 8px;
+
+            color: #60a5fa;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .windows-command-card p {
+            margin: 0;
+            color: #aebbc5;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .windows-key-concepts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .windows-key-item {
+            padding: 10px 14px;
+
+            border: 1px solid rgba(96, 165, 250, 0.16);
+            border-radius: 8px;
+
+            color: #d7e4eb;
+            background: rgba(96, 165, 250, 0.04);
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .windows-comparison {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .windows-comparison-box {
+            padding: 20px;
+
+            border: 1px solid rgba(96, 165, 250, 0.14);
+            border-radius: 11px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .windows-comparison-box h3 {
+            color: #60a5fa;
+            margin-bottom: 12px;
+        }
+
+        .windows-comparison-box ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .windows-comparison-box li {
+            margin-bottom: 7px;
+            color: #aebbc5;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .windows-summary-list {
+            margin: 18px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .windows-summary-list li {
+            position: relative;
+
+            padding: 9px 0 9px 23px;
+
+            color: #b6c2cc;
+            font-size: 13px;
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(96, 165, 250, 0.07);
+        }
+
+        .windows-summary-list li:last-child {
+            border-bottom: none;
+        }
+
+        .windows-summary-list li::before {
+            content: "✓";
+
+            position: absolute;
+            left: 0;
+            top: 9px;
+
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .windows-search-highlight {
+            border-color:
+                rgba(96, 165, 250, 0.75) !important;
+
+            box-shadow:
+                0 0 25px rgba(37, 99, 235, 0.13) !important;
+
+            transform: translateY(-2px);
+        }
+
+        .windows-topic-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .windows-topic-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 9px;
+
+            color: #dbeafe;
+            background: rgba(96, 165, 250, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .windows-topic-button:hover {
+            border-color: rgba(96, 165, 250, 0.65);
+            background: rgba(96, 165, 250, 0.10);
+            transform: translateY(-1px);
+        }
+
+        .windows-topic-button.practical-lab {
+            border-color: rgba(37, 99, 235, 0.40);
+            background: rgba(37, 99, 235, 0.09);
+        }
+
+        .windows-topic-button.practical-lab:hover {
+            border-color: rgba(96, 165, 250, 0.75);
+            background: rgba(37, 99, 235, 0.15);
+        }
+
+        .windows-topic-button span {
+            color: #60a5fa;
+            font-size: 17px;
+        }
+
+        @media (max-width: 800px) {
+
+            .windows-learning-page {
+                padding: 55px 15px 65px;
+            }
+
+            .windows-topic-header h1 {
+                font-size: 36px;
+            }
+
+            .windows-topic-intro {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .windows-learning-page {
+                padding: 45px 12px 55px;
+            }
+
+            .windows-topic-header {
+                margin-bottom: 35px;
+            }
+
+            .windows-topic-header h1 {
+                font-size: 30px;
+                line-height: 1.25;
+            }
+
+            .windows-topic-intro {
+                margin-top: 14px;
+                font-size: 13px;
+                line-height: 1.75;
+            }
+
+            .windows-card {
+                padding: 21px 18px;
+                margin-bottom: 16px;
+                border-radius: 12px;
+            }
+
+            .windows-card-heading {
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+
+            .windows-icon {
+                width: 37px;
+                height: 37px;
+                font-size: 15px;
+            }
+
+            .windows-card h2 {
+                font-size: 18px;
+            }
+
+            .windows-card p {
+                font-size: 13px;
+                line-height: 1.8;
+            }
+
+            .windows-definition-box {
+                padding: 16px;
+            }
+
+            .windows-definition-box span {
+                font-size: 13px;
+            }
+
+            .windows-info-grid,
+            .windows-command-grid,
+            .windows-comparison {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .windows-flow {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .windows-flow-item {
+                width: 100%;
+            }
+
+            .windows-flow-arrow {
+                display: flex;
+                justify-content: center;
+                font-size: 0;
+            }
+
+            .windows-flow-arrow::after {
+                content: "↓";
+                color: #60a5fa;
+                font-size: 18px;
+            }
+
+            .windows-key-concepts {
+                gap: 7px;
+            }
+
+            .windows-key-item {
+                font-size: 11px;
+                padding: 9px 11px;
+            }
+
+            .windows-topic-search {
+                flex-direction: column;
+                width: 100%;
+                gap: 8px;
+            }
+
+            .windows-topic-search input {
+                width: 100%;
+            }
+
+            .windows-topic-search button {
+                width: 100%;
+            }
+
+            .windows-topic-navigation {
+                flex-direction: column;
+                align-items: stretch;
+                margin-top: 25px;
+            }
+
+            .windows-topic-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 380px) {
+
+            .windows-topic-header h1 {
+                font-size: 27px;
+            }
+
+            .windows-learning-page {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .windows-card {
+                padding: 18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="windows-learning-page">
+
+        <div class="windows-learning-container">
+
+
+            <!-- HEADER -->
+
+            <header class="windows-topic-header">
+
+                <div class="windows-topic-category">
+                    WINDOWS
+                </div>
+
+                <h1>
+                    Windows <span>File System</span>
+                </h1>
+
+                <p class="windows-topic-intro">
+
+                    Learn how Windows organizes, stores and manages
+                    files and directories. Understand drives,
+                    paths, common system folders, NTFS, file
+                    extensions, permissions and basic file-system
+                    security concepts.
+
+                </p>
+
+                <div class="windows-badges">
+
+                    <div class="windows-badge">
+                        Beginner
+                    </div>
+
+                    <div class="windows-badge">
+                        Theory
+                    </div>
+
+                    <div class="windows-badge">
+                        NTFS
+                    </div>
+
+                    <div class="windows-badge">
+                        Practical Lab
+                    </div>
+
+                </div>
+
+
+                <div class="windows-topic-search">
+
+                    <input
+                        type="text"
+                        id="windowsSearchInput"
+                        placeholder="Search Windows File System topics..."
+                        autocomplete="off"
+                    >
+
+                    <button
+                        type="button"
+                        id="windowsSearchButton"
+                    >
+                        🔍 Search
+                    </button>
+
+                </div>
+
+                <div
+                    id="windowsSearchMessage"
+                    class="windows-search-message"
+                ></div>
+
+            </header>
+
+
+            <!-- WHAT IS FILE SYSTEM -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        FS
+                    </div>
+
+                    <h2>
+                        What is a File System?
+                    </h2>
+
+                </div>
+
+                <div class="windows-definition-box">
+
+                    <strong>
+                        Simple Definition
+                    </strong>
+
+                    <span>
+
+                        A file system is the method an operating
+                        system uses to organize, store, name and
+                        access files and directories on a storage
+                        device.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- WINDOWS FILE SYSTEM -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        W
+                    </div>
+
+                    <h2>
+                        Windows File System
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    Windows uses file systems to organize data on
+                    storage devices. NTFS is the primary file system
+                    commonly associated with modern Windows
+                    installations.
+
+                </p>
+
+                <div class="windows-info-grid">
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Files
+                        </h3>
+
+                        <p>
+                            Files contain data such as documents,
+                            images, programs and configuration
+                            information.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Directories
+                        </h3>
+
+                        <p>
+                            Directories, commonly called folders,
+                            organize files and other directories.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Drives
+                        </h3>
+
+                        <p>
+                            Drives provide storage locations such
+                            as C:, D: or removable storage.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Paths
+                        </h3>
+
+                        <p>
+                            A path identifies the location of a
+                            file or directory within the file system.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DRIVE -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        C:
+                    </div>
+
+                    <h2>
+                        Windows Drives
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    Windows identifies storage volumes using drive
+                    letters. The system drive is commonly represented
+                    as C:.
+
+                </p>
+
+                <div class="windows-key-concepts">
+
+                    <div class="windows-key-item">
+                        C: System Drive
+                    </div>
+
+                    <div class="windows-key-item">
+                        D: Additional Drive
+                    </div>
+
+                    <div class="windows-key-item">
+                        E: Removable Media
+                    </div>
+
+                    <div class="windows-key-item">
+                        USB Storage
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PATH -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        /
+                    </div>
+
+                    <h2>
+                        Windows Paths
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    A Windows path specifies where a file or folder
+                    is located. Windows commonly uses a drive letter
+                    followed by folders separated with backslashes.
+
+                </p>
+
+                <div class="windows-command-box">
+
+                    <span class="windows-terminal-label">
+                        Example Windows Path
+                    </span>
+
+                    <code>
+                        C:\Users\Student\Documents
+                    </code>
+
+                    <br>
+
+                    <code>
+                        C:\Users\Student\Downloads
+                    </code>
+
+                    <br>
+
+                    <code>
+                        C:\Windows\System32
+                    </code>
+
+                </div>
+
+            </section>
+
+
+            <!-- COMMON FOLDERS -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        📁
+                    </div>
+
+                    <h2>
+                        Important Windows Folders
+                    </h2>
+
+                </div>
+
+                <div class="windows-info-grid">
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            C:\Windows
+                        </h3>
+
+                        <p>
+                            Contains important operating-system
+                            files and Windows components.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            C:\Users
+                        </h3>
+
+                        <p>
+                            Contains user profiles and user-specific
+                            folders.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Program Files
+                        </h3>
+
+                        <p>
+                            Common location for installed
+                            applications.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            System32
+                        </h3>
+
+                        <p>
+                            Contains many important Windows system
+                            executables and libraries.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- USER FOLDERS -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        U
+                    </div>
+
+                    <h2>
+                        User Folders
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    Each Windows user normally has a profile directory
+                    containing personal files and configuration data.
+
+                </p>
+
+                <div class="windows-key-concepts">
+
+                    <div class="windows-key-item">
+                        Desktop
+                    </div>
+
+                    <div class="windows-key-item">
+                        Documents
+                    </div>
+
+                    <div class="windows-key-item">
+                        Downloads
+                    </div>
+
+                    <div class="windows-key-item">
+                        Pictures
+                    </div>
+
+                    <div class="windows-key-item">
+                        Videos
+                    </div>
+
+                    <div class="windows-key-item">
+                        AppData
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- NTFS -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        N
+                    </div>
+
+                    <h2>
+                        NTFS
+                    </h2>
+
+                </div>
+
+                <div class="windows-definition-box">
+
+                    <strong>
+                        Simple Definition
+                    </strong>
+
+                    <span>
+
+                        NTFS (New Technology File System) is a file
+                        system used by Windows that provides features
+                        such as file organization, permissions,
+                        metadata and other file-management capabilities.
+
+                    </span>
+
+                </div>
+
+                <div class="windows-info-grid">
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Permissions
+                        </h3>
+
+                        <p>
+                            NTFS supports access permissions that
+                            help control who can access files.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Metadata
+                        </h3>
+
+                        <p>
+                            File-system metadata stores information
+                            about files and directories.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Reliability
+                        </h3>
+
+                        <p>
+                            NTFS includes mechanisms designed to
+                            improve file-system reliability.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Security
+                        </h3>
+
+                        <p>
+                            NTFS permissions are important when
+                            managing Windows system security.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- FILE EXTENSIONS -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        .X
+                    </div>
+
+                    <h2>
+                        File Extensions
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    File extensions indicate the type or format of
+                    a file and help Windows determine which
+                    application can open it.
+
+                </p>
+
+                <div class="windows-command-grid">
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            .txt
+                        </code>
+
+                        <p>
+                            Plain text file.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            .exe
+                        </code>
+
+                        <p>
+                            Executable program file.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            .dll
+                        </code>
+
+                        <p>
+                            Dynamic-link library used by programs.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            .log
+                        </code>
+
+                        <p>
+                            Common extension for log files.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            .bat
+                        </code>
+
+                        <p>
+                            Windows batch script.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            .ps1
+                        </code>
+
+                        <p>
+                            PowerShell script file.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CMD FILE COMMANDS -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        >
+                    </div>
+
+                    <h2>
+                        Basic File System Commands
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    CMD provides several commands for navigating
+                    and managing files and directories.
+
+                </p>
+
+                <div class="windows-command-grid">
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            dir
+                        </code>
+
+                        <p>
+                            Lists files and folders in the current
+                            directory.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            cd
+                        </code>
+
+                        <p>
+                            Changes the current directory.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            mkdir
+                        </code>
+
+                        <p>
+                            Creates a new directory.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            rmdir
+                        </code>
+
+                        <p>
+                            Removes a directory when permitted.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            copy
+                        </code>
+
+                        <p>
+                            Copies files from one location to another.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-command-card">
+
+                        <code>
+                            move
+                        </code>
+
+                        <p>
+                            Moves files to another location.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- POWERSHELL FILE COMMANDS -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        PS
+                    </div>
+
+                    <h2>
+                        PowerShell File Commands
+                    </h2>
+
+                </div>
+
+                <div class="windows-command-box">
+
+                    <span class="windows-terminal-label">
+                        PowerShell
+                    </span>
+
+                    <code>
+                        Get-ChildItem
+                    </code>
+
+                    <br>
+
+                    <code>
+                        Set-Location
+                    </code>
+
+                    <br>
+
+                    <code>
+                        New-Item
+                    </code>
+
+                    <br>
+
+                    <code>
+                        Copy-Item
+                    </code>
+
+                    <br>
+
+                    <code>
+                        Move-Item
+                    </code>
+
+                </div>
+
+                <p>
+
+                    PowerShell provides commandlets that can be used
+                    to inspect and manage files and directories.
+
+                </p>
+
+            </section>
+
+
+            <!-- PERMISSIONS -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        File Permissions
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    File permissions control which users or groups
+                    can access files and directories and what
+                    operations they are allowed to perform.
+
+                </p>
+
+                <div class="windows-key-concepts">
+
+                    <div class="windows-key-item">
+                        Read
+                    </div>
+
+                    <div class="windows-key-item">
+                        Write
+                    </div>
+
+                    <div class="windows-key-item">
+                        Modify
+                    </div>
+
+                    <div class="windows-key-item">
+                        Read & Execute
+                    </div>
+
+                    <div class="windows-key-item">
+                        Full Control
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SECURITY -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        🛡
+                    </div>
+
+                    <h2>
+                        File System Security
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    Understanding the Windows file system is
+                    important for cybersecurity because attackers
+                    and defenders often interact with files,
+                    directories, permissions and system locations.
+
+                </p>
+
+                <div class="windows-info-grid">
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Sensitive Files
+                        </h3>
+
+                        <p>
+                            Important configuration and system files
+                            should be protected from unauthorized access.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Permissions
+                        </h3>
+
+                        <p>
+                            Incorrect permissions can allow unauthorized
+                            users to access or modify data.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Logs
+                        </h3>
+
+                        <p>
+                            Log files can provide useful information
+                            during security investigation.
+                        </p>
+
+                    </div>
+
+                    <div class="windows-info-card">
+
+                        <h3>
+                            Executables
+                        </h3>
+
+                        <p>
+                            Executable files should be treated carefully
+                            because malicious programs can execute code.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PRACTICAL WORKFLOW -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Simple File System Workflow
+                    </h2>
+
+                </div>
+
+                <div class="windows-flow">
+
+                    <div class="windows-flow-item">
+                        Open CMD
+                    </div>
+
+                    <div class="windows-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="windows-flow-item">
+                        Check Location
+                    </div>
+
+                    <div class="windows-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="windows-flow-item">
+                        Create Folder
+                    </div>
+
+                    <div class="windows-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="windows-flow-item">
+                        Create File
+                    </div>
+
+                    <div class="windows-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="windows-flow-item">
+                        Verify
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- QUICK SUMMARY -->
+
+            <section class="windows-card">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Quick Summary
+                    </h2>
+
+                </div>
+
+                <ul class="windows-summary-list">
+
+                    <li>
+                        A file system organizes and manages files and directories.
+                    </li>
+
+                    <li>
+                        Windows commonly uses NTFS for its main storage volumes.
+                    </li>
+
+                    <li>
+                        Drives are identified using letters such as C:.
+                    </li>
+
+                    <li>
+                        Windows paths identify the location of files and folders.
+                    </li>
+
+                    <li>
+                        C:\Windows contains important operating-system files.
+                    </li>
+
+                    <li>
+                        C:\Users contains user profiles and personal folders.
+                    </li>
+
+                    <li>
+                        File extensions indicate common file types.
+                    </li>
+
+                    <li>
+                        CMD and PowerShell can be used to manage files and folders.
+                    </li>
+
+                    <li>
+                        NTFS supports file permissions and security features.
+                    </li>
+
+                    <li>
+                        File-system knowledge is important for Windows cybersecurity.
+                    </li>
+
+                </ul>
+
+            </section>
+            
+            <!-- LESSON COMPLETION -->
+
+            <section class="windows-card" id="lessonCompletion">
+
+                <div class="windows-card-heading">
+
+                    <div class="windows-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lesson Completion
+                    </h2>
+
+                </div>
+
+                <p>
+                    You have completed the Windows File System lesson.
+                    Mark this lesson as complete to save your learning
+                    progress to your CyberNexa account.
+                </p>
+
+                <div style="margin-top: 22px; text-align: center;">
+
+                    <button
+                        type="button"
+                        class="windows-topic-button"
+                        data-lesson-progress
+                        data-course-id="windows"
+                        data-lesson-id="windows-file-system"
+                        data-dashboard-url="../learning-paths/windows/theory/windows-file-system.html"
+                        data-status-id="windowsFileSystemCompletionStatus">
+
+                        ✓ Mark Lesson Complete
+
+                    </button>
+
+                    <p
+                        id="windowsFileSystemCompletionStatus"
+                        role="status"
+                        aria-live="polite"
+                        style="margin-top: 15px; font-size: 13px;">
+
+                    </p>
+
+                </div>
+
+            </section>
+            <!-- NAVIGATION -->
+
+            <div class="windows-topic-navigation">
+
+                <a
+                    href="windows-basics.html"
+                    class="windows-topic-button previous"
+                >
+                    <span>←</span>
+                    <strong>Previous: Windows Basics</strong>
+                </a>
+
+                <a
+                    href="../labs/lab02.html"
+                    class="windows-topic-button practical-lab"
+                >
+                    <span>🧪</span>
+                    <strong>Perform Lab</strong>
+                </a>
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+
+    <!-- MOBILE SWEEP -->
+
+    <script>
+
+        const sweepCards = document.querySelectorAll(
+            ".windows-card, .windows-info-card, .windows-command-card"
+        );
+
+        let sweepTimeout;
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+                void card.offsetWidth;
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+            clearTimeout(
+                sweepTimeout
+            );
+
+            sweepTimeout = setTimeout(() => {
+
+                sweepCards.forEach(card => {
+
+                    card.classList.remove(
+                        "mobile-sweep"
+                    );
+
+                });
+
+            }, 800);
+
+        }
+
+        window.addEventListener(
+            "touchstart",
+            triggerMobileSweep,
+            { passive: true }
+        );
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+                    triggerMobileSweep();
+                }
+
+            },
+            { passive: true }
+        );
+
+    </script>
+
+
+    <!-- SEARCH -->
+
+    <script>
+
+        const windowsSearchInput =
+            document.getElementById(
+                "windowsSearchInput"
+            );
+
+        const windowsSearchButton =
+            document.getElementById(
+                "windowsSearchButton"
+            );
+
+        const windowsSearchMessage =
+            document.getElementById(
+                "windowsSearchMessage"
+            );
+
+        function searchWindowsTopic() {
+
+            const searchText =
+                windowsSearchInput.value
+                    .trim()
+                    .toLowerCase();
+
+            const cards =
+                document.querySelectorAll(
+                    ".windows-card"
+                );
+
+            let found = false;
+
+            cards.forEach(card => {
+
+                card.classList.remove(
+                    "windows-search-highlight"
+                );
+
+            });
+
+            if (searchText === "") {
+
+                windowsSearchMessage.textContent =
+                    "Please enter a Windows File System topic.";
+
+                return;
+
+            }
+
+            cards.forEach(card => {
+
+                const cardText =
+                    card.innerText.toLowerCase();
+
+                if (
+                    cardText.includes(searchText)
+                    && !found
+                ) {
+
+                    found = true;
+
+                    card.classList.add(
+                        "windows-search-highlight"
+                    );
+
+                    card.scrollIntoView({
+
+                        behavior: "smooth",
+
+                        block: "center"
+
+                    });
+
+                }
+
+            });
+
+            if (found) {
+
+                windowsSearchMessage.textContent =
+                    "Topic found.";
+
+            } else {
+
+                windowsSearchMessage.textContent =
+                    "No matching Windows File System topic found.";
+
+            }
+
+        }
+
+        windowsSearchButton.addEventListener(
+            "click",
+            searchWindowsTopic
+        );
+
+        windowsSearchInput.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+                    searchWindowsTopic();
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

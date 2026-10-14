@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TCP/IP Model - CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL PAGE CONTROL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .learning-page,
+        .learning-container {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           LEARNING PAGE
+        ====================================================== */
+
+        .learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%),
+                radial-gradient(circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%),
+                #020714;
+        }
+
+
+        .learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           TOPIC HEADER
+        ====================================================== */
+
+        .topic-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+
+        .topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .topic-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 44px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .topic-header h1 span {
+
+            color: #00bfff;
+        }
+
+
+        .topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           CONTENT CARD
+        ====================================================== */
+
+        .learning-card {
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96));
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.24);
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .learning-card:hover {
+
+                border-color: rgba(0, 191, 255, 0.38);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.30),
+                    0 0 28px rgba(0, 191, 255, 0.08);
+
+                transform: translateY(-2px);
+            }
+
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .learning-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .learning-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(0, 191, 255, 0.28);
+
+            border-radius: 10px;
+
+            color: #00bfff;
+
+            background: rgba(0, 191, 255, 0.06);
+
+            font-size: 18px;
+        }
+
+
+        .learning-card h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .learning-card p {
+
+            margin: 0 0 14px;
+
+            color: #91a4bd;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .learning-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           DEFINITION BOX
+        ====================================================== */
+
+        .definition-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left: 3px solid #00bfff;
+
+            border-radius: 0 10px 10px 0;
+
+            background: rgba(0, 191, 255, 0.045);
+        }
+
+
+        .definition-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+
+        .definition-box span {
+
+            color: #a9bad0;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           MODEL LAYERS
+        ====================================================== */
+
+        .layer-stack {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+            margin-top: 20px;
+        }
+
+
+        .model-layer {
+
+            display: grid;
+
+            grid-template-columns: 70px 180px 1fr;
+
+            align-items: center;
+
+            gap: 18px;
+
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.13);
+
+            border-radius: 11px;
+
+            background: rgba(0, 191, 255, 0.035);
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .model-layer:hover {
+
+            border-color: rgba(0, 191, 255, 0.38);
+
+            background: rgba(0, 191, 255, 0.065);
+
+            transform: translateX(3px);
+        }
+
+
+        .layer-number {
+
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin: auto;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 10px;
+
+            color: #00bfff;
+
+            background: rgba(0, 191, 255, 0.06);
+
+            font-size: 17px;
+
+            font-weight: 800;
+        }
+
+
+        .layer-name {
+
+            color: #ffffff;
+
+            font-size: 16px;
+
+            font-weight: 750;
+        }
+
+
+        .layer-name span {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .layer-description {
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           COMPARISON GRID
+        ====================================================== */
+
+        .comparison-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .comparison-card {
+
+            padding: 20px;
+
+            border: 1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 11px;
+
+            background: rgba(0, 191, 255, 0.035);
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .comparison-card:hover {
+
+            border-color: rgba(0, 191, 255, 0.35);
+
+            background: rgba(0, 191, 255, 0.065);
+
+            transform: translateY(-2px);
+        }
+
+
+        .comparison-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 15px;
+        }
+
+
+        .comparison-card p {
+
+            margin: 0;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           PROTOCOL GRID
+        ====================================================== */
+
+        .protocol-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .protocol-card {
+
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .protocol-card:hover {
+
+            border-color: rgba(0, 191, 255, 0.38);
+
+            background: rgba(0, 191, 255, 0.07);
+        }
+
+
+        .protocol-card h3 {
+
+            margin: 0 0 7px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+
+        .protocol-card span {
+
+            color: #00bfff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+        }
+
+
+        .protocol-card p {
+
+            margin: 8px 0 0;
+
+            color: #8193aa;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           DATA FLOW
+        ====================================================== */
+
+        .example-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .flow-item {
+
+            padding: 12px 16px;
+
+            border: 1px solid rgba(0, 191, 255, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background: rgba(0, 191, 255, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .flow-arrow {
+
+            color: #00bfff;
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            line-height: 1;
+
+            flex-shrink: 0;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .key-item {
+
+            padding: 10px 14px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 8px;
+
+            color: #cfe8ff;
+
+            background: rgba(0, 191, 255, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .summary-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .summary-list li {
+
+            position: relative;
+
+            padding: 9px 0 9px 23px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom: 1px solid rgba(0, 191, 255, 0.07);
+        }
+
+
+        .summary-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .summary-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 9px;
+
+            color: #00bfff;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           TOPIC NAVIGATION
+        ====================================================== */
+
+        .topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-top: 35px;
+        }
+
+
+        .next-topic {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background: rgba(0, 191, 255, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .next-topic:hover {
+
+            border-color: rgba(0, 191, 255, 0.65);
+
+            background: rgba(0, 191, 255, 0.10);
+
+            transform: translateY(-2px);
+        }
+
+
+        .next-topic span {
+
+            color: #00bfff;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           LIGHT SWEEP
+        ====================================================== */
+
+        .learning-card,
+        .comparison-card,
+        .protocol-card {
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .learning-card::after,
+        .comparison-card::after,
+        .protocol-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: -120%;
+
+            width: 55%;
+
+            height: 100%;
+
+            background: linear-gradient(
+                100deg,
+                transparent,
+                rgba(0, 191, 255, 0.08),
+                rgba(255, 255, 255, 0.12),
+                rgba(0, 191, 255, 0.08),
+                transparent
+            );
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        .learning-card:hover::after,
+        .comparison-card:hover::after,
+        .protocol-card:hover::after {
+
+            animation: cardLightSweep 0.75s ease forwards;
+        }
+
+
+        @keyframes cardLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE LIGHT SWEEP
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .learning-card::after,
+            .comparison-card::after,
+            .protocol-card::after {
+
+                animation: mobileLightSweep 3.5s ease-in-out infinite;
+            }
+
+        }
+
+
+        @keyframes mobileLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 0;
+            }
+
+            30% {
+                opacity: 1;
+            }
+
+            55% {
+                opacity: 1;
+            }
+
+            70% {
+                left: 140%;
+                opacity: 0;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           RESPONSIVE — TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .learning-page {
+
+                padding: 55px 15px 65px;
+            }
+
+
+            .topic-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .topic-intro {
+
+                font-size: 14px;
+            }
+
+
+            .protocol-grid {
+
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .model-layer {
+
+                grid-template-columns: 60px 160px 1fr;
+
+                gap: 13px;
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE — MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .learning-page {
+
+                padding: 45px 12px 55px;
+            }
+
+
+            .learning-container {
+
+                width: 100%;
+
+                max-width: 100%;
+            }
+
+
+            .topic-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .topic-category {
+
+                font-size: 10px;
+
+                letter-spacing: 1.7px;
+            }
+
+
+            .topic-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .topic-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .learning-card {
+
+                padding: 21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .learning-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .learning-icon {
+
+                width: 37px;
+
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .learning-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .learning-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .definition-box {
+
+                padding: 16px;
+            }
+
+
+            .definition-box span {
+
+                font-size: 13px;
+            }
+
+
+            .model-layer {
+
+                grid-template-columns: 48px 1fr;
+
+                gap: 12px;
+
+                padding: 15px;
+            }
+
+
+            .layer-description {
+
+                grid-column: 2;
+
+                font-size: 12px;
+            }
+
+
+            .layer-number {
+
+                width: 42px;
+
+                height: 42px;
+            }
+
+
+            .layer-name {
+
+                font-size: 15px;
+            }
+
+
+            .comparison-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .protocol-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .protocol-card {
+
+                text-align: left;
+            }
+
+
+            .example-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .flow-item {
+
+                width: 100%;
+            }
+
+
+            .flow-arrow {
+
+                width: 100%;
+
+                display: flex;
+
+                justify-content: center;
+
+                align-items: center;
+
+                font-size: 0;
+            }
+
+
+            .flow-arrow::after {
+
+                content: "↓";
+
+                display: block;
+
+                color: #00bfff;
+
+                font-size: 18px;
+
+                font-weight: 700;
+
+                line-height: 1;
+            }
+
+
+            .key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .key-item {
+
+                font-size: 11px;
+
+                padding: 9px 11px;
+            }
+
+
+            .topic-navigation {
+
+                flex-direction: column;
+
+                justify-content: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .next-topic {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .learning-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .learning-card {
+
+                padding: 18px 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+    <!-- =====================================================
+         LEARNING CONTENT
+    ====================================================== -->
+
+    <main class="learning-page">
+
+        <div class="learning-container">
+
+
+            <!-- =================================================
+                 TOPIC HEADER
+            ================================================== -->
+
+            <header class="topic-header">
+
+                <div class="topic-category">
+                    NETWORKING
+                </div>
+
+                <h1>
+                    <span>TCP/IP</span> Model
+                </h1>
+
+                <p class="topic-intro">
+
+                    The TCP/IP model is a practical networking framework
+                    used to describe how devices communicate across
+                    networks and the Internet.
+
+                </p>
+
+            </header>
+
+
+            <!-- =================================================
+                 QUICK DEFINITION
+            ================================================== -->
+
+            <section class="learning-card">
+
+                <div class="learning-card-heading">
+
+                    <div class="learning-icon">
+                        ◇
+                    </div>
+
+                    <h2>
+                        Quick Definition
+                    </h2>
+
+                </div>
+
+
+                <div class="definition-box">
+
+                    <strong>
+                        What is the TCP/IP Model?
+                    </strong>
+
+                    <span>
+                        The TCP/IP model is a networking model that explains
+                        how data is transmitted between devices over a network.
+                        It uses four layers to organize different networking
+                        functions and protocols.
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 WHY TCP/IP MATTERS
+            ================================================== -->
+
+            <section class="learning-card">
+
+                <div class="learning-card-heading">
+
+                    <div class="learning-icon">
+                        ◎
+                    </div>
+
+                    <h2>
+                        Why TCP/IP Matters
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    TCP/IP is the foundation of communication on the
+                    Internet. It defines how devices address, transport
+                    and exchange data across interconnected networks.
+                </p>
+
+
+                <div class="comparison-grid">
+
+
+                    <div class="comparison-card">
+
+                        <h3>
+                            Internet Communication
+                        </h3>
+
+                        <p>
+                            TCP/IP provides the protocols required for
+                            devices to communicate across the Internet.
+                        </p>
+
+                    </div>
+
+
+                    <div class="comparison-card">
+
+                        <h3>
+                            Data Delivery
+                        </h3>
+
+                        <p>
+                            Different TCP/IP protocols help move data from
+                            the source device to the destination.
+                        </p>
+
+                    </div>
+
+
+                    <div class="comparison-card">
+
+                        <h3>
+                            Addressing
+                        </h3>
+
+                        <p>
+                            IP provides logical addressing so devices and
+                            networks can be identified.
+                        </p>
+
+                    </div>
+
+
+                    <div class="comparison-card">
+
+                        <h3>
+                            Standard Communication
+                        </h3>
+
+                        <p>
+                            TCP/IP provides common communication rules that
+                            allow different systems to work together.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 TCP/IP FOUR LAYERS
+            ================================================== -->
+
+            <section class="learning-card">
+
+                <div class="learning-card-heading">
+
+                    <div class="learning-icon">
+                        ▣
+                    </div>
+
+                    <h2>
+                        Four Layers of TCP/IP Model
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    The TCP/IP model consists of four layers. Each layer
+                    performs specific networking functions and works with
+                    protocols designed for that layer.
+                </p>
+
+
+                <div class="layer-stack">
+
+
+                    <!-- APPLICATION -->
+
+                    <div class="model-layer">
+
+                        <div class="layer-number">
+                            4
+                        </div>
+
+                        <div class="layer-name">
+
+                            Application Layer
+
+                            <span>
+                                User Services
+                            </span>
+
+                        </div>
+
+                        <div class="layer-description">
+
+                            Provides network services directly to applications
+                            and users. Common protocols include HTTP, HTTPS,
+                            DNS, SSH and FTP.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TRANSPORT -->
+
+                    <div class="model-layer">
+
+                        <div class="layer-number">
+                            3
+                        </div>
+
+                        <div class="layer-name">
+
+                            Transport Layer
+
+                            <span>
+                                End-to-End Delivery
+                            </span>
+
+                        </div>
+
+                        <div class="layer-description">
+
+                            Provides communication between applications.
+                            TCP provides reliable delivery while UDP provides
+                            faster connectionless communication.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- INTERNET -->
+
+                    <div class="model-layer">
+
+                        <div class="layer-number">
+                            2
+                        </div>
+
+                        <div class="layer-name">
+
+                            Internet Layer
+
+                            <span>
+                                IP &amp; Routing
+                            </span>
+
+                        </div>
+
+                        <div class="layer-description">
+
+                            Handles logical addressing and routing of packets
+                            between networks. IP and ICMP operate at this layer.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NETWORK ACCESS -->
+
+                    <div class="model-layer">
+
+                        <div class="layer-number">
+                            1
+                        </div>
+
+                        <div class="layer-name">
+
+                            Network Access Layer
+
+                            <span>
+                                Local Network
+                            </span>
+
+                        </div>
+
+                        <div class="layer-description">
+
+                            Handles communication over the physical and local
+                            network. Ethernet, Wi-Fi and ARP are commonly
+                            associated with this layer.
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 IMPORTANT PROTOCOLS
+            ================================================== -->
+
+            <section class="learning-card">
+
+                <div class="learning-card-heading">
+
+                    <div class="learning-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        Common TCP/IP Protocols
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    Different protocols operate at different TCP/IP layers.
+                    These protocols provide specific networking services.
+                </p>
+
+
+                <div class="protocol-grid">
+
+
+                    <div class="protocol-card">
+
+                        <h3>
+                            HTTP / HTTPS
+                        </h3>
+
+                        <span>
+                            APPLICATION
+                        </span>
+
+                        <p>
+                            Used for communication between web browsers
+                            and web servers.
+                        </p>
+
+                    </div>
+
+
+                    <div class="protocol-card">
+
+                        <h3>
+                            DNS
+                        </h3>
+
+                        <span>
+                            APPLICATION
+                        </span>
+
+                        <p>
+                            Translates domain names into IP addresses.
+                        </p>
+
+                    </div>
+
+
+                    <div class="protocol-card">
+
+                        <h3>
+                            SSH
+                        </h3>
+
+                        <span>
+                            APPLICATION
+                        </span>
+
+                        <p>
+                            Provides secure remote access to systems.
+                        </p>
+
+                    </div>
+
+
+                    <div class="protocol-card">
+
+                        <h3>
+                            TCP
+                        </h3>
+
+                        <span>
+                            TRANSPORT
+                        </span>
+
+                        <p>
+                            Provides reliable and ordered delivery of data.
+                        </p>
+
+                    </div>
+
+
+                    <div class="protocol-card">
+
+                        <h3>
+                            UDP
+                        </h3>
+
+                        <span>
+                            TRANSPORT
+                        </span>
+
+                        <p>
+                            Provides fast connectionless data delivery.
+                        </p>
+
+                    </div>
+
+
+                    <div class="protocol-card">
+
+                        <h3>
+                            IP
+                        </h3>
+
+                        <span>
+                            INTERNET
+                        </span>
+
+                        <p>
+                            Provides logical addressing and packet routing.
+                        </p>
+
+                    </div>
+
+
+                    <div class="protocol-card">
+
+                        <h3>
+                            ICMP
+                        </h3>
+
+                        <span>
+                            INTERNET
+                        </span>
+
+                        <p>
+                            Used for network diagnostics and control messages.
+                        </p>
+
+                    </div>
+
+
+                    <div class="protocol-card">
+
+                        <h3>
+                            ARP
+                        </h3>
+
+                        <span>
+                            NETWORK ACCESS
+                        </span>
+
+                        <p>
+                            Helps map IPv4 addresses to MAC addresses on
+                            local networks.
+                        </p>
+
+                    </div>
+
+
+                    <div class="protocol-card">
+
+                        <h3>
+                            Ethernet
+                        </h3>
+
+                        <span>
+                            NETWORK ACCESS
+                        </span>
+
+                        <p>
+                            Provides wired local network communication.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 TCP VS UDP
+            ================================================== -->
+
+            <section class="learning-card">
+
+                <div class="learning-card-heading">
+
+                    <div class="learning-icon">
+                        ⇄
+                    </div>
+
+                    <h2>
+                        TCP vs UDP
+                    </h2>
+
+                </div>
+
+
+                <div class="comparison-grid">
+
+
+                    <div class="comparison-card">
+
+                        <h3>
+                            TCP
+                        </h3>
+
+                        <p>
+                            Connection-oriented, reliable and ordered.
+                            It checks that data reaches the destination
+                            correctly.
+                        </p>
+
+                    </div>
+
+
+                    <div class="comparison-card">
+
+                        <h3>
+                            UDP
+                        </h3>
+
+                        <p>
+                            Connectionless and faster. It does not provide
+                            the same reliability and ordering guarantees as TCP.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 REAL WORLD DATA FLOW
+            ================================================== -->
+
+            <section class="learning-card">
+
+                <div class="learning-card-heading">
+
+                    <div class="learning-icon">
+                        →
+                    </div>
+
+                    <h2>
+                        Real-World Data Flow
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    When you open a website, multiple TCP/IP protocols
+                    work together to deliver the requested information.
+                </p>
+
+
+                <div class="example-flow">
+
+                    <div class="flow-item">
+                        Browser
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        HTTPS
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        TCP
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        IP
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Network
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Web Server
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 TCP/IP VS OSI
+            ================================================== -->
+
+            <section class="learning-card">
+
+                <div class="learning-card-heading">
+
+                    <div class="learning-icon">
+                        ≠
+                    </div>
+
+                    <h2>
+                        TCP/IP vs OSI Model
+                    </h2>
+
+                </div>
+
+
+                <div class="comparison-grid">
+
+
+                    <div class="comparison-card">
+
+                        <h3>
+                            TCP/IP Model
+                        </h3>
+
+                        <p>
+                            Uses four layers and is widely associated with
+                            practical Internet networking and protocol
+                            communication.
+                        </p>
+
+                    </div>
+
+
+                    <div class="comparison-card">
+
+                        <h3>
+                            OSI Model
+                        </h3>
+
+                        <p>
+                            Uses seven layers and is mainly used as a
+                            conceptual framework for understanding network
+                            communication.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 KEY CONCEPTS
+            ================================================== -->
+
+            <section class="learning-card">
+
+                <div class="learning-card-heading">
+
+                    <div class="learning-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        Key Concepts
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    These TCP/IP concepts will become important throughout
+                    the Networking learning path.
+                </p>
+
+
+                <div class="key-concepts">
+
+                    <div class="key-item">
+                        Application Layer
+                    </div>
+
+                    <div class="key-item">
+                        Transport Layer
+                    </div>
+
+                    <div class="key-item">
+                        Internet Layer
+                    </div>
+
+                    <div class="key-item">
+                        Network Access
+                    </div>
+
+                    <div class="key-item">
+                        TCP
+                    </div>
+
+                    <div class="key-item">
+                        UDP
+                    </div>
+
+                    <div class="key-item">
+                        IP
+                    </div>
+
+                    <div class="key-item">
+                        ICMP
+                    </div>
+
+                    <div class="key-item">
+                        DNS
+                    </div>
+
+                    <div class="key-item">
+                        HTTP / HTTPS
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUICK SUMMARY
+            ================================================== -->
+
+            <section class="learning-card">
+
+                <div class="learning-card-heading">
+
+                    <div class="learning-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Quick Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="summary-list">
+
+                    <li>
+                        TCP/IP is a practical model used for network and
+                        Internet communication.
+                    </li>
+
+                    <li>
+                        The TCP/IP model has four layers.
+                    </li>
+
+                    <li>
+                        The Application layer provides services to applications.
+                    </li>
+
+                    <li>
+                        The Transport layer handles end-to-end communication.
+                    </li>
+
+                    <li>
+                        The Internet layer handles IP addressing and routing.
+                    </li>
+
+                    <li>
+                        The Network Access layer handles local network
+                        communication.
+                    </li>
+
+                    <li>
+                        TCP provides reliable delivery while UDP focuses on
+                        faster connectionless communication.
+                    </li>
+
+                    <li>
+                        HTTP, HTTPS, DNS, SSH, TCP, UDP, IP and ICMP are
+                        important TCP/IP protocols.
+                    </li>
+
+                </ul>
+
+            </section>
+<!-- =================================================
+     LESSON COMPLETION
+================================================== -->
+
+<section class="learning-card" id="lesson-completion">
+
+    <div class="learning-card-heading">
+
+        <div class="learning-icon">✓</div>
+
+        <h2>Lesson Completion</h2>
+
+    </div>
+
+    <p>
+        You have reached the end of the TCP/IP Model lesson.
+        Mark this lesson as completed to track your learning progress.
+    </p>
+
+    <button
+        type="button"
+        class="next-topic"
+        data-lesson-progress
+        data-course-id="networking"
+        data-lesson-id="tcp-ip-model"
+        data-dashboard-url="../learning-paths/networking/theory/tcp-ip-model.html"
+        data-status-id="tcpIpModelCompletionStatus">
+
+        Mark Lesson as Completed
+
+    </button>
+
+    <p
+        id="tcpIpModelCompletionStatus"
+        role="status"
+        aria-live="polite"
+        style="margin-top: 12px;">
+    </p>
+
+</section>
+            <!-- =================================================
+                 TOPIC NAVIGATION
+            ================================================== -->
+
+            <div class="topic-navigation">
+
+                <!-- BACK -->
+
+                <a href="osi-model.html" class="next-topic">
+
+                    <span>←</span>
+
+                    <strong>
+                        Previous: OSI Model
+                    </strong>
+
+                </a>
+                <!-- NEXT -->
+
+                <a href="../lab/lab03.html" class="next-topic">
+                    <span>🧪</span>
+                    <strong>Perform Lab</strong>
+                </a>
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

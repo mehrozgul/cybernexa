@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+    <title>Python File Handling | CyberNexa</title>
+
+    <style>
+        /* =====================================================
+           CYBERNEXA PYTHON FILE HANDLING
+           PAGE CSS
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at top right, rgba(0, 190, 255, 0.08), transparent 30%),
+                #030b16;
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+        }
+
+        .navbar {
+            width: 100%;
+            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
+            background: rgba(3, 12, 25, 0.96);
+        }
+
+        .nav-container {
+            max-width: 1480px;
+            margin: auto;
+            padding: 16px 32px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #00caff;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            color: #7f94aa;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* =====================================================
+           ARTICLE
+        ===================================================== */
+
+        .article-page {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+            padding: 35px 25px 70px;
+        }
+
+        .article-breadcrumb {
+            color: #6f849a;
+            font-size: 12px;
+            margin-bottom: 25px;
+        }
+
+        .article-breadcrumb span {
+            color: #00caff;
+            padding: 0 8px;
+        }
+
+        .article-header {
+            padding: 32px;
+            border: 1px solid rgba(0, 202, 255, 0.25);
+            border-left: 4px solid #00caff;
+            border-radius: 10px;
+            background: linear-gradient(
+                135deg,
+                rgba(8, 29, 52, 0.96),
+                rgba(3, 15, 29, 0.96)
+            );
+            margin-bottom: 25px;
+        }
+
+        .article-label {
+            color: #00caff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .article-header h1 {
+            color: #ffffff;
+            font-size: 36px;
+            margin: 10px 0;
+        }
+
+        .article-header p {
+            color: #9fb1c5;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .article-section {
+            margin-bottom: 22px;
+            padding: 27px;
+            border: 1px solid rgba(0, 202, 255, 0.12);
+            border-radius: 9px;
+            background: rgba(5, 19, 35, 0.88);
+        }
+
+        .article-section h2 {
+            color: #ffffff;
+            font-size: 21px;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .article-section h2::before {
+            content: "// ";
+            color: #00caff;
+        }
+
+        .article-section p {
+            color: #aabbd0;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           CODE
+        ===================================================== */
+
+        .code-block {
+            margin: 18px 0;
+            border: 1px solid rgba(0, 202, 255, 0.22);
+            border-radius: 7px;
+            overflow-x: auto;
+            background: #020810;
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: 18px;
+            color: #7ee7ff;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .output-box {
+            padding: 13px 16px;
+            margin-top: 12px;
+            border-left: 3px solid #00e68a;
+            background: rgba(0, 230, 138, 0.06);
+            color: #7fffc0;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           CONCEPT CARDS
+        ===================================================== */
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .concept-card {
+            padding: 18px;
+            border: 1px solid rgba(0, 202, 255, 0.16);
+            border-radius: 8px;
+            background: rgba(0, 202, 255, 0.035);
+        }
+
+        .concept-card h3 {
+            color: #00caff;
+            font-size: 15px;
+            margin-top: 0;
+        }
+
+        .concept-card p {
+            font-size: 12px;
+            margin-bottom: 0;
+        }
+
+        .concept-card pre {
+            background: #020810;
+            padding: 10px;
+            overflow-x: auto;
+            color: #7ee7ff;
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           LIST
+        ===================================================== */
+
+        .article-list {
+            padding-left: 22px;
+            color: #aabbd0;
+            font-size: 14px;
+        }
+
+        .article-list li {
+            margin-bottom: 7px;
+        }
+
+        .article-list li::marker {
+            color: #00caff;
+        }
+
+        /* =====================================================
+           LAB
+        ===================================================== */
+
+        .article-lab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 25px;
+            margin-top: 25px;
+            border: 1px solid rgba(0, 230, 138, 0.35);
+            border-left: 4px solid #00e68a;
+            border-radius: 9px;
+            background: rgba(0, 230, 138, 0.045);
+        }
+
+        .article-lab h2 {
+            color: white;
+            margin: 7px 0;
+        }
+
+        .article-lab p {
+            color: #9fb1c5;
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .article-lab a {
+            flex-shrink: 0;
+            padding: 10px 18px;
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+            color: #00e68a;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .article-lab a:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+/* LESSON COMPLETION BUTTON */
+#lesson-completion .lab-button {
+    padding: 10px 18px;
+    border: 1px solid #00e68a;
+    border-radius: 22px;
+    background: transparent;
+    color: #00e68a;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#lesson-completion .lab-button:hover {
+    background: #00e68a;
+    color: #02100a;
+}
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            border-top: 1px solid rgba(0, 202, 255, 0.15);
+            background: #020914;
+            padding: 35px 25px 20px;
+        }
+
+        .footer-container {
+            max-width: 1050px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #6f849a;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            max-width: 1050px;
+            margin: 25px auto 0;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            color: #52667b;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .nav-container {
+                padding: 14px 18px;
+            }
+
+            .article-page {
+                padding: 25px 15px 55px;
+            }
+
+            .article-header {
+                padding: 23px 20px;
+            }
+
+            .article-header h1 {
+                font-size: 28px;
+            }
+
+            .article-section {
+                padding: 20px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-lab {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .article-lab a {
+                width: 100%;
+                text-align: center;
+            }
+
+            .article-navigation {
+                flex-direction: column;
+            }
+
+            .article-navigation a {
+                text-align: center;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<main class="article-page">
+
+    <div class="article-breadcrumb">
+        Python for Cybersecurity
+        <span>›</span>
+        File Handling
+    </div>
+
+
+    <section class="article-header">
+
+        <div class="article-label">
+            PYTHON FOR CYBERSECURITY
+        </div>
+
+        <h1>
+            Python File Handling
+        </h1>
+
+        <p>
+            Learn how Python reads, creates, writes and manages files
+            and how file handling can be used in cybersecurity tasks.
+        </p>
+
+    </section>
+
+
+    <!-- DEFINITION -->
+
+    <section class="article-section">
+
+        <h2>What is File Handling?</h2>
+
+        <p>
+            File handling means working with files through a program.
+            Python provides built-in functions that allow us to create,
+            open, read, write and update files.
+        </p>
+
+        <div class="code-block">
+<pre><code>file = open("security.txt", "r")
+
+content = file.read()
+
+file.close()
+
+print(content)</code></pre>
+        </div>
+
+        <p>
+            In this example, Python opens a file, reads its contents,
+            closes the file and displays the stored information.
+        </p>
+
+    </section>
+
+
+    <!-- WHY IMPORTANT -->
+
+    <section class="article-section">
+
+        <h2>Why is File Handling Important in Cybersecurity?</h2>
+
+        <p>
+            Cybersecurity tools frequently work with files. Security
+            analysts may need to read logs, save scan results, process
+            suspicious files or create reports.
+        </p>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+                <h3>Log Files</h3>
+                <p>
+                    Read system or security logs for investigation.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <h3>Scan Results</h3>
+                <p>
+                    Save network or security scan results.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <h3>Security Reports</h3>
+                <p>
+                    Generate reports containing security findings.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <h3>Configuration</h3>
+                <p>
+                    Read configuration information stored in files.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- OPENING FILE -->
+
+    <section class="article-section">
+
+        <h2>Opening a File</h2>
+
+        <p>
+            Python uses the <strong>open()</strong> function to open a file.
+        </p>
+
+        <div class="code-block">
+<pre><code>file = open("security.txt", "r")</code></pre>
+        </div>
+
+        <p>
+            The first argument is the file name and the second argument
+            specifies how the file should be opened.
+        </p>
+
+    </section>
+
+
+    <!-- FILE MODES -->
+
+    <section class="article-section">
+
+        <h2>Common File Modes</h2>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+                <h3>r — Read</h3>
+                <p>
+                    Opens an existing file for reading.
+                </p>
+
+<pre><code>open("log.txt", "r")</code></pre>
+            </div>
+
+            <div class="concept-card">
+                <h3>w — Write</h3>
+                <p>
+                    Writes data to a file. Existing content can be replaced.
+                </p>
+
+<pre><code>open("report.txt", "w")</code></pre>
+            </div>
+
+            <div class="concept-card">
+                <h3>a — Append</h3>
+                <p>
+                    Adds new data to the end of a file.
+                </p>
+
+<pre><code>open("log.txt", "a")</code></pre>
+            </div>
+
+            <div class="concept-card">
+                <h3>x — Create</h3>
+                <p>
+                    Creates a new file.
+                </p>
+
+<pre><code>open("newfile.txt", "x")</code></pre>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- READING -->
+
+    <section class="article-section">
+
+        <h2>Reading a File</h2>
+
+        <p>
+            The <strong>read()</strong> method reads the contents of a file.
+        </p>
+
+        <div class="code-block">
+<pre><code>file = open("security.txt", "r")
+
+data = file.read()
+
+file.close()
+
+print(data)</code></pre>
+        </div>
+
+    </section>
+
+
+    <!-- READ LINES -->
+
+    <section class="article-section">
+
+        <h2>Reading Lines</h2>
+
+        <p>
+            Python also provides methods for reading individual lines
+            or all lines from a file.
+        </p>
+
+        <div class="code-block">
+<pre><code>file = open("security.txt", "r")
+
+lines = file.readlines()
+
+file.close()
+
+for line in lines:
+    print(line)</code></pre>
+        </div>
+
+    </section>
+
+
+    <!-- WRITING -->
+
+    <section class="article-section">
+
+        <h2>Writing to a File</h2>
+
+        <p>
+            The <strong>w</strong> mode allows us to write information
+            into a file.
+        </p>
+
+        <div class="code-block">
+<pre><code>file = open("security_report.txt", "w")
+
+file.write("Security scan completed.")
+
+file.close()</code></pre>
+        </div>
+
+    </section>
+
+
+    <!-- APPEND -->
+
+    <section class="article-section">
+
+        <h2>Appending Data</h2>
+
+        <p>
+            The <strong>a</strong> mode adds new information without
+            removing existing content.
+        </p>
+
+        <div class="code-block">
+<pre><code>file = open("security.log", "a")
+
+file.write("Login attempt detected.\n")
+
+file.close()</code></pre>
+        </div>
+
+    </section>
+
+
+    <!-- WITH -->
+
+    <section class="article-section">
+
+        <h2>Using the with Statement</h2>
+
+        <p>
+            The <strong>with</strong> statement is the recommended way
+            to work with files because Python automatically closes
+            the file after the block finishes.
+        </p>
+
+        <div class="code-block">
+<pre><code>with open("security.txt", "r") as file:
+
+    data = file.read()
+
+    print(data)</code></pre>
+        </div>
+
+    </section>
+
+
+    <!-- CYBERSECURITY EXAMPLE -->
+
+    <section class="article-section">
+
+        <h2>Cybersecurity Example</h2>
+
+        <p>
+            A security script can read a log file and search for
+            suspicious login activity.
+        </p>
+
+        <div class="code-block">
+<pre><code>with open("login.log", "r") as file:
+
+    logs = file.read()
+
+if "failed" in logs.lower():
+
+    print("Possible failed login activity detected.")
+
+else:
+
+    print("No failed login activity found.")</code></pre>
+        </div>
+
+    </section>
+
+
+    <!-- PRACTICAL EXAMPLE -->
+
+    <section class="article-section">
+
+        <h2>Saving Security Results</h2>
+
+        <p>
+            Security scripts can also save their results into a report file.
+        </p>
+
+        <div class="code-block">
+<pre><code>ip = "192.168.1.10"
+port = 443
+status = "OPEN"
+
+with open("scan_report.txt", "w") as file:
+
+    file.write("Security Scan Report\n")
+    file.write("IP: " + ip + "\n")
+    file.write("Port: " + str(port) + "\n")
+    file.write("Status: " + status + "\n")</code></pre>
+        </div>
+
+    </section>
+
+
+    <!-- EXCEPTIONS NOTE -->
+
+    <section class="article-section">
+
+        <h2>Important: File Errors</h2>
+
+        <p>
+            A program may produce an error if the requested file does
+            not exist or cannot be accessed. These errors can later be
+            handled using Python exception handling.
+        </p>
+
+        <div class="code-block">
+<pre><code>try:
+
+    with open("security.log", "r") as file:
+        data = file.read()
+
+except FileNotFoundError:
+
+    print("File was not found.")</code></pre>
+        </div>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+
+    <section class="article-section">
+
+        <h2>Summary</h2>
+
+        <ul class="article-list">
+
+            <li>File handling allows Python to work with files.</li>
+
+            <li><strong>r</strong> is used for reading.</li>
+
+            <li><strong>w</strong> is used for writing.</li>
+
+            <li><strong>a</strong> is used for appending.</li>
+
+            <li><strong>x</strong> is used for creating a new file.</li>
+
+            <li>read() reads file contents.</li>
+
+            <li>write() writes data into a file.</li>
+
+            <li>The with statement automatically closes files.</li>
+
+            <li>File handling is useful for logs, reports and security data.</li>
+
+        </ul>
+
+    </section>
+<!-- =====================================================
+     LESSON COMPLETION
+====================================================== -->
+
+<section class="article-section" id="lesson-completion">
+
+    <h2>Lesson Completion</h2>
+
+    <p>
+        You have completed the Python File Handling lesson.
+        Review the key concepts and mark this lesson as completed
+        to track your learning progress.
+    </p>
+
+    <button
+        type="button"
+        class="lab-button"
+        data-lesson-progress
+        data-course-id="python"
+        data-lesson-id="file-handling"
+        data-dashboard-url="../learning-paths/python/theory/file-handling.html"
+        data-status-id="fileHandlingCompletionStatus">
+        Mark Lesson as Completed
+    </button>
+
+    <p
+        id="fileHandlingCompletionStatus"
+        role="status"
+        aria-live="polite"
+        style="margin-top: 12px;">
+    </p>
+
+</section>
+    <!-- LAB -->
+
+    <section class="article-lab">
+
+        <div>
+
+            <span class="article-label">
+                PRACTICAL LAB
+            </span>
+
+            <h2>
+                Practice Python File Handling
+            </h2>
+
+            <p>
+                Read a security log, detect failed login activity
+                and save the result into a report file.
+            </p>
+
+        </div>
+
+        <a href="../lab/file-handling-lab.html">
+            Open Lab →
+        </a>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+<script>
+    /* =====================================================
+       CYBERNEXA FILE HANDLING PAGE JS
+    ===================================================== */
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* Smooth navigation */
+        document.querySelectorAll("a").forEach(function (link) {
+
+            link.addEventListener("click", function () {
+
+                if (this.getAttribute("href") === "#") {
+                    event.preventDefault();
+                }
+
+            });
+
+        });
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ethical Hacking Introduction Lab - CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(124, 92, 255, 0.11),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 30%
+                ),
+                #02050d;
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1000px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 42px;
+        }
+
+        .lab-label {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #8b7cff;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 42px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+        .lab-header h1 span {
+
+            color: #8b7cff;
+        }
+
+        .lab-header p {
+
+            max-width: 740px;
+
+            margin: 17px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           INFO GRID
+        ====================================================== */
+
+        .lab-info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 13px;
+
+            margin-bottom: 22px;
+        }
+
+        .lab-info {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(139, 124, 255, 0.15);
+
+            border-radius: 11px;
+
+            background:
+                rgba(139, 124, 255, 0.035);
+
+            text-align: center;
+        }
+
+        .lab-info strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #ffffff;
+
+            font-size: 12px;
+        }
+
+        .lab-info span {
+
+            color: #8193aa;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(139, 124, 255, 0.15);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(14, 17, 40, 0.97),
+                    rgba(4, 8, 20, 0.97)
+                );
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.22);
+        }
+
+        .lab-card h2 {
+
+            margin: 0 0 13px;
+
+            color: #ffffff;
+
+            font-size: 20px;
+        }
+
+        .lab-card h3 {
+
+            margin: 20px 0 8px;
+
+            color: #8b7cff;
+
+            font-size: 15px;
+        }
+
+        .lab-card p {
+
+            margin: 0 0 12px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        .lab-card ul {
+
+            margin: 10px 0 0;
+
+            padding-left: 21px;
+        }
+
+        .lab-card li {
+
+            margin-bottom: 8px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           AUTHORIZATION NOTICE
+        ====================================================== */
+
+        .authorization-box {
+
+            padding: 20px;
+
+            border-left:
+                3px solid #8b7cff;
+
+            border-radius: 9px;
+
+            background:
+                rgba(139, 124, 255, 0.055);
+        }
+
+        .authorization-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .authorization-box p {
+
+            margin: 0;
+
+            color: #b8b9d8;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           SCENARIO
+        ====================================================== */
+
+        .scenario {
+
+            margin-top: 15px;
+
+            padding: 19px;
+
+            border-left:
+                3px solid #00bfff;
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+        }
+
+        .scenario strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .scenario p {
+
+            margin: 0;
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           PRACTICAL TASKS
+        ====================================================== */
+
+        .task-list {
+
+            display: grid;
+
+            gap: 12px;
+
+            margin-top: 17px;
+        }
+
+        .task {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 12px;
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(139, 124, 255, 0.11);
+
+            border-radius: 9px;
+
+            background:
+                rgba(139, 124, 255, 0.025);
+        }
+
+        .task-number {
+
+            min-width: 30px;
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(139, 124, 255, 0.25);
+
+            border-radius: 8px;
+
+            color: #8b7cff;
+
+            background:
+                rgba(139, 124, 255, 0.06);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .task-content strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .task-content p {
+
+            margin: 0;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           LAB CHECKLIST
+        ====================================================== */
+
+        .checklist {
+
+            display: grid;
+
+            gap: 9px;
+
+            margin-top: 15px;
+        }
+
+        .check-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 11px 13px;
+
+            border:
+                1px solid rgba(139, 124, 255, 0.10);
+
+            border-radius: 8px;
+
+            color: #91a4bd;
+
+            background:
+                rgba(139, 124, 255, 0.025);
+
+            font-size: 12px;
+        }
+
+        .check-item input {
+
+            accent-color: #8b7cff;
+
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           QUESTIONS
+        ====================================================== */
+
+        .question {
+
+            margin-bottom: 25px;
+
+            padding-bottom: 20px;
+
+            border-bottom:
+                1px solid rgba(139, 124, 255, 0.08);
+        }
+
+        .question:last-child {
+
+            margin-bottom: 0;
+
+            padding-bottom: 0;
+
+            border-bottom: none;
+        }
+
+        .question-title {
+
+            margin-bottom: 12px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            line-height: 1.6;
+        }
+
+        .options {
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 11px 13px;
+
+            border:
+                1px solid rgba(139, 124, 255, 0.10);
+
+            border-radius: 8px;
+
+            color: #91a4bd;
+
+            background:
+                rgba(139, 124, 255, 0.025);
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(139, 124, 255, 0.32);
+
+            background:
+                rgba(139, 124, 255, 0.055);
+        }
+
+        .option input {
+
+            accent-color: #8b7cff;
+
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           CHECK BUTTON
+        ====================================================== */
+
+        .check-area {
+
+            margin-top: 25px;
+
+            text-align: center;
+        }
+
+        .check-button {
+
+            padding: 12px 25px;
+
+            border:
+                1px solid rgba(139, 124, 255, 0.35);
+
+            border-radius: 8px;
+
+            color: #ddd9ff;
+
+            background:
+                rgba(139, 124, 255, 0.07);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .check-button:hover {
+
+            background:
+                rgba(139, 124, 255, 0.12);
+
+            border-color:
+                rgba(139, 124, 255, 0.60);
+
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(139, 124, 255, 0.20);
+
+            border-radius: 10px;
+
+            background:
+                rgba(139, 124, 255, 0.045);
+
+            text-align: center;
+        }
+
+        .result h3 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+        .result p {
+
+            margin: 0;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion {
+
+            margin-top: 25px;
+
+            padding: 23px;
+
+            border:
+                1px solid rgba(139, 124, 255, 0.15);
+
+            border-radius: 12px;
+
+            background:
+                rgba(139, 124, 255, 0.035);
+
+            text-align: center;
+        }
+
+        .completion h2 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+        }
+
+        .completion p {
+
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.topic-navigation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 18px;
+
+    border: 1px solid rgba(0, 191, 255, 0.09);
+    border-radius: 9px;
+
+    color: #71879b;
+    background: rgba(0, 191, 255, 0.02);
+
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.topic-navigation a:hover {
+    color: #ccefe5;
+    border-color: rgba(0, 255, 176, 0.25);
+    background: rgba(0, 255, 176, 0.035);
+}
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .lab-page {
+
+                padding: 45px 12px 55px;
+            }
+
+            .lab-header h1 {
+
+                font-size: 30px;
+            }
+
+            .lab-header p {
+
+                font-size: 13px;
+            }
+
+            .lab-info-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .lab-card {
+
+                padding: 20px;
+            }
+
+            .topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.topic-navigation a {
+    flex: 0 1 auto;
+    max-width: 48%;
+    padding: 12px 10px;
+}
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         ETHICAL HACKING INTRODUCTION LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- HEADER -->
+
+            <header class="lab-header">
+
+                <div class="lab-label">
+                    ETHICAL HACKING • PRACTICAL LAB
+                </div>
+
+                <h1>
+                    <span>Ethical Hacking</span> Introduction Lab
+                </h1>
+
+                <p>
+                    Learn how ethical hackers approach security testing,
+                    define scope, verify authorization and follow a
+                    responsible security-testing methodology.
+                </p>
+
+            </header>
+
+
+            <!-- INFO -->
+
+            <div class="lab-info-grid">
+
+                <div class="lab-info">
+
+                    <strong>
+                        Difficulty
+                    </strong>
+
+                    <span>
+                        Beginner
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info">
+
+                    <strong>
+                        Type
+                    </strong>
+
+                    <span>
+                        Practical + Knowledge Check
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info">
+
+                    <strong>
+                        Environment
+                    </strong>
+
+                    <span>
+                        Authorized Lab Only
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- AUTHORIZATION -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🛡️ Authorized Testing Notice
+                </h2>
+
+                <div class="authorization-box">
+
+                    <strong>
+                        Practice Only on Systems You Are Authorized to Test
+                    </strong>
+
+                    <p>
+                        Ethical hacking means performing security testing
+                        with proper permission and within an agreed scope.
+                        This lab uses a controlled learning scenario.
+                        Do not apply testing activities to real systems,
+                        websites, networks or accounts without explicit
+                        authorization.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- OBJECTIVE -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🎯 Lab Objective
+                </h2>
+
+                <p>
+                    In this lab, you will learn the basic workflow of an
+                    ethical hacker before any technical security testing
+                    begins.
+                </p>
+
+                <ul>
+
+                    <li>
+                        Understand the purpose of ethical hacking.
+                    </li>
+
+                    <li>
+                        Identify authorization and testing scope.
+                    </li>
+
+                    <li>
+                        Understand the difference between ethical and
+                        unauthorized hacking.
+                    </li>
+
+                    <li>
+                        Practice documenting a basic security-testing plan.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- SCENARIO -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🧩 Authorized Lab Scenario
+                </h2>
+
+                <div class="scenario">
+
+                    <strong>
+                        CyberNexa Training Environment
+                    </strong>
+
+                    <p>
+                        You are working as a junior security tester inside
+                        a controlled cybersecurity training environment.
+                        Your instructor has provided a fictional target
+                        machine named <strong>Lab-Target</strong>. You have
+                        explicit permission to test this machine only.
+                        Your first task is to prepare the testing scope
+                        before performing any security activity.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- PRACTICAL WORKFLOW -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🔎 Practical Security Workflow
+                </h2>
+
+                <p>
+                    Before testing an authorized target, complete the
+                    following preparation steps.
+                </p>
+
+
+                <div class="task-list">
+
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            01
+                        </div>
+
+                        <div class="task-content">
+
+                            <strong>
+                                Verify Authorization
+                            </strong>
+
+                            <p>
+                                Confirm that written or instructor-provided
+                                permission exists for the lab target.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            02
+                        </div>
+
+                        <div class="task-content">
+
+                            <strong>
+                                Define the Scope
+                            </strong>
+
+                            <p>
+                                Identify exactly which machine, application
+                                or network is included in the exercise.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            03
+                        </div>
+
+                        <div class="task-content">
+
+                            <strong>
+                                Identify Restrictions
+                            </strong>
+
+                            <p>
+                                Record activities that are not permitted,
+                                such as testing systems outside the
+                                assigned laboratory environment.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            04
+                        </div>
+
+                        <div class="task-content">
+
+                            <strong>
+                                Plan the Test
+                            </strong>
+
+                            <p>
+                                Decide what security concepts will be
+                                examined and document the intended
+                                testing sequence.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            05
+                        </div>
+
+                        <div class="task-content">
+
+                            <strong>
+                                Document Findings
+                            </strong>
+
+                            <p>
+                                Record observations, potential weaknesses
+                                and recommendations without modifying
+                                unauthorized systems.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CHECKLIST -->
+
+            <section class="lab-card">
+
+                <h2>
+                    ✅ Lab Preparation Checklist
+                </h2>
+
+                <p>
+                    Check each item after understanding it.
+                </p>
+
+                <div class="checklist">
+
+                    <label class="check-item">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                        >
+
+                        Authorization has been verified.
+
+                    </label>
+
+
+                    <label class="check-item">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                        >
+
+                        The testing scope is clearly defined.
+
+                    </label>
+
+
+                    <label class="check-item">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                        >
+
+                        Testing restrictions are understood.
+
+                    </label>
+
+
+                    <label class="check-item">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                        >
+
+                        Findings will be documented responsibly.
+
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- KNOWLEDGE CHECK -->
+
+            <section class="lab-card">
+
+                <h2>
+                    🧪 Knowledge Check
+                </h2>
+
+
+                <!-- Q1 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        1. What is the primary purpose of ethical hacking?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="a"
+                            >
+
+                            To damage computer systems
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="b"
+                            >
+
+                            To identify security weaknesses with authorization
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="c"
+                            >
+
+                            To steal confidential information
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="d"
+                            >
+
+                            To bypass all security controls
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q2 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        2. What should an ethical hacker confirm before testing a target?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="a"
+                            >
+
+                            The target's popularity
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="b"
+                            >
+
+                            Proper authorization and scope
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="c"
+                            >
+
+                            The target's social-media followers
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="d"
+                            >
+
+                            The target's operating cost
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q3 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        3. What does testing scope define?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="a"
+                            >
+
+                            Which systems and activities are included in the test
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="b"
+                            >
+
+                            The hacker's personal preferences
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="c"
+                            >
+
+                            The company's advertising strategy
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="d"
+                            >
+
+                            The number of employees
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q4 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        4. Which environment is appropriate for practical ethical-hacking training?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="a"
+                            >
+
+                            Any random public website
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="b"
+                            >
+
+                            An authorized lab environment
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="c"
+                            >
+
+                            A stranger's computer
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="d"
+                            >
+
+                            A public Wi-Fi network
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Q5 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        5. Why is documentation important during ethical hacking?
+                    </div>
+
+                    <div class="options">
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="a"
+                            >
+
+                            To hide security findings
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="b"
+                            >
+
+                            To record observations and communicate findings
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="c"
+                            >
+
+                            To increase system damage
+
+                        </label>
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="d"
+                            >
+
+                            To avoid defining scope
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="check-area">
+
+                    <button
+                        class="check-button"
+                        onclick="checkAnswers()"
+                    >
+                        Check Answers
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="result"
+                    id="result"
+                >
+
+                    <h3 id="resultTitle">
+                        Lab Result
+                    </h3>
+
+                    <p id="resultText"></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- COMPLETION -->
+
+            <section class="completion">
+
+                <h2>
+                    ✅ Complete the Ethical Hacking Introduction Lab
+                </h2>
+
+                <p>
+                    You have completed the introductory ethical-hacking
+                    workflow. Remember: professional security testing
+                    begins with authorization, a clearly defined scope,
+                    responsible testing and proper documentation.
+                </p>
+
+            </section>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="topic-navigation">
+
+                <a href="ethical-hacking-lab.html">
+                    ← Lab: All Labs
+                </a>
+                <a href="../theory/reconnaissance.html">
+                    Next Theory: Reconnaissance →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+    <script>
+
+        function checkAnswers() {
+
+            const answers = {
+
+                q1: "b",
+                q2: "b",
+                q3: "a",
+                q4: "b",
+                q5: "b"
+
+            };
+
+            let score = 0;
+
+            const total =
+                Object.keys(answers).length;
+
+
+            Object.keys(answers).forEach(function (question) {
+
+                const selected =
+                    document.querySelector(
+                        'input[name="' + question + '"]:checked'
+                    );
+
+                if (
+                    selected &&
+                    selected.value === answers[question]
+                ) {
+
+                    score++;
+
+                }
+
+            });
+
+
+            const result =
+                document.getElementById("result");
+
+            const resultTitle =
+                document.getElementById("resultTitle");
+
+            const resultText =
+                document.getElementById("resultText");
+
+
+            result.style.display = "block";
+
+
+            resultTitle.textContent =
+                "Score: " + score + " / " + total;
+
+
+            if (score === total) {
+
+                resultText.textContent =
+                    "Excellent! You understand the basic principles of ethical hacking, authorization and security-testing scope.";
+
+            }
+
+            else if (score >= 3) {
+
+                resultText.textContent =
+                    "Good work! Review authorization, scope and the ethical hacking workflow once more.";
+
+            }
+
+            else {
+
+                resultText.textContent =
+                    "Review the Ethical Hacking Introduction theory and attempt the lab again.";
+
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Network Monitoring Lab | CyberNexa</title>
+
+<meta name="description"
+      content="Practice Network Monitoring by analyzing simulated network traffic, IP addresses, ports, protocols and suspicious activity.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+/* =========================================================
+   CYBERNEXA — NETWORK MONITORING LAB
+   SOC / BLUE TEAM
+   ========================================================= */
+
+:root {
+
+    --lab-bg: #070d14;
+    --lab-panel: #0d151f;
+    --lab-panel-2: #111c28;
+
+    --lab-blue: #42a5ff;
+    --lab-cyan: #28d7e8;
+    --lab-green: #43d19e;
+    --lab-yellow: #ffd166;
+    --lab-red: #ff5364;
+
+    --lab-text: #edf6fb;
+    --lab-muted: #91a5b7;
+
+    --lab-border: #203342;
+
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(66,165,255,0.09),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 30%,
+            rgba(40,215,232,0.06),
+            transparent 30%
+        ),
+        var(--lab-bg);
+
+    color: var(--lab-text);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    overflow-x: hidden;
+
+}
+
+a {
+    text-decoration: none;
+}
+
+.lab-container {
+
+    width: min(1150px, 92%);
+
+    margin: auto;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.lab-hero {
+
+    padding: 75px 0 55px;
+
+    border-bottom:
+        1px solid var(--lab-border);
+
+}
+
+.lab-breadcrumb {
+
+    margin-bottom: 18px;
+
+    color: var(--lab-cyan);
+
+    font-size: 13px;
+
+}
+
+.lab-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 13px;
+
+    margin-bottom: 17px;
+
+    border:
+        1px solid
+        rgba(66,165,255,0.35);
+
+    border-radius: 4px;
+
+    background:
+        rgba(66,165,255,0.06);
+
+    color: var(--lab-blue);
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+}
+
+.lab-dot {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--lab-blue);
+
+    box-shadow:
+        0 0 12px
+        rgba(66,165,255,0.8);
+
+}
+
+.lab-hero h1 {
+
+    margin: 0 0 15px;
+
+    font-size:
+        clamp(36px, 5vw, 56px);
+
+    line-height: 1.05;
+
+}
+
+.lab-hero h1 span {
+
+    color: var(--lab-blue);
+
+}
+
+.lab-hero p {
+
+    max-width: 750px;
+
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    font-size: 16px;
+
+    line-height: 1.8;
+
+}
+
+
+/* =========================================================
+   LAB SECTION
+========================================================= */
+
+.lab-section {
+
+    padding: 55px 0;
+
+}
+
+.lab-section-title {
+
+    margin-bottom: 25px;
+
+}
+
+.lab-section-title h2 {
+
+    margin: 0 0 8px;
+
+    font-size: 28px;
+
+}
+
+.lab-section-title p {
+
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   OBJECTIVE
+========================================================= */
+
+.lab-objective {
+
+    padding: 24px;
+
+    border:
+        1px solid
+        rgba(66,165,255,0.25);
+
+    border-left:
+        3px solid
+        var(--lab-blue);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+
+}
+
+.lab-objective p {
+
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    line-height: 1.8;
+
+}
+
+
+/* =========================================================
+   NETWORK MONITOR
+========================================================= */
+
+.monitor-panel {
+
+    overflow-x: auto;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+
+}
+
+.monitor-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 18px 20px;
+
+    border-bottom:
+        1px solid
+        var(--lab-border);
+
+    background:
+        var(--lab-panel-2);
+
+}
+
+.monitor-header strong {
+
+    font-size: 13px;
+
+    letter-spacing: 0.8px;
+
+}
+
+.monitor-status {
+
+    color: var(--lab-green);
+
+    font-size: 11px;
+
+}
+
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 850px;
+
+}
+
+th {
+
+    padding: 14px 13px;
+
+    text-align: left;
+
+    background:
+        #101b27;
+
+    color: var(--lab-cyan);
+
+    font-size: 11px;
+
+    letter-spacing: 0.7px;
+
+    text-transform: uppercase;
+
+    border-bottom:
+        1px solid
+        var(--lab-border);
+
+}
+
+td {
+
+    padding: 14px 13px;
+
+    color: var(--lab-muted);
+
+    font-size: 13px;
+
+    border-bottom:
+        1px solid
+        rgba(32,51,66,0.65);
+
+}
+
+tr:last-child td {
+
+    border-bottom: none;
+
+}
+
+.ip {
+
+    color: var(--lab-text);
+
+    font-family:
+        Consolas,
+        monospace;
+
+}
+
+.port {
+
+    color: var(--lab-blue);
+
+    font-family:
+        Consolas,
+        monospace;
+
+}
+
+.protocol {
+
+    color: var(--lab-cyan);
+
+    font-family:
+        Consolas,
+        monospace;
+
+}
+
+.normal {
+
+    color: var(--lab-green);
+
+    font-weight: bold;
+
+}
+
+.suspicious {
+
+    color: var(--lab-red);
+
+    font-weight: bold;
+
+}
+
+
+/* =========================================================
+   ANALYSIS CARDS
+========================================================= */
+
+.analysis-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 18px;
+
+}
+
+.analysis-card {
+
+    padding: 23px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+
+}
+
+.analysis-card h3 {
+
+    margin: 0 0 10px;
+
+    font-size: 17px;
+
+}
+
+.analysis-card p {
+
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+}
+
+.analysis-card strong {
+
+    color: var(--lab-text);
+
+}
+
+
+/* =========================================================
+   QUESTION AREA
+========================================================= */
+
+.question-box {
+
+    padding: 25px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius: 7px;
+
+    background: var(--lab-panel);
+
+}
+
+.question-box h3 {
+
+    margin: 0 0 18px;
+
+    font-size: 18px;
+
+}
+
+.options {
+
+    display: grid;
+
+    gap: 10px;
+
+}
+
+.option {
+
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius: 5px;
+
+    background:
+        rgba(255,255,255,0.015);
+
+    color: var(--lab-muted);
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+}
+
+.option:hover {
+
+    border-color:
+        rgba(66,165,255,0.45);
+
+    color: var(--lab-text);
+
+}
+
+.option.correct {
+
+    border-color:
+        rgba(67,209,158,0.5);
+
+    background:
+        rgba(67,209,158,0.08);
+
+    color: var(--lab-green);
+
+}
+
+.option.wrong {
+
+    border-color:
+        rgba(255,83,100,0.5);
+
+    background:
+        rgba(255,83,100,0.07);
+
+    color: var(--lab-red);
+
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.result-box {
+
+    margin-top: 18px;
+
+    padding: 18px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius: 6px;
+
+    background:
+        rgba(66,165,255,0.035);
+
+    color: var(--lab-muted);
+
+    line-height: 1.7;
+
+    display: none;
+
+}
+
+.result-box.show {
+
+    display: block;
+
+}
+
+.result-success {
+
+    color: var(--lab-green);
+
+}
+
+.result-danger {
+
+    color: var(--lab-red);
+
+}
+
+
+/* =========================================================
+   FINDING
+========================================================= */
+
+.finding-box {
+
+    margin-top: 25px;
+
+    padding: 25px;
+
+    border:
+        1px solid
+        rgba(255,83,100,0.25);
+
+    border-left:
+        3px solid
+        var(--lab-red);
+
+    border-radius: 7px;
+
+    background:
+        rgba(255,83,100,0.035);
+
+}
+
+.finding-box h3 {
+
+    margin-top: 0;
+
+    color: var(--lab-red);
+
+}
+
+.finding-box p {
+
+    margin: 0;
+
+    color: var(--lab-muted);
+
+    line-height: 1.8;
+
+}
+
+
+/* =========================================================
+   COMPLETION
+========================================================= */
+
+.completion {
+
+    margin-top: 30px;
+
+    padding: 25px;
+
+    border:
+        1px solid
+        rgba(67,209,158,0.25);
+
+    border-radius: 7px;
+
+    background:
+        rgba(67,209,158,0.035);
+
+    text-align: center;
+
+}
+
+.completion h2 {
+
+    margin-top: 0;
+
+    color: var(--lab-green);
+
+}
+
+.completion p {
+
+    color: var(--lab-muted);
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.lab-nav {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: 35px;
+
+}
+
+.lab-nav a {
+
+    padding: 12px 17px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius: 5px;
+
+    color: var(--lab-muted);
+
+    font-size: 13px;
+
+}
+
+.lab-nav a:hover {
+
+    color: var(--lab-blue);
+
+    border-color:
+        rgba(66,165,255,0.4);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .analysis-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .lab-hero {
+
+        padding: 60px 0 45px;
+
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .lab-container {
+
+        width: 92%;
+
+    }
+
+    .lab-section {
+
+        padding: 45px 0;
+
+    }
+
+    .lab-section-title h2 {
+
+        font-size: 25px;
+
+    }
+
+    .lab-nav {
+
+        flex-direction: column;
+
+    }
+
+    .lab-nav a {
+
+        text-align: center;
+
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="../../../index.html" class="brand">
+
+<div class="brand-logo">
+
+<svg viewBox="0 0 50 60">
+
+<path
+d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+fill="none"
+stroke="currentColor"
+stroke-width="3"
+/>
+
+<rect
+x="18"
+y="25"
+width="14"
+height="14"
+rx="2"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<path
+d="M20 25 V20 C20 16 30 16 30 20 V25"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<circle
+cx="25"
+cy="31"
+r="2"
+fill="currentColor"
+/>
+
+<path
+d="M25 33 V36"
+stroke="currentColor"
+stroke-width="2"
+/>
+
+</svg>
+
+</div>
+
+
+<div class="brand-text">
+
+<div class="brand-name">
+Cyber<span>Nexa</span>
+</div>
+
+<div class="brand-tagline">
+Cybersecurity &amp; IT Learning
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="lab-hero">
+
+<div class="lab-container">
+
+<div class="lab-breadcrumb">
+
+CyberNexa / SOC / Blue Team / Network Monitoring / Lab
+
+</div>
+
+
+<div class="lab-badge">
+
+<span class="lab-dot"></span>
+
+SOC Network Monitoring Lab
+
+</div>
+
+
+<h1>
+
+Analyze <span>Network Traffic</span>
+
+</h1>
+
+
+<p>
+
+Practice identifying source and destination IP addresses,
+ports, protocols and unusual network behavior using a
+simulated SOC monitoring environment.
+
+</p>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     OBJECTIVE
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Lab Objective</h2>
+
+<p>
+What you will practice in this exercise.
+</p>
+
+</div>
+
+
+<div class="lab-objective">
+
+<p>
+
+In this lab, you will analyze simulated network traffic
+and determine which activity appears normal and which
+activity requires further investigation. You will inspect
+IP addresses, ports, protocols and connection behavior.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NETWORK TRAFFIC
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Network Traffic Monitor</h2>
+
+<p>
+
+Review the simulated traffic events collected by the
+network monitoring system.
+
+</p>
+
+</div>
+
+
+<div class="monitor-panel">
+
+
+<div class="monitor-header">
+
+<strong>
+LIVE NETWORK EVENTS
+</strong>
+
+<span class="monitor-status">
+● MONITORING
+</span>
+
+</div>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Time</th>
+<th>Source IP</th>
+<th>Destination IP</th>
+<th>Port</th>
+<th>Protocol</th>
+<th>Activity</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+<tr>
+
+<td>10:21:04</td>
+
+<td class="ip">
+192.168.1.20
+</td>
+
+<td class="ip">
+192.168.1.1
+</td>
+
+<td class="port">
+53
+</td>
+
+<td class="protocol">
+UDP
+</td>
+
+<td class="normal">
+Normal
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>10:21:18</td>
+
+<td class="ip">
+192.168.1.25
+</td>
+
+<td class="ip">
+192.168.1.1
+</td>
+
+<td class="port">
+443
+</td>
+
+<td class="protocol">
+TCP
+</td>
+
+<td class="normal">
+Normal
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>10:22:31</td>
+
+<td class="ip">
+192.168.1.35
+</td>
+
+<td class="ip">
+8.8.8.8
+</td>
+
+<td class="port">
+443
+</td>
+
+<td class="protocol">
+TCP
+</td>
+
+<td class="normal">
+Normal
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>10:24:07</td>
+
+<td class="ip">
+192.168.1.40
+</td>
+
+<td class="ip">
+185.22.91.17
+</td>
+
+<td class="port">
+4444
+</td>
+
+<td class="protocol">
+TCP
+</td>
+
+<td class="suspicious">
+Suspicious
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>10:24:09</td>
+
+<td class="ip">
+192.168.1.40
+</td>
+
+<td class="ip">
+185.22.91.17
+</td>
+
+<td class="port">
+4444
+</td>
+
+<td class="protocol">
+TCP
+</td>
+
+<td class="suspicious">
+Repeated
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ANALYSIS
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Traffic Analysis</h2>
+
+<p>
+Inspect the important indicators from the monitored event.
+</p>
+
+</div>
+
+
+<div class="analysis-grid">
+
+
+<div class="analysis-card">
+
+<h3>Source</h3>
+
+<p>
+
+The suspicious traffic originates from:
+
+<br><br>
+
+<strong>
+192.168.1.40
+</strong>
+
+</p>
+
+</div>
+
+
+<div class="analysis-card">
+
+<h3>Destination</h3>
+
+<p>
+
+The destination involved in the suspicious
+communication is:
+
+<br><br>
+
+<strong>
+185.22.91.17
+</strong>
+
+</p>
+
+</div>
+
+
+<div class="analysis-card">
+
+<h3>Port</h3>
+
+<p>
+
+The connection uses:
+
+<br><br>
+
+<strong>
+TCP Port 4444
+</strong>
+
+</p>
+
+</div>
+
+
+<div class="analysis-card">
+
+<h3>Behavior</h3>
+
+<p>
+
+The same connection is observed repeatedly,
+which makes the event worthy of investigation.
+
+</p>
+
+</div>
+
+</div>
+
+
+<div class="finding-box">
+
+<h3>⚠ Monitoring Finding</h3>
+
+<p>
+
+The traffic from <strong>192.168.1.40</strong> to
+<strong>185.22.91.17</strong> over
+<strong>TCP/4444</strong> appears unusual compared
+with the other observed traffic. The repeated
+connection should be investigated further to determine
+whether it represents legitimate activity or a security
+event.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     QUESTION
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Analyst Check</h2>
+
+<p>
+Select the activity that requires further investigation.
+</p>
+
+</div>
+
+
+<div class="question-box">
+
+<h3>
+
+Which network event is the most suspicious?
+
+</h3>
+
+
+<div class="options">
+
+
+<button
+class="option"
+onclick="checkAnswer(this, false)">
+
+192.168.1.20 → 192.168.1.1 : UDP/53
+
+</button>
+
+
+<button
+class="option"
+onclick="checkAnswer(this, false)">
+
+192.168.1.25 → 192.168.1.1 : TCP/443
+
+</button>
+
+
+<button
+class="option"
+onclick="checkAnswer(this, true)">
+
+192.168.1.40 → 185.22.91.17 : TCP/4444
+
+</button>
+
+
+<button
+class="option"
+onclick="checkAnswer(this, false)">
+
+192.168.1.35 → 8.8.8.8 : TCP/443
+
+</button>
+
+</div>
+
+
+<div id="result"
+     class="result-box">
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     COMPLETION
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="completion">
+
+<h2>
+Lab Completed
+</h2>
+
+<p>
+
+You practiced the basic Network Monitoring workflow:
+observing traffic, identifying network indicators,
+recognizing unusual behavior and deciding when an
+event requires further investigation.
+
+</p>
+
+</div>
+
+
+<div class="lab-nav">
+
+<a href="incident-detection-lab.html">
+← Lab: Incident Detection
+</a>
+
+<a href="../theory/endpoint-security.html">
+Next Theory: Endpoint Security →
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div>
+
+<div class="footer-brand">
+Cyber<span>Nexa</span>
+</div>
+
+<p>
+Cybersecurity &amp; IT Learning
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="../../../index.html">
+Home
+</a>
+
+<a href="../../../footer/about.html">
+About
+</a>
+
+<a href="../../../footer/contact.html">
+Contact
+</a>
+
+<a href="../../../footer/privacy-policy.html">
+Privacy Policy
+</a>
+
+<a href="../../../footer/disclaimer.html">
+Disclaimer
+</a>
+
+</div>
+
+</div>
+
+
+<div class="copyright">
+
+© 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   NETWORK MONITORING LAB
+   ANSWER CHECK
+========================================================= */
+
+function checkAnswer(button, correct) {
+
+    const options =
+        document.querySelectorAll(".option");
+
+    const result =
+        document.getElementById("result");
+
+
+    options.forEach(function(option) {
+
+        option.classList.remove(
+            "correct",
+            "wrong"
+        );
+
+    });
+
+
+    if (correct) {
+
+        button.classList.add("correct");
+
+        result.classList.add("show");
+
+        result.innerHTML =
+            '<strong class="result-success">✓ Correct.</strong> ' +
+            'The TCP/4444 connection from 192.168.1.40 ' +
+            'to 185.22.91.17 is the suspicious event ' +
+            'because it is unusual and repeated.';
+
+    } else {
+
+        button.classList.add("wrong");
+
+        result.classList.add("show");
+
+        result.innerHTML =
+            '<strong class="result-danger">✕ Not the best choice.</strong> ' +
+            'Review the source IP, destination IP, port, ' +
+            'protocol and connection behavior.';
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

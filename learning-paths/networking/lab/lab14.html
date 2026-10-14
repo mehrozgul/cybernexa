@@ -1,0 +1,2386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab 04 - TCP vs UDP | CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .network-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 55px 15px 65px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(14, 165, 233, 0.13),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .network-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .network-lab-header {
+
+            text-align: center;
+
+            margin-bottom: 28px;
+        }
+
+        .network-lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 12px;
+
+            color: #22d3ee;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .network-lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 42px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+        .network-lab-header h1 span {
+
+            color: #38bdf8;
+        }
+
+        .network-lab-intro {
+
+            max-width: 720px;
+
+            margin: 14px auto 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           LAB INFO
+        ===================================================== */
+
+        .network-lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 8px;
+
+            margin-bottom: 22px;
+        }
+
+        .network-info-card {
+
+            padding: 14px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.15);
+
+            border-radius: 9px;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+        }
+
+        .network-info-icon {
+
+            margin-bottom: 7px;
+
+            color: #22d3ee;
+
+            font-size: 17px;
+        }
+
+        .network-info-label {
+
+            margin-bottom: 3px;
+
+            color: #71808c;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .network-info-value {
+
+            color: #e2e8f0;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .network-lab-progress {
+
+            margin-bottom: 25px;
+
+            padding: 14px 16px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.16);
+
+            border-radius: 10px;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+        }
+
+        .network-progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 9px;
+        }
+
+        .network-progress-title {
+
+            color: #f8fafc;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .network-progress-count {
+
+            color: #22d3ee;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .network-progress-track {
+
+            width: 100%;
+
+            height: 4px;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            background:
+                rgba(34, 211, 238, 0.10);
+        }
+
+        .network-progress-bar {
+
+            width: 33.33%;
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #22d3ee,
+                    #38bdf8
+                );
+        }
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .network-section {
+
+            margin-bottom: 18px;
+
+            padding: 20px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.15);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+        }
+
+        .network-section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 12px;
+
+            color: #f8fafc;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+        .network-section-icon {
+
+            color: #22d3ee;
+
+            font-size: 18px;
+        }
+
+        .network-section p {
+
+            margin: 0 0 12px;
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           TCP / UDP DIAGRAM
+        ===================================================== */
+
+        .network-diagram {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin: 20px 0;
+
+            flex-wrap: wrap;
+        }
+
+        .network-node {
+
+            min-width: 110px;
+
+            padding: 13px 10px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.20);
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            background:
+                rgba(34, 211, 238, 0.045);
+        }
+
+        .network-node-icon {
+
+            margin-bottom: 5px;
+
+            color: #22d3ee;
+
+            font-size: 20px;
+        }
+
+        .network-node-title {
+
+            color: #f8fafc;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .network-node-text {
+
+            margin-top: 3px;
+
+            color: #7f909d;
+
+            font-size: 8px;
+        }
+
+        .network-arrow {
+
+            color: #38bdf8;
+
+            font-size: 18px;
+
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           TASK
+        ===================================================== */
+
+        .network-task {
+
+            margin-top: 12px;
+
+            padding: 14px;
+
+            border-left: 3px solid #22d3ee;
+
+            border-radius: 7px;
+
+            background:
+                rgba(34, 211, 238, 0.045);
+        }
+
+        .network-task-title {
+
+            margin-bottom: 7px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .network-task p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           COMMAND BLOCK
+        ===================================================== */
+
+        .network-command {
+
+            position: relative;
+
+            margin: 12px 0;
+
+            padding: 15px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.13);
+
+            border-radius: 8px;
+
+            background: #010508;
+
+            overflow-x: auto;
+        }
+
+        .network-command-label {
+
+            margin-bottom: 8px;
+
+            color: #22d3ee;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.3px;
+
+            text-transform: uppercase;
+        }
+
+        .network-command code {
+
+            color: #dbeafe;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 10px;
+
+            line-height: 1.8;
+
+            white-space: pre;
+        }
+
+        .network-copy {
+
+            position: absolute;
+
+            top: 10px;
+            right: 10px;
+
+            padding: 5px 8px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.18);
+
+            border-radius: 5px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(34, 211, 238, 0.05);
+
+            font-size: 8px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .network-copy:hover {
+
+            border-color:
+                rgba(34, 211, 238, 0.55);
+
+            background:
+                rgba(34, 211, 238, 0.09);
+        }
+
+        /* =====================================================
+           OUTPUT
+        ===================================================== */
+
+        .network-output {
+
+            margin-top: 10px;
+
+            padding: 14px;
+
+            border: 1px solid
+                rgba(96, 165, 250, 0.15);
+
+            border-radius: 8px;
+
+            background: #010508;
+
+            overflow-x: auto;
+        }
+
+        .network-output-title {
+
+            margin-bottom: 7px;
+
+            color: #60a5fa;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .network-output pre {
+
+            margin: 0;
+
+            color: #94a3b8;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 9px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+        /* =====================================================
+           CHECKLIST
+        ===================================================== */
+
+        .network-checklist {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+
+            margin-top: 10px;
+        }
+
+        .network-check {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 9px;
+
+            padding: 10px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.10);
+
+            border-radius: 7px;
+
+            background:
+                rgba(34, 211, 238, 0.025);
+        }
+
+        .network-check input {
+
+            margin-top: 2px;
+
+            accent-color: #22d3ee;
+
+            cursor: pointer;
+        }
+
+        .network-check label {
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           KEY CONCEPTS
+        ===================================================== */
+
+        .network-concepts {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+        .network-concept {
+
+            padding: 12px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.12);
+
+            border-radius: 8px;
+
+            background:
+                rgba(34, 211, 238, 0.025);
+        }
+
+        .network-concept strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #67e8f9;
+
+            font-size: 10px;
+        }
+
+        .network-concept span {
+
+            color: #8999a5;
+
+            font-size: 9px;
+
+            line-height: 1.55;
+        }
+
+        /* =====================================================
+           SAFETY
+        ===================================================== */
+
+        .network-safety {
+
+            margin-top: 18px;
+
+            padding: 17px;
+
+            border: 1px solid
+                rgba(96, 165, 250, 0.18);
+
+            border-radius: 9px;
+
+            background:
+                rgba(96, 165, 250, 0.035);
+        }
+
+        .network-safety h2 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 13px;
+        }
+
+        .network-safety p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .network-navigation {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 18px;
+        }
+
+        .network-button {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.16);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .network-button:hover {
+
+            border-color:
+                rgba(34, 211, 238, 0.55);
+
+            background:
+                rgba(34, 211, 238, 0.08);
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .network-lab-page {
+
+                padding: 45px 10px 55px;
+            }
+
+            .network-lab-header h1 {
+
+                font-size: 30px;
+            }
+
+            .network-lab-intro {
+
+                font-size: 11px;
+            }
+
+            .network-lab-info {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .network-concepts {
+
+                grid-template-columns: 1fr;
+            }
+
+            .network-diagram {
+
+                flex-direction: column;
+            }
+
+            .network-arrow {
+
+                transform: rotate(90deg);
+            }
+
+            .network-navigation {
+
+                flex-direction: column;
+            }
+
+            .network-button {
+
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            .network-lab-info {
+
+                grid-template-columns: 1fr;
+            }
+
+            .network-section {
+
+                padding: 15px;
+            }
+
+            .network-lab-header h1 {
+
+                font-size: 27px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="network-lab-page">
+
+<div class="network-lab-container">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="network-lab-header">
+
+    <div class="network-lab-category">
+        🌐 NETWORKING PRACTICAL
+    </div>
+
+    <h1>
+        Lab 13 — <span>TCP vs UDP</span>
+    </h1>
+
+    <p class="network-lab-intro">
+
+        Explore the practical differences between Transmission
+        Control Protocol (TCP) and User Datagram Protocol (UDP)
+        using Windows networking commands and PowerShell.
+
+    </p>
+
+</header>
+
+
+<!-- =====================================================
+     LAB INFO
+===================================================== -->
+
+<div class="network-lab-info">
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            🌐
+        </div>
+
+        <div class="network-info-label">
+            Category
+        </div>
+
+        <div class="network-info-value">
+            Networking
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            🧪
+        </div>
+
+        <div class="network-info-label">
+            Lab
+        </div>
+
+        <div class="network-info-value">
+            Practical 13
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            💻
+        </div>
+
+        <div class="network-info-label">
+            Environment
+        </div>
+
+        <div class="network-info-value">
+            Windows
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            📊
+        </div>
+
+        <div class="network-info-label">
+            Level
+        </div>
+
+        <div class="network-info-value">
+            Beginner
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PROGRESS
+===================================================== -->
+
+<div class="network-lab-progress">
+
+    <div class="network-progress-top">
+
+        <div class="network-progress-title">
+            Networking Practical Labs
+        </div>
+
+        <div class="network-progress-count">
+            Lab 13 / 21
+        </div>
+
+    </div>
+
+    <div class="network-progress-track">
+
+        <div class="network-progress-bar"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     OBJECTIVE
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🎯
+        </span>
+
+        Lab Objective
+
+    </div>
+
+    <p>
+
+        In this lab, you will learn the practical difference
+        between TCP and UDP transport protocols.
+
+    </p>
+
+    <p>
+
+        You will use Windows networking commands to observe
+        TCP connections, TCP listening ports and UDP endpoints.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     TCP VS UDP OVERVIEW
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📡
+        </span>
+
+        TCP vs UDP Communication
+
+    </div>
+
+    <p>
+
+        TCP is connection-oriented and provides reliable,
+        ordered delivery of data. UDP is connectionless and
+        sends datagrams without establishing a connection.
+
+    </p>
+
+
+    <div class="network-diagram">
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                Application
+            </div>
+
+            <div class="network-node-text">
+                Data
+
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            ↓
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                🔗
+            </div>
+
+            <div class="network-node-title">
+                TCP
+            </div>
+
+            <div class="network-node-text">
+                Reliable / Connection
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            ↔
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                ⚡
+            </div>
+
+            <div class="network-node-title">
+                UDP
+            </div>
+
+            <div class="network-node-text">
+                Fast / Connectionless
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 Basic Idea
+        </div>
+
+        <p>
+
+            TCP establishes a connection before data transfer
+            and uses mechanisms such as acknowledgements and
+            retransmission. UDP sends datagrams without creating
+            a connection first.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 01
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            01
+        </span>
+
+        View Active TCP Connections
+
+    </div>
+
+    <p>
+
+        Use netstat to display active TCP connections on
+        your Windows computer.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('netstat -ano -p tcp')"
+        >
+            Copy
+        </button>
+
+        <code>netstat -ano -p tcp</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+Active Connections
+
+  Proto  Local Address          Foreign Address        State           PID
+  TCP    192.168.1.20:52144     142.250.72.14:443     ESTABLISHED     8420
+  TCP    192.168.1.20:52145     142.250.72.14:443     ESTABLISHED     8420
+  TCP    192.168.1.20:52146     192.168.1.1:443       TIME_WAIT       0
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 What to Observe
+        </div>
+
+        <p>
+
+            Look at the Proto, Local Address, Foreign Address
+            and State columns. TCP connections can have states
+            such as ESTABLISHED, LISTENING and TIME_WAIT.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 02
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            02
+        </span>
+
+        View TCP Listening Ports
+
+    </div>
+
+    <p>
+
+        The following command displays TCP ports that are
+        currently listening for incoming connections.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('netstat -ano -p tcp | findstr LISTENING')"
+        >
+            Copy
+        </button>
+
+        <code>netstat -ano -p tcp | findstr LISTENING</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+TCP    0.0.0.0:135        0.0.0.0:0        LISTENING    1200
+TCP    0.0.0.0:445        0.0.0.0:0        LISTENING    4
+TCP    127.0.0.1:3306     0.0.0.0:0        LISTENING    5620
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 Concept
+        </div>
+
+        <p>
+
+            LISTENING means that a TCP socket is waiting for
+            incoming connection requests on that local port.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 03
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            03
+        </span>
+
+        Test a TCP Port
+
+    </div>
+
+    <p>
+
+        PowerShell provides Test-NetConnection for testing
+        TCP connectivity to a specific host and port.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            PowerShell
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('Test-NetConnection google.com -Port 443')"
+        >
+            Copy
+        </button>
+
+        <code>Test-NetConnection google.com -Port 443</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+ComputerName     : google.com
+RemoteAddress    : 142.250.72.14
+RemotePort       : 443
+InterfaceAlias   : Wi-Fi
+TcpTestSucceeded : True
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 What to Understand
+        </div>
+
+        <p>
+
+            TcpTestSucceeded : True means the TCP connection
+            test to the specified destination port succeeded.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 04
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            04
+        </span>
+
+        View UDP Endpoints
+
+    </div>
+
+    <p>
+
+        UDP does not use connection states like TCP.
+        Use netstat to view UDP endpoints currently present
+        on the system.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('netstat -ano -p udp')"
+        >
+            Copy
+        </button>
+
+        <code>netstat -ano -p udp</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+Active Connections
+
+  Proto  Local Address          Foreign Address        State           PID
+  UDP    0.0.0.0:53             *:*                                    4200
+  UDP    0.0.0.0:1900           *:*                                    1180
+  UDP    192.168.1.20:5353      *:*                                    5620
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 Important
+        </div>
+
+        <p>
+
+            UDP is connectionless, so netstat does not show
+            TCP-style states such as ESTABLISHED or LISTENING
+            for UDP endpoints.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 05
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            05
+        </span>
+
+        View UDP Endpoints with PowerShell
+
+    </div>
+
+    <p>
+
+        PowerShell can provide a more direct view of UDP
+        endpoints using Get-NetUDPEndpoint.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            PowerShell
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('Get-NetUDPEndpoint | Select-Object LocalAddress,LocalPort,OwningProcess')"
+        >
+            Copy
+        </button>
+
+        <code>Get-NetUDPEndpoint | Select-Object LocalAddress,LocalPort,OwningProcess</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+LocalAddress   LocalPort   OwningProcess
+------------   ---------   -------------
+0.0.0.0        53          4200
+0.0.0.0        1900        1180
+127.0.0.1      5353        5620
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 What to Observe
+        </div>
+
+        <p>
+
+            Observe the local UDP address, port and process ID.
+            UDP endpoints can exist without an established
+            connection.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TASK 06
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            06
+        </span>
+
+        Identify TCP and UDP by Port
+
+    </div>
+
+    <p>
+
+        You can search netstat output for a specific port
+        to determine whether it appears under TCP or UDP.
+
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('netstat -ano | findstr :53')"
+        >
+            Copy
+        </button>
+
+        <code>netstat -ano | findstr :53</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>
+UDP    0.0.0.0:53       *:*       4200
+        </pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 What to Understand
+        </div>
+
+        <p>
+
+            The first column identifies the transport protocol.
+            TCP and UDP can use the same port number independently
+            because they are separate transport protocols.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TCP VS UDP COMPARISON
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            ⚖️
+        </span>
+
+        TCP vs UDP Practical Comparison
+
+    </div>
+
+    <div class="network-concepts">
+
+
+        <div class="network-concept">
+
+            <strong>Connection</strong>
+
+            <span>
+                TCP establishes a connection before transferring
+                application data. UDP does not establish a connection.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Reliability</strong>
+
+            <span>
+                TCP provides reliable and ordered delivery.
+                UDP does not guarantee delivery or ordering.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Speed / Overhead</strong>
+
+            <span>
+                TCP has more protocol overhead. UDP has a smaller
+                header and generally lower communication overhead.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>TCP Example</strong>
+
+            <span>
+                HTTPS commonly uses TCP port 443 for traditional
+                HTTP/1.1 and HTTP/2 connections.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>UDP Example</strong>
+
+            <span>
+                DNS commonly uses UDP port 53 for standard
+                DNS queries.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Practical Tool</strong>
+
+            <span>
+                netstat can display both TCP connections and
+                UDP endpoints on Windows.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TCP COMMUNICATION
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🔗
+        </span>
+
+        TCP Communication
+
+    </div>
+
+    <p>
+
+        TCP uses a connection-oriented communication model.
+        Before normal data transfer, the endpoints establish
+        a TCP connection.
+
+    </p>
+
+
+    <div class="network-diagram">
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                Client
+            </div>
+
+            <div class="network-node-text">
+                TCP
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                🤝
+            </div>
+
+            <div class="network-node-title">
+                Connection
+            </div>
+
+            <div class="network-node-text">
+                Established
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                🖥️
+            </div>
+
+            <div class="network-node-title">
+                Server
+            </div>
+
+            <div class="network-node-text">
+                TCP
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            📌 Key Point
+        </div>
+
+        <p>
+
+            TCP maintains connection state and provides mechanisms
+            for reliable, ordered delivery of data.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     UDP COMMUNICATION
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            ⚡
+        </span>
+
+        UDP Communication
+
+    </div>
+
+    <p>
+
+        UDP is connectionless. A sender can transmit datagrams
+        without first establishing a connection with the receiver.
+
+    </p>
+
+
+    <div class="network-diagram">
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                Sender
+            </div>
+
+            <div class="network-node-text">
+                UDP
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                📦
+            </div>
+
+            <div class="network-node-title">
+                Datagram
+            </div>
+
+            <div class="network-node-text">
+                No Connection
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                🖥️
+            </div>
+
+            <div class="network-node-title">
+                Receiver
+            </div>
+
+            <div class="network-node-text">
+                UDP
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            📌 Key Point
+        </div>
+
+        <p>
+
+            UDP does not provide TCP-style connection establishment,
+            retransmission or ordering at the transport layer.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     KEY CONCEPTS
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🧠
+        </span>
+
+        Key TCP and UDP Concepts
+
+    </div>
+
+
+    <div class="network-concepts">
+
+
+        <div class="network-concept">
+
+            <strong>TCP</strong>
+
+            <span>
+                Transmission Control Protocol is a
+                connection-oriented transport protocol.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>UDP</strong>
+
+            <span>
+                User Datagram Protocol is a
+                connectionless transport protocol.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Port</strong>
+
+            <span>
+                A logical transport-layer identifier used to
+                associate network traffic with applications.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>LISTENING</strong>
+
+            <span>
+                A TCP socket state indicating that the system
+                is waiting for incoming connections.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>ESTABLISHED</strong>
+
+            <span>
+                A TCP state indicating that a connection has
+                been established between endpoints.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Datagram</strong>
+
+            <span>
+                A self-contained UDP message sent without
+                establishing a transport connection.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     COMPLETION CHECKLIST
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            ✓
+        </span>
+
+        Lab Completion Checklist
+
+    </div>
+
+
+    <div class="network-checklist">
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check1"
+            >
+
+            <label for="check1">
+
+                I viewed active TCP connections using netstat.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check2"
+            >
+
+            <label for="check2">
+
+                I viewed TCP listening ports.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check3"
+            >
+
+            <label for="check3">
+
+                I tested a TCP port using Test-NetConnection.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check4"
+            >
+
+            <label for="check4">
+
+                I viewed UDP endpoints using netstat.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check5"
+            >
+
+            <label for="check5">
+
+                I viewed UDP endpoints using PowerShell.
+
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check6"
+            >
+
+            <label for="check6">
+
+                I understood the practical difference between TCP and UDP.
+
+            </label>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SUMMARY
+===================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📘
+        </span>
+
+        Lab Summary
+
+    </div>
+
+    <p>
+
+        In this practical lab, you explored TCP and UDP,
+        two major transport-layer protocols.
+
+    </p>
+
+    <p>
+
+        You used netstat and PowerShell commands to observe
+        TCP connections, TCP listening ports and UDP endpoints.
+        You also practiced testing TCP connectivity with
+        Test-NetConnection.
+
+    </p>
+
+    <p>
+
+        The main difference is that TCP is connection-oriented
+        and provides reliable, ordered delivery, while UDP is
+        connectionless and does not provide those TCP reliability
+        mechanisms at the transport layer.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     SAFETY
+===================================================== -->
+
+<section class="network-safety">
+
+    <h2>
+        🧪 Lab Safety
+    </h2>
+
+    <p>
+
+        Perform these exercises only on systems and networks
+        that you own or are explicitly authorized to inspect.
+        The commands in this lab are intended for basic network
+        observation, learning and troubleshooting.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<div class="network-navigation">
+
+    <a
+        href="lab13.html"
+        class="network-button"
+    >
+        Previous: Lab 
+    </a>
+
+
+    <a
+        href="../theory/ports-protocols.html"
+        class="network-button"
+    >
+        ☰ Ports & Protocols
+    </a>
+
+<!-- 
+    <a
+        href="lab05.html"
+        class="network-button"
+    >
+        Next Lab →
+    </a> -->
+
+</div>
+
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="../../../js/navbar.js"></script>
+
+
+<script>
+
+function copyCommand(command) {
+
+    navigator.clipboard.writeText(command);
+
+    const buttons =
+        document.querySelectorAll(".network-copy");
+
+    buttons.forEach(button => {
+
+        if (button.innerText === "Copy") {
+
+            button.innerText = "Copied";
+
+            setTimeout(() => {
+
+                button.innerText = "Copy";
+
+            }, 1200);
+
+        }
+
+    });
+
+}
+
+</script>
+
+
+</body>
+
+</html>

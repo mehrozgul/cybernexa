@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Practical Labs - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-labs-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+
+                #02080d;
+        }
+
+
+        .linux-labs-container {
+
+            width: 100%;
+            max-width: 1100px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-labs-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+
+        .linux-labs-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-labs-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-labs-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-labs-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB GRID
+        ====================================================== */
+
+        .linux-labs-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .linux-lab-card {
+
+            position: relative;
+
+            padding: 25px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.15);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 35px
+                rgba(0, 0, 0, 0.25);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           HOVER
+        ====================================================== */
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-lab-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.45);
+
+                box-shadow:
+                    0 18px 45px
+                    rgba(0, 0, 0, 0.32),
+
+                    0 0 28px
+                    rgba(103, 232, 249, 0.08);
+
+                transform:
+                    translateY(-3px);
+            }
+        }
+
+
+        /* =====================================================
+           LAB NUMBER
+        ====================================================== */
+
+        .linux-lab-number {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 45px;
+
+            height: 45px;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+
+        /* =====================================================
+           LAB TITLE
+        ====================================================== */
+
+        .linux-lab-card h2 {
+
+            margin: 0 0 10px;
+
+            color: #f8fafc;
+
+            font-size: 19px;
+
+            line-height: 1.4;
+
+            font-weight: 750;
+        }
+
+
+        /* =====================================================
+           LAB DESCRIPTION
+        ====================================================== */
+
+        .linux-lab-card p {
+
+            margin: 0 0 20px;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           LAB BUTTON
+        ====================================================== */
+
+        .linux-lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            width: 100%;
+
+            padding: 12px 15px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.24);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-lab-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.11);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .linux-lab-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           BOTTOM NAVIGATION
+        ====================================================== */
+
+        .linux-labs-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-labs-nav-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-labs-nav-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .linux-labs-nav-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-labs-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-labs-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-labs-intro {
+
+                font-size: 14px;
+            }
+
+
+            .linux-labs-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-labs-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-labs-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .linux-labs-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-labs-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-lab-card {
+
+                padding:
+                    21px 18px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-lab-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-labs-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-labs-nav-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-labs-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-labs-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-lab-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-labs-page">
+
+        <div class="linux-labs-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="linux-labs-header">
+
+                <div class="linux-labs-category">
+                    LINUX PRACTICAL LABS
+                </div>
+
+                <h1>
+                    Linux <span>Labs</span>
+                </h1>
+
+                <p class="linux-labs-intro">
+
+                    Practice Linux concepts through
+                    hands-on labs. Select a lab below
+                    to open the complete practical exercise.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LABS
+            ================================================== -->
+
+            <section class="linux-labs-grid">
+
+
+                <!-- LAB 01 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        01
+                    </div>
+
+                    <h2>
+                        Linux Basics
+                    </h2>
+
+                    <p>
+                        Learn the Linux environment,
+                        operating system concepts and
+                        basic Linux terminology.
+                    </p>
+
+                    <a
+                        href="lab01.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 01
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 02 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        02
+                    </div>
+
+                    <h2>
+                        Linux File System 
+                    </h2>
+
+                    <p>
+                        Learn how to use the Linux terminal
+                        and interact with the system through
+                        the command line.
+                    </p>
+
+                    <a
+                        href="lab02.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 02
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 03 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        03
+                    </div>
+
+                    <h2>
+                        Linux Commands
+                    </h2>
+
+                    <p>
+                        Practice essential commands such as
+                        whoami, pwd, ls, cd, clear and more.
+                    </p>
+
+                    <a
+                        href="lab03.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 03
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 04 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        04
+                    </div>
+
+                    <h2>
+                        Users & Groups
+                    </h2>
+
+                    <p>
+                        Practice creating, copying, moving,
+                        renaming and removing files and directories.
+                    </p>
+
+                    <a
+                        href="lab04.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 04
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 05 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        05
+                    </div>
+
+                    <h2>
+                        Linux File Permissions
+                    </h2>
+
+                    <p>
+                        Learn Linux permissions and practice
+                        controlling access to files and directories.
+                    </p>
+
+                    <a
+                        href="lab05.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 05
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 06 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        06
+                    </div>
+
+                    <h2>
+                        Processes
+                    </h2>
+
+                    <p>
+                        Learn Linux users, groups and basic
+                        account management commands.
+                    </p>
+
+                    <a
+                        href="lab06.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 06
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 07 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        07
+                    </div>
+
+                    <h2>
+                        Linux Services
+                    </h2>
+
+                    <p>
+                        Learn how to view, monitor and
+                        manage running Linux processes.
+                    </p>
+
+                    <a
+                        href="lab07.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 07
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 08 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        08
+                    </div>
+
+                    <h2>
+                        Linux SSH 
+                    </h2>
+
+                    <p>
+                        Practice installing, updating and
+                        managing software packages in Linux.
+                    </p>
+
+                    <a
+                        href="lab08.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 08
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 09 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        09
+                    </div>
+
+                    <h2>
+                        Linux Package Management
+                    </h2>
+
+                    <p>
+                        Practice basic networking commands
+                        used for Linux network troubleshooting.
+                    </p>
+
+                    <a
+                        href="lab09.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 09
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 10 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        10
+                    </div>
+
+                    <h2>
+                        Networking Commands 
+                    </h2>
+
+                    <p>
+                        Learn the fundamentals of SSH and
+                        secure remote access to Linux systems.
+                    </p>
+
+                    <a
+                        href="lab10.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 10
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 11 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        11
+                    </div>
+
+                    <h2>
+                        Linux Bash Basics
+                    </h2>
+
+                    <p>
+                        Practice basic Bash commands,
+                        variables and simple shell scripts.
+                    </p>
+
+                    <a
+                        href="lab11.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 11
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 12 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        12
+                    </div>
+
+                    <h2>
+                        Linux Security
+                    </h2>
+
+                    <p>
+                        Practice fundamental Linux security
+                        concepts and basic security controls.
+                    </p>
+
+                    <a
+                        href="lab12.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 12
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+
+                <!-- LAB 13 -->
+
+                <article class="linux-lab-card">
+
+                    <div class="linux-lab-number">
+                        13
+                    </div>
+
+                    <h2>
+                        Linux Logs
+                    </h2>
+
+                    <p>
+                        Apply your Linux knowledge in a
+                        cybersecurity-focused practical lab.
+                    </p>
+
+                    <a
+                        href="lab13.html"
+                        class="linux-lab-button"
+                    >
+                        Open Lab 13
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-labs-navigation">
+
+
+                <a
+                    href="../../labs/practical-labs.html"
+                    class="linux-labs-nav-button"
+                >
+
+                    <span>←</span>
+
+                    <strong>
+                        All Practical Labs
+                    </strong>
+
+                </a>
+
+<!-- 
+                <a
+                    href="lab01.html"
+                    class="linux-labs-nav-button"
+                >
+
+                    <strong>
+                        Linux Basics
+                    </strong>
+
+                    <span>→</span>
+
+                </a> -->
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

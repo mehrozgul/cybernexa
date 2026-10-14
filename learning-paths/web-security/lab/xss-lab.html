@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>XSS Security Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 8%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(108, 99, 255, 0.065),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 40px 35px;
+
+            margin-bottom: 25px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 35, 0.98),
+                    rgba(2, 10, 22, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #6c63ff,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            margin-bottom: 12px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 40px;
+
+            line-height: 1.15;
+        }
+
+        .lab-hero h1 span {
+            color: #00bfff;
+        }
+
+        .lab-hero p {
+
+            max-width: 800px;
+
+            margin: 15px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           LAB STATUS
+        ====================================================== */
+
+        .lab-status {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .status-item {
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .status-label {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .status-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .status-value.blue {
+            color: #00bfff;
+        }
+
+        /* =====================================================
+           CARD
+        ====================================================== */
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 27px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 17px;
+        }
+
+        .card-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .card-heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+        }
+
+        .lab-card p {
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           DEMO
+        ====================================================== */
+
+        .demo-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(0, 1fr);
+
+            gap: 14px;
+
+            margin-top: 18px;
+        }
+
+        .demo-box {
+
+            padding: 19px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, 0.20);
+        }
+
+        .demo-label {
+
+            margin-bottom: 9px;
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        textarea {
+
+            width: 100%;
+
+            min-height: 100px;
+
+            padding: 12px;
+
+            resize: vertical;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 8px;
+
+            outline: none;
+
+            color: #dce9f4;
+
+            background:
+                #020914;
+
+            font-family: Consolas, monospace;
+
+            font-size: 12px;
+        }
+
+        textarea:focus {
+
+            border-color:
+                rgba(0, 191, 255, 0.45);
+        }
+
+        .demo-button {
+
+            margin-top: 10px;
+
+            padding: 10px 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 7px;
+
+            color: #d7f6ff;
+
+            background:
+                rgba(0, 191, 255, 0.06);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .demo-button:hover {
+
+            background:
+                rgba(0, 191, 255, 0.11);
+        }
+
+        .output {
+
+            min-height: 100px;
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 8px;
+
+            color: #8fa5bb;
+
+            background:
+                #01060d;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            overflow-wrap: anywhere;
+        }
+
+        .safe-output {
+
+            border-color:
+                rgba(0, 255, 176, 0.12);
+
+            color: #b8eadd;
+        }
+
+        /* =====================================================
+           SECURITY NOTE
+        ====================================================== */
+
+        .security-note {
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border-left:
+                3px solid #00bfff;
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            color: #8097aa;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           MCQ
+        ====================================================== */
+
+        .question {
+
+            margin-bottom: 20px;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .question:last-child {
+            margin-bottom: 0;
+        }
+
+        .question h3 {
+
+            margin: 0 0 12px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .option {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            padding: 9px 11px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.07);
+
+            border-radius: 6px;
+
+            color: #8097aa;
+
+            background:
+                rgba(0, 0, 0, 0.15);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.22);
+
+            background:
+                rgba(0, 191, 255, 0.035);
+        }
+
+        .option input {
+            margin-right: 7px;
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.15);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+        }
+
+        .result h3 {
+
+            margin: 0 0 7px;
+
+            color: #00bfff;
+
+            font-size: 16px;
+        }
+
+        .result p {
+
+            margin: 0;
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+        }
+
+        .submit-button {
+
+            width: 100%;
+
+            margin-top: 18px;
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 8px;
+
+            color: #d7f6ff;
+
+            background:
+                rgba(0, 191, 255, 0.055);
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .submit-button:hover {
+
+            background:
+                rgba(0, 191, 255, 0.10);
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .topic-navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 28px;
+        }
+
+        .topic-navigation a {
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            color: #71879b;
+
+            background:
+                rgba(0, 191, 255, 0.02);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .topic-navigation a:hover {
+
+            color: #d7f6ff;
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-status {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+                font-size: 31px;
+            }
+
+            .lab-card {
+                padding: 20px;
+            }
+
+            .lab-status {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+    <div class="lab-container">
+
+
+        <!-- HERO -->
+
+        <section class="lab-hero">
+
+            <div class="lab-kicker">
+                WEB SECURITY LAB / XSS
+            </div>
+
+            <h1>
+                <span>Cross-Site Scripting</span> Lab
+            </h1>
+
+            <p>
+
+                Explore the difference between unsafe HTML rendering and
+                safe text rendering in a controlled local demonstration.
+                This lab is designed for learning XSS concepts without
+                interacting with real websites or external systems.
+
+            </p>
+
+        </section>
+
+
+        <!-- STATUS -->
+
+        <div class="lab-status">
+
+            <div class="status-item">
+
+                <span class="status-label">
+                    Environment
+                </span>
+
+                <span class="status-value blue">
+                    Local Lab
+                </span>
+
+            </div>
+
+
+            <div class="status-item">
+
+                <span class="status-label">
+                    Mode
+                </span>
+
+                <span class="status-value">
+                    Educational
+                </span>
+
+            </div>
+
+
+            <div class="status-item">
+
+                <span class="status-label">
+                    Risk
+                </span>
+
+                <span class="status-value">
+                    Controlled
+                </span>
+
+            </div>
+
+
+            <div class="status-item">
+
+                <span class="status-label">
+                    Topic
+                </span>
+
+                <span class="status-value">
+                    XSS
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- DEMONSTRATION -->
+
+        <section class="lab-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    01
+                </div>
+
+                <h2>
+                    XSS Rendering Demonstration
+                </h2>
+
+            </div>
+
+            <p>
+
+                Enter ordinary text or a harmless HTML test string below.
+                The left side represents an unsafe HTML rendering concept,
+                while the right side uses a safe text-rendering approach.
+
+            </p>
+
+
+            <div class="demo-grid">
+
+
+                <div class="demo-box">
+
+                    <div class="demo-label">
+                        UNSAFE HTML CONTEXT
+                    </div>
+
+                    <textarea
+                        id="xssInput"
+                        placeholder="Enter test text or harmless HTML..."
+                    ></textarea>
+
+                    <button
+                        class="demo-button"
+                        onclick="runUnsafeDemo()"
+                    >
+                        Render Demo
+                    </button>
+
+                    <div
+                        class="output"
+                        id="unsafeOutput"
+                    >
+                        Output will appear here.
+                    </div>
+
+                </div>
+
+
+                <div class="demo-box">
+
+                    <div class="demo-label">
+                        SAFE TEXT CONTEXT
+                    </div>
+
+                    <div
+                        class="output safe-output"
+                        id="safeOutput"
+                    >
+                        Safe output will appear here.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-note">
+
+                <strong>Security concept:</strong>
+                HTML rendering APIs interpret markup as browser content,
+                whereas text rendering APIs treat the same input as data.
+                In real applications, developers must select output APIs
+                appropriate to the context and apply proper encoding.
+
+            </div>
+
+        </section>
+
+
+        <!-- IDENTIFICATION -->
+
+        <section class="lab-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    02
+                </div>
+
+                <h2>
+                    Identify the Vulnerability
+                </h2>
+
+            </div>
+
+            <p>
+
+                Consider the following simplified application behavior:
+
+            </p>
+
+
+            <div class="demo-box">
+
+                <div class="demo-label">
+                    APPLICATION LOGIC
+                </div>
+
+                <div class="output">
+
+                    User Input → Server / Browser Processing →
+                    HTML Output → Browser Rendering
+
+                </div>
+
+            </div>
+
+
+            <div class="security-note">
+
+                If untrusted data reaches an executable browser context
+                without appropriate protection, the application may become
+                vulnerable to XSS.
+
+            </div>
+
+        </section>
+
+
+        <!-- MCQS -->
+
+        <section class="lab-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    03
+                </div>
+
+                <h2>
+                    Knowledge Check
+                </h2>
+
+            </div>
+
+
+            <form id="quizForm">
+
+
+                <div class="question">
+
+                    <h3>
+                        1. What does XSS stand for?
+                    </h3>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="a"
+                        >
+                        Cross-System Security
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="b"
+                        >
+                        Cross-Site Scripting
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="c"
+                        >
+                        Cross-Service Scanning
+                    </label>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h3>
+                        2. Which type of XSS is stored by the application?
+                    </h3>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="a"
+                        >
+                        Stored XSS
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="b"
+                        >
+                        Reflected XSS
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="c"
+                        >
+                        Network XSS
+                    </label>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h3>
+                        3. Which JavaScript API is generally safer for
+                        displaying ordinary user-controlled text?
+                    </h3>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="a"
+                        >
+                        innerHTML
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="b"
+                        >
+                        textContent
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="c"
+                        >
+                        document.write
+                    </label>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h3>
+                        4. What is one important XSS defense?
+                    </h3>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="a"
+                        >
+                        Disable HTTPS
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="b"
+                        >
+                        Context-aware output encoding
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="c"
+                        >
+                        Remove authentication
+                    </label>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h3>
+                        5. Where should XSS testing be performed?
+                    </h3>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="a"
+                        >
+                        Any public website
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="b"
+                        >
+                        Authorized laboratory or permitted application
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="c"
+                        >
+                        Random user accounts
+                    </label>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="submit-button"
+                    onclick="checkQuiz()"
+                >
+                    Submit Assessment
+                </button>
+
+            </form>
+
+
+            <div
+                class="result"
+                id="quizResult"
+            >
+
+                <h3 id="resultTitle">
+                    Assessment Complete
+                </h3>
+
+                <p id="resultText"></p>
+
+            </div>
+
+        </section>
+
+
+        <!-- AUTHORIZATION -->
+
+        <section class="lab-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    04
+                </div>
+
+                <h2>
+                    Lab Safety
+                </h2>
+
+            </div>
+
+            <div class="security-note">
+
+                This practical demonstration is intended for CyberNexa's
+                educational environment. Do not use XSS techniques against
+                websites, applications, accounts or systems without explicit
+                authorization.
+
+            </div>
+
+        </section>
+
+
+        <!-- NAVIGATION -->
+
+        <div class="topic-navigation">
+
+            <a href="sql-injection-lab.html">
+                ← Lab: SQL
+            </a>
+
+            <a href="web-security-lab.html">
+                All Labs
+            </a>
+
+            <a href="../theory/csrf.html">
+               Next Theory: CSRF →
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+    /* =====================================================
+       XSS DEMONSTRATION
+    ====================================================== */
+
+    function runUnsafeDemo() {
+
+        const input =
+            document.getElementById("xssInput").value;
+
+        const unsafeOutput =
+            document.getElementById("unsafeOutput");
+
+        const safeOutput =
+            document.getElementById("safeOutput");
+
+        /*
+         * Educational demonstration:
+         * innerHTML interprets HTML markup.
+         *
+         * Keep this page local and use only harmless
+         * educational test strings.
+         */
+
+        unsafeOutput.innerHTML =
+            input || "No input provided.";
+
+        /*
+         * Safe rendering:
+         * textContent treats input as ordinary text.
+         */
+
+        safeOutput.textContent =
+            input || "No input provided.";
+    }
+
+
+    /* =====================================================
+       QUIZ
+    ====================================================== */
+
+    function checkQuiz() {
+
+        const answers = {
+
+            q1: "b",
+            q2: "a",
+            q3: "b",
+            q4: "b",
+            q5: "b"
+
+        };
+
+        let score = 0;
+
+        Object.keys(answers).forEach(function(question) {
+
+            const selected =
+                document.querySelector(
+                    'input[name="' +
+                    question +
+                    '"]:checked'
+                );
+
+            if (
+                selected &&
+                selected.value === answers[question]
+            ) {
+
+                score++;
+
+            }
+
+        });
+
+
+        const result =
+            document.getElementById("quizResult");
+
+        const title =
+            document.getElementById("resultTitle");
+
+        const text =
+            document.getElementById("resultText");
+
+
+        result.style.display = "block";
+
+
+        title.textContent =
+            "Assessment Complete";
+
+
+        text.textContent =
+            "Your score: " +
+            score +
+            " / 5. Review the XSS theory and try the assessment again to strengthen your understanding.";
+
+        result.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }
+
+</script>
+
+
+<script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

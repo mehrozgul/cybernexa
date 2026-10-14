@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DHCP Practical Lab - CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL PAGE CONTROL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%
+                ),
+                #020714;
+        }
+
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           BREADCRUMB
+        ====================================================== */
+
+        .lab-breadcrumb {
+
+            margin-bottom: 18px;
+
+            color: #8193aa;
+
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+
+        .lab-breadcrumb a {
+
+            color: #00bfff;
+
+            text-decoration: none;
+        }
+
+
+        .lab-breadcrumb span {
+
+            margin: 0 7px;
+
+            color: #50657c;
+        }
+
+
+        /* =====================================================
+           LAB HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            margin-bottom: 35px;
+
+            text-align: center;
+        }
+
+
+        .lab-label {
+
+            display: inline-block;
+
+            margin-bottom: 13px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 42px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .lab-header h1 span {
+
+            color: #00bfff;
+        }
+
+
+        .lab-intro {
+
+            max-width: 760px;
+
+            margin: 16px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB INFO GRID
+        ====================================================== */
+
+        .lab-info-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .info-box {
+
+            padding: 17px;
+
+            border: 1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+        }
+
+
+        .info-label {
+
+            margin-bottom: 6px;
+
+            color: #6f849d;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .info-value {
+
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           PROGRESS
+        ====================================================== */
+
+        .progress-card {
+
+            margin-bottom: 22px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+        }
+
+
+        .progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .progress-title {
+
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        .progress-percent {
+
+            color: #00bfff;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        .progress-bar {
+
+            width: 100%;
+            height: 7px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+
+        .progress-fill {
+
+            width: 0%;
+
+            height: 100%;
+
+            border-radius: 20px;
+
+            background: #00bfff;
+
+            transition: width 0.3s ease;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            position: relative;
+
+            margin-bottom: 20px;
+
+            padding: 28px;
+
+            overflow: hidden;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.22);
+        }
+
+
+        .lab-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 17px;
+        }
+
+
+        .lab-icon {
+
+            width: 41px;
+            height: 41px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 10px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.06);
+
+            font-size: 17px;
+        }
+
+
+        .lab-card h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+            font-weight: 750;
+        }
+
+
+        .lab-card h3 {
+
+            margin: 22px 0 9px;
+
+            color: #ffffff;
+
+            font-size: 15px;
+        }
+
+
+        .lab-card p {
+
+            margin: 0 0 13px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        .lab-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           OBJECTIVE LIST
+        ====================================================== */
+
+        .objective-list {
+
+            margin: 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .objective-list li {
+
+            position: relative;
+
+            padding: 9px 0 9px 24px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom: 1px solid
+                rgba(0, 191, 255, 0.06);
+        }
+
+
+        .objective-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .objective-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #00bfff;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           STEP HEADER
+        ====================================================== */
+
+        .step-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            border-radius: 8px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.07);
+
+            border: 1px solid
+                rgba(0, 191, 255, 0.22);
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+
+        .step-title {
+
+            color: #ffffff;
+
+            font-size: 16px;
+            font-weight: 750;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .command-wrapper {
+
+            position: relative;
+
+            margin: 15px 0;
+        }
+
+
+        .command-box {
+
+            padding: 17px 55px 17px 17px;
+
+            overflow-x: auto;
+
+            border: 1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 9px;
+
+            background: #01050d;
+
+            color: #dbeafe;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+
+        .copy-button {
+
+            position: absolute;
+
+            top: 8px;
+            right: 8px;
+
+            padding: 7px 10px;
+
+            border: 1px solid
+                rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.06);
+
+            cursor: pointer;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+
+        .copy-button:hover {
+
+            background:
+                rgba(0, 191, 255, 0.12);
+        }
+
+
+        /* =====================================================
+           OUTPUT BOX
+        ====================================================== */
+
+        .output-box {
+
+            margin-top: 14px;
+
+            padding: 17px;
+
+            overflow-x: auto;
+
+            border: 1px solid
+                rgba(0, 255, 180, 0.12);
+
+            border-radius: 9px;
+
+            background: #01070a;
+
+            color: #a9bad0;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+
+        .output-label {
+
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           NOTE BOX
+        ====================================================== */
+
+        .note-box {
+
+            margin-top: 15px;
+
+            padding: 15px 17px;
+
+            border-left: 3px solid #00bfff;
+
+            border-radius: 0 9px 9px 0;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+        }
+
+
+        .note-box strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffffff;
+
+            font-size: 12px;
+        }
+
+
+        .note-box span {
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           DORA PRACTICAL FLOW
+        ====================================================== */
+
+        .dora-flow {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+
+            margin-top: 20px;
+        }
+
+
+        .dora-step {
+
+            padding: 18px;
+
+            border: 1px solid
+                rgba(0, 191, 255, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+        }
+
+
+        .dora-letter {
+
+            margin-bottom: 7px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+
+        .dora-step h3 {
+
+            margin: 0 0 7px;
+
+            font-size: 14px;
+        }
+
+
+        .dora-step p {
+
+            margin: 0;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           CHECKLIST
+        ====================================================== */
+
+        .checklist {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+
+        .check-item {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            padding: 12px;
+
+            border: 1px solid
+                rgba(0, 191, 255, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+
+        .check-item input {
+
+            width: 16px;
+            height: 16px;
+
+            margin-top: 2px;
+
+            accent-color: #00bfff;
+
+            cursor: pointer;
+        }
+
+
+        .check-item label {
+
+            color: #91a4bd;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion-card {
+
+            padding: 25px;
+
+            margin-top: 25px;
+
+            border: 1px solid
+                rgba(0, 191, 255, 0.20);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.07),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            text-align: center;
+        }
+
+
+        .completion-card h2 {
+
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: 20px;
+        }
+
+
+        .completion-card p {
+
+            margin: 0 auto 17px;
+
+            max-width: 650px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        .completion-status {
+
+            display: inline-block;
+
+            padding: 10px 17px;
+
+            border: 1px solid
+                rgba(0, 191, 255, 0.20);
+
+            border-radius: 8px;
+
+            color: #8193aa;
+
+            background:
+                rgba(0, 191, 255, 0.04);
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        .completion-status.completed {
+
+            color: #00bfff;
+
+            border-color:
+                rgba(0, 191, 255, 0.45);
+
+            background:
+                rgba(0, 191, 255, 0.09);
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-top: 30px;
+        }
+
+
+        .lab-nav-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 13px 18px;
+
+            border: 1px solid
+                rgba(0, 191, 255, 0.22);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(0, 191, 255, 0.04);
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .lab-nav-button:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.60);
+
+            background:
+                rgba(0, 191, 255, 0.09);
+
+            transform: translateY(-2px);
+        }
+
+
+        .lab-nav-button span {
+
+            color: #00bfff;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           LIGHT SWEEP
+        ====================================================== */
+
+        .lab-card::after,
+        .progress-card::after,
+        .completion-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(0, 191, 255, 0.07),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(0, 191, 255, 0.07),
+                    transparent
+                );
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .lab-card:hover::after,
+            .progress-card:hover::after,
+            .completion-card:hover::after {
+
+                animation:
+                    cardLightSweep 0.75s ease forwards;
+            }
+
+        }
+
+
+        @keyframes cardLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-page {
+
+                padding:
+                    50px 15px 65px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 35px;
+            }
+
+
+            .lab-info-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .dora-flow {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding:
+                    40px 12px 55px;
+            }
+
+
+            .lab-header {
+
+                margin-bottom: 28px;
+            }
+
+
+            .lab-label {
+
+                font-size: 10px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 29px;
+            }
+
+
+            .lab-intro {
+
+                font-size: 13px;
+            }
+
+
+            .lab-info-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 9px;
+            }
+
+
+            .lab-card {
+
+                padding: 20px 17px;
+
+                border-radius: 12px;
+            }
+
+
+            .lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .lab-card p {
+
+                font-size: 13px;
+            }
+
+
+            .dora-flow {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .lab-navigation {
+
+                flex-direction: column;
+            }
+
+
+            .lab-nav-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .lab-header h1 {
+
+                font-size: 26px;
+            }
+
+
+            .lab-page {
+
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3" />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5" />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5" />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor" />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2" />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         LAB CONTENT
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 BREADCRUMB
+            ================================================== -->
+
+            <div class="lab-breadcrumb">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <span>›</span>
+
+                <a href="../theory/dhcp.html">
+                    DHCP
+                </a>
+
+                <span>›</span>
+
+                Practical Lab
+
+            </div>
+
+
+
+            <!-- =================================================
+                 LAB HEADER
+            ================================================== -->
+
+            <header class="lab-header">
+
+                <div class="lab-label">
+                    NETWORKING PRACTICAL LAB
+                </div>
+
+                <h1>
+                    DHCP <span>Practical Lab</span>
+                </h1>
+
+                <p class="lab-intro">
+
+                    In this lab, you will inspect your device's DHCP
+                    configuration, release the current DHCP lease,
+                    request a new lease, and verify the network
+                    configuration provided by the DHCP server.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LAB INFORMATION
+            ================================================== -->
+
+            <section class="lab-info-grid">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Difficulty
+                    </div>
+
+                    <div class="info-value">
+                        Beginner
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Platform
+                    </div>
+
+                    <div class="info-value">
+                        Windows
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Tool
+                    </div>
+
+                    <div class="info-value">
+                        Command Prompt
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Topic
+                    </div>
+
+                    <div class="info-value">
+                        DHCP / Networking
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PROGRESS
+            ================================================== -->
+
+            <section class="progress-card">
+
+                <div class="progress-top">
+
+                    <div class="progress-title">
+                        Lab Progress
+                    </div>
+
+                    <div class="progress-percent"
+                         id="progressPercent">
+                        0%
+                    </div>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill">
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 OBJECTIVES
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        ◎
+                    </div>
+
+                    <h2>
+                        Lab Objectives
+                    </h2>
+
+                </div>
+
+
+                <ul class="objective-list">
+
+                    <li>
+                        Identify the DHCP configuration of your computer.
+                    </li>
+
+                    <li>
+                        Identify the IP address, subnet mask,
+                        default gateway and DNS server.
+                    </li>
+
+                    <li>
+                        Release the current DHCP lease.
+                    </li>
+
+                    <li>
+                        Request a new DHCP lease from the DHCP server.
+                    </li>
+
+                    <li>
+                        Verify the new network configuration.
+                    </li>
+
+                    <li>
+                        Understand how the practical activity relates
+                        to the DHCP DORA process.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 REQUIREMENTS
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        Requirements
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    Before starting the lab, make sure your computer
+                    is connected to a network through Wi-Fi or Ethernet.
+                </p>
+
+
+                <div class="note-box">
+
+                    <strong>
+                        Important
+                    </strong>
+
+                    <span>
+
+                        You should perform the release and renew commands
+                        only on your own computer. Your network connection
+                        may temporarily disconnect while the DHCP lease
+                        is being renewed.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 01
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <div class="step-title">
+                        Open Command Prompt
+                    </div>
+
+                </div>
+
+
+                <p>
+
+                    Open Windows Command Prompt.
+
+                    You can press:
+
+                </p>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+Windows + R
+                    </div>
+
+                </div>
+
+
+                <p>
+
+                    Then type:
+
+                </p>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+cmd
+                    </div>
+
+                    <button
+                        class="copy-button"
+                        onclick="copyCommand(this, 'cmd')">
+
+                        Copy
+
+                    </button>
+
+                </div>
+
+
+                <p>
+
+                    Press <strong style="color:#ffffff;">
+                    Enter
+                    </strong>
+                    to open Command Prompt.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 02
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    <div class="step-title">
+                        Check Current DHCP Configuration
+                    </div>
+
+                </div>
+
+
+                <p>
+
+                    Run the following command:
+
+                </p>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box"
+                         id="command-ipconfig">
+ipconfig /all
+                    </div>
+
+                    <button
+                        class="copy-button"
+                        onclick="copyCommandById(this, 'command-ipconfig')">
+
+                        Copy
+
+                    </button>
+
+                </div>
+
+
+                <div class="output-box">
+
+                    <div class="output-label">
+                        Example Output
+                    </div>
+
+Ethernet adapter Wi-Fi:
+
+   DHCP Enabled. . . . . . . . . . . : Yes
+   IPv4 Address. . . . . . . . . . . : 192.168.1.20
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 192.168.1.1
+   DHCP Server . . . . . . . . . . . : 192.168.1.1
+   DNS Servers . . . . . . . . . . . : 192.168.1.1
+
+                </div>
+
+
+                <p>
+
+                    Find these values in your own output:
+
+                </p>
+
+
+                <div class="checklist">
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="check-ip">
+
+                        <label for="check-ip">
+                            IPv4 Address identified
+                        </label>
+
+                    </div>
+
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="check-mask">
+
+                        <label for="check-mask">
+                            Subnet Mask identified
+                        </label>
+
+                    </div>
+
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="check-gateway">
+
+                        <label for="check-gateway">
+                            Default Gateway identified
+                        </label>
+
+                    </div>
+
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="check-dhcp">
+
+                        <label for="check-dhcp">
+                            DHCP Server identified
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="note-box">
+
+                    <strong>
+                        Note
+                    </strong>
+
+                    <span>
+
+                        The example IP address above is only an example.
+                        Your actual IP address will depend on your network.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 03
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    <div class="step-title">
+                        Release the DHCP Lease
+                    </div>
+
+                </div>
+
+
+                <p>
+
+                    The following command tells Windows to release
+                    the current DHCP-assigned IP configuration.
+
+                </p>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box"
+                         id="command-release">
+ipconfig /release
+                    </div>
+
+                    <button
+                        class="copy-button"
+                        onclick="copyCommandById(this, 'command-release')">
+
+                        Copy
+
+                    </button>
+
+                </div>
+
+
+                <div class="output-box">
+
+                    <div class="output-label">
+                        What You May Observe
+                    </div>
+
+Windows IP Configuration
+
+Successfully released the IP address.
+
+                </div>
+
+
+                <div class="note-box">
+
+                    <strong>
+                        What happened?
+                    </strong>
+
+                    <span>
+
+                        The computer releases its current DHCP lease.
+                        Network connectivity may temporarily stop because
+                        the adapter no longer has its previous DHCP
+                        configuration.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 04
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <div class="step-number">
+                        04
+                    </div>
+
+                    <div class="step-title">
+                        Request a New DHCP Lease
+                    </div>
+
+                </div>
+
+
+                <p>
+
+                    Now request a new IP configuration from the DHCP server.
+
+                </p>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box"
+                         id="command-renew">
+ipconfig /renew
+                    </div>
+
+                    <button
+                        class="copy-button"
+                        onclick="copyCommandById(this, 'command-renew')">
+
+                        Copy
+
+                    </button>
+
+                </div>
+
+
+                <div class="output-box">
+
+                    <div class="output-label">
+                        Example
+                    </div>
+
+Windows IP Configuration
+
+Successfully renewed the IP address.
+
+                </div>
+
+
+                <div class="note-box">
+
+                    <strong>
+                        What happened?
+                    </strong>
+
+                    <span>
+
+                        Windows requested network configuration from
+                        the DHCP service. The DHCP server can provide
+                        an IP address and other configuration information.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 05
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <div class="step-number">
+                        05
+                    </div>
+
+                    <div class="step-title">
+                        Verify the New Configuration
+                    </div>
+
+                </div>
+
+
+                <p>
+
+                    Run the following command again:
+
+                </p>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box"
+                         id="command-verify">
+ipconfig /all
+                    </div>
+
+                    <button
+                        class="copy-button"
+                        onclick="copyCommandById(this, 'command-verify')">
+
+                        Copy
+
+                    </button>
+
+                </div>
+
+
+                <p>
+
+                    Check the following values again:
+
+                </p>
+
+
+                <div class="concept-grid"
+                     style="
+                     display:grid;
+                     grid-template-columns:repeat(2,1fr);
+                     gap:10px;
+                     margin-top:15px;
+                     ">
+
+                    <div class="info-box">
+                        IPv4 Address
+                    </div>
+
+                    <div class="info-box">
+                        Subnet Mask
+                    </div>
+
+                    <div class="info-box">
+                        Default Gateway
+                    </div>
+
+                    <div class="info-box">
+                        DNS Server
+                    </div>
+
+                </div>
+
+
+                <div class="note-box">
+
+                    <strong>
+                        Important
+                    </strong>
+
+                    <span>
+
+                        The IP address after renewal may be the same as
+                        the previous address or may be different. This
+                        depends on the DHCP server's lease and address
+                        allocation process.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 06
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <div class="step-number">
+                        06
+                    </div>
+
+                    <div class="step-title">
+                        Understand the DHCP DORA Process
+                    </div>
+
+                </div>
+
+
+                <p>
+
+                    The DHCP address assignment process is commonly
+                    described using four steps called DORA.
+
+                </p>
+
+
+                <div class="dora-flow">
+
+
+                    <div class="dora-step">
+
+                        <div class="dora-letter">
+                            D
+                        </div>
+
+                        <h3>
+                            Discover
+                        </h3>
+
+                        <p>
+                            Client searches for an available DHCP server.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dora-step">
+
+                        <div class="dora-letter">
+                            O
+                        </div>
+
+                        <h3>
+                            Offer
+                        </h3>
+
+                        <p>
+                            DHCP server offers network configuration.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dora-step">
+
+                        <div class="dora-letter">
+                            R
+                        </div>
+
+                        <h3>
+                            Request
+                        </h3>
+
+                        <p>
+                            Client requests the offered configuration.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dora-step">
+
+                        <div class="dora-letter">
+                            A
+                        </div>
+
+                        <h3>
+                            Acknowledge
+                        </h3>
+
+                        <p>
+                            Server confirms the IP configuration.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="note-box">
+
+                    <strong>
+                        Practical Connection
+                    </strong>
+
+                    <span>
+
+                        The <strong style="display:inline;color:#ffffff;">
+                        ipconfig /renew
+                        </strong>
+                        command causes the Windows DHCP client to obtain
+                        network configuration through DHCP. The complete
+                        protocol exchange may involve the DORA process.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 07
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <div class="step-number">
+                        07
+                    </div>
+
+                    <div class="step-title">
+                        Identify DHCP Ports
+                    </div>
+
+                </div>
+
+
+                <p>
+
+                    DHCP uses UDP for its standard client-server
+                    communication.
+
+                </p>
+
+
+                <div class="dora-flow">
+
+
+                    <div class="dora-step">
+
+                        <div class="dora-letter">
+                            UDP
+                        </div>
+
+                        <h3>
+                            Port 67
+                        </h3>
+
+                        <p>
+                            DHCP server port.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dora-step">
+
+                        <div class="dora-letter">
+                            UDP
+                        </div>
+
+                        <h3>
+                            Port 68
+                        </h3>
+
+                        <p>
+                            DHCP client port.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 OPTIONAL VERIFICATION
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-header">
+
+                    <div class="step-number">
+                        08
+                    </div>
+
+                    <div class="step-title">
+                        Optional DHCP Verification
+                    </div>
+
+                </div>
+
+
+                <p>
+
+                    Run the following command to view detailed network
+                    configuration again:
+
+                </p>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box"
+                         id="command-final">
+ipconfig /all
+                    </div>
+
+                    <button
+                        class="copy-button"
+                        onclick="copyCommandById(this, 'command-final')">
+
+                        Copy
+
+                    </button>
+
+                </div>
+
+
+                <p>
+
+                    Confirm that DHCP is enabled on the active adapter.
+
+                </p>
+
+
+                <div class="output-box">
+
+                    <div class="output-label">
+                        Look For
+                    </div>
+
+DHCP Enabled. . . . . . . . . . . : Yes
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB CHECKLIST
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lab Completion Checklist
+                    </h2>
+
+                </div>
+
+
+                <div class="checklist">
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="complete-1">
+
+                        <label for="complete-1">
+
+                            I opened Command Prompt and ran
+                            <strong style="color:#ffffff;">
+                                ipconfig /all
+                            </strong>.
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="complete-2">
+
+                        <label for="complete-2">
+
+                            I identified my IPv4 address,
+                            subnet mask and default gateway.
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="complete-3">
+
+                        <label for="complete-3">
+
+                            I identified the DHCP server.
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="complete-4">
+
+                        <label for="complete-4">
+
+                            I released the DHCP lease using
+                            <strong style="color:#ffffff;">
+                                ipconfig /release
+                            </strong>.
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="complete-5">
+
+                        <label for="complete-5">
+
+                            I renewed the DHCP lease using
+                            <strong style="color:#ffffff;">
+                                ipconfig /renew
+                            </strong>.
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="complete-6">
+
+                        <label for="complete-6">
+
+                            I verified the network configuration
+                            after renewal.
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="complete-7">
+
+                        <label for="complete-7">
+
+                            I understand the DHCP DORA process.
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="complete-8">
+
+                        <label for="complete-8">
+
+                            I know that DHCP uses UDP ports
+                            67 and 68.
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 COMPLETION
+            ================================================== -->
+
+            <section class="completion-card">
+
+                <h2>
+                    DHCP Lab Status
+                </h2>
+
+
+                <p id="completionMessage">
+
+                    Complete all checklist items to finish this
+                    practical lab.
+
+                </p>
+
+
+                <div
+                    class="completion-status"
+                    id="completionStatus">
+
+                    Lab Incomplete
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="lab-navigation">
+
+                <a
+                    href="lab09.html"
+                    class="lab-nav-button">
+
+                    <span>←</span>
+
+                    Previous: Lab 
+
+                </a>
+
+
+                <a
+                    href="../theory/nat.html"
+                    class="lab-nav-button">
+
+                    ☰ NAT 
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+    <script>
+
+        /* =====================================================
+           COPY COMMAND
+        ====================================================== */
+
+        function copyCommand(button, command) {
+
+            navigator.clipboard.writeText(command);
+
+            const oldText = button.innerText;
+
+            button.innerText = "Copied";
+
+            setTimeout(function () {
+
+                button.innerText = oldText;
+
+            }, 1200);
+
+        }
+
+
+        function copyCommandById(button, elementId) {
+
+            const element =
+                document.getElementById(elementId);
+
+            const command =
+                element.innerText.trim();
+
+            navigator.clipboard.writeText(command);
+
+            const oldText = button.innerText;
+
+            button.innerText = "Copied";
+
+            setTimeout(function () {
+
+                button.innerText = oldText;
+
+            }, 1200);
+
+        }
+
+
+
+        /* =====================================================
+           PROGRESS SYSTEM
+        ====================================================== */
+
+        const checkboxes =
+            document.querySelectorAll(
+                '.check-item input[type="checkbox"]'
+            );
+
+        const progressFill =
+            document.getElementById("progressFill");
+
+        const progressPercent =
+            document.getElementById("progressPercent");
+
+        const completionStatus =
+            document.getElementById("completionStatus");
+
+        const completionMessage =
+            document.getElementById("completionMessage");
+
+
+        function updateProgress() {
+
+            const total =
+                checkboxes.length;
+
+            let completed = 0;
+
+
+            checkboxes.forEach(function (checkbox) {
+
+                if (checkbox.checked) {
+
+                    completed++;
+
+                }
+
+            });
+
+
+            const percentage =
+                Math.round(
+                    (completed / total) * 100
+                );
+
+
+            progressFill.style.width =
+                percentage + "%";
+
+            progressPercent.innerText =
+                percentage + "%";
+
+
+            if (percentage === 100) {
+
+                completionStatus.innerText =
+                    "Lab Completed ✓";
+
+                completionStatus.classList.add(
+                    "completed"
+                );
+
+                completionMessage.innerText =
+                    "Excellent! You have completed the DHCP practical lab and verified the main DHCP concepts.";
+
+            } else {
+
+                completionStatus.innerText =
+                    "Lab Incomplete";
+
+                completionStatus.classList.remove(
+                    "completed"
+                );
+
+                completionMessage.innerText =
+                    "Complete all checklist items to finish this practical lab.";
+
+            }
+
+        }
+
+
+        checkboxes.forEach(function (checkbox) {
+
+            checkbox.addEventListener(
+                "change",
+                updateProgress
+            );
+
+        });
+
+
+        updateProgress();
+
+    </script>
+
+
+</body>
+
+</html>

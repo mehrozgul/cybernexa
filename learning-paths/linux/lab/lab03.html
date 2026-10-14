@@ -1,0 +1,4172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab 03 - Linux Commands - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .linux-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-lab-header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .linux-lab-number {
+
+            display: inline-block;
+
+            margin-bottom: 12px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-lab-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-lab-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB STATUS
+        ====================================================== */
+
+        .lab-status {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+
+            padding: 15px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .lab-status-text {
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+        }
+
+
+        .lab-status-text strong {
+
+            color: #67e8f9;
+        }
+
+
+        .lab-status-badge {
+
+            padding: 7px 12px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.22);
+
+            border-radius: 7px;
+
+            color: #94a3b8;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        .lab-status-badge.completed {
+
+            color: #67e8f9;
+
+            border-color:
+                rgba(103, 232, 249, 0.55);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-lab-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-lab-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-lab-card::after,
+        .linux-step-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent
+                );
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-lab-card:hover::after,
+            .linux-step-card:hover::after {
+
+                animation:
+                    linuxLabLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxLabMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLabLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxLabMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-lab-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-lab-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           OBJECTIVE
+        ====================================================== */
+
+        .objective-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .objective-list li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 24px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid
+                rgba(103, 232, 249, 0.07);
+        }
+
+
+        .objective-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .objective-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           STEP CARD
+        ====================================================== */
+
+        .linux-step-card {
+
+            position: relative;
+
+            margin-top: 18px;
+
+            padding: 22px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.13);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+        }
+
+
+        .step-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            margin-bottom: 14px;
+        }
+
+
+        .step-number {
+
+            width: 31px;
+            height: 31px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.35);
+
+            border-radius: 8px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.08);
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        .step-header h3 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+
+        .step-description {
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* =====================================================
+           STEP INSTRUCTIONS
+        ====================================================== */
+
+        .step-instructions {
+
+            margin: 0 0 16px;
+
+            padding-left: 21px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        .step-instructions li {
+
+            margin-bottom: 6px;
+        }
+
+
+        .step-instructions li:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .command-wrapper {
+
+            position: relative;
+
+            margin-top: 15px;
+        }
+
+
+        .command-label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        .command-box {
+
+            position: relative;
+
+            padding: 16px 54px 16px 17px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 9px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+            white-space: pre;
+        }
+
+
+        /* =====================================================
+           COPY BUTTON
+        ====================================================== */
+
+        .copy-command-btn {
+
+            position: absolute;
+
+            right: 9px;
+            top: 9px;
+
+            padding: 7px 9px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 7px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            cursor: pointer;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .copy-command-btn:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+
+            background:
+                rgba(103, 232, 249, 0.12);
+        }
+
+
+        .copy-command-btn.copied {
+
+            color: #f8fafc;
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.16);
+        }
+
+
+        /* =====================================================
+           EXPECTED RESULT
+        ====================================================== */
+
+        .expected-result {
+
+            margin-top: 15px;
+
+            padding: 14px 16px;
+
+            border-left:
+                3px solid
+                #67e8f9;
+
+            border-radius:
+                0 8px 8px 0;
+
+            background:
+                rgba(103, 232, 249, 0.045);
+        }
+
+
+        .expected-result strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #f8fafc;
+
+            font-size: 12px;
+        }
+
+
+        .expected-result span {
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           SAFETY NOTE
+        ====================================================== */
+
+        .safety-note {
+
+            margin-top: 14px;
+
+            padding: 13px 15px;
+
+            border:
+                1px solid
+                rgba(251, 191, 36, 0.16);
+
+            border-radius: 8px;
+
+            color: #b8b29c;
+
+            background:
+                rgba(251, 191, 36, 0.035);
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        .safety-note strong {
+
+            color: #facc15;
+        }
+
+
+        /* =====================================================
+           PRACTICAL FLOW
+        ====================================================== */
+
+        .lab-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .lab-flow-item {
+
+            padding: 11px 15px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.20);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .lab-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           FINAL COMPLETION
+        ====================================================== */
+
+        .completion-card {
+
+            text-align: center;
+
+            padding: 32px 25px;
+        }
+
+
+        .completion-card h2 {
+
+            margin-bottom: 10px;
+        }
+
+
+        .completion-card p {
+
+            max-width: 650px;
+
+            margin: 0 auto 20px;
+        }
+
+
+        .complete-lab-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 14px 23px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.35);
+
+            border-radius: 9px;
+
+            color: #02080d;
+
+            background: #67e8f9;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .complete-lab-btn:hover {
+
+            transform: translateY(-2px);
+
+            background: #a5f3fc;
+
+            box-shadow:
+                0 8px 25px
+                rgba(103, 232, 249, 0.20);
+        }
+
+
+        .complete-lab-btn.completed {
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.08);
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+
+            cursor: default;
+
+            transform: none;
+
+            box-shadow: none;
+        }
+
+
+        .completion-message {
+
+            display: none;
+
+            margin-top: 15px;
+
+            color: #67e8f9;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .completion-message.show {
+
+            display: block;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-lab-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform: translateY(-1px);
+        }
+
+
+        .linux-lab-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-lab-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-lab-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-lab-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-lab-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-lab-header {
+
+                margin-bottom: 28px;
+            }
+
+
+            .linux-lab-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-lab-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .lab-status {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .linux-lab-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-lab-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-step-card {
+
+                padding: 17px;
+            }
+
+
+            .step-header h3 {
+
+                font-size: 15px;
+            }
+
+
+            .step-description,
+            .step-instructions {
+
+                font-size: 12px;
+            }
+
+
+            .command-box code {
+
+                font-size: 12px;
+            }
+
+
+            .lab-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .lab-flow-item {
+
+                width: 100%;
+            }
+
+
+            .lab-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .lab-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-lab-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-lab-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-lab-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-lab-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-lab-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-lab-page">
+
+        <div class="linux-lab-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="linux-lab-header">
+
+                <div class="linux-lab-number">
+                    LINUX PRACTICAL LAB 03
+                </div>
+
+                <h1>
+                   Lab 03 - <span>Linux Commands</span>
+                </h1>
+
+                <p class="linux-lab-intro">
+
+                    In this practical lab, you will practice basic
+                    Linux commands for directory navigation, file
+                    management, file viewing, searching, system
+                    information and permissions.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LAB STATUS
+            ================================================== -->
+
+            <div class="lab-status">
+
+                <div class="lab-status-text">
+
+                    <strong>Lab 03:</strong>
+                    Linux Commands Practical
+
+                </div>
+
+                <div
+                    class="lab-status-badge"
+                    id="labStatusBadge"
+                >
+                    Not Completed
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 OBJECTIVE
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🎯
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    By completing this lab, you will practically
+                    execute the Linux commands introduced in the
+                    Linux Commands topic.
+
+                </p>
+
+
+                <ul class="objective-list">
+
+                    <li>
+                        Navigate directories using Linux commands.
+                    </li>
+
+                    <li>
+                        Create, copy, rename and remove files.
+                    </li>
+
+                    <li>
+                        Create and manage directories.
+                    </li>
+
+                    <li>
+                        View the contents of files.
+                    </li>
+
+                    <li>
+                        Search for files and text.
+                    </li>
+
+                    <li>
+                        Check basic system information.
+                    </li>
+
+                    <li>
+                        Check disk, memory and process information.
+                    </li>
+
+                    <li>
+                        Understand basic permission commands.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 REQUIREMENT
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        >
+                    </div>
+
+                    <h2>
+                        Before You Start
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Open a Linux terminal. You can perform this lab
+                    on a Linux system or a Linux virtual machine.
+
+                </p>
+
+
+                <div class="expected-result">
+
+                    <strong>
+                        How to start:
+                    </strong>
+
+                    <span>
+
+                        Open Terminal and wait until the command
+                        prompt appears. Then perform the tasks
+                        below one by one.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 1
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        /
+                    </div>
+
+                    <h2>
+                        Task 1 — Check Your Current Location
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            1
+                        </div>
+
+                        <h3>
+                            Use the pwd command
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>pwd</strong> command displays
+                        the current working directory.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Open your Linux terminal.
+                        </li>
+
+                        <li>
+                            Click the Copy Command button.
+                        </li>
+
+                        <li>
+                            Paste the command into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command1">pwd</code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command1', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            The terminal displays your current
+                            directory path, for example
+                            <strong>/home/user</strong>.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 2
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        L
+                    </div>
+
+                    <h2>
+                        Task 2 — List Files and Directories
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            2
+                        </div>
+
+                        <h3>
+                            Use ls
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>ls</strong> command lists files
+                        and directories in the current location.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                        <li>
+                            Observe the files and directories displayed.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command2">ls</code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command2', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            A list of files and directories appears.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            3
+                        </div>
+
+                        <h3>
+                            Display Detailed Files
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        Use <strong>ls -la</strong> to display
+                        detailed information, including hidden files.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Copy the command below.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command3">ls -la</code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command3', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            Detailed file information is displayed,
+                            including hidden files such as
+                            <strong>.bashrc</strong> when present.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 3
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        F
+                    </div>
+
+                    <h2>
+                        Task 3 — Create and Manage a File
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            4
+                        </div>
+
+                        <h3>
+                            Create a File
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>touch</strong> command creates
+                        an empty file.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command4">touch notes.txt</code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command4', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            An empty file named
+                            <strong>notes.txt</strong> is created.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            5
+                        </div>
+
+                        <h3>
+                            Copy the File
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>cp</strong> command creates
+                        a copy of a file.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command5">
+cp notes.txt backup.txt
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command5', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            A second file named
+                            <strong>backup.txt</strong> is created.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            6
+                        </div>
+
+                        <h3>
+                            Rename the File
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>mv</strong> command can be used
+                        to rename a file.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command6">
+mv backup.txt backup-copy.txt
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command6', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            The file is renamed to
+                            <strong>backup-copy.txt</strong>.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            7
+                        </div>
+
+                        <h3>
+                            Remove the File
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>rm</strong> command removes
+                        a file.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command7">
+rm backup-copy.txt
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command7', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            The specified file is removed.
+                        </span>
+
+                    </div>
+
+
+                    <div class="safety-note">
+
+                        <strong>Safety Note:</strong>
+                        The <strong>rm</strong> command permanently
+                        removes files. Only run it on files you
+                        intentionally created for this lab.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 4
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        D
+                    </div>
+
+                    <h2>
+                        Task 4 — Create and Manage a Directory
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            8
+                        </div>
+
+                        <h3>
+                            Create a Directory
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>mkdir</strong> command creates
+                        a new directory.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command8">
+mkdir cybersecurity
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command8', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            A directory named
+                            <strong>cybersecurity</strong> is created.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            9
+                        </div>
+
+                        <h3>
+                            Enter the Directory
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>cd</strong> command changes
+                        the current working directory.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                        <li>
+                            Run <strong>pwd</strong> afterward to
+                            confirm your location.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command9">
+cd cybersecurity
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command9', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            Your current directory changes to
+                            <strong>cybersecurity</strong>.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            10
+                        </div>
+
+                        <h3>
+                            Create a File Inside the Directory
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        Create an empty file inside the current
+                        directory.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command10">
+touch notes.txt
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command10', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            The file <strong>notes.txt</strong>
+                            is created inside the directory.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            11
+                        </div>
+
+                        <h3>
+                            List the Directory Contents
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        Use <strong>ls</strong> to confirm that
+                        the file exists.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command11">ls</code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command11', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            <strong>notes.txt</strong> appears
+                            in the output.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 5
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        V
+                    </div>
+
+                    <h2>
+                        Task 5 — View File Content
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            12
+                        </div>
+
+                        <h3>
+                            Display File Content
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>cat</strong> command displays
+                        the contents of a file.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Create or use an existing text file.
+                        </li>
+
+                        <li>
+                            Copy the command below.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command12">
+cat notes.txt
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command12', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            The terminal displays the contents
+                            of <strong>notes.txt</strong>.
+                            If the file is empty, no text appears.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            13
+                        </div>
+
+                        <h3>
+                            View the Beginning of a File
+                        </h3>
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command13">
+head notes.txt
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command13', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            The beginning portion of the file is displayed.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            14
+                        </div>
+
+                        <h3>
+                            View the End of a File
+                        </h3>
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command14">
+tail notes.txt
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command14', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            The end portion of the file is displayed.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 6
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ?
+                    </div>
+
+                    <h2>
+                        Task 6 — Search for Files and Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            15
+                        </div>
+
+                        <h3>
+                            Search for a File
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>find</strong> command searches
+                        for files and directories based on conditions.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Make sure you are in your home directory.
+                        </li>
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command15">
+find . -name "notes.txt"
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command15', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            The path of matching
+                            <strong>notes.txt</strong> files
+                            is displayed.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            16
+                        </div>
+
+                        <h3>
+                            Find the Location of a Command
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>which</strong> command shows
+                        the location of an executable command.
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command16">
+which ls
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command16', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            The path of the
+                            <strong>ls</strong> executable
+                            is displayed.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            17
+                        </div>
+
+                        <h3>
+                            Search Text with grep
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>grep</strong> command searches
+                        text for a matching pattern.
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command17">
+grep "Linux" notes.txt
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command17', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            Lines containing the word
+                            <strong>Linux</strong> are displayed.
+
+                            If no matching text exists, no matching
+                            line is displayed.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 7
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        Task 7 — Check System Information
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            18
+                        </div>
+
+                        <h3>
+                            Check Current Username
+                        </h3>
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command18">
+whoami
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command18', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            Your current Linux username is displayed.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            19
+                        </div>
+
+                        <h3>
+                            Check Hostname
+                        </h3>
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command19">
+hostname
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command19', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            The system hostname is displayed.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            20
+                        </div>
+
+                        <h3>
+                            Check Kernel Information
+                        </h3>
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command20">
+uname -a
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command20', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            Detailed system and kernel information is displayed.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            21
+                        </div>
+
+                        <h3>
+                            Check System Uptime
+                        </h3>
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command21">
+uptime
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command21', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            The amount of time the system has been running is displayed.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 8
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        %
+                    </div>
+
+                    <h2>
+                        Task 8 — Check Disk and Memory Usage
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            22
+                        </div>
+
+                        <h3>
+                            Check Disk Space
+                        </h3>
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command22">
+df -h
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command22', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            Used and available disk space is displayed in a human-readable format.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            23
+                        </div>
+
+                        <h3>
+                            Check Memory Usage
+                        </h3>
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command23">
+free -h
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command23', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+                            RAM and swap memory usage is displayed.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            24
+                        </div>
+
+                        <h3>
+                            Check Running Processes
+                        </h3>
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command24">
+top
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command24', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            The terminal displays active processes
+                            and system resource usage.
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="safety-note">
+
+                        <strong>Important:</strong>
+                        The <strong>top</strong> command provides
+                        a live process view. Press <strong>q</strong>
+                        to exit the display.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 9
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Task 9 — Practice Permissions
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            25
+                        </div>
+
+                        <h3>
+                            Change File Permissions
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>chmod</strong> command changes
+                        file permissions.
+
+                    </div>
+
+
+                    <ol class="step-instructions">
+
+                        <li>
+                            Make sure you are working with a test file.
+                        </li>
+
+                        <li>
+                            Copy the command.
+                        </li>
+
+                        <li>
+                            Paste it into the terminal.
+                        </li>
+
+                        <li>
+                            Press <strong>Enter</strong>.
+                        </li>
+
+                    </ol>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command25">
+chmod 600 notes.txt
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command25', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            The permissions of
+                            <strong>notes.txt</strong> are changed.
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="safety-note">
+
+                        <strong>Safety Note:</strong>
+                        Only change permissions on your lab files.
+                        Do not modify important system files.
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="linux-step-card">
+
+                    <div class="step-header">
+
+                        <div class="step-number">
+                            26
+                        </div>
+
+                        <h3>
+                            Use sudo for Authorized Privileges
+                        </h3>
+
+                    </div>
+
+
+                    <div class="step-description">
+
+                        The <strong>sudo</strong> command executes
+                        an authorized command with elevated privileges.
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <span class="command-label">
+                            Example Command
+                        </span>
+
+                        <div class="command-box">
+
+                            <code id="command26">
+sudo whoami
+                            </code>
+
+                            <button
+                                class="copy-command-btn"
+                                onclick="copyCommand('command26', this)"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-result">
+
+                        <strong>
+                            Expected Result:
+                        </strong>
+
+                        <span>
+
+                            If your account is authorized to use sudo,
+                            the command runs with elevated privileges
+                            and the result is displayed.
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="safety-note">
+
+                        <strong>Safety Note:</strong>
+                        Use sudo only for commands you understand
+                        and are authorized to execute.
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL FLOW
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        >
+                    </div>
+
+                    <h2>
+                        Complete Practical Flow
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The following flow represents the main practical
+                    sequence completed in this lab.
+
+                </p>
+
+
+                <div class="lab-flow">
+
+                    <div class="lab-flow-item">
+                        Check Location
+                    </div>
+
+                    <div class="lab-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="lab-flow-item">
+                        List Files
+                    </div>
+
+                    <div class="lab-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="lab-flow-item">
+                        Create Directory
+                    </div>
+
+                    <div class="lab-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="lab-flow-item">
+                        Create File
+                    </div>
+
+                    <div class="lab-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="lab-flow-item">
+                        View File
+                    </div>
+
+                    <div class="lab-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="lab-flow-item">
+                        Search
+                    </div>
+
+                    <div class="lab-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="lab-flow-item">
+                        Check System
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY CONNECTION
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why This Lab Matters in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux command-line skills are commonly used in
+                    cybersecurity for system administration, file
+                    analysis, log analysis, permission management,
+                    process inspection and troubleshooting.
+
+                </p>
+
+
+                <div class="objective-list">
+
+                    <li>
+                        File analysis
+                    </li>
+
+                    <li>
+                        System information gathering
+                    </li>
+
+                    <li>
+                        Process analysis
+                    </li>
+
+                    <li>
+                        Permission management
+                    </li>
+
+                    <li>
+                        Command-line troubleshooting
+                    </li>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 COMPLETION
+            ================================================== -->
+
+            <section class="linux-lab-card completion-card">
+
+                <div class="linux-card-heading"
+                     style="justify-content:center;">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Complete Lab 03
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    After performing the practical tasks above,
+                    click the button below to mark Lab 03 as completed.
+
+                </p>
+
+
+                <button
+                    class="complete-lab-btn"
+                    id="completeLabBtn"
+                    onclick="completeLab()"
+                >
+
+                    <span>
+                        ✓
+                    </span>
+
+                    Complete Lab 03
+
+                </button>
+
+
+                <div
+                    class="completion-message"
+                    id="completionMessage"
+                >
+
+                    ✓ Lab 03 completed successfully.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-lab-navigation">
+
+
+                <a
+                    href="lab02.html"
+                    class="linux-lab-button previous"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Linux File System
+                    </strong>
+
+                </a>
+
+
+                <a
+                    href="../theory/linux-users-groups.html"
+                    class="linux-lab-button next"
+                >
+
+                    <strong>
+                        Next Topic: Users & groups
+                    </strong>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+
+    <!-- =====================================================
+         COPY COMMAND
+    ====================================================== -->
+
+    <script>
+
+        function copyCommand(commandId, button) {
+
+            const command =
+                document.getElementById(commandId).textContent.trim();
+
+            navigator.clipboard.writeText(command)
+                .then(() => {
+
+                    const oldText = button.textContent;
+
+                    button.textContent = "Copied!";
+
+                    button.classList.add("copied");
+
+                    setTimeout(() => {
+
+                        button.textContent = oldText;
+
+                        button.classList.remove("copied");
+
+                    }, 1500);
+
+                })
+                .catch(() => {
+
+                    const textArea =
+                        document.createElement("textarea");
+
+                    textArea.value = command;
+
+                    document.body.appendChild(textArea);
+
+                    textArea.select();
+
+                    document.execCommand("copy");
+
+                    document.body.removeChild(textArea);
+
+                    const oldText = button.textContent;
+
+                    button.textContent = "Copied!";
+
+                    button.classList.add("copied");
+
+                    setTimeout(() => {
+
+                        button.textContent = oldText;
+
+                        button.classList.remove("copied");
+
+                    }, 1500);
+
+                });
+
+        }
+
+    </script>
+
+
+
+    <!-- =====================================================
+         COMPLETE LAB
+    ====================================================== -->
+
+    <script>
+
+        const labCompletionKey =
+            "cybernexa_lab03_completed";
+
+        const completeLabButton =
+            document.getElementById("completeLabBtn");
+
+        const completionMessage =
+            document.getElementById("completionMessage");
+
+        const labStatusBadge =
+            document.getElementById("labStatusBadge");
+
+
+        function updateLabStatus() {
+
+            const completed =
+                localStorage.getItem(labCompletionKey);
+
+            if (completed === "true") {
+
+                completeLabButton.innerHTML =
+                    "<span>✓</span> Lab 03 Completed";
+
+                completeLabButton.classList.add(
+                    "completed"
+                );
+
+                completionMessage.classList.add(
+                    "show"
+                );
+
+                labStatusBadge.textContent =
+                    "Completed";
+
+                labStatusBadge.classList.add(
+                    "completed"
+                );
+
+                completeLabButton.disabled = true;
+
+            }
+
+        }
+
+
+        function completeLab() {
+
+            localStorage.setItem(
+                labCompletionKey,
+                "true"
+            );
+
+            completeLabButton.innerHTML =
+                "<span>✓</span> Lab 03 Completed";
+
+            completeLabButton.classList.add(
+                "completed"
+            );
+
+            completionMessage.classList.add(
+                "show"
+            );
+
+            labStatusBadge.textContent =
+                "Completed";
+
+            labStatusBadge.classList.add(
+                "completed"
+            );
+
+            completeLabButton.disabled = true;
+
+            window.scrollTo({
+
+                top:
+                    document.body.scrollHeight,
+
+                behavior: "smooth"
+
+            });
+
+        }
+
+
+        updateLabStatus();
+
+    </script>
+
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards =
+            document.querySelectorAll(
+                ".linux-lab-card, .linux-step-card"
+            );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+
+                return;
+
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+                void card.offsetWidth;
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(
+                sweepTimeout
+            );
+
+
+            sweepTimeout =
+                setTimeout(() => {
+
+                    sweepCards.forEach(card => {
+
+                        card.classList.remove(
+                            "mobile-sweep"
+                        );
+
+                    });
+
+                }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (
+                    window.innerWidth <= 600
+                ) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

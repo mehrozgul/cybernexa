@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+    <title>Python Requests | CyberNexa</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 202, 255, 0.08),
+                    transparent 30%
+                ),
+                #030b16;
+
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
+            background: #030c19;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 16px 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #00caff;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            color: #7f94aa;
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           ARTICLE
+        ===================================================== */
+
+        .article-page {
+            max-width: 1000px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        .article-breadcrumb {
+            color: #6f849a;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .article-breadcrumb span {
+            color: #00caff;
+            padding: 0 7px;
+        }
+
+        .article-header {
+            padding: 30px;
+            border: 1px solid rgba(0, 202, 255, 0.25);
+            border-left: 4px solid #00caff;
+            border-radius: 9px;
+            background: rgba(0, 202, 255, 0.04);
+        }
+
+        .article-label {
+            color: #00caff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .article-header h1 {
+            color: white;
+            font-size: 34px;
+            margin: 8px 0;
+        }
+
+        .article-header p {
+            color: #9fb1c5;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .article-section {
+            margin-top: 22px;
+            padding: 25px;
+            border: 1px solid rgba(0, 202, 255, 0.15);
+            border-radius: 9px;
+            background: #041221;
+        }
+
+        .article-section h2 {
+            color: white;
+            font-size: 20px;
+            margin-top: 0;
+        }
+
+        .article-section h3 {
+            color: #00caff;
+            font-size: 16px;
+        }
+
+        .article-section p {
+            color: #aabbd0;
+            font-size: 13px;
+        }
+
+        .article-list {
+            color: #aabbd0;
+            font-size: 13px;
+            padding-left: 20px;
+        }
+
+        .article-list li {
+            margin-bottom: 7px;
+        }
+
+
+        /* =====================================================
+           CODE
+        ===================================================== */
+
+        .code-block {
+            margin-top: 15px;
+            background: #020810;
+            border: 1px solid rgba(0, 202, 255, 0.2);
+            border-radius: 7px;
+            overflow-x: auto;
+        }
+
+        pre {
+            margin: 0;
+            padding: 18px;
+            color: #7ee7ff;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           CONCEPT CARDS
+        ===================================================== */
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .concept-card {
+            padding: 18px;
+            border: 1px solid rgba(0, 202, 255, 0.15);
+            border-radius: 8px;
+            background: rgba(0, 202, 255, 0.025);
+        }
+
+        .concept-card h3 {
+            color: #00caff;
+            margin-top: 0;
+        }
+
+        .concept-card p {
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           OUTPUT
+        ===================================================== */
+
+        .output-box {
+            margin-top: 12px;
+            padding: 14px;
+            border-radius: 7px;
+            border: 1px solid rgba(0, 230, 138, 0.2);
+            background: #020810;
+            color: #7fffc0;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           LAB CTA
+        ===================================================== */
+
+        .article-lab {
+            margin-top: 25px;
+            padding: 25px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+
+            border: 1px solid rgba(0, 230, 138, 0.25);
+            border-left: 4px solid #00e68a;
+            border-radius: 9px;
+
+            background: rgba(0, 230, 138, 0.04);
+        }
+
+        .article-lab h2 {
+            color: white;
+            margin: 8px 0;
+        }
+
+        .article-lab p {
+            color: #9fb1c5;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .article-lab a {
+            flex-shrink: 0;
+            padding: 11px 20px;
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+
+            color: #00e68a;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .article-lab a:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+        /* =====================================================
+           LESSON COMPLETION
+        ===================================================== */
+
+        #lesson-completion .lesson-completion-button {
+            padding: 10px 18px;
+            border: 1px solid #00caff;
+            border-radius: 22px;
+            background: transparent;
+            color: #00caff;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        #lesson-completion .lesson-completion-button:hover {
+            background: #00caff;
+            color: #02101a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 202, 255, 0.2);
+        }
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            border-top: 1px solid rgba(0, 202, 255, 0.15);
+            background: #020914;
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            max-width: 1000px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #6f849a;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            max-width: 1000px;
+            margin: 25px auto 0;
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255,255,255,0.05);
+
+            text-align: center;
+            color: #52667b;
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .article-page {
+                padding: 25px 15px 55px;
+            }
+
+            .article-header {
+                padding: 22px;
+            }
+
+            .article-header h1 {
+                font-size: 27px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-lab {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .article-navigation {
+                flex-direction: column;
+            }
+
+            .article-navigation a {
+                text-align: center;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<!-- =====================================================
+     MAIN ARTICLE
+===================================================== -->
+
+<main class="article-page">
+
+
+    <!-- BREADCRUMB -->
+
+    <div class="article-breadcrumb">
+
+        Python for Cybersecurity
+
+        <span>›</span>
+
+        Requests
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <section class="article-header">
+
+        <div class="article-label">
+            PYTHON FOR CYBERSECURITY
+        </div>
+
+        <h1>
+            Python Requests
+        </h1>
+
+        <p>
+            Learn how Python can communicate with web servers,
+            send HTTP requests and inspect web responses using
+            the Requests library.
+        </p>
+
+    </section>
+
+
+    <!-- DEFINITION -->
+
+    <section class="article-section">
+
+        <h2>What is Requests?</h2>
+
+        <p>
+            Requests is a popular Python library used to send HTTP
+            requests to web servers. It makes it easier to communicate
+            with websites and web APIs.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>import requests
+
+response = requests.get("https://example.com")
+
+print(response.status_code)</code></pre>
+
+        </div>
+
+        <p>
+            In this example, Python sends a GET request to the server
+            and stores the server response inside the
+            <strong>response</strong> variable.
+        </p>
+
+    </section>
+
+
+    <!-- WHY IMPORTANT -->
+
+    <section class="article-section">
+
+        <h2>Why is Requests Important in Cybersecurity?</h2>
+
+        <p>
+            Security professionals often need to communicate with
+            websites and APIs. The Requests library can be used for
+            safe HTTP testing, security automation, API interaction
+            and collecting information from authorized systems.
+        </p>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+
+                <h3>HTTP Testing</h3>
+
+                <p>
+                    Send requests to an authorized web application
+                    and inspect its response.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>Status Codes</h3>
+
+                <p>
+                    Check HTTP status codes such as 200, 404 and 500.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>Headers</h3>
+
+                <p>
+                    Read HTTP response headers during security analysis.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>Automation</h3>
+
+                <p>
+                    Automate repetitive HTTP-based security tasks.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- INSTALLATION -->
+
+    <section class="article-section">
+
+        <h2>Installing Requests</h2>
+
+        <p>
+            Requests is an external Python library. It can be installed
+            using pip.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>pip install requests</code></pre>
+
+        </div>
+
+        <p>
+            After installation, import the library using:
+        </p>
+
+        <div class="code-block">
+
+<pre><code>import requests</code></pre>
+
+        </div>
+
+    </section>
+
+
+    <!-- GET REQUEST -->
+
+    <section class="article-section">
+
+        <h2>GET Request</h2>
+
+        <p>
+            A GET request is commonly used to retrieve information
+            from a web server.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>import requests
+
+url = "https://example.com"
+
+response = requests.get(url)
+
+print(response.status_code)</code></pre>
+
+        </div>
+
+        <div class="output-box">
+            Example Output: 200
+        </div>
+
+        <p>
+            A status code of <strong>200</strong> generally means that
+            the HTTP request was successful.
+        </p>
+
+    </section>
+
+
+    <!-- STATUS CODE -->
+
+    <section class="article-section">
+
+        <h2>HTTP Status Code</h2>
+
+        <p>
+            The response object contains the HTTP status code returned
+            by the server.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>import requests
+
+response = requests.get("https://example.com")
+
+print(response.status_code)</code></pre>
+
+        </div>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+
+                <h3>200</h3>
+
+                <p>
+                    Request successful.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>404</h3>
+
+                <p>
+                    Requested resource was not found.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>403</h3>
+
+                <p>
+                    Server understood the request but access is forbidden.
+                </p>
+
+            </div>
+
+
+            <div class="concept-card">
+
+                <h3>500</h3>
+
+                <p>
+                    Internal server error.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HEADERS -->
+
+    <section class="article-section">
+
+        <h2>Reading Response Headers</h2>
+
+        <p>
+            HTTP headers contain additional information about the
+            server response.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>import requests
+
+response = requests.get("https://example.com")
+
+print(response.headers)</code></pre>
+
+        </div>
+
+        <p>
+            Headers can provide information such as content type,
+            server behavior and other HTTP metadata.
+        </p>
+
+    </section>
+
+
+    <!-- CONTENT -->
+
+    <section class="article-section">
+
+        <h2>Reading Response Content</h2>
+
+        <p>
+            The response body can be accessed through
+            <strong>response.text</strong>.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>import requests
+
+response = requests.get("https://example.com")
+
+print(response.text)</code></pre>
+
+        </div>
+
+    </section>
+
+
+    <!-- TIMEOUT -->
+
+    <section class="article-section">
+
+        <h2>Using a Timeout</h2>
+
+        <p>
+            A timeout prevents a program from waiting indefinitely
+            for a server response.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>import requests
+
+response = requests.get(
+    "https://example.com",
+    timeout=5
+)
+
+print(response.status_code)</code></pre>
+
+        </div>
+
+        <p>
+            In this example, the request will wait up to 5 seconds
+            for a response.
+        </p>
+
+    </section>
+
+
+    <!-- SECURITY EXAMPLE -->
+
+    <section class="article-section">
+
+        <h2>Cybersecurity Example</h2>
+
+        <p>
+            During authorized security analysis, Requests can be used
+            to check whether a web service is reachable and inspect
+            its HTTP response.
+        </p>
+
+        <div class="code-block">
+
+<pre><code>import requests
+
+target = "https://example.com"
+
+response = requests.get(
+    target,
+    timeout=5
+)
+
+print("Target:", target)
+print("Status:", response.status_code)
+
+if response.status_code == 200:
+    print("Web service is responding.")
+else:
+    print("Web service returned another status.")</code></pre>
+
+        </div>
+
+    </section>
+
+
+    <!-- IMPORTANT SECURITY NOTE -->
+
+    <section class="article-section">
+
+        <h2>Security Note</h2>
+
+        <ul class="article-list">
+
+            <li>
+                Only send requests to systems you own or are authorized
+                to test.
+            </li>
+
+            <li>
+                Use reasonable request rates during security testing.
+            </li>
+
+            <li>
+                Avoid testing third-party systems without permission.
+            </li>
+
+            <li>
+                Use timeouts to make security scripts more reliable.
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+
+    <section class="article-section">
+
+        <h2>Summary</h2>
+
+        <ul class="article-list">
+
+            <li>
+                Requests is a Python library for HTTP communication.
+            </li>
+
+            <li>
+                It can send GET and other HTTP requests.
+            </li>
+
+            <li>
+                Response status codes help understand server responses.
+            </li>
+
+            <li>
+                Response headers provide additional HTTP information.
+            </li>
+
+            <li>
+                Requests can be useful for cybersecurity automation.
+            </li>
+
+            <li>
+                Security testing should only be performed on authorized
+                systems.
+            </li>
+
+        </ul>
+
+    </section>
+    <!-- =====================================================
+         LESSON COMPLETION
+    ===================================================== -->
+
+    <section class="article-section" id="lesson-completion">
+
+        <h2>Lesson Completion</h2>
+
+        <p>
+            You have completed the Python Requests lesson.
+            Review the key concepts and mark this lesson as
+            completed to track your learning progress.
+        </p>
+
+        <button
+            type="button"
+            class="lesson-completion-button"
+            data-lesson-progress
+            data-course-id="python"
+            data-lesson-id="requests"
+            data-dashboard-url="../learning-paths/python/theory/requests.html"
+            data-status-id="requestsCompletionStatus">
+            Mark Lesson as Completed
+        </button>
+
+        <p
+            id="requestsCompletionStatus"
+            role="status"
+            aria-live="polite"
+            style="margin-top: 12px;">
+        </p>
+
+    </section>
+    <!-- LAB -->
+
+    <section class="article-lab">
+
+        <div>
+
+            <span class="article-label">
+                PRACTICAL LAB
+            </span>
+
+            <h2>
+                Practice Python Requests
+            </h2>
+
+            <p>
+                Send an HTTP GET request and inspect the returned
+                status code and response information.
+            </p>
+
+        </div>
+
+        <a href="../lab/requests-lab.html">
+            Open Lab →
+        </a>
+
+    </section>
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+
+</html>

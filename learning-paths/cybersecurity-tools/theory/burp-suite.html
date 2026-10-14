@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+    <title>Burp Suite | CyberNexa</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top right,
+                    rgba(255, 107, 0, 0.10),
+                    transparent 32%),
+                #050505;
+            color: #e8e8e8;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            width: 100%;
+            background: #090909;
+            border-bottom: 1px solid rgba(255, 107, 0, 0.25);
+        }
+
+        .nav-container {
+            width: min(1200px, 100%);
+            margin: auto;
+            padding: 15px 24px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #ff6b00;
+            flex-shrink: 0;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #ff6b00;
+        }
+
+        .brand-tagline {
+            color: #777;
+            font-size: 10px;
+        }
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            width: min(1050px, 100%);
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        .breadcrumb {
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 22px;
+        }
+
+        .breadcrumb span {
+            color: #ff6b00;
+            padding: 0 7px;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .tool-header {
+            padding: 32px;
+            border: 1px solid rgba(255, 107, 0, 0.35);
+            border-left: 5px solid #ff6b00;
+            border-radius: 10px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 107, 0, 0.10),
+                    rgba(255, 107, 0, 0.02)
+                );
+        }
+
+        .tool-label {
+            color: #ff6b00;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .tool-header h1 {
+            color: white;
+            font-size: clamp(30px, 5vw, 48px);
+            line-height: 1.15;
+            margin: 10px 0;
+        }
+
+        .tool-header p {
+            color: #a7a7a7;
+            font-size: 14px;
+            max-width: 800px;
+            margin: 0;
+        }
+
+        /* =========================
+           SECTIONS
+        ========================= */
+
+        .section {
+            margin-top: 24px;
+            padding: 25px;
+            background: #0b0b0b;
+            border: 1px solid rgba(255, 107, 0, 0.16);
+            border-radius: 9px;
+        }
+
+        .section h2 {
+            color: white;
+            font-size: 22px;
+            margin-top: 0;
+            border-left: 3px solid #ff6b00;
+            padding-left: 12px;
+        }
+
+        .section h3 {
+            color: #ff8a3d;
+            font-size: 16px;
+        }
+
+        .section p,
+        .section li {
+            color: #a8a8a8;
+            font-size: 13px;
+        }
+
+        .section strong {
+            color: #eaeaea;
+        }
+
+        /* =========================
+           COMPONENT GRID
+        ========================= */
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .component-card {
+            padding: 18px;
+            background: #101010;
+            border: 1px solid rgba(255, 107, 0, 0.18);
+            border-radius: 8px;
+        }
+
+        .component-card h3 {
+            margin-top: 0;
+            color: #ff6b00;
+        }
+
+        /* =========================
+           WORKFLOW
+        ========================= */
+
+        .workflow {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .workflow-step {
+            padding: 16px 10px;
+            text-align: center;
+            background: #101010;
+            border: 1px solid rgba(255, 107, 0, 0.20);
+            border-radius: 8px;
+        }
+
+        .workflow-step .number {
+            color: #ff6b00;
+            font-weight: 900;
+            font-size: 20px;
+        }
+
+        .workflow-step div:last-child {
+            color: #b7b7b7;
+            font-size: 12px;
+        }
+
+        /* =========================
+           CODE
+        ========================= */
+
+        .code-box {
+            margin-top: 15px;
+            background: #030303;
+            border: 1px solid #202020;
+            border-left: 3px solid #ff6b00;
+            border-radius: 7px;
+            padding: 16px;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        .code-box pre {
+            margin: 0;
+            color: #ffb27d;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* =========================
+           WARNING
+        ========================= */
+
+        .warning {
+            padding: 18px;
+            margin-top: 18px;
+            border-left: 4px solid #ffb000;
+            background: rgba(255, 176, 0, 0.06);
+            border-radius: 7px;
+        }
+
+        .warning strong {
+            color: #ffb000;
+        }
+
+        /* =========================
+           LAB BUTTON
+        ========================= */
+
+        .lab-link {
+            margin-top: 25px;
+            padding: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            border: 1px solid rgba(255, 107, 0, 0.35);
+            border-radius: 9px;
+            background: rgba(255, 107, 0, 0.06);
+        }
+
+        .lab-link h2 {
+            margin: 0;
+            border: 0;
+            padding: 0;
+        }
+
+        .lab-link p {
+            margin-bottom: 0;
+        }
+
+        .lab-button {
+            display: inline-block;
+            padding: 11px 20px;
+            border: 1px solid #ff6b00;
+            border-radius: 22px;
+            color: #ff6b00;
+            font-weight: 800;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .lab-button:hover {
+            background: #ff6b00;
+            color: #080808;
+        }
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            width: 100%;
+            background: #030303;
+            border-top: 1px solid rgba(255, 107, 0, 0.15);
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            width: min(1050px, 100%);
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #ff6b00;
+        }
+
+        .footer-container p {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .footer-links a {
+            color: #777;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #ff6b00;
+        }
+
+        .copyright {
+            width: min(1050px, 100%);
+            margin: 25px auto 0;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            color: #555;
+            font-size: 10px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .component-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .workflow {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .lab-link {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .page {
+                padding: 22px 14px 50px;
+            }
+
+            .tool-header {
+                padding: 22px;
+            }
+
+            .section {
+                padding: 19px;
+            }
+
+            .component-grid,
+            .workflow {
+                grid-template-columns: 1fr;
+            }
+
+            .topic-navigation {
+                flex-direction: column;
+            }
+
+            .topic-navigation a {
+                width: 100%;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                gap: 12px;
+            }
+
+            .code-box {
+                padding: 12px;
+            }
+
+            .code-box pre {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<main class="page">
+
+    <!-- BREADCRUMB -->
+
+    <div class="breadcrumb">
+
+        Cybersecurity Tools
+        <span>›</span>
+        Burp Suite
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <section class="tool-header">
+
+        <div class="tool-label">
+            WEB SECURITY TOOL
+        </div>
+
+        <h1>
+            Burp Suite
+        </h1>
+
+        <p>
+            Learn how Burp Suite is used to inspect, intercept and
+            analyze HTTP/HTTPS traffic during authorized web security
+            testing.
+        </p>
+
+    </section>
+
+
+    <!-- WHAT -->
+
+    <section class="section">
+
+        <h2>What is Burp Suite?</h2>
+
+        <p>
+            Burp Suite is a web application security testing platform
+            developed by PortSwigger. It provides tools for examining
+            HTTP requests and responses between a browser and a web
+            application.
+        </p>
+
+        <p>
+            Security professionals commonly use it in an authorized
+            testing environment to understand how an application
+            communicates and to identify potential security issues.
+        </p>
+
+    </section>
+
+
+    <!-- WHY -->
+
+    <section class="section">
+
+        <h2>Why is Burp Suite Important?</h2>
+
+        <p>
+            Modern web applications communicate heavily through HTTP
+            and HTTPS. Burp Suite allows a security tester to see and
+            analyze this communication instead of treating the browser
+            as a black box.
+        </p>
+
+        <div class="component-grid">
+
+            <div class="component-card">
+
+                <h3>Traffic Analysis</h3>
+
+                <p>
+                    Inspect HTTP requests and responses generated by
+                    an application.
+                </p>
+
+            </div>
+
+
+            <div class="component-card">
+
+                <h3>Request Testing</h3>
+
+                <p>
+                    Modify requests inside an authorized test
+                    environment and observe the application's response.
+                </p>
+
+            </div>
+
+
+            <div class="component-card">
+
+                <h3>Web Security</h3>
+
+                <p>
+                    Investigate common web security weaknesses in
+                    controlled applications.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- COMPONENTS -->
+
+    <section class="section">
+
+        <h2>Important Burp Suite Components</h2>
+
+        <div class="component-grid">
+
+            <div class="component-card">
+                <h3>Proxy</h3>
+                <p>
+                    Intercepts and displays browser HTTP/HTTPS traffic.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <h3>Repeater</h3>
+                <p>
+                    Sends a selected HTTP request repeatedly so you can
+                    study different responses.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <h3>Intruder</h3>
+                <p>
+                    Automates controlled variations of request parameters
+                    for authorized security testing.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <h3>Target</h3>
+                <p>
+                    Helps organize and understand the web application's
+                    tested attack surface.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <h3>HTTP History</h3>
+                <p>
+                    Shows requests and responses observed through the
+                    proxy.
+                </p>
+            </div>
+
+            <div class="component-card">
+                <h3>Decoder</h3>
+                <p>
+                    Helps encode, decode and transform common data
+                    representations.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- WORKFLOW -->
+
+    <section class="section">
+
+        <h2>Burp Suite Testing Workflow</h2>
+
+        <div class="workflow">
+
+            <div class="workflow-step">
+                <div class="number">01</div>
+                <div>Configure Proxy</div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="number">02</div>
+                <div>Browse Application</div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="number">03</div>
+                <div>Capture Request</div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="number">04</div>
+                <div>Analyze</div>
+            </div>
+
+            <div class="workflow-step">
+                <div class="number">05</div>
+                <div>Test &amp; Document</div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BASIC REQUEST -->
+
+    <section class="section">
+
+        <h2>Understanding an HTTP Request</h2>
+
+        <p>
+            A browser may send a request such as:
+        </p>
+
+        <div class="code-box">
+<pre>GET /login HTTP/1.1
+Host: lab.local
+User-Agent: Browser
+Accept: text/html</pre>
+        </div>
+
+        <p>
+            Burp Suite can display the request so a tester can inspect
+            elements such as the HTTP method, URL path, headers and
+            parameters.
+        </p>
+
+    </section>
+
+
+    <!-- REPEATER -->
+
+    <section class="section">
+
+        <h2>Repeater Concept</h2>
+
+        <p>
+            Repeater is useful when you want to study one request in
+            detail. A request can be sent to Repeater and then examined
+            repeatedly while changing a permitted test value.
+        </p>
+
+        <div class="code-box">
+<pre>GET /search?q=cybersecurity HTTP/1.1
+Host: lab.local
+
+Response:
+HTTP/1.1 200 OK
+Content-Type: text/html</pre>
+        </div>
+
+        <p>
+            In a local training application, you can change the
+            <strong>q</strong> parameter and observe how the response
+            changes.
+        </p>
+
+    </section>
+
+
+    <!-- LAB PREVIEW -->
+
+    <section class="section">
+
+        <h2>Professional Learning Path</h2>
+
+        <p>
+            The practical lab starts with basic HTTP interception and
+            gradually moves toward request analysis, parameter testing,
+            response comparison and safe identification of common web
+            security issues.
+        </p>
+
+        <div class="warning">
+
+            <strong>Important:</strong>
+
+            Only use Burp Suite against applications and systems that
+            you own or have explicit permission to test. The lab below
+            is designed around a local/controlled environment.
+
+        </div>
+
+    </section>
+    
+<!-- LESSON COMPLETION -->
+<section class="section" id="lessonCompletion">
+
+    <h2>Complete This Lesson</h2>
+
+    <p>
+        Mark this lesson as complete after studying
+        Burp Suite and its main components. Your progress
+        will be saved to your CyberNexa account.
+    </p>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button
+            type="button"
+            class="lab-button"
+            data-lesson-progress
+            data-course-id="cybersecurity-tools"
+            data-lesson-id="burp-suite"
+            data-dashboard-url="../learning-paths/cybersecurity-tools/theory/burp-suite.html"
+            data-status-id="lessonCompletionStatus">
+
+            ✓ Mark Lesson Complete
+
+        </button>
+    </div>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite"
+        style="text-align: center; margin-top: 15px;">
+    </p>
+
+</section>
+    <!-- LAB LINK -->
+
+    <section class="lab-link">
+
+        <div>
+
+            <h2>Burp Suite Practical Lab</h2>
+
+            <p>
+                Practice HTTP interception, request analysis,
+                Repeater-style testing and response comparison.
+            </p>
+
+        </div>
+
+        <a
+            class="lab-button"
+            href="../lab/burp-suite-lab.html">
+            Open Lab →
+        </a>
+    </section>
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

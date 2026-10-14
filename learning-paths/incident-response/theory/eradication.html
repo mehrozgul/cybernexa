@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What is Eradication? | CyberNexa</title>
+
+<meta name="description"
+      content="Learn what eradication means in incident response, why it matters, common eradication actions, examples and security concepts.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+:root {
+    --er-bg: #080d14;
+    --er-panel: #0d141d;
+    --er-panel-2: #111b26;
+
+    --er-red: #ff4d5a;
+    --er-orange: #ff9f43;
+    --er-yellow: #ffd166;
+    --er-green: #43d19e;
+    --er-blue: #42a5ff;
+
+    --er-text: #edf5fb;
+    --er-muted: #91a4b5;
+
+    --er-border: #20303e;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(255, 77, 90, 0.09),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(255, 159, 67, 0.07),
+            transparent 28%
+        ),
+        var(--er-bg);
+
+    color: var(--er-text);
+    font-family: Arial, Helvetica, sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.er-container {
+    width: min(1150px, 92%);
+    margin: auto;
+}
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.er-hero {
+    position: relative;
+    overflow: hidden;
+
+    padding: 85px 0 70px;
+
+    border-bottom: 1px solid var(--er-border);
+}
+
+.er-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    right: -180px;
+    top: -180px;
+
+    border: 1px solid rgba(255, 77, 90, 0.12);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 40px rgba(255, 77, 90, 0.025),
+        0 0 0 80px rgba(255, 77, 90, 0.015);
+}
+
+.er-breadcrumb {
+    color: var(--er-orange);
+
+    font-size: 13px;
+
+    margin-bottom: 22px;
+
+    letter-spacing: 0.4px;
+}
+
+.er-hero-grid {
+    display: grid;
+
+    grid-template-columns: 1.35fr 0.65fr;
+
+    gap: 45px;
+
+    align-items: center;
+}
+
+.er-alert {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 13px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid rgba(255, 77, 90, 0.35);
+
+    border-radius: 4px;
+
+    background: rgba(255, 77, 90, 0.06);
+
+    color: var(--er-red);
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.er-pulse {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--er-red);
+
+    box-shadow: 0 0 12px rgba(255, 77, 90, 0.8);
+}
+
+.er-hero h1 {
+    margin: 0 0 18px;
+
+    font-size: clamp(38px, 5vw, 62px);
+
+    line-height: 1.05;
+
+    letter-spacing: -1px;
+}
+
+.er-hero h1 span {
+    color: var(--er-red);
+}
+
+.er-hero-description {
+    max-width: 720px;
+
+    color: var(--er-muted);
+
+    font-size: 17px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   STATUS PANEL
+   ========================================================= */
+
+.er-status-panel {
+    padding: 24px;
+
+    border: 1px solid var(--er-border);
+
+    border-top: 2px solid var(--er-red);
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 27, 38, 0.98),
+            rgba(9, 14, 21, 0.98)
+        );
+
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+}
+
+.er-status-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.er-status-header strong {
+    font-size: 13px;
+
+    letter-spacing: 1px;
+}
+
+.er-live {
+    color: var(--er-red);
+
+    font-size: 11px;
+}
+
+.er-divider {
+    height: 1px;
+
+    background: var(--er-border);
+
+    margin: 15px 0;
+}
+
+.er-status-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 8px 0;
+
+    color: var(--er-muted);
+
+    font-size: 13px;
+}
+
+.er-status-row strong {
+    color: var(--er-text);
+
+    font-weight: normal;
+}
+
+.er-severity {
+    color: var(--er-orange) !important;
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.er-section {
+    padding: 70px 0;
+}
+
+.er-section-title {
+    margin-bottom: 28px;
+}
+
+.er-section-title h2 {
+    margin: 0 0 10px;
+
+    font-size: 32px;
+}
+
+.er-section-title p {
+    color: var(--er-muted);
+
+    line-height: 1.7;
+}
+
+.er-content-card {
+    padding: 30px;
+
+    border: 1px solid var(--er-border);
+
+    border-left: 3px solid var(--er-red);
+
+    border-radius: 7px;
+
+    background: var(--er-panel);
+}
+
+.er-content-card p {
+    margin: 0 0 16px;
+
+    color: var(--er-muted);
+
+    line-height: 1.85;
+
+    font-size: 15px;
+}
+
+.er-content-card p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   DEFINITION
+   ========================================================= */
+
+.er-definition {
+    padding: 28px;
+
+    border: 1px solid rgba(255, 159, 67, 0.25);
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 159, 67, 0.07),
+            rgba(255, 77, 90, 0.025)
+        );
+}
+
+.er-definition-label {
+    margin-bottom: 12px;
+
+    color: var(--er-orange);
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.er-definition p {
+    margin: 0;
+
+    color: var(--er-text);
+
+    font-size: 18px;
+
+    line-height: 1.75;
+}
+
+
+/* =========================================================
+   WHY IMPORTANT
+   ========================================================= */
+
+.er-reason-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+}
+
+.er-reason {
+    padding: 24px;
+
+    border: 1px solid var(--er-border);
+
+    border-radius: 7px;
+
+    background: var(--er-panel);
+}
+
+.er-reason-number {
+    display: block;
+
+    margin-bottom: 15px;
+
+    color: var(--er-red);
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+.er-reason h3 {
+    margin: 0 0 10px;
+
+    font-size: 17px;
+}
+
+.er-reason p {
+    margin: 0;
+
+    color: var(--er-muted);
+
+    line-height: 1.65;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   ERADICATION FLOW
+   ========================================================= */
+
+.er-flow {
+    display: grid;
+
+    grid-template-columns: repeat(6, 1fr);
+
+    gap: 10px;
+
+    margin-top: 30px;
+}
+
+.er-flow-step {
+    position: relative;
+
+    min-height: 120px;
+
+    padding: 18px 12px;
+
+    border: 1px solid var(--er-border);
+
+    border-radius: 6px;
+
+    background: var(--er-panel);
+
+    text-align: center;
+}
+
+.er-flow-step::after {
+    content: "→";
+
+    position: absolute;
+
+    right: -15px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--er-red);
+
+    z-index: 2;
+}
+
+.er-flow-step:last-child::after {
+    display: none;
+}
+
+.er-flow-number {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: var(--er-red);
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+.er-flow-step strong {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   EXAMPLE
+   ========================================================= */
+
+.er-example {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+.er-example-box {
+    padding: 25px;
+
+    border: 1px solid var(--er-border);
+
+    border-radius: 7px;
+
+    background: var(--er-panel);
+}
+
+.er-example-box h3 {
+    margin: 0 0 15px;
+
+    font-size: 17px;
+}
+
+.er-example-box p {
+    margin: 0;
+
+    color: var(--er-muted);
+
+    line-height: 1.7;
+
+    font-size: 14px;
+}
+
+.er-example-box.alert-box {
+    border-top: 2px solid var(--er-red);
+}
+
+.er-example-box.response-box {
+    border-top: 2px solid var(--er-green);
+}
+
+
+/* =========================================================
+   KEY CONCEPTS
+   ========================================================= */
+
+.er-key-list {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+.er-key {
+    padding: 17px 20px;
+
+    border: 1px solid var(--er-border);
+
+    border-radius: 6px;
+
+    background: var(--er-panel);
+}
+
+.er-key strong {
+    color: var(--er-text);
+}
+
+.er-key span {
+    color: var(--er-muted);
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.er-summary {
+    padding: 30px;
+
+    border: 1px solid rgba(67, 209, 158, 0.25);
+
+    border-radius: 7px;
+
+    background: rgba(67, 209, 158, 0.035);
+}
+
+.er-summary h2 {
+    margin-top: 0;
+
+    color: var(--er-green);
+}
+
+.er-summary p {
+    margin: 0;
+
+    color: var(--er-muted);
+
+    line-height: 1.8;
+}
+
+/* =========================================================
+   CYBERNEXA — PRACTICAL LAB CTA
+========================================================= */
+
+.lab-cta-section {
+    width: 100%;
+    margin-top: 35px;
+}
+
+
+/* =========================================================
+   LAB CTA CONTAINER
+========================================================= */
+
+.lab-cta {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    width: 100%;
+
+    padding: 30px;
+
+    border: 1px solid rgba(255, 83, 100, 0.28);
+    border-left: 4px solid #ff5364;
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 83, 100, 0.045),
+            rgba(5, 10, 16, 0.96)
+        );
+
+    box-shadow:
+        0 0 0 1px rgba(255, 83, 100, 0.025),
+        0 18px 45px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   LIGHT RED TOP LINE
+========================================================= */
+
+.lab-cta::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255, 83, 100, 0.15) 15%,
+            rgba(255, 83, 100, 0.85) 50%,
+            rgba(255, 83, 100, 0.15) 85%,
+            transparent 100%
+        );
+
+    box-shadow:
+        0 0 12px rgba(255, 83, 100, 0.25);
+
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.lab-cta-content {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+.lab-cta-content h3 {
+
+    margin: 0 0 8px;
+
+    color: #ffffff;
+
+    font-size: 19px;
+
+    line-height: 1.4;
+
+    font-weight: 700;
+
+}
+
+
+.lab-cta-content p {
+
+    margin: 0;
+
+    max-width: 750px;
+
+    color: #8fa4b5;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   LAUNCH LAB BUTTON
+========================================================= */
+
+.lab-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    min-width: 165px;
+
+    padding: 13px 20px;
+
+    border: 1px solid rgba(255, 83, 100, 0.45);
+
+    border-radius: 9px;
+
+    background:
+        rgba(255, 83, 100, 0.055);
+
+    color: #edf6fc;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    box-shadow:
+        0 0 0 1px rgba(255, 83, 100, 0.025),
+        0 8px 22px rgba(0, 0, 0, 0.22);
+
+    transition:
+        color 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+
+}
+
+
+/* =========================================================
+   BUTTON HOVER
+========================================================= */
+
+.lab-button:hover {
+
+    color: #ffffff;
+
+    border-color:
+        rgba(255, 83, 100, 0.85);
+
+    background:
+        rgba(255, 83, 100, 0.10);
+
+    box-shadow:
+        0 0 16px rgba(255, 83, 100, 0.12),
+        0 10px 25px rgba(0, 0, 0, 0.28);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
+   BUTTON ACTIVE
+========================================================= */
+
+.lab-button:active {
+
+    transform:
+        translateY(0);
+
+    box-shadow:
+        0 0 10px rgba(255, 83, 100, 0.10);
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .lab-cta {
+
+        padding: 25px;
+
+        gap: 22px;
+
+    }
+
+
+    .lab-cta-content h3 {
+
+        font-size: 18px;
+
+    }
+
+
+    .lab-cta-content p {
+
+        font-size: 13px;
+
+    }
+
+
+    .lab-button {
+
+        min-width: 150px;
+
+        padding: 12px 17px;
+
+        font-size: 13px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .lab-cta {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 20px;
+
+        padding: 24px;
+
+    }
+
+
+    .lab-cta-content h3 {
+
+        font-size: 18px;
+
+    }
+
+
+    .lab-cta-content p {
+
+        font-size: 13px;
+
+    }
+
+
+    .lab-button {
+
+        width: 100%;
+
+        min-width: 0;
+
+        box-sizing: border-box;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+
+    .lab-cta {
+
+        padding: 20px;
+
+        border-radius: 12px;
+
+    }
+
+
+    .lab-cta-content h3 {
+
+        font-size: 17px;
+
+    }
+
+
+    .lab-cta-content p {
+
+        font-size: 12px;
+
+        line-height: 1.65;
+
+    }
+
+
+    .lab-button {
+
+        padding: 12px 15px;
+
+        font-size: 13px;
+
+        border-radius: 8px;
+
+    }
+
+}
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .nav-container {
+        width: 92%;
+        min-height: 68px;
+    }
+
+    .brand-logo svg {
+        width: 42px;
+        height: 50px;
+    }
+
+    .er-hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .er-reason-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .er-flow {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .er-flow-step::after {
+        display: none;
+    }
+
+    .er-example {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .nav-container {
+        width: 94%;
+        min-height: 64px;
+        padding: 8px 0;
+    }
+
+    .brand {
+        gap: 8px;
+    }
+
+    .brand-logo svg {
+        width: 38px;
+        height: 46px;
+    }
+
+    .brand-name {
+        font-size: 19px;
+    }
+
+    .brand-tagline {
+        font-size: 9px;
+    }
+
+    .er-hero {
+        padding: 70px 0 55px;
+    }
+
+    .er-hero-grid {
+        gap: 30px;
+    }
+
+    .er-status-panel {
+        width: 100%;
+    }
+
+    .er-section {
+        padding: 60px 0;
+    }
+
+    .er-flow {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .footer {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .footer-container {
+        width: 92%;
+        margin: 0 auto;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 25px;
+    }
+
+    .footer-links {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px 18px;
+    }
+
+    .footer-links a {
+        white-space: nowrap;
+    }
+
+    .copyright {
+        width: 92%;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        line-height: 1.6;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .nav-container {
+        width: 92%;
+        min-height: 62px;
+
+        padding: 7px 0;
+    }
+
+    .brand {
+        gap: 7px;
+        max-width: 100%;
+    }
+
+    .brand-logo svg {
+        width: 34px;
+        height: 42px;
+    }
+
+    .brand-name {
+        font-size: 17px;
+        letter-spacing: 0;
+    }
+
+    .brand-tagline {
+        font-size: 8px;
+        letter-spacing: 0;
+    }
+
+    .er-hero {
+        padding: 55px 0 45px;
+    }
+
+    .er-breadcrumb {
+        font-size: 11px;
+
+        line-height: 1.6;
+
+        margin-bottom: 18px;
+    }
+
+    .er-alert {
+        font-size: 10px;
+
+        padding: 7px 10px;
+    }
+
+    .er-hero h1 {
+        font-size: clamp(34px, 10vw, 48px);
+
+        letter-spacing: -0.5px;
+    }
+
+    .er-hero-description {
+        font-size: 15px;
+
+        line-height: 1.7;
+    }
+
+    .er-status-panel {
+        padding: 20px;
+    }
+
+    .er-status-header strong {
+        font-size: 11px;
+    }
+
+    .er-live {
+        font-size: 9px;
+    }
+
+    .er-status-row {
+        font-size: 12px;
+
+        gap: 15px;
+    }
+
+    .er-status-row strong {
+        text-align: right;
+    }
+
+    .er-section {
+        padding: 50px 0;
+    }
+
+    .er-section-title {
+        margin-bottom: 22px;
+    }
+
+    .er-section-title h2 {
+        font-size: 26px;
+    }
+
+    .er-section-title p {
+        font-size: 14px;
+    }
+
+    .er-content-card {
+        padding: 22px;
+    }
+
+    .er-content-card p {
+        font-size: 14px;
+
+        line-height: 1.8;
+    }
+
+    .er-definition {
+        padding: 22px;
+    }
+
+    .er-definition p {
+        font-size: 16px;
+
+        line-height: 1.7;
+    }
+
+    .er-reason-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .er-reason {
+        padding: 21px;
+    }
+
+    .er-flow {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+    }
+
+    .er-flow-step {
+        min-height: 95px;
+
+        padding: 15px 8px;
+    }
+
+    .er-flow-step strong {
+        font-size: 12px;
+    }
+
+    .er-example {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .er-example-box {
+        padding: 21px;
+    }
+
+    .er-key-list {
+        grid-template-columns: 1fr;
+    }
+
+    .er-key {
+        padding: 16px;
+    }
+
+    .er-key span {
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+    .er-summary {
+        padding: 22px;
+    }
+
+    .er-summary p {
+        font-size: 14px;
+
+        line-height: 1.75;
+    }
+
+    .er-topic-nav {
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+    .er-nav-button {
+        width: 100%;
+
+        justify-content: center;
+
+        text-align: center;
+    }
+
+    .footer-container {
+        width: 92%;
+
+        gap: 22px;
+    }
+
+    .footer-brand {
+        font-size: 22px;
+    }
+
+    .footer-container p {
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+    .footer-links {
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 12px 18px;
+    }
+
+    .footer-links a {
+        font-size: 13px;
+
+        white-space: normal;
+    }
+
+    .copyright {
+        width: 92%;
+
+        padding: 18px 0;
+
+        font-size: 11px;
+
+        line-height: 1.6;
+
+        text-align: center;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .nav-container {
+        width: 94%;
+    }
+
+    .brand-logo svg {
+        width: 30px;
+        height: 38px;
+    }
+
+    .brand-name {
+        font-size: 15px;
+    }
+
+    .brand-tagline {
+        font-size: 7px;
+    }
+
+    .er-container {
+        width: 94%;
+    }
+
+    .er-hero h1 {
+        font-size: 32px;
+    }
+
+    .er-flow {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-links {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+</head>
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<header class="er-hero">
+
+<div class="er-container">
+
+    <div class="er-breadcrumb">
+        CyberNexa / Incident Response / Theory
+    </div>
+
+    <div class="er-hero-grid">
+
+        <div>
+
+            <div class="er-alert">
+
+                <span class="er-pulse"></span>
+
+                Incident Response Training
+
+            </div>
+
+            <h1>
+                What is <span>Eradication?</span>
+            </h1>
+
+            <p class="er-hero-description">
+                Eradication is the incident response phase in which
+                security teams remove the underlying threat, malicious
+                artifacts and attacker persistence from affected systems.
+            </p>
+
+        </div>
+
+
+        <div class="er-status-panel">
+
+            <div class="er-status-header">
+
+                <strong>
+                    INCIDENT COMMAND
+                </strong>
+
+                <span class="er-live">
+                    ● TRAINING
+                </span>
+
+            </div>
+
+            <div class="er-divider"></div>
+
+            <div class="er-status-row">
+                <span>Status</span>
+                <strong>Threat Removal</strong>
+            </div>
+
+            <div class="er-status-row">
+                <span>Category</span>
+                <strong>Incident Response</strong>
+            </div>
+
+            <div class="er-status-row">
+                <span>Priority</span>
+                <strong class="er-severity">
+                    Depends on Threat
+                </strong>
+            </div>
+
+            <div class="er-status-row">
+                <span>Objective</span>
+                <strong>Remove Threat</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+<section class="er-section">
+
+<div class="er-container">
+
+    <div class="er-section-title">
+
+        <h2>Definition</h2>
+
+        <p>
+            First, understand the core meaning of Eradication.
+        </p>
+
+    </div>
+
+
+    <div class="er-definition">
+
+        <div class="er-definition-label">
+            Core Definition
+        </div>
+
+        <p>
+            Eradication is the process of completely removing the
+            cause of a cybersecurity incident, including malware,
+            malicious files, unauthorized access, attacker persistence
+            and other identified threats from affected systems.
+        </p>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CORE EXPLANATION
+====================================================== -->
+
+<section class="er-section">
+
+<div class="er-container">
+
+    <div class="er-section-title">
+
+        <h2>How Eradication Works</h2>
+
+        <p>
+            Security teams remove the threat after understanding
+            the incident and containing its impact.
+        </p>
+
+    </div>
+
+
+    <div class="er-content-card">
+
+        <p>
+            Eradication normally begins after the security team has
+            investigated the incident and identified the threat
+            responsible for the compromise.
+        </p>
+
+        <p>
+            The team identifies malicious software, unauthorized
+            accounts, persistence mechanisms, compromised credentials,
+            vulnerable components and other artifacts associated with
+            the incident.
+        </p>
+
+        <p>
+            Appropriate remediation actions are then performed.
+            These may include removing malware, deleting malicious
+            files, disabling compromised accounts, resetting affected
+            credentials, removing unauthorized persistence and
+            patching exploited vulnerabilities.
+        </p>
+
+        <p>
+            The objective is to ensure that the attacker or malicious
+            software cannot continue using the compromised environment.
+            Systems should be checked after remediation before they
+            are returned to normal operation.
+        </p>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     WHY IMPORTANT
+====================================================== -->
+
+<section class="er-section">
+
+<div class="er-container">
+
+    <div class="er-section-title">
+
+        <h2>Why Eradication Matters</h2>
+
+        <p>
+            Removing only the visible symptoms of an incident may
+            allow the threat to return.
+        </p>
+
+    </div>
+
+
+    <div class="er-reason-grid">
+
+        <div class="er-reason">
+
+            <span class="er-reason-number">
+                REASON 01
+            </span>
+
+            <h3>Remove the Threat</h3>
+
+            <p>
+                Eradication removes malware, malicious files and
+                other identified components responsible for the incident.
+            </p>
+
+        </div>
+
+
+        <div class="er-reason">
+
+            <span class="er-reason-number">
+                REASON 02
+            </span>
+
+            <h3>Stop Persistence</h3>
+
+            <p>
+                Security teams remove mechanisms that could allow
+                an attacker or malware to regain access.
+            </p>
+
+        </div>
+
+
+        <div class="er-reason">
+
+            <span class="er-reason-number">
+                REASON 03
+            </span>
+
+            <h3>Prevent Recurrence</h3>
+
+            <p>
+                Fixing exploited vulnerabilities and compromised
+                credentials helps reduce the chance of the same
+                incident happening again.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ERADICATION FLOW
+====================================================== -->
+
+<section class="er-section">
+
+<div class="er-container">
+
+    <div class="er-section-title">
+
+        <h2>Eradication Flow</h2>
+
+        <p>
+            A simplified representation of the major eradication activities.
+        </p>
+
+    </div>
+
+
+    <div class="er-flow">
+
+        <div class="er-flow-step">
+
+            <span class="er-flow-number">
+                01
+            </span>
+
+            <strong>
+                Identify Threat
+            </strong>
+
+        </div>
+
+
+        <div class="er-flow-step">
+
+            <span class="er-flow-number">
+                02
+            </span>
+
+            <strong>
+                Find Artifacts
+            </strong>
+
+        </div>
+
+
+        <div class="er-flow-step">
+
+            <span class="er-flow-number">
+                03
+            </span>
+
+            <strong>
+                Remove Malware
+            </strong>
+
+        </div>
+
+
+        <div class="er-flow-step">
+
+            <span class="er-flow-number">
+                04
+            </span>
+
+            <strong>
+                Remove Persistence
+            </strong>
+
+        </div>
+
+
+        <div class="er-flow-step">
+
+            <span class="er-flow-number">
+                05
+            </span>
+
+            <strong>
+                Fix Vulnerabilities
+            </strong>
+
+        </div>
+
+
+        <div class="er-flow-step">
+
+            <span class="er-flow-number">
+                06
+            </span>
+
+            <strong>
+                Verify Removal
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     EXAMPLE
+====================================================== -->
+
+<section class="er-section">
+
+<div class="er-container">
+
+    <div class="er-section-title">
+
+        <h2>Simple Example</h2>
+
+        <p>
+            Consider a workstation infected with malware.
+        </p>
+
+    </div>
+
+
+    <div class="er-example">
+
+        <div class="er-example-box alert-box">
+
+            <h3>🚨 Identified Threat</h3>
+
+            <p>
+                Investigation shows that malware was installed on
+                a workstation and created a mechanism that allowed
+                it to start again after the system was restarted.
+            </p>
+
+        </div>
+
+
+        <div class="er-example-box response-box">
+
+            <h3>✓ Eradication</h3>
+
+            <p>
+                The security team removes the malicious software,
+                removes the identified persistence mechanism,
+                checks related artifacts and verifies that the
+                threat is no longer present.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+<section class="er-section">
+
+<div class="er-container">
+
+    <div class="er-section-title">
+
+        <h2>Key Concepts</h2>
+
+        <p>
+            Important terms to remember for this topic.
+        </p>
+
+    </div>
+
+
+    <div class="er-key-list">
+
+        <div class="er-key">
+
+            <strong>Eradication:</strong>
+
+            <span>
+                Removing the underlying threat and its associated
+                malicious artifacts.
+            </span>
+
+        </div>
+
+
+        <div class="er-key">
+
+            <strong>Malware:</strong>
+
+            <span>
+                Malicious software designed to perform harmful or
+                unauthorized activities.
+            </span>
+
+        </div>
+
+
+        <div class="er-key">
+
+            <strong>Persistence:</strong>
+
+            <span>
+                A mechanism that allows an attacker or malware to
+                maintain or regain access to a system.
+            </span>
+
+        </div>
+
+
+        <div class="er-key">
+
+            <strong>Remediation:</strong>
+
+            <span>
+                Actions taken to correct the conditions that caused
+                or enabled the security incident.
+            </span>
+
+        </div>
+
+
+        <div class="er-key">
+
+            <strong>Credential Reset:</strong>
+
+            <span>
+                Changing credentials that may have been compromised
+                during an incident.
+            </span>
+
+        </div>
+
+
+        <div class="er-key">
+
+            <strong>Verification:</strong>
+
+            <span>
+                Checking systems after remediation to confirm that
+                the identified threat has been removed.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+<section class="er-section">
+
+<div class="er-container">
+
+    <div class="er-summary">
+
+        <h2>Summary</h2>
+
+        <p>
+            Eradication is the incident response phase focused on
+            removing the underlying cause of a security incident.
+            It can involve removing malware, deleting malicious
+            artifacts, eliminating attacker persistence, disabling
+            compromised accounts, resetting affected credentials
+            and fixing exploited vulnerabilities. The objective is
+            to remove the threat and verify that it can no longer
+            continue affecting the environment.
+        </p>
+
+    </div>
+    
+<!-- LESSON COMPLETION -->
+<section class="er-section" id="lessonCompletion">
+    <div class="er-container">
+        <div class="er-summary">
+            <h2>Lesson Completion</h2>
+
+            <p>
+                You have completed the Eradication lesson.
+                Mark this lesson as complete to save your
+                learning progress to your CyberNexa account.
+            </p>
+
+            <div style="margin-top: 22px; text-align: center;">
+                <button
+                    type="button"
+                    class="lab-button"
+                    data-lesson-progress
+                    data-course-id="incident-response"
+                    data-lesson-id="eradication"
+                    data-dashboard-url="../learning-paths/incident-response/theory/eradication.html"
+                    data-status-id="eradicationCompletionStatus">
+                    ✓ Mark Lesson Complete
+                </button>
+
+                <p
+                    id="eradicationCompletionStatus"
+                    role="status"
+                    aria-live="polite"
+                    style="margin-top: 15px; font-size: 14px;">
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- =========================================================
+     PRACTICAL LAB CTA
+========================================================= -->
+
+<section class="lab-cta-section">
+
+    <div class="lab-cta">
+
+        <div class="lab-cta-content">
+
+            <h3>
+                Ready for the Practical Lab?
+            </h3>
+
+            <p>
+                Test your understanding in an authorized
+                cybersecurity training environment.
+            </p>
+
+        </div>
+
+
+        <a
+            href="../lab/eradication-lab.html"
+            class="lab-button">
+
+            🧪 Launch Lab →
+
+        </a>
+
+    </div>
+
+</section>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+    <div>
+
+        <div class="footer-brand">
+            Cyber<span>Nexa</span>
+        </div>
+
+        <p>
+            Cybersecurity &amp; IT Learning
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="../../../index.html">
+            Home
+        </a>
+
+        <a href="../../../footer/about.html">
+            About
+        </a>
+
+        <a href="../../../footer/contact.html">
+            Contact
+        </a>
+
+        <a href="../../../footer/privacy-policy.html">
+            Privacy Policy
+        </a>
+
+        <a href="../../../footer/disclaimer.html">
+            Disclaimer
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="copyright">
+
+    © 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

@@ -1,0 +1,1250 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Incident Detection | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn how Incident Detection works in a Security Operations Center, including events, alerts, indicators, detection workflow and incident identification.">
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        /* =====================================================
+           CYBERNEXA SOC / BLUE TEAM
+           TOPIC: INCIDENT DETECTION
+           ===================================================== */
+
+        :root {
+            --soc-bg: #070b12;
+            --soc-panel: #0c131d;
+            --soc-panel-2: #101a27;
+
+            --soc-blue: #42a5ff;
+            --soc-cyan: #35d9ff;
+            --soc-purple: #9b6cff;
+
+            --soc-green: #43d19e;
+            --soc-yellow: #ffd166;
+            --soc-red: #ff5364;
+            --soc-orange: #ff9f43;
+
+            --soc-text: #edf5fb;
+            --soc-muted: #91a4b5;
+            --soc-border: #1e3041;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: clip;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 10% 10%,
+                    rgba(66, 165, 255, 0.09), transparent 30%),
+                radial-gradient(circle at 90% 20%,
+                    rgba(155, 108, 255, 0.08), transparent 28%),
+                var(--soc-bg);
+            color: var(--soc-text);
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: clip;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .soc-container {
+            width: min(1150px, 92%);
+            margin-inline: auto;
+        }
+
+        /* =====================================================
+           SHARED NAVBAR
+           Navbar layout and hamburger behavior are controlled
+           by navbar.css and navbar.js.
+           ===================================================== */
+
+        .navbar {
+            width: 100%;
+            overflow: visible !important;
+            z-index: 1000;
+        }
+
+        /* =====================================================
+           HERO
+           ===================================================== */
+
+        .soc-hero {
+            position: relative;
+            overflow: hidden;
+            padding: 85px 0 70px;
+            border-bottom: 1px solid var(--soc-border);
+        }
+
+        .soc-hero::before {
+            content: "";
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            right: -200px;
+            top: -180px;
+            border: 1px solid rgba(66, 165, 255, 0.12);
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 45px rgba(66, 165, 255, 0.025),
+                0 0 0 90px rgba(155, 108, 255, 0.018);
+            pointer-events: none;
+        }
+
+        .soc-breadcrumb {
+            margin-bottom: 22px;
+            color: var(--soc-cyan);
+            font-size: 13px;
+            letter-spacing: 0.4px;
+            line-height: 1.7;
+        }
+
+        .soc-hero-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 0.65fr;
+            gap: 45px;
+            align-items: center;
+        }
+
+        .soc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 13px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(66, 165, 255, 0.35);
+            border-radius: 4px;
+            background: rgba(66, 165, 255, 0.06);
+            color: var(--soc-blue);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .soc-pulse {
+            width: 7px;
+            height: 7px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--soc-cyan);
+            box-shadow: 0 0 12px rgba(53, 217, 255, 0.8);
+        }
+
+        .soc-hero h1 {
+            margin: 0 0 18px;
+            font-size: clamp(38px, 5vw, 62px);
+            line-height: 1.05;
+            letter-spacing: -1px;
+            overflow-wrap: anywhere;
+        }
+
+        .soc-hero h1 span {
+            color: var(--soc-cyan);
+        }
+
+        .soc-hero-description {
+            max-width: 720px;
+            color: var(--soc-muted);
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           SOC COMMAND PANEL
+           ===================================================== */
+
+        .soc-command-panel {
+            min-width: 0;
+            padding: 24px;
+            border: 1px solid var(--soc-border);
+            border-top: 2px solid var(--soc-cyan);
+            border-radius: 7px;
+            background:
+                linear-gradient(145deg,
+                    rgba(16, 26, 39, 0.98),
+                    rgba(8, 13, 20, 0.98));
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .soc-command-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .soc-command-header strong {
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .soc-live {
+            color: var(--soc-green);
+            font-size: 11px;
+        }
+
+        .soc-divider {
+            height: 1px;
+            background: var(--soc-border);
+            margin: 15px 0;
+        }
+
+        .soc-status-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 8px 0;
+            color: var(--soc-muted);
+            font-size: 13px;
+        }
+
+        .soc-status-row strong {
+            color: var(--soc-text);
+            font-weight: normal;
+            text-align: right;
+        }
+
+        .soc-status-blue {
+            color: var(--soc-blue) !important;
+        }
+
+        .soc-status-green {
+            color: var(--soc-green) !important;
+        }
+
+        .soc-status-yellow {
+            color: var(--soc-yellow) !important;
+        }
+
+        /* =====================================================
+           SECTIONS
+           ===================================================== */
+
+        .soc-section {
+            padding: 70px 0;
+        }
+
+        .soc-section-title {
+            margin-bottom: 28px;
+        }
+
+        .soc-section-title h2 {
+            margin: 0 0 10px;
+            font-size: 32px;
+            line-height: 1.25;
+        }
+
+        .soc-section-title p {
+            margin: 0;
+            color: var(--soc-muted);
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           DEFINITION
+           ===================================================== */
+
+        .soc-definition {
+            padding: 30px;
+            border: 1px solid rgba(53, 217, 255, 0.25);
+            border-left: 3px solid var(--soc-cyan);
+            border-radius: 7px;
+            background:
+                linear-gradient(135deg,
+                    rgba(53, 217, 255, 0.07),
+                    rgba(66, 165, 255, 0.025));
+        }
+
+        .soc-definition-label {
+            margin-bottom: 12px;
+            color: var(--soc-cyan);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .soc-definition p {
+            margin: 0;
+            color: var(--soc-text);
+            font-size: 18px;
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           CONTENT CARD
+           ===================================================== */
+
+        .soc-content-card {
+            padding: 30px;
+            border: 1px solid var(--soc-border);
+            border-left: 3px solid var(--soc-blue);
+            border-radius: 7px;
+            background: var(--soc-panel);
+        }
+
+        .soc-content-card p {
+            margin: 0 0 16px;
+            color: var(--soc-muted);
+            line-height: 1.85;
+            font-size: 15px;
+        }
+
+        .soc-content-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* =====================================================
+           DETECTION SOURCES
+           ===================================================== */
+
+        .soc-source-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .soc-source {
+            min-width: 0;
+            padding: 24px;
+            border: 1px solid var(--soc-border);
+            border-radius: 7px;
+            background: var(--soc-panel);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .soc-source:hover {
+            border-color: rgba(53, 217, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .soc-source-number {
+            display: block;
+            margin-bottom: 15px;
+            color: var(--soc-cyan);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .soc-source h3 {
+            margin: 0 0 10px;
+            font-size: 17px;
+        }
+
+        .soc-source p {
+            margin: 0;
+            color: var(--soc-muted);
+            line-height: 1.65;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           DETECTION WORKFLOW
+           ===================================================== */
+
+        .soc-flow {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .soc-flow-step {
+            position: relative;
+            min-width: 0;
+            min-height: 125px;
+            padding: 18px 12px;
+            border: 1px solid var(--soc-border);
+            border-radius: 6px;
+            background: var(--soc-panel);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .soc-flow-step::after {
+            content: "→";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--soc-cyan);
+            z-index: 2;
+        }
+
+        .soc-flow-step:last-child::after {
+            display: none;
+        }
+
+        .soc-flow-number {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--soc-cyan);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .soc-flow-step strong {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           EVENT VS INCIDENT
+           ===================================================== */
+
+        .soc-compare {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .soc-compare-box {
+            min-width: 0;
+            padding: 25px;
+            border: 1px solid var(--soc-border);
+            border-radius: 7px;
+            background: var(--soc-panel);
+        }
+
+        .soc-compare-box h3 {
+            margin: 0 0 15px;
+            font-size: 17px;
+        }
+
+        .soc-compare-box p {
+            margin: 0;
+            color: var(--soc-muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .soc-event-box {
+            border-top: 2px solid var(--soc-blue);
+        }
+
+        .soc-incident-box {
+            border-top: 2px solid var(--soc-red);
+        }
+
+        /* =====================================================
+           KEY CONCEPTS
+           ===================================================== */
+
+        .soc-key-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .soc-key {
+            min-width: 0;
+            padding: 17px 20px;
+            border: 1px solid var(--soc-border);
+            border-radius: 6px;
+            background: var(--soc-panel);
+            line-height: 1.7;
+        }
+
+        .soc-key strong {
+            color: var(--soc-text);
+            margin-right: 4px;
+        }
+
+        .soc-key span {
+            color: var(--soc-muted);
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           SUMMARY
+           ===================================================== */
+
+        .soc-summary {
+            padding: 30px;
+            border: 1px solid rgba(67, 209, 158, 0.25);
+            border-radius: 7px;
+            background: rgba(67, 209, 158, 0.035);
+        }
+
+        .soc-summary h2 {
+            margin-top: 0;
+            color: var(--soc-green);
+        }
+
+        .soc-summary p {
+            margin: 0;
+            color: var(--soc-muted);
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           PRACTICAL LAB CTA
+           ===================================================== */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            margin-top: 35px;
+            padding: 24px 26px;
+            border: 1px solid rgba(66, 165, 255, 0.22);
+            border-left: 3px solid var(--soc-blue);
+            border-radius: 7px;
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 208, 0.025));
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.20);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lab-area::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(66, 165, 255, 0.7),
+                    rgba(53, 214, 208, 0.6),
+                    transparent);
+        }
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .lab-text strong {
+            color: var(--soc-text);
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        .lab-text span {
+            color: var(--soc-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .lab-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            min-width: 155px;
+            padding: 12px 20px;
+            border: 1px solid rgba(66, 165, 255, 0.40);
+            border-radius: 5px;
+            color: var(--soc-blue);
+            background: rgba(66, 165, 255, 0.07);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-decoration: none;
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .lab-button:hover {
+            color: #ffffff;
+            border-color: rgba(66, 165, 255, 0.75);
+            background: rgba(66, 165, 255, 0.14);
+            box-shadow: 0 0 18px rgba(66, 165, 255, 0.16);
+            transform: translateY(-1px);
+        }
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 950px) {
+            .soc-hero-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .soc-source-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .soc-flow {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .soc-flow-step::after {
+                display: none;
+            }
+
+            .soc-compare {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .soc-hero {
+                padding: 70px 0 55px;
+            }
+
+            .soc-section {
+                padding: 60px 0;
+            }
+
+            .soc-flow {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .soc-container {
+                width: 92%;
+            }
+
+            .soc-hero {
+                padding: 55px 0 45px;
+            }
+
+            .soc-breadcrumb {
+                font-size: 11px;
+            }
+
+            .soc-hero h1 {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .soc-hero-description {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+
+            .soc-command-panel {
+                padding: 20px;
+            }
+
+            .soc-section {
+                padding: 50px 0;
+            }
+
+            .soc-section-title h2 {
+                font-size: 26px;
+            }
+
+            .soc-section-title p {
+                font-size: 14px;
+            }
+
+            .soc-definition,
+            .soc-content-card {
+                padding: 22px;
+            }
+
+            .soc-definition p {
+                font-size: 16px;
+            }
+
+            .soc-content-card p {
+                font-size: 14px;
+            }
+
+            .soc-source-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .soc-flow {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .soc-flow-step {
+                min-height: 100px;
+                padding: 15px 8px;
+            }
+
+            .soc-flow-step strong {
+                font-size: 12px;
+            }
+
+            .soc-key-list {
+                grid-template-columns: 1fr;
+            }
+
+            .soc-summary {
+                padding: 22px;
+            }
+
+            .soc-summary p {
+                font-size: 14px;
+            }
+
+            .lab-area {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 18px;
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .soc-container {
+                width: 94%;
+            }
+
+            .soc-hero h1 {
+                font-size: 32px;
+            }
+
+            .soc-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .soc-status-row {
+                font-size: 12px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =====================================================
+         SHARED NAVBAR
+         Same shared navbar used by Endpoint Security
+         ===================================================== -->
+
+    <div
+        id="navbar-placeholder"
+        data-navbar-path="../../../components/navbar.html"
+        data-root-path="../../../">
+    </div>
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <header class="soc-hero">
+        <div class="soc-container">
+
+            <div class="soc-breadcrumb">
+                CyberNexa / SOC / Blue Team / Incident Detection
+            </div>
+
+            <div class="soc-hero-grid">
+
+                <div>
+                    <div class="soc-badge">
+                        <span class="soc-pulse"></span>
+                        SOC Detection Training
+                    </div>
+
+                    <h1>
+                        Incident <span>Detection</span>
+                    </h1>
+
+                    <p class="soc-hero-description">
+                        Incident Detection is the process of identifying suspicious
+                        security activity and determining whether an event may
+                        represent a real cybersecurity incident.
+                    </p>
+                </div>
+
+                <div class="soc-command-panel">
+
+                    <div class="soc-command-header">
+                        <strong>SOC DETECTION STATUS</strong>
+                        <span class="soc-live">● ACTIVE</span>
+                    </div>
+
+                    <div class="soc-divider"></div>
+
+                    <div class="soc-status-row">
+                        <span>Monitoring</span>
+                        <strong class="soc-status-blue">Active</strong>
+                    </div>
+
+                    <div class="soc-status-row">
+                        <span>Detection Source</span>
+                        <strong>Logs / Alerts</strong>
+                    </div>
+
+                    <div class="soc-status-row">
+                        <span>Analysis</span>
+                        <strong class="soc-status-yellow">Required</strong>
+                    </div>
+
+                    <div class="soc-status-row">
+                        <span>Response</span>
+                        <strong class="soc-status-green">Escalate</strong>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- DEFINITION -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+                    <h2>What is Incident Detection?</h2>
+                    <p>
+                        Understand the core purpose of detecting cybersecurity incidents.
+                    </p>
+                </div>
+
+                <div class="soc-definition">
+                    <div class="soc-definition-label">Core Definition</div>
+
+                    <p>
+                        Incident Detection is the process of identifying suspicious,
+                        malicious or abnormal activity from security data and determining
+                        whether that activity may represent a cybersecurity incident.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CORE EXPLANATION -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+                    <h2>How Incident Detection Works</h2>
+                    <p>
+                        A SOC continuously monitors security data to identify potentially harmful activity.
+                    </p>
+                </div>
+
+                <div class="soc-content-card">
+                    <p>
+                        A Security Operations Center receives information from different
+                        security sources such as authentication logs, endpoint activity,
+                        network traffic, firewalls, IDS/IPS systems and SIEM platforms.
+                    </p>
+
+                    <p>
+                        Detection mechanisms examine this information for unusual patterns,
+                        known indicators of compromise, suspicious behavior and rule
+                        violations.
+                    </p>
+
+                    <p>
+                        When suspicious activity is identified, a security alert may be
+                        generated. The SOC analyst then investigates the alert to determine
+                        whether it is a false positive, a normal event or a potential
+                        security incident.
+                    </p>
+
+                    <p>
+                        If the activity is confirmed as a security incident, it can be
+                        prioritized and escalated to the appropriate incident response
+                        process.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- DETECTION SOURCES -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+                    <h2>Common Detection Sources</h2>
+                    <p>
+                        SOC teams use multiple sources of security telemetry to detect suspicious activity.
+                    </p>
+                </div>
+
+                <div class="soc-source-grid">
+
+                    <div class="soc-source">
+                        <span class="soc-source-number">SOURCE 01</span>
+                        <h3>Authentication Logs</h3>
+                        <p>
+                            Login failures, successful logins, unusual locations and
+                            suspicious account activity can provide useful detection signals.
+                        </p>
+                    </div>
+
+                    <div class="soc-source">
+                        <span class="soc-source-number">SOURCE 02</span>
+                        <h3>Endpoint Telemetry</h3>
+                        <p>
+                            Endpoint processes, file activity and unusual system behavior
+                            can reveal possible malicious activity.
+                        </p>
+                    </div>
+
+                    <div class="soc-source">
+                        <span class="soc-source-number">SOURCE 03</span>
+                        <h3>Network Monitoring</h3>
+                        <p>
+                            Network connections, unusual traffic and suspicious destinations
+                            can indicate possible attacks.
+                        </p>
+                    </div>
+
+                    <div class="soc-source">
+                        <span class="soc-source-number">SOURCE 04</span>
+                        <h3>Firewall / IDS Alerts</h3>
+                        <p>
+                            Security devices can generate alerts when traffic matches
+                            suspicious or prohibited patterns.
+                        </p>
+                    </div>
+
+                    <div class="soc-source">
+                        <span class="soc-source-number">SOURCE 05</span>
+                        <h3>SIEM</h3>
+                        <p>
+                            A SIEM can collect and correlate security events from multiple
+                            systems and generate detection alerts.
+                        </p>
+                    </div>
+
+                    <div class="soc-source">
+                        <span class="soc-source-number">SOURCE 06</span>
+                        <h3>Threat Intelligence</h3>
+                        <p>
+                            Known malicious IP addresses, domains, hashes and other indicators
+                            can support the detection of suspicious activity.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- DETECTION WORKFLOW -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+                    <h2>Incident Detection Workflow</h2>
+                    <p>
+                        A simplified SOC workflow for identifying and escalating potential incidents.
+                    </p>
+                </div>
+
+                <div class="soc-flow">
+
+                    <div class="soc-flow-step">
+                        <span class="soc-flow-number">01</span>
+                        <strong>Collect Events</strong>
+                    </div>
+
+                    <div class="soc-flow-step">
+                        <span class="soc-flow-number">02</span>
+                        <strong>Detect Anomaly</strong>
+                    </div>
+
+                    <div class="soc-flow-step">
+                        <span class="soc-flow-number">03</span>
+                        <strong>Generate Alert</strong>
+                    </div>
+
+                    <div class="soc-flow-step">
+                        <span class="soc-flow-number">04</span>
+                        <strong>Validate Alert</strong>
+                    </div>
+
+                    <div class="soc-flow-step">
+                        <span class="soc-flow-number">05</span>
+                        <strong>Escalate Incident</strong>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- EVENT VS INCIDENT -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+                    <h2>Security Event vs Security Incident</h2>
+                    <p>
+                        Not every security event represents a confirmed incident.
+                    </p>
+                </div>
+
+                <div class="soc-compare">
+
+                    <div class="soc-compare-box soc-event-box">
+                        <h3>Security Event</h3>
+                        <p>
+                            An observable activity occurring on a system or network.
+                            For example, a user logging into an account or a firewall
+                            recording a connection.
+                        </p>
+                    </div>
+
+                    <div class="soc-compare-box soc-incident-box">
+                        <h3>Security Incident</h3>
+                        <p>
+                            A security-related event or group of events that indicates
+                            actual or potential compromise, unauthorized activity,
+                            or violation of security requirements.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- KEY CONCEPTS -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-section-title">
+                    <h2>Key Concepts</h2>
+                    <p>
+                        Important terms to remember for Incident Detection.
+                    </p>
+                </div>
+
+                <div class="soc-key-list">
+
+                    <div class="soc-key">
+                        <strong>Event:</strong>
+                        <span>An observable activity recorded by a system.</span>
+                    </div>
+
+                    <div class="soc-key">
+                        <strong>Alert:</strong>
+                        <span>
+                            A notification that potentially suspicious activity has been detected.
+                        </span>
+                    </div>
+
+                    <div class="soc-key">
+                        <strong>Detection Rule:</strong>
+                        <span>A condition used to identify suspicious activity.</span>
+                    </div>
+
+                    <div class="soc-key">
+                        <strong>False Positive:</strong>
+                        <span>
+                            An alert that appears suspicious but is determined to be legitimate.
+                        </span>
+                    </div>
+
+                    <div class="soc-key">
+                        <strong>Indicator of Compromise:</strong>
+                        <span>
+                            Evidence that may indicate malicious activity or compromise.
+                        </span>
+                    </div>
+
+                    <div class="soc-key">
+                        <strong>Escalation:</strong>
+                        <span>
+                            Forwarding a confirmed or high-risk event for further response.
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SUMMARY -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-summary">
+                    <h2>Summary</h2>
+
+                    <p>
+                        Incident Detection is a core SOC function used to identify
+                        potential cybersecurity incidents. Security teams collect
+                        events from logs, endpoints, networks and security tools.
+                        Detection rules and analysis identify suspicious activity,
+                        which generates alerts. Analysts validate these alerts,
+                        distinguish legitimate activity from potential incidents,
+                        and escalate confirmed or high-risk cases for further response.
+                    </p>
+                </div>
+                <!-- LESSON COMPLETION -->
+<section class="soc-section" id="lesson-completion">
+    <div class="soc-container">
+        <div class="soc-content-card">
+            <div class="soc-section-title">
+                <h2>Lesson Completion</h2>
+                <p>
+                    You have completed the Incident Detection lesson.
+                    Review the key concepts and mark this lesson as completed.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="incident-detection"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/incident-detection.html"
+                data-status-id="incidentdetectionCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="incidentdetectionCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+        </div>
+    </div>
+</section>
+                <!-- PRACTICAL LAB CTA -->
+
+                <div class="lab-area">
+
+                    <div class="lab-text">
+                        <strong>Ready for the Practical Lab?</strong>
+
+                        <span>
+                            Test your understanding through an
+                            authorized SOC security-training simulation.
+                        </span>
+                    </div>
+
+                    <a href="../lab/incident-detection-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>Cybersecurity &amp; IT Learning</p>
+            </div>
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">Home</a>
+
+                <a href="../../../footer/about.html">About</a>
+
+                <a href="../../../footer/contact.html">Contact</a>
+
+                <a href="../../../footer/privacy-policy.html">Privacy Policy</a>
+
+                <a href="../../../footer/disclaimer.html">Disclaimer</a>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+
+    <!-- =====================================================
+         SHARED SCRIPTS
+         Keep these before closing body tag
+         ===================================================== -->
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/lesson-progress.js"></script>
+    <script src="../../../js/supabase-client.js"></script>
+    <script src="../../../js/navbar-loader.js"></script>
+    <script src="../../../js/navbar.js"></script>
+    <script src="../../../js/session.js"></script>
+</body>
+</html>

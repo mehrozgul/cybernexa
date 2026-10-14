@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lists & Dictionaries Lab | CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #020b18;
+            color: #dce8f5;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        .navbar {
+            border-bottom: 1px solid rgba(0,202,255,.18);
+            background: #030d1c;
+        }
+
+        .nav-container {
+            max-width: 1480px;
+            margin: auto;
+            padding: 16px 32px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-logo svg {
+            width: 38px;
+            height: 46px;
+            color: #00caff;
+        }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            color: #8fa6bd;
+            font-size: 10px;
+        }
+
+        .lab-page {
+            max-width: 1000px;
+            margin: auto;
+            padding: 35px 25px 70px;
+        }
+
+        .breadcrumb {
+            color: #7f9ab5;
+            font-size: 12px;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb span {
+            color: #00caff;
+            padding: 0 7px;
+        }
+
+        .lab-header {
+            padding: 30px;
+            border: 1px solid rgba(0,202,255,.28);
+            border-left: 4px solid #00e68a;
+            border-radius: 10px;
+            background: linear-gradient(
+                135deg,
+                #071b34,
+                #030e1d
+            );
+        }
+
+        .label {
+            color: #00e68a;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .lab-header h1 {
+            color: white;
+            font-size: 32px;
+            margin: 10px 0;
+        }
+
+        .lab-header p {
+            color: #aabbd0;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .lab-section {
+            margin-top: 25px;
+            padding: 25px;
+            border: 1px solid rgba(0,202,255,.15);
+            border-radius: 10px;
+            background: #061426;
+        }
+
+        .lab-section h2 {
+            color: white;
+            font-size: 20px;
+            margin-top: 0;
+        }
+
+        .lab-section p {
+            color: #aebed0;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .task-list {
+            padding-left: 20px;
+        }
+
+        .task-list li {
+            margin: 10px 0;
+            color: #b5c6d7;
+            font-size: 13px;
+        }
+
+        .task-list li::marker {
+            color: #00caff;
+        }
+
+        .editor {
+            width: 100%;
+            min-height: 260px;
+            resize: vertical;
+            padding: 18px;
+            border: 1px solid rgba(0,202,255,.25);
+            border-radius: 8px;
+            outline: none;
+            background: #010810;
+            color: #8fffd8;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .editor:focus {
+            border-color: #00caff;
+            box-shadow: 0 0 15px rgba(0,202,255,.10);
+        }
+
+        .run-button {
+            margin-top: 14px;
+            padding: 11px 22px;
+            border: 1px solid #00e68a;
+            border-radius: 6px;
+            background: rgba(0,230,138,.06);
+            color: #00e68a;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .run-button:hover {
+            background: #00e68a;
+            color: #02110c;
+        }
+
+        .output {
+            margin-top: 18px;
+            min-height: 100px;
+            padding: 17px;
+            border-left: 3px solid #00caff;
+            border-radius: 5px;
+            background: #010810;
+            color: #8fffd8;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+
+        .note {
+            margin-top: 15px;
+            padding: 14px;
+            border-left: 3px solid #ffbd00;
+            background: rgba(255,189,0,.05);
+            color: #c8d3df;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .navigation a {
+            padding: 10px 15px;
+            border: 1px solid rgba(0,202,255,.25);
+            border-radius: 6px;
+            color: #00caff;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .navigation a:hover {
+            border-color: #00caff;
+            background: rgba(0,202,255,.08);
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding: 35px 25px 20px;
+            border-top: 1px solid rgba(0,202,255,.15);
+            background: #020914;
+        }
+
+        .footer-container {
+            max-width: 1000px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #8298ad;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8fa6bb;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            max-width: 1000px;
+            margin: 25px auto 0;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,.06);
+            color: #64788c;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        @media(max-width:700px) {
+
+            .nav-container {
+                padding: 14px 18px;
+            }
+
+            .lab-page {
+                padding: 25px 15px 55px;
+            }
+
+            .lab-header {
+                padding: 22px;
+            }
+
+            .lab-header h1 {
+                font-size: 27px;
+            }
+
+            .lab-section {
+                padding: 20px;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+
+            .navigation a {
+                text-align: center;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path d="M25 2 L46 10 V27 C46 42 37 52 25 58
+                    C13 52 4 42 4 27 V10 Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"/>
+
+                    <rect x="18" y="25" width="14" height="14"
+                    rx="2"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"/>
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+    <div class="breadcrumb">
+        Python for Cybersecurity
+        <span>›</span>
+        Lists &amp; Dictionaries
+        <span>›</span>
+        Practical Lab
+    </div>
+
+
+    <section class="lab-header">
+
+        <div class="label">
+            PYTHON PRACTICAL LAB
+        </div>
+
+        <h1>
+            Lists &amp; Dictionaries Lab
+        </h1>
+
+        <p>
+            Practice storing cybersecurity information using
+            Python lists and dictionaries.
+        </p>
+
+    </section>
+
+
+    <section class="lab-section">
+
+        <h2>Lab Objective</h2>
+
+        <p>
+            Create a list of target IP addresses and a dictionary
+            containing information about a security target.
+        </p>
+
+        <ul class="task-list">
+
+            <li>Create a list containing three IP addresses.</li>
+
+            <li>Print the first IP address.</li>
+
+            <li>Create a dictionary containing IP, port and service.</li>
+
+            <li>Display each dictionary value.</li>
+
+            <li>Change the port from 80 to 443.</li>
+
+        </ul>
+
+    </section>
+
+
+    <section class="lab-section">
+
+        <h2>Python Environment</h2>
+
+        <p>
+            Write and run the following code in your Python
+            environment such as VS Code, IDLE or PyCharm.
+        </p>
+
+        <textarea class="editor" id="codeEditor">target_ips = [
+    "192.168.1.10",
+    "192.168.1.20",
+    "192.168.1.30"
+]
+
+print("First IP:", target_ips[0])
+
+target = {
+    "ip": "192.168.1.10",
+    "port": 80,
+    "service": "HTTP"
+}
+
+target["port"] = 443
+
+print("IP:", target["ip"])
+print("Port:", target["port"])
+print("Service:", target["service"])</textarea>
+
+        <button class="run-button" id="runCode">
+            Run Example
+        </button>
+
+        <div class="output" id="output">
+            Output will appear here...
+        </div>
+
+        <div class="note">
+            <strong>Note:</strong>
+            This browser lab is a learning simulation. For real Python
+            execution, use VS Code, IDLE, PyCharm or another Python
+            environment.
+        </div>
+
+    </section>
+
+
+    <div class="navigation">
+
+        <a href="functions-lab.html">
+            ← Lab: Functions
+        </a>
+        <a href="../theory/file-handling.html">
+            Next Theory: File Handling →
+        </a>
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">About</a>
+            <a href="../../../footer/contact.html">Contact</a>
+            <a href="../../../footer/privacy-policy.html">Privacy Policy</a>
+            <a href="../../../footer/disclaimer.html">Disclaimer</a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+    /* =====================================================
+       CYBERNEXA LISTS & DICTIONARIES LAB
+    ===================================================== */
+
+    document
+        .getElementById("runCode")
+        .addEventListener("click", function () {
+
+            const output =
+                document.getElementById("output");
+
+            output.textContent =
+`First IP: 192.168.1.10
+IP: 192.168.1.10
+Port: 443
+Service: HTTP`;
+
+        });
+
+</script>
+
+</body>
+</html>

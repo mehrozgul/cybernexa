@@ -1,0 +1,2312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bash Basics - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%),
+                radial-gradient(circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%),
+                #02080d;
+        }
+
+
+        .linux-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-topic-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+
+        .linux-topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-topic-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LINUX SEARCH
+        ====================================================== */
+
+        .linux-search-wrapper {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin: 0 auto 35px;
+        }
+
+
+        .linux-search-box {
+
+            width: 100%;
+            max-width: 620px;
+
+            display: flex;
+            align-items: center;
+
+            border: 1px solid rgba(103, 232, 249, 0.18);
+
+            border-radius: 10px;
+
+            background: rgba(3, 13, 20, 0.95);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .linux-search-box:focus-within {
+
+            border-color: rgba(103, 232, 249, 0.55);
+
+            box-shadow:
+                0 0 25px rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-search-icon {
+
+            padding-left: 16px;
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        .linux-search-input {
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 14px 12px;
+
+            border: none;
+            outline: none;
+
+            color: #e2e8f0;
+
+            background: transparent;
+
+            font-size: 13px;
+        }
+
+
+        .linux-search-input::placeholder {
+
+            color: #71808c;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98));
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           DESKTOP HOVER
+        ====================================================== */
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-card::after,
+        .linux-example-card::after,
+        .linux-command-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent);
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover::after,
+            .linux-example-card:hover::after,
+            .linux-command-card:hover::after {
+
+                animation:
+                    linuxLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+
+        .linux-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .linux-definition-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-definition-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-definition-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           EXAMPLE GRID
+        ====================================================== */
+
+        .linux-example-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-example-card {
+
+            position: relative;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-example-card:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.35);
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .linux-example-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .linux-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+
+        /* =====================================================
+           COMMAND CARDS
+        ====================================================== */
+
+        .linux-command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-command-card {
+
+            position: relative;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+        }
+
+
+        .linux-command-card code {
+
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           CODE OUTPUT
+        ====================================================== */
+
+        .linux-output-box {
+
+            margin-top: 12px;
+
+            padding: 14px 16px;
+
+            border-left:
+                2px solid rgba(103, 232, 249, 0.35);
+
+            border-radius:
+                0 8px 8px 0;
+
+            background: rgba(103, 232, 249, 0.035);
+        }
+
+
+        .linux-output-box span {
+
+            color: #82929d;
+
+            font-size: 11px;
+
+            display: block;
+
+            margin-bottom: 5px;
+        }
+
+
+        .linux-output-box code {
+
+            color: #c7d2fe;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .linux-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-flow-item {
+
+            padding: 12px 16px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .linux-summary-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-summary-list li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 23px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-summary-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .linux-summary-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-learning-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-topic-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-learning-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-topic-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-topic-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-search-wrapper {
+
+                margin-bottom: 25px;
+            }
+
+
+            .linux-search-input {
+
+                font-size: 12px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-definition-box {
+
+                padding: 16px;
+            }
+
+
+            .linux-definition-box span {
+
+                font-size: 13px;
+            }
+
+
+            .linux-example-grid,
+            .linux-command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-key-item {
+
+                font-size: 11px;
+
+                padding: 9px 11px;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-learning-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+        /* Page-specific Linux navbar icon size */
+        #navbar-placeholder a[href*="linux"] svg,
+        #navbar-placeholder a[href*="linux"] i {
+            width: 18px;
+            height: 18px;
+            font-size: 16px;
+        }
+
+        /* Page-specific fix: Linux navbar icon */
+        #navbar-placeholder a[href*="linux"] svg,
+        #navbar-placeholder a[href*="linux"] i,
+        #navbar-placeholder a[href*="linux"] .nav-icon,
+        #navbar-placeholder a[href*="linux"] .nav-icon-wrapper {
+            width: 18px !important;
+            height: 18px !important;
+            min-width: 18px !important;
+            min-height: 18px !important;
+            font-size: 16px !important;
+        }
+
+        /* Keep the Linux navigation item compact */
+        #navbar-placeholder a[href*="linux"] {
+            gap: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SHARED CYBERNEXA NAVBAR -->
+    <div id="navbar-placeholder" data-navbar-path="../../../components/navbar.html" data-root-path="../../../">
+    </div>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-learning-page">
+
+        <div class="linux-learning-container">
+
+
+            <!-- HEADER -->
+
+            <header class="linux-topic-header">
+
+                <div class="linux-topic-category">
+                    LINUX
+                </div>
+
+                <h1>
+                    Bash <span>Basics</span>
+                </h1>
+
+                <p class="linux-topic-intro">
+
+                    Bash is a command-line shell commonly used on Linux
+                    systems. Learning Bash basics helps with system
+                    administration, automation and cybersecurity tasks.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 SEARCH
+            ================================================== -->
+
+            <div class="linux-search-wrapper">
+
+                <div class="linux-search-box">
+
+                    <div class="linux-search-icon">
+                        ⌕
+                    </div>
+
+                    <input type="text" id="linuxSearch" class="linux-search-input" placeholder="Search Linux topics..."
+                        autocomplete="off">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DEFINITION
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        What is Bash?
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-definition-box">
+
+                    <strong>
+                        Simple Definition
+                    </strong>
+
+                    <span>
+
+                        Bash stands for <strong>Bourne Again Shell</strong>.
+                        It is a command-line shell and scripting language
+                        widely used on Linux systems.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SHELL & TERMINAL
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        >
+                    </div>
+
+                    <h2>
+                        Bash, Shell &amp; Terminal
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    These terms are related but are not exactly the same.
+                    The terminal provides an interface, while the shell
+                    interprets commands entered by the user.
+
+                </p>
+
+
+                <div class="linux-example-grid">
+
+
+                    <div class="linux-example-card">
+
+                        <h3>
+                            Terminal
+                        </h3>
+
+                        <p>
+
+                            A program that provides a text-based interface
+                            for interacting with the system.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-example-card">
+
+                        <h3>
+                            Shell
+                        </h3>
+
+                        <p>
+
+                            A command interpreter that receives commands
+                            and communicates with the operating system.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-example-card">
+
+                        <h3>
+                            Bash
+                        </h3>
+
+                        <p>
+
+                            A popular Unix shell that can also be used
+                            to write automation scripts.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-example-card">
+
+                        <h3>
+                            Prompt
+                        </h3>
+
+                        <p>
+
+                            The prompt shows that the shell is ready
+                            to receive a command.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 BASIC COMMANDS
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        Basic Bash Commands
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Bash allows users to perform common Linux tasks
+                    directly from the command line.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            pwd
+                        </code>
+
+                        <p>
+                            Displays the current working directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ls
+                        </code>
+
+                        <p>
+                            Lists files and directories.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cd
+                        </code>
+
+                        <p>
+                            Changes the current directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            mkdir
+                        </code>
+
+                        <p>
+                            Creates a new directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            touch
+                        </code>
+
+                        <p>
+                            Creates an empty file.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cat
+                        </code>
+
+                        <p>
+                            Displays file contents.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ECHO
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        E
+                    </div>
+
+                    <h2>
+                        echo Command
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>echo</strong> command displays text
+                    or variable values in the terminal.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        echo "Hello CyberNexa"
+                    </code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <span>
+                        Example Output
+                    </span>
+
+                    <code>
+                        Hello CyberNexa
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 VARIABLES
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        V
+                    </div>
+
+                    <h2>
+                        Bash Variables
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A variable stores a value that can be used later
+                    in a Bash script or command.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        username="Gul"
+                        <br>
+                        echo "$username"
+                    </code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <span>
+                        Example Output
+                    </span>
+
+                    <code>
+                        Gul
+                    </code>
+
+                </div>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Variable Name
+                    </div>
+
+                    <div class="linux-key-item">
+                        Stored Value
+                    </div>
+
+                    <div class="linux-key-item">
+                        $ Expansion
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 USER INPUT
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ?
+                    </div>
+
+                    <h2>
+                        User Input with read
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>read</strong> command allows a Bash script
+                    to receive input from the user.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        echo "Enter your name:"
+                        <br>
+                        read name
+                        <br>
+                        echo "Hello $name"
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 IF STATEMENT
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        IF
+                    </div>
+
+                    <h2>
+                        if Statement
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>if</strong> statement allows Bash scripts
+                    to make decisions based on conditions.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        if [ "$user" = "admin" ]; then
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;echo "Access granted"
+                        <br>
+                        else
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;echo "Access denied"
+                        <br>
+                        fi
+                    </code>
+
+                </div>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        Condition
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        True / False
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Action
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FOR LOOP
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ↻
+                    </div>
+
+                    <h2>
+                        for Loop
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A <strong>for loop</strong> repeats a command or
+                    block of commands for each item in a sequence.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        for user in Alice Bob Charlie
+                        <br>
+                        do
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;echo "$user"
+                        <br>
+                        done
+                    </code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <span>
+                        Example Output
+                    </span>
+
+                    <code>
+                        Alice
+                        <br>
+                        Bob
+                        <br>
+                        Charlie
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 WHILE LOOP
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ∞
+                    </div>
+
+                    <h2>
+                        while Loop
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A <strong>while loop</strong> repeatedly executes
+                    commands while a condition remains true.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        count=1
+                        <br>
+                        while [ $count -le 3 ]
+                        <br>
+                        do
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;echo $count
+                        <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;((count++))
+                        <br>
+                        done
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 BASH SCRIPT
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ./
+                    </div>
+
+                    <h2>
+                        Basic Bash Script
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A Bash script is a text file containing commands
+                    that can be executed as a program.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        #!/bin/bash
+                        <br>
+                        echo "Welcome to CyberNexa"
+                        <br>
+                        echo "Learning Linux Bash"
+                    </code>
+
+                </div>
+
+
+                <p>
+
+                    The first line identifies Bash as the interpreter
+                    for the script.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SCRIPT EXECUTION
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ▶
+                    </div>
+
+                    <h2>
+                        Running a Bash Script
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    After creating a Bash script, execution permission
+                    can be given with <strong>chmod</strong>.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        chmod +x script.sh
+                        <br>
+                        ./script.sh
+                    </code>
+
+                </div>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        Create Script
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        chmod +x
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        ./script.sh
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why Bash Matters in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Bash is useful in cybersecurity because security
+                    professionals often need to automate repetitive
+                    Linux tasks and inspect system information.
+
+                </p>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Automation
+                    </div>
+
+                    <div class="linux-key-item">
+                        Log Analysis
+                    </div>
+
+                    <div class="linux-key-item">
+                        System Administration
+                    </div>
+
+                    <div class="linux-key-item">
+                        Security Testing
+                    </div>
+
+                    <div class="linux-key-item">
+                        Incident Response
+                    </div>
+
+                    <div class="linux-key-item">
+                        Enumeration
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 QUICK SUMMARY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Quick Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-summary-list">
+
+                    <li>
+                        Bash stands for Bourne Again Shell.
+                    </li>
+
+                    <li>
+                        Bash is commonly used on Linux systems.
+                    </li>
+
+                    <li>
+                        A terminal provides a command-line interface.
+                    </li>
+
+                    <li>
+                        Shells interpret commands entered by users.
+                    </li>
+
+                    <li>
+                        echo displays text or variable values.
+                    </li>
+
+                    <li>
+                        Variables store values for later use.
+                    </li>
+
+                    <li>
+                        read accepts user input.
+                    </li>
+
+                    <li>
+                        if statements allow decision making.
+                    </li>
+
+                    <li>
+                        for and while loops provide repetition.
+                    </li>
+
+                    <li>
+                        Bash scripts automate multiple commands.
+                    </li>
+
+                    <li>
+                        Bash is widely useful for cybersecurity automation.
+                    </li>
+
+                </ul>
+
+            </section>
+
+<!-- Lesson Completion -->
+<section class="linux-card" id="lessonCompletion">
+    <div class="linux-card-heading">
+        <div class="linux-icon" aria-hidden="true">✓</div>
+        <h2>Complete This Lesson</h2>
+    </div>
+
+    <p>
+        Mark this lesson as complete after studying all the topics.
+        Your progress will be saved to your CyberNexa account.
+    </p>
+
+    <button
+        type="button"
+        class="linux-topic-button"
+        data-lesson-progress
+        data-course-id="linux"
+        data-lesson-id="linux-bash-basics"
+        data-dashboard-url="../learning-paths/linux/theory/linux-bash-basics.html"
+        data-status-id="lessonCompletionStatus">
+
+        Mark Lesson Complete
+    </button>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite">
+    </p>
+</section>
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-topic-navigation">
+
+
+                <a href="linux-networking-commands.html" class="linux-topic-button previous">
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Networking Commands
+                    </strong>
+
+                </a>
+
+                <a href="../lab/lab11.html" class="linux-topic-button practical-lab">
+                    <span>🧪</span>
+                    <strong>Perform Lab</strong>
+                </a>
+            </div>
+        </div>
+    </main>
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../js/supabase-client.js"></script>
+    <script src="../../../js/lesson-progress.js"></script>
+    <script src="../../../js/navbar-loader.js"></script>
+    <script src="../../../js/navbar.js"></script>
+    <script src="../../../js/session.js"></script>
+    <script>
+        const linuxSearch =
+            document.getElementById("linuxSearch");
+        const linuxCards =
+            document.querySelectorAll(".linux-card");
+        linuxSearch.addEventListener("input", function () {
+            const searchText =
+                this.value.toLowerCase().trim();
+            linuxCards.forEach(card => {
+                const cardText =
+                    card.innerText.toLowerCase();
+
+                if (
+                    searchText === "" ||
+                    cardText.includes(searchText)
+                ) {
+
+                    card.style.display = "";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+            });
+        });
+    </script>
+    <!-- =====================================================
+         MOBILE SWEEP
+         Sweep only when user scrolls/touches.
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards =
+            document.querySelectorAll(
+                ".linux-card, .linux-example-card, .linux-command-card"
+            );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+
+                return;
+
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove("mobile-sweep");
+
+                void card.offsetWidth;
+
+                card.classList.add("mobile-sweep");
+
+            });
+
+
+            clearTimeout(sweepTimeout);
+
+
+            sweepTimeout = setTimeout(() => {
+
+                sweepCards.forEach(card => {
+
+                    card.classList.remove("mobile-sweep");
+
+                });
+
+            }, 800);
+
+        }
+
+
+        window.addEventListener(
+
+            "touchstart",
+
+            () => {
+
+                triggerMobileSweep();
+
+            },
+
+            { passive: true }
+
+        );
+
+
+        window.addEventListener(
+
+            "scroll",
+
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+            },
+            { passive: true }
+        );
+    </script>
+</body>
+
+</html>

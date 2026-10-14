@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Windows Forensics Lab - CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           DIGITAL FORENSICS LAB PAGE
+        ====================================================== */
+
+        .df-lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 10%,
+                    rgba(91, 140, 255, 0.055),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(160, 110, 255, 0.045),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #07090e 0%,
+                    #0a0d14 50%,
+                    #07090e 100%
+                );
+        }
+
+        .df-container {
+
+            width: 100%;
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           CASE HEADER
+        ====================================================== */
+
+        .case-header {
+
+            position: relative;
+
+            margin-bottom: 22px;
+
+            padding: 32px;
+
+            border: 1px solid rgba(150, 165, 190, 0.15);
+
+            border-radius: 6px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(17, 22, 32, 0.98),
+                    rgba(10, 14, 22, 0.98)
+                );
+
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, 0.25);
+
+            overflow: hidden;
+        }
+
+        .case-header::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 5px;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #6d8cff,
+                    #9a72ff
+                );
+        }
+
+        .case-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .case-label {
+
+            color: #8d9bb2;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .case-status {
+
+            padding: 7px 11px;
+
+            border: 1px solid rgba(105, 140, 255, 0.25);
+
+            border-radius: 4px;
+
+            color: #9db5ff;
+
+            background: rgba(105, 140, 255, 0.06);
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .case-header h1 {
+
+            margin: 0;
+
+            color: #f1f4f9;
+
+            font-size: 39px;
+
+            line-height: 1.15;
+
+            font-weight: 800;
+
+            letter-spacing: -0.7px;
+        }
+
+        .case-header h1 span {
+
+            color: #91a8ff;
+        }
+
+        .case-description {
+
+            max-width: 760px;
+
+            margin: 15px 0 0;
+
+            color: #8995a8;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+
+
+        /* =====================================================
+           CASE FILE INFORMATION
+        ====================================================== */
+
+        .case-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 9px;
+
+            margin-bottom: 22px;
+        }
+
+        .case-info-item {
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(150, 165, 190, 0.11);
+
+            border-radius: 5px;
+
+            background:
+                rgba(255, 255, 255, 0.018);
+        }
+
+        .case-info-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #59667a;
+
+            font-size: 8px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .case-info-value {
+
+            color: #c8d1df;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .case-info-value.blue {
+
+            color: #91a8ff;
+        }
+
+
+        /* =====================================================
+           OBJECTIVE PANEL
+        ====================================================== */
+
+        .objective-panel {
+
+            margin-bottom: 18px;
+
+            padding: 23px;
+
+            border:
+                1px solid rgba(150, 165, 190, 0.12);
+
+            border-radius: 6px;
+
+            background:
+                rgba(255, 255, 255, 0.018);
+        }
+
+        .section-label {
+
+            margin-bottom: 9px;
+
+            color: #72809a;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.8px;
+
+            text-transform: uppercase;
+        }
+
+        .objective-panel h2 {
+
+            margin: 0 0 9px;
+
+            color: #edf1f7;
+
+            font-size: 19px;
+        }
+
+        .objective-panel p {
+
+            margin: 0;
+
+            color: #8995a8;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           AUTHORIZATION NOTICE
+        ====================================================== */
+
+        .forensic-notice {
+
+            margin-bottom: 18px;
+
+            padding: 18px 20px;
+
+            border-left: 3px solid #d6a84f;
+
+            border-radius: 5px;
+
+            background:
+                rgba(214, 168, 79, 0.045);
+        }
+
+        .forensic-notice strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #d9b86d;
+
+            font-size: 11px;
+        }
+
+        .forensic-notice p {
+
+            margin: 0;
+
+            color: #8d95a3;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           LAB SECTION
+        ====================================================== */
+
+        .lab-section {
+
+            margin-bottom: 18px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(150, 165, 190, 0.12);
+
+            border-radius: 6px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(17, 22, 32, 0.96),
+                    rgba(10, 14, 22, 0.96)
+                );
+        }
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 18px;
+        }
+
+        .lab-number {
+
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid rgba(145, 168, 255, 0.22);
+
+            border-radius: 5px;
+
+            color: #9db1ff;
+
+            background:
+                rgba(145, 168, 255, 0.055);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .lab-heading h2 {
+
+            margin: 0;
+
+            color: #edf1f7;
+
+            font-size: 18px;
+        }
+
+
+        /* =====================================================
+           EVIDENCE CARD
+        ====================================================== */
+
+        .evidence-card {
+
+            padding: 19px;
+
+            border:
+                1px solid rgba(150, 165, 190, 0.10);
+
+            border-radius: 5px;
+
+            background:
+                rgba(0, 0, 0, 0.16);
+        }
+
+        .evidence-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 15px;
+        }
+
+        .evidence-id {
+
+            color: #91a8ff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .evidence-type {
+
+            color: #626f82;
+
+            font-size: 9px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .evidence-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 8px;
+        }
+
+        .evidence-item {
+
+            padding: 12px;
+
+            border:
+                1px solid rgba(150, 165, 190, 0.08);
+
+            background:
+                rgba(255, 255, 255, 0.015);
+        }
+
+        .evidence-item span {
+
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #566276;
+
+            font-size: 8px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .evidence-item strong {
+
+            color: #bbc6d5;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           TASKS
+        ====================================================== */
+
+        .task-list {
+
+            display: grid;
+
+            gap: 9px;
+
+            margin-top: 17px;
+        }
+
+        .task {
+
+            display: grid;
+
+            grid-template-columns: 28px 1fr;
+
+            gap: 10px;
+
+            align-items: start;
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(150, 165, 190, 0.08);
+
+            border-radius: 5px;
+
+            background:
+                rgba(255, 255, 255, 0.014);
+        }
+
+        .task-number {
+
+            width: 26px;
+            height: 26px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 4px;
+
+            color: #91a8ff;
+
+            background:
+                rgba(145, 168, 255, 0.06);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 9px;
+
+            font-weight: 800;
+        }
+
+        .task strong {
+
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #d2d9e4;
+
+            font-size: 11px;
+        }
+
+        .task span {
+
+            color: #778397;
+
+            font-size: 10px;
+
+            line-height: 1.65;
+        }
+
+
+        /* =====================================================
+           COMMAND / OUTPUT
+        ====================================================== */
+
+        .command-box {
+
+            margin-top: 17px;
+
+            overflow: hidden;
+
+            border:
+                1px solid rgba(150, 165, 190, 0.12);
+
+            border-radius: 5px;
+
+            background: #06080d;
+        }
+
+        .command-header {
+
+            padding: 9px 12px;
+
+            border-bottom:
+                1px solid rgba(150, 165, 190, 0.09);
+
+            color: #69758a;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 9px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .command-box pre {
+
+            margin: 0;
+
+            padding: 16px;
+
+            color: #aab8cc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 10px;
+
+            line-height: 1.75;
+
+            white-space: pre-wrap;
+
+            overflow-x: auto;
+        }
+
+        .command-green {
+
+            color: #9ed7ad;
+        }
+
+        .command-blue {
+
+            color: #9db5ff;
+        }
+
+
+        /* =====================================================
+           MCQ
+        ====================================================== */
+
+        .mcq {
+
+            margin-top: 17px;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(150, 165, 190, 0.10);
+
+            border-radius: 5px;
+
+            background:
+                rgba(255, 255, 255, 0.018);
+        }
+
+        .mcq-question {
+
+            margin-bottom: 13px;
+
+            color: #d8dfe9;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            line-height: 1.7;
+        }
+
+        .mcq-option {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            padding: 10px 12px;
+
+            border:
+                1px solid rgba(150, 165, 190, 0.08);
+
+            border-radius: 4px;
+
+            color: #7f8b9e;
+
+            background:
+                rgba(255, 255, 255, 0.012);
+
+            font-size: 10px;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .mcq-option:hover {
+
+            border-color:
+                rgba(145, 168, 255, 0.25);
+
+            background:
+                rgba(145, 168, 255, 0.035);
+        }
+
+        .mcq-option input {
+
+            margin-right: 8px;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ====================================================== */
+
+        .lab-actions {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-top: 18px;
+        }
+
+        .lab-button {
+
+            padding: 10px 16px;
+
+            border:
+                1px solid rgba(145, 168, 255, 0.28);
+
+            border-radius: 5px;
+
+            color: #cbd7ff;
+
+            background:
+                rgba(145, 168, 255, 0.055);
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .lab-button:hover {
+
+            transform: translateY(-1px);
+
+            border-color:
+                rgba(145, 168, 255, 0.5);
+
+            background:
+                rgba(145, 168, 255, 0.09);
+        }
+
+        .lab-button.secondary {
+
+            border-color:
+                rgba(150, 165, 190, 0.16);
+
+            color: #7f8b9e;
+
+            background:
+                rgba(255, 255, 255, 0.018);
+        }
+
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result-box {
+
+            display: none;
+
+            margin-top: 16px;
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(145, 168, 255, 0.18);
+
+            border-radius: 5px;
+
+            background:
+                rgba(145, 168, 255, 0.035);
+
+            color: #aab8cc;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        .result-box.show {
+
+            display: block;
+        }
+
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion {
+
+            padding: 25px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(145, 168, 255, 0.16);
+
+            border-radius: 6px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(145, 168, 255, 0.04),
+                    rgba(154, 114, 255, 0.025)
+                );
+        }
+
+        .completion-label {
+
+            margin-bottom: 7px;
+
+            color: #91a8ff;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .completion h2 {
+
+            margin: 0 0 8px;
+
+            color: #edf1f7;
+
+            font-size: 19px;
+        }
+
+        .completion p {
+
+            max-width: 720px;
+
+            margin: 0 auto;
+
+            color: #7c889a;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+/* =========================
+   LAB NAVIGATION
+========================= */
+
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 55px;
+    padding-top: 25px;
+    border-top: 1px solid #173553;
+}
+
+.topic-nav {
+    display: inline-block;
+    min-width: 180px;
+    padding: 14px 20px;
+    background: #0a1828;
+    border: 1px solid #183651;
+    border-radius: 7px;
+    color: #bae6fd;
+    text-decoration: none;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+.topic-nav:hover {
+    border-color: #2588b3;
+    color: #67e8f9;
+    background: #0c2033;
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+
+    .topic-navigation {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .topic-nav {
+        width: 100%;
+    }
+
+}
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .case-info {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .df-lab-page {
+
+                padding: 42px 12px 60px;
+            }
+
+            .case-header {
+
+                padding: 25px 20px;
+            }
+
+            .case-header h1 {
+
+                font-size: 30px;
+            }
+
+            .case-top {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .case-info {
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .lab-section {
+
+                padding: 19px;
+            }
+
+            .evidence-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .topic-navigation {
+
+                grid-template-columns: 1fr;
+            }
+
+            .lab-actions {
+
+                flex-direction: column;
+            }
+
+            .lab-button {
+
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="df-lab-page">
+
+        <div class="df-container">
+
+
+            <!-- =================================================
+                 CASE HEADER
+            ================================================== -->
+
+            <section class="case-header">
+
+                <div class="case-top">
+
+                    <div class="case-label">
+                        DIGITAL FORENSICS / WINDOWS FORENSICS / LAB 04
+                    </div>
+
+                    <div class="case-status">
+                        Training Evidence
+                    </div>
+
+                </div>
+
+
+                <h1>
+                    Windows <span>Forensics</span>
+                </h1>
+
+
+                <p class="case-description">
+
+                    Investigate a simulated Windows evidence set and
+                    practice identifying useful forensic artifacts,
+                    understanding timestamps, reviewing user activity
+                    and documenting observations in a structured manner.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CASE INFORMATION
+            ================================================== -->
+
+            <section class="case-info">
+
+                <div class="case-info-item">
+
+                    <span class="case-info-label">
+                        Category
+                    </span>
+
+                    <span class="case-info-value">
+                        Digital Forensics
+                    </span>
+
+                </div>
+
+
+                <div class="case-info-item">
+
+                    <span class="case-info-label">
+                        Level
+                    </span>
+
+                    <span class="case-info-value">
+                        Beginner
+                    </span>
+
+                </div>
+
+
+                <div class="case-info-item">
+
+                    <span class="case-info-label">
+                        Evidence
+                    </span>
+
+                    <span class="case-info-value blue">
+                        Simulated
+                    </span>
+
+                </div>
+
+
+                <div class="case-info-item">
+
+                    <span class="case-info-label">
+                        Focus
+                    </span>
+
+                    <span class="case-info-value">
+                        Windows Artifacts
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 OBJECTIVE
+            ================================================== -->
+
+            <section class="objective-panel">
+
+                <div class="section-label">
+                    Investigation Objective
+                </div>
+
+                <h2>
+                    Examine Windows forensic artifacts
+                </h2>
+
+                <p>
+
+                    In this laboratory exercise, you will analyze a
+                    fictional Windows evidence set. The goal is to
+                    understand how investigators use operating-system
+                    artifacts to build a timeline and identify relevant
+                    activity without modifying the original evidence.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 AUTHORIZATION
+            ================================================== -->
+
+            <section class="forensic-notice">
+
+                <strong>
+                    ⚠ AUTHORIZED FORENSIC TRAINING ONLY
+                </strong>
+
+                <p>
+
+                    Use this exercise with CyberNexa's simulated evidence
+                    or with forensic images and systems that you are
+                    authorized to examine. Do not investigate another
+                    person's computer or files without appropriate
+                    authorization.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB 01
+            ================================================== -->
+
+            <section class="lab-section">
+
+                <div class="lab-heading">
+
+                    <div class="lab-number">
+                        01
+                    </div>
+
+                    <h2>
+                        Identify the Evidence
+                    </h2>
+
+                </div>
+
+
+                <div class="evidence-card">
+
+                    <div class="evidence-top">
+
+                        <span class="evidence-id">
+                            CASE-ID: CNX-WIN-004
+                        </span>
+
+                        <span class="evidence-type">
+                            Simulated Evidence
+                        </span>
+
+                    </div>
+
+
+                    <div class="evidence-grid">
+
+                        <div class="evidence-item">
+
+                            <span>
+                                Host
+                            </span>
+
+                            <strong>
+                                WIN-LAB-01
+                            </strong>
+
+                        </div>
+
+
+                        <div class="evidence-item">
+
+                            <span>
+                                Operating System
+                            </span>
+
+                            <strong>
+                                Windows 11
+                            </strong>
+
+                        </div>
+
+
+                        <div class="evidence-item">
+
+                            <span>
+                                User
+                            </span>
+
+                            <strong>
+                                analyst
+                            </strong>
+
+                        </div>
+
+
+                        <div class="evidence-item">
+
+                            <span>
+                                Evidence State
+                            </span>
+
+                            <strong>
+                                READ-ONLY
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="task-list">
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            A
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Identify the operating system
+                            </strong>
+
+                            <span>
+                                Record the Windows version associated with
+                                the evidence.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            B
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Identify the user account
+                            </strong>
+
+                            <span>
+                                Determine which account is associated with
+                                the simulated activity.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            C
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Preserve the original evidence
+                            </strong>
+
+                            <span>
+                                Explain why investigators should avoid
+                                modifying the original evidence during
+                                analysis.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB 02
+            ================================================== -->
+
+            <section class="lab-section">
+
+                <div class="lab-heading">
+
+                    <div class="lab-number">
+                        02
+                    </div>
+
+                    <h2>
+                        Windows Artifact Review
+                    </h2>
+
+                </div>
+
+
+                <div class="evidence-card">
+
+                    <div class="evidence-top">
+
+                        <span class="evidence-id">
+                            ARTIFACT SET
+                        </span>
+
+                        <span class="evidence-type">
+                            Simulated Records
+                        </span>
+
+                    </div>
+
+
+                    <div class="evidence-grid">
+
+                        <div class="evidence-item">
+
+                            <span>
+                                Artifact
+                            </span>
+
+                            <strong>
+                                Event Logs
+                            </strong>
+
+                        </div>
+
+
+                        <div class="evidence-item">
+
+                            <span>
+                                Artifact
+                            </span>
+
+                            <strong>
+                                Prefetch
+                            </strong>
+
+                        </div>
+
+
+                        <div class="evidence-item">
+
+                            <span>
+                                Artifact
+                            </span>
+
+                            <strong>
+                                Recycle Bin
+                            </strong>
+
+                        </div>
+
+
+                        <div class="evidence-item">
+
+                            <span>
+                                Artifact
+                            </span>
+
+                            <strong>
+                                User Files
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <p style="
+                    margin:17px 0 0;
+                    color:#7f8b9e;
+                    font-size:11px;
+                    line-height:1.8;
+                ">
+
+                    Windows systems can contain many artifacts that help
+                    investigators understand system and user activity.
+                    In a real investigation, analysts correlate multiple
+                    artifacts rather than relying on one record alone.
+
+                </p>
+
+
+                <div class="command-box">
+
+                    <div class="command-header">
+                        Example Investigation Notes
+                    </div>
+
+                    <pre><span class="command-blue">Artifact:</span> Event Logs
+<span class="command-green">Observation:</span> Authentication-related event recorded
+
+<span class="command-blue">Artifact:</span> Prefetch
+<span class="command-green">Observation:</span> Application execution evidence may exist
+
+<span class="command-blue">Artifact:</span> Recycle Bin
+<span class="command-green">Observation:</span> Deleted-file metadata may be relevant
+
+<span class="command-blue">Artifact:</span> User Files
+<span class="command-green">Observation:</span> File timestamps and metadata may provide context</span></pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB 03
+            ================================================== -->
+
+            <section class="lab-section">
+
+                <div class="lab-heading">
+
+                    <div class="lab-number">
+                        03
+                    </div>
+
+                    <h2>
+                        Build a Basic Timeline
+                    </h2>
+
+                </div>
+
+
+                <p style="
+                    margin:0;
+                    color:#8995a8;
+                    font-size:12px;
+                    line-height:1.8;
+                ">
+
+                    Investigators often correlate timestamps from different
+                    artifacts to construct a timeline of activity. The
+                    following fictional records can be used for practice.
+
+                </p>
+
+
+                <div class="command-box">
+
+                    <div class="command-header">
+                        Simulated Timeline
+                    </div>
+
+                    <pre><span class="command-blue">09:12:14</span>  User login recorded
+<span class="command-blue">09:15:32</span>  Browser application executed
+<span class="command-blue">09:18:47</span>  Document opened
+<span class="command-blue">09:24:03</span>  File moved to another directory
+<span class="command-blue">09:31:19</span>  User session ended</pre>
+
+                </div>
+
+
+                <div class="task-list">
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            1
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Find the first recorded activity
+                            </strong>
+
+                            <span>
+                                Identify which event occurred first in
+                                the simulated timeline.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            2
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Identify application activity
+                            </strong>
+
+                            <span>
+                                Determine when the browser application
+                                was recorded as executed.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="task">
+
+                        <div class="task-number">
+                            3
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Determine the final activity
+                            </strong>
+
+                            <span>
+                                Identify the last recorded event in
+                                the timeline.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB 04 — MCQ
+            ================================================== -->
+
+            <section class="lab-section">
+
+                <div class="lab-heading">
+
+                    <div class="lab-number">
+                        04
+                    </div>
+
+                    <h2>
+                        Forensic Knowledge Check
+                    </h2>
+
+                </div>
+
+
+                <div class="mcq">
+
+                    <div class="mcq-question">
+                        Q1. Which Windows artifact can contain
+                        information about system and application events?
+                    </div>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q1" value="a">
+                        A. Event Logs
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q1" value="b">
+                        B. Wallpaper
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q1" value="c">
+                        C. Screen brightness
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q1" value="d">
+                        D. Desktop color
+                    </label>
+
+                </div>
+
+
+                <div class="mcq">
+
+                    <div class="mcq-question">
+                        Q2. Why should forensic investigators preserve
+                        original evidence?
+                    </div>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q2" value="a">
+                        A. To maintain evidence integrity
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q2" value="b">
+                        B. To make the computer faster
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q2" value="c">
+                        C. To remove all logs
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q2" value="d">
+                        D. To change timestamps
+                    </label>
+
+                </div>
+
+
+                <div class="mcq">
+
+                    <div class="mcq-question">
+                        Q3. What is the main purpose of a forensic
+                        timeline?
+                    </div>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q3" value="a">
+                        A. To understand the sequence of events
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q3" value="b">
+                        B. To increase storage capacity
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q3" value="c">
+                        C. To install Windows
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q3" value="d">
+                        D. To change user passwords
+                    </label>
+
+                </div>
+
+
+                <div class="mcq">
+
+                    <div class="mcq-question">
+                        Q4. Which item may provide useful information
+                        about deleted files?
+                    </div>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q4" value="a">
+                        A. Recycle Bin artifacts
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q4" value="b">
+                        B. Monitor size
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q4" value="c">
+                        C. Keyboard color
+                    </label>
+
+                    <label class="mcq-option">
+                        <input type="radio" name="q4" value="d">
+                        D. Desktop wallpaper
+                    </label>
+
+                </div>
+
+
+                <div class="lab-actions">
+
+                    <button
+                        class="lab-button"
+                        onclick="checkQuiz()"
+                    >
+                        Check Answers
+                    </button>
+
+                    <button
+                        class="lab-button secondary"
+                        onclick="resetQuiz()"
+                    >
+                        Reset
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="quizResult"
+                    class="result-box"
+                ></div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB 05 — REPORTING
+            ================================================== -->
+
+            <section class="lab-section">
+
+                <div class="lab-heading">
+
+                    <div class="lab-number">
+                        05
+                    </div>
+
+                    <h2>
+                        Investigation Notes
+                    </h2>
+
+                </div>
+
+
+                <div class="evidence-card">
+
+                    <div class="evidence-top">
+
+                        <span class="evidence-id">
+                            REPORT TEMPLATE
+                        </span>
+
+                        <span class="evidence-type">
+                            Student Exercise
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-list">
+
+                        <div class="task">
+
+                            <div class="task-number">
+                                A
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Evidence Identified
+                                </strong>
+
+                                <span>
+                                    Windows event records, application
+                                    execution artifacts, deleted-file
+                                    artifacts and user-file timestamps.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="task">
+
+                            <div class="task-number">
+                                B
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Important Observation
+                                </strong>
+
+                                <span>
+                                    Multiple artifacts should be correlated
+                                    before drawing a forensic conclusion.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="task">
+
+                            <div class="task-number">
+                                C
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Conclusion
+                                </strong>
+
+                                <span>
+                                    Document observations clearly and
+                                    distinguish confirmed evidence from
+                                    assumptions.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 COMPLETION
+            ================================================== -->
+
+            <section class="completion">
+
+                <div class="completion-label">
+                    Investigation Complete
+                </div>
+
+                <h2>
+                    Windows Forensics Lab Completed
+                </h2>
+
+                <p>
+
+                    You practiced identifying Windows evidence,
+                    reviewing common artifacts, understanding
+                    timestamps, constructing a basic activity timeline
+                    and answering forensic knowledge questions.
+
+                    The same principles can be applied to authorized
+                    forensic images and dedicated training environments.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TOPIC NAVIGATION
+            ================================================== -->
+<!-- =========================
+     LAB NAVIGATION
+========================= -->
+
+<div class="topic-navigation">
+
+    <a href="file-metadata-lab.html" class="topic-nav">
+        ← Lab: File Metadata
+    </a>
+
+    <a href="../theory/linux-forensics.html" class="topic-nav">
+        Next Theory: Linux Forensics →
+    </a>
+
+</div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+    <script>
+
+        function checkQuiz() {
+
+            const answers = {
+                q1: "a",
+                q2: "a",
+                q3: "a",
+                q4: "a"
+            };
+
+            let score = 0;
+
+            let total = 4;
+
+            for (const question in answers) {
+
+                const selected =
+                    document.querySelector(
+                        'input[name="' + question + '"]:checked'
+                    );
+
+                if (
+                    selected &&
+                    selected.value === answers[question]
+                ) {
+
+                    score++;
+
+                }
+
+            }
+
+            const result =
+                document.getElementById("quizResult");
+
+            result.classList.add("show");
+
+            if (score === total) {
+
+                result.innerHTML =
+                    "<strong>Result:</strong> " +
+                    score +
+                    "/" +
+                    total +
+                    " — Excellent. All answers are correct.";
+
+            } else {
+
+                result.innerHTML =
+                    "<strong>Result:</strong> " +
+                    score +
+                    "/" +
+                    total +
+                    " — Review the Windows Forensics concepts and try again.";
+
+            }
+
+        }
+
+
+        function resetQuiz() {
+
+            document
+                .querySelectorAll(
+                    '.mcq input[type="radio"]'
+                )
+                .forEach(function (input) {
+
+                    input.checked = false;
+
+                });
+
+
+            const result =
+                document.getElementById("quizResult");
+
+            result.classList.remove("show");
+
+            result.innerHTML = "";
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

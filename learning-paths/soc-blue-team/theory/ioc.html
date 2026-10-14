@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>What is IOC? | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn what Indicators of Compromise are, common IOC types, their importance and how security teams use IOCs during threat detection and investigation.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        :root {
+            --soc-bg: #070d13;
+            --soc-panel: #0d151e;
+            --soc-panel-2: #111c27;
+            --soc-cyan: #39d5ff;
+            --soc-blue: #42a5ff;
+            --soc-purple: #9b7cff;
+            --soc-green: #43d19e;
+            --soc-yellow: #ffd166;
+            --soc-red: #ff5364;
+            --soc-text: #edf6fb;
+            --soc-muted: #91a6b8;
+            --soc-border: #20313f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 15% 10%, rgba(57, 213, 255, 0.08), transparent 30%),
+                radial-gradient(circle at 85% 20%, rgba(155, 124, 255, 0.07), transparent 30%),
+                var(--soc-bg);
+            color: var(--soc-text);
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .soc-container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+
+        /* HERO */
+
+        .soc-hero {
+            position: relative;
+            overflow: hidden;
+            padding: 82px 0 68px;
+            border-bottom: 1px solid var(--soc-border);
+        }
+
+        .soc-hero::before {
+            content: "IOC";
+            position: absolute;
+            right: 5%;
+            top: 25px;
+            font-size: 150px;
+            font-weight: bold;
+            color: rgba(57, 213, 255, 0.025);
+            pointer-events: none;
+        }
+
+        .soc-breadcrumb {
+            margin-bottom: 20px;
+            color: var(--soc-cyan);
+            font-size: 13px;
+            letter-spacing: 0.4px;
+        }
+
+        .soc-hero-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 0.65fr;
+            gap: 45px;
+            align-items: center;
+        }
+
+        .soc-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 13px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(57, 213, 255, 0.28);
+            border-radius: 4px;
+            background: rgba(57, 213, 255, 0.05);
+            color: var(--soc-cyan);
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .soc-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--soc-cyan);
+            box-shadow: 0 0 12px rgba(57, 213, 255, 0.8);
+        }
+
+        .soc-hero h1 {
+            margin: 0 0 18px;
+            font-size: clamp(38px, 5vw, 62px);
+            line-height: 1.05;
+            letter-spacing: -1px;
+        }
+
+        .soc-hero h1 span {
+            color: var(--soc-cyan);
+        }
+
+        .soc-description {
+            max-width: 720px;
+            color: var(--soc-muted);
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        /* IOC COMMAND PANEL */
+
+        .ioc-panel {
+            padding: 24px;
+            border: 1px solid var(--soc-border);
+            border-top: 2px solid var(--soc-cyan);
+            border-radius: 7px;
+            background: linear-gradient(145deg, rgba(17, 28, 39, 0.98), rgba(8, 14, 21, 0.98));
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .ioc-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .ioc-panel-header strong {
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .ioc-live {
+            color: var(--soc-green);
+            font-size: 10px;
+        }
+
+        .ioc-divider {
+            height: 1px;
+            background: var(--soc-border);
+            margin: 15px 0;
+        }
+
+        .ioc-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 9px 0;
+            color: var(--soc-muted);
+            font-size: 13px;
+        }
+
+        .ioc-row strong {
+            color: var(--soc-text);
+            font-weight: normal;
+            text-align: right;
+        }
+
+        .ioc-active {
+            color: var(--soc-cyan) !important;
+        }
+
+        /* SECTIONS */
+
+        .soc-section {
+            padding: 70px 0;
+        }
+
+        .soc-title {
+            margin-bottom: 28px;
+        }
+
+        .soc-title h2 {
+            margin: 0 0 10px;
+            font-size: 32px;
+        }
+
+        .soc-title p {
+            color: var(--soc-muted);
+            line-height: 1.7;
+        }
+
+        /* DEFINITION */
+
+        .ioc-definition {
+            padding: 30px;
+            border: 1px solid rgba(57, 213, 255, 0.25);
+            border-left: 3px solid var(--soc-cyan);
+            border-radius: 7px;
+            background: linear-gradient(135deg, rgba(57, 213, 255, 0.06), rgba(57, 213, 255, 0.015));
+        }
+
+        .ioc-definition-label {
+            margin-bottom: 13px;
+            color: var(--soc-cyan);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .ioc-definition p {
+            margin: 0;
+            color: var(--soc-text);
+            font-size: 18px;
+            line-height: 1.75;
+        }
+
+        /* CORE EXPLANATION */
+
+        .soc-card {
+            padding: 30px;
+            border: 1px solid var(--soc-border);
+            border-radius: 7px;
+            background: var(--soc-panel);
+        }
+
+        .soc-card p {
+            margin: 0 0 16px;
+            color: var(--soc-muted);
+            font-size: 15px;
+            line-height: 1.85;
+        }
+
+        .soc-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* IOC TYPES */
+
+        .ioc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .ioc-type {
+            position: relative;
+            padding: 24px;
+            border: 1px solid var(--soc-border);
+            border-radius: 7px;
+            background: var(--soc-panel);
+            transition: 0.2s ease;
+        }
+
+        .ioc-type:hover {
+            border-color: rgba(57, 213, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .ioc-type-number {
+            display: block;
+            margin-bottom: 14px;
+            color: var(--soc-cyan);
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .ioc-type h3 {
+            margin: 0 0 10px;
+            font-size: 17px;
+        }
+
+        .ioc-type p {
+            margin: 0;
+            color: var(--soc-muted);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        .ioc-example {
+            margin-top: 15px;
+            padding: 10px 12px;
+            border: 1px solid var(--soc-border);
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--soc-cyan);
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        /* WHY IOCs MATTER */
+
+        .ioc-reasons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .ioc-reason {
+            padding: 24px;
+            border: 1px solid var(--soc-border);
+            border-radius: 7px;
+            background: var(--soc-panel);
+        }
+
+        .ioc-reason span {
+            display: block;
+            margin-bottom: 14px;
+            color: var(--soc-purple);
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .ioc-reason h3 {
+            margin: 0 0 10px;
+            font-size: 17px;
+        }
+
+        .ioc-reason p {
+            margin: 0;
+            color: var(--soc-muted);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        /* IOC INVESTIGATION FLOW */
+
+        .ioc-flow {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .ioc-flow-step {
+            min-height: 125px;
+            padding: 19px 13px;
+            border: 1px solid var(--soc-border);
+            border-radius: 6px;
+            background: var(--soc-panel);
+            text-align: center;
+        }
+
+        .ioc-flow-number {
+            display: block;
+            margin-bottom: 13px;
+            color: var(--soc-cyan);
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .ioc-flow-step strong {
+            font-size: 13px;
+        }
+
+        .ioc-flow-step p {
+            margin: 9px 0 0;
+            color: var(--soc-muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* EXAMPLE */
+
+        .ioc-example-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .ioc-example-box {
+            padding: 25px;
+            border: 1px solid var(--soc-border);
+            border-radius: 7px;
+            background: var(--soc-panel);
+        }
+
+        .ioc-example-box h3 {
+            margin: 0 0 15px;
+            font-size: 17px;
+        }
+
+        .ioc-example-box p {
+            margin: 0;
+            color: var(--soc-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .ioc-detected {
+            border-top: 2px solid var(--soc-red);
+        }
+
+        .ioc-response {
+            border-top: 2px solid var(--soc-green);
+        }
+
+        /* KEY CONCEPTS */
+
+        .ioc-key-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .ioc-key {
+            padding: 17px 20px;
+            border: 1px solid var(--soc-border);
+            border-radius: 6px;
+            background: var(--soc-panel);
+            line-height: 1.6;
+        }
+
+        .ioc-key strong {
+            color: var(--soc-text);
+        }
+
+        .ioc-key span {
+            color: var(--soc-muted);
+            font-size: 14px;
+        }
+
+        /* SUMMARY */
+
+        .ioc-summary {
+            padding: 30px;
+            border: 1px solid rgba(67, 209, 158, 0.25);
+            border-radius: 7px;
+            background: rgba(67, 209, 158, 0.035);
+        }
+
+        .ioc-summary h2 {
+            margin-top: 0;
+            color: var(--soc-green);
+        }
+
+        .ioc-summary p {
+            margin: 0;
+            color: var(--soc-muted);
+            line-height: 1.8;
+        }
+
+        /* PRACTICAL LAB CTA */
+
+        .lab-area {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            margin-top: 35px;
+            padding: 24px 26px;
+            border: 1px solid rgba(66, 165, 255, 0.22);
+            border-left: 3px solid var(--soc-blue);
+            border-radius: 7px;
+            background: linear-gradient(135deg, rgba(66, 165, 255, 0.07), rgba(53, 214, 208, 0.025));
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.20);
+            overflow: hidden;
+        }
+
+        .lab-area::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(66, 165, 255, 0.7), rgba(53, 214, 208, 0.6), transparent);
+        }
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .lab-text strong {
+            color: var(--soc-text);
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        .lab-text span {
+            color: var(--soc-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .lab-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            min-width: 155px;
+            padding: 12px 20px;
+            border: 1px solid rgba(66, 165, 255, 0.40);
+            border-radius: 5px;
+            color: var(--soc-blue);
+            background: rgba(66, 165, 255, 0.07);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        .lab-button:hover {
+            color: #ffffff;
+            border-color: rgba(66, 165, 255, 0.75);
+            background: rgba(66, 165, 255, 0.14);
+            box-shadow: 0 0 18px rgba(66, 165, 255, 0.16);
+            transform: translateY(-1px);
+        }
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 950px) {
+            .soc-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ioc-grid,
+            .ioc-reasons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .ioc-flow {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .ioc-example-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .soc-hero {
+                padding: 70px 0 55px;
+            }
+
+            .soc-section {
+                padding: 60px 0;
+            }
+
+            .ioc-flow {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .soc-hero {
+                padding: 55px 0 45px;
+            }
+
+            .soc-breadcrumb {
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .soc-hero h1 {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .soc-description {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+
+            .ioc-panel {
+                padding: 20px;
+            }
+
+            .soc-section {
+                padding: 50px 0;
+            }
+
+            .soc-title h2 {
+                font-size: 26px;
+            }
+
+            .soc-title p {
+                font-size: 14px;
+            }
+
+            .ioc-definition,
+            .soc-card {
+                padding: 22px;
+            }
+
+            .ioc-definition p {
+                font-size: 16px;
+            }
+
+            .ioc-grid,
+            .ioc-reasons,
+            .ioc-key-list {
+                grid-template-columns: 1fr;
+            }
+
+            .ioc-flow {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .ioc-flow-step {
+                min-height: 105px;
+            }
+
+            .lab-area {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 18px;
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+
+            .footer-links {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px 18px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .soc-container {
+                width: 94%;
+            }
+
+            .soc-hero h1 {
+                font-size: 32px;
+            }
+
+            .ioc-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SHARED NAVBAR: HAMBURGER MENU -->
+    <div
+        id="navbar-placeholder"
+        data-navbar-path="../../../components/navbar.html"
+        data-root-path="../../../">
+    </div>
+
+    <!-- HERO -->
+
+    <header class="soc-hero">
+        <div class="soc-container">
+
+            <div class="soc-breadcrumb">
+                CyberNexa / SOC / Blue Team / IOC / Theory
+            </div>
+
+            <div class="soc-hero-grid">
+
+                <div>
+                    <div class="soc-label">
+                        <span class="soc-dot"></span>
+                        SOC / BLUE TEAM
+                    </div>
+
+                    <h1>What is <span>IOC?</span></h1>
+
+                    <p class="soc-description">
+                        Indicators of Compromise (IOCs) are pieces of technical
+                        evidence that can indicate a system, account or network
+                        may have been involved in malicious activity.
+                    </p>
+                </div>
+
+                <div class="ioc-panel">
+                    <div class="ioc-panel-header">
+                        <strong>IOC MONITOR</strong>
+                        <span class="ioc-live">● ACTIVE</span>
+                    </div>
+
+                    <div class="ioc-divider"></div>
+
+                    <div class="ioc-row">
+                        <span>Category</span>
+                        <strong>SOC Detection</strong>
+                    </div>
+
+                    <div class="ioc-row">
+                        <span>Purpose</span>
+                        <strong class="ioc-active">Threat Identification</strong>
+                    </div>
+
+                    <div class="ioc-row">
+                        <span>Sources</span>
+                        <strong>Logs / EDR / Network</strong>
+                    </div>
+
+                    <div class="ioc-row">
+                        <span>Analysis</span>
+                        <strong>Investigation</strong>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- DEFINITION -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-title">
+                    <h2>Definition</h2>
+                    <p>Understand the basic meaning of an Indicator of Compromise.</p>
+                </div>
+
+                <div class="ioc-definition">
+                    <div class="ioc-definition-label">Core Definition</div>
+
+                    <p>
+                        An Indicator of Compromise (IOC) is a piece of evidence
+                        or observable artifact that may indicate malicious activity,
+                        a security breach, or compromise of a system or network.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CORE EXPLANATION -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-title">
+                    <h2>How IOCs Work</h2>
+                    <p>
+                        Security teams use IOCs as investigation clues when
+                        analyzing suspicious activity.
+                    </p>
+                </div>
+
+                <div class="soc-card">
+                    <p>
+                        During a security investigation, analysts collect evidence
+                        from different sources such as system logs, network traffic,
+                        endpoint security tools and security monitoring platforms.
+                    </p>
+
+                    <p>
+                        Some of the collected artifacts may match known malicious
+                        activity. These artifacts can then be treated as Indicators
+                        of Compromise and investigated further.
+                    </p>
+
+                    <p>
+                        For example, a suspicious IP address, a malicious file hash,
+                        an unusual domain or a known malicious file path may provide
+                        useful evidence during an investigation.
+                    </p>
+
+                    <p>
+                        An IOC does not automatically prove that an attack occurred.
+                        Analysts normally correlate it with additional evidence,
+                        context and activity before reaching a conclusion.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- IOC TYPES -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-title">
+                    <h2>Common Types of IOCs</h2>
+                    <p>
+                        Different types of technical artifacts can be used as
+                        Indicators of Compromise.
+                    </p>
+                </div>
+
+                <div class="ioc-grid">
+
+                    <div class="ioc-type">
+                        <span class="ioc-type-number">IOC TYPE 01</span>
+                        <h3>IP Address</h3>
+                        <p>
+                            A suspicious source or destination IP address associated
+                            with potentially malicious communication.
+                        </p>
+                        <div class="ioc-example">203.0.113.25</div>
+                    </div>
+
+                    <div class="ioc-type">
+                        <span class="ioc-type-number">IOC TYPE 02</span>
+                        <h3>File Hash</h3>
+                        <p>
+                            A cryptographic hash can identify a specific file and
+                            help analysts compare it with known malicious samples.
+                        </p>
+                        <div class="ioc-example">SHA256: a91f...72bc</div>
+                    </div>
+
+                    <div class="ioc-type">
+                        <span class="ioc-type-number">IOC TYPE 03</span>
+                        <h3>Domain</h3>
+                        <p>
+                            A suspicious domain may indicate communication with
+                            malicious infrastructure.
+                        </p>
+                        <div class="ioc-example">suspicious-example.com</div>
+                    </div>
+
+                    <div class="ioc-type">
+                        <span class="ioc-type-number">IOC TYPE 04</span>
+                        <h3>URL</h3>
+                        <p>
+                            A suspicious URL may be associated with phishing,
+                            malware delivery or command-and-control activity.
+                        </p>
+                        <div class="ioc-example">https://example.test/login</div>
+                    </div>
+
+                    <div class="ioc-type">
+                        <span class="ioc-type-number">IOC TYPE 05</span>
+                        <h3>File Path</h3>
+                        <p>
+                            An unusual or suspicious file location can provide
+                            evidence during endpoint investigation.
+                        </p>
+                        <div class="ioc-example">C:\Temp\payload.exe</div>
+                    </div>
+
+                    <div class="ioc-type">
+                        <span class="ioc-type-number">IOC TYPE 06</span>
+                        <h3>Email Indicator</h3>
+                        <p>
+                            Suspicious sender addresses, subjects or attachments
+                            can provide useful investigation evidence.
+                        </p>
+                        <div class="ioc-example">invoice-update@example.test</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY IOCs MATTER -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-title">
+                    <h2>Why IOCs Matter</h2>
+                    <p>
+                        IOCs help SOC analysts organize and investigate technical
+                        evidence related to suspicious activity.
+                    </p>
+                </div>
+
+                <div class="ioc-reasons">
+
+                    <div class="ioc-reason">
+                        <span>01 — DETECTION</span>
+                        <h3>Find Suspicious Activity</h3>
+                        <p>
+                            IOCs can be searched across logs, endpoints and network
+                            data to identify potentially related activity.
+                        </p>
+                    </div>
+
+                    <div class="ioc-reason">
+                        <span>02 — INVESTIGATION</span>
+                        <h3>Connect Evidence</h3>
+                        <p>
+                            Matching an IOC across multiple systems can help analysts
+                            understand whether different events may be related.
+                        </p>
+                    </div>
+
+                    <div class="ioc-reason">
+                        <span>03 — RESPONSE</span>
+                        <h3>Support Security Actions</h3>
+                        <p>
+                            Validated IOCs can help security teams decide where
+                            additional investigation or defensive action is required.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- IOC INVESTIGATION FLOW -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-title">
+                    <h2>IOC Investigation Flow</h2>
+                    <p>
+                        A simplified workflow used when analyzing a potential IOC.
+                    </p>
+                </div>
+
+                <div class="ioc-flow">
+
+                    <div class="ioc-flow-step">
+                        <span class="ioc-flow-number">01</span>
+                        <strong>Collect</strong>
+                        <p>Gather technical evidence.</p>
+                    </div>
+
+                    <div class="ioc-flow-step">
+                        <span class="ioc-flow-number">02</span>
+                        <strong>Validate</strong>
+                        <p>Check the IOC and its context.</p>
+                    </div>
+
+                    <div class="ioc-flow-step">
+                        <span class="ioc-flow-number">03</span>
+                        <strong>Correlate</strong>
+                        <p>Search related logs and events.</p>
+                    </div>
+
+                    <div class="ioc-flow-step">
+                        <span class="ioc-flow-number">04</span>
+                        <strong>Investigate</strong>
+                        <p>Determine possible impact.</p>
+                    </div>
+
+                    <div class="ioc-flow-step">
+                        <span class="ioc-flow-number">05</span>
+                        <strong>Respond</strong>
+                        <p>Apply appropriate security actions.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- EXAMPLE -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-title">
+                    <h2>Simple Example</h2>
+                    <p>
+                        See how an IOC can be used during a basic SOC investigation.
+                    </p>
+                </div>
+
+                <div class="ioc-example-grid">
+
+                    <div class="ioc-example-box ioc-detected">
+                        <h3>🚨 Suspicious Indicator</h3>
+                        <p>
+                            A workstation communicates with an unfamiliar external
+                            IP address shortly after a suspicious executable is launched.
+                        </p>
+                        <div class="ioc-example">
+                            Source: 10.0.0.25<br>
+                            Target: 203.0.113.25
+                        </div>
+                    </div>
+
+                    <div class="ioc-example-box ioc-response">
+                        <h3>✓ Analyst Investigation</h3>
+                        <p>
+                            The analyst searches network logs, endpoint events and
+                            file information to determine whether the IP address and
+                            related activity are connected to a security incident.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- KEY CONCEPTS -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="soc-title">
+                    <h2>Key Concepts</h2>
+                    <p>Important IOC terms to remember.</p>
+                </div>
+
+                <div class="ioc-key-list">
+
+                    <div class="ioc-key">
+                        <strong>IOC:</strong>
+                        <span>An observable artifact that may indicate compromise.</span>
+                    </div>
+
+                    <div class="ioc-key">
+                        <strong>Hash:</strong>
+                        <span>A value used to identify a specific digital file.</span>
+                    </div>
+
+                    <div class="ioc-key">
+                        <strong>IP Address:</strong>
+                        <span>A network address that may be associated with suspicious communication.</span>
+                    </div>
+
+                    <div class="ioc-key">
+                        <strong>Domain:</strong>
+                        <span>A domain name that may be associated with suspicious infrastructure.</span>
+                    </div>
+
+                    <div class="ioc-key">
+                        <strong>Correlation:</strong>
+                        <span>Comparing an IOC with other events and evidence.</span>
+                    </div>
+
+                    <div class="ioc-key">
+                        <strong>Context:</strong>
+                        <span>Additional information needed to understand the meaning of an IOC.</span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SUMMARY -->
+
+        <section class="soc-section">
+            <div class="soc-container">
+
+                <div class="ioc-summary">
+                    <h2>Summary</h2>
+                    <p>
+                        Indicators of Compromise are technical artifacts that can
+                        provide evidence of potentially malicious activity. Common
+                        IOCs include IP addresses, file hashes, domains, URLs, file
+                        paths and suspicious email indicators. SOC analysts collect,
+                        validate and correlate these indicators with other evidence
+                        during security investigations. An IOC should be interpreted
+                        in context rather than treated as automatic proof of compromise.
+                    </p>
+                </div>
+<!-- LESSON COMPLETION -->
+<section class="soc-section" id="lesson-completion">
+    <div class="soc-container">
+
+        <div class="soc-card">
+            <div class="soc-title">
+                <h2>Lesson Completion</h2>
+                <p>
+                    You have completed the What is IOC? lesson.
+                    Review the key concepts and mark this lesson as completed.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="ioc"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/ioc.html"
+                data-status-id="iocCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="iocCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+        </div>
+
+    </div>
+</section>
+                <div class="lab-area">
+                    <div class="lab-text">
+                        <strong>Ready for the Practical Lab?</strong>
+                        <span>
+                            Test your understanding through an
+                            authorized SOC security-training simulation.
+                        </span>
+                    </div>
+
+                    <a href="../lab/ioc-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+        <div class="footer-container">
+
+            <div>
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+                <p>Cybersecurity &amp; IT Learning</p>
+            </div>
+
+            <div class="footer-links">
+                <a href="../../../index.html">Home</a>
+                <a href="../../../footer/about.html">About</a>
+                <a href="../../../footer/contact.html">Contact</a>
+                <a href="../../../footer/privacy-policy.html">Privacy Policy</a>
+                <a href="../../../footer/disclaimer.html">Disclaimer</a>
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/lesson-progress.js"></script>
+    <script src="../../../js/supabase-client.js"></script>
+    <script src="../../../js/navbar-loader.js"></script>
+    <script src="../../../js/navbar.js"></script>
+    <script src="../../../js/session.js"></script>
+
+</body>
+</html>

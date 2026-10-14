@@ -1,0 +1,2695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Processes Practical Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .linux-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-lab-header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .linux-lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-lab-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-lab-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB BADGE
+        ====================================================== */
+
+        .linux-lab-badge {
+
+            display: inline-block;
+
+            margin-top: 20px;
+
+            padding: 8px 14px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 20px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-lab-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-lab-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-lab-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent
+                );
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-lab-card:hover::after {
+
+                animation:
+                    linuxLabLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxLabMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLabLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxLabMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-lab-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-lab-card h3 {
+
+            margin: 0 0 9px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+
+        .linux-lab-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-lab-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           OBJECTIVE
+        ====================================================== */
+
+        .linux-objective {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid
+                #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-objective strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-objective span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           STEP GRID
+        ====================================================== */
+
+        .linux-step-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-step-box {
+
+            padding: 20px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .linux-step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            margin-bottom: 12px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 50%;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-step-box p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .linux-command-box {
+
+            position: relative;
+
+            margin-top: 18px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+
+            white-space: pre;
+        }
+
+
+        /* =====================================================
+           COPY BUTTON
+        ====================================================== */
+
+        .linux-copy-button {
+
+            position: absolute;
+
+            top: 10px;
+            right: 10px;
+
+            padding: 6px 10px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.20);
+
+            border-radius: 6px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 10px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .linux-copy-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.55);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        /* =====================================================
+           OUTPUT BOX
+        ====================================================== */
+
+        .linux-output-box {
+
+            margin-top: 15px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid
+                rgba(74, 222, 128, 0.16);
+
+            border-radius: 10px;
+
+            background:
+                rgba(74, 222, 128, 0.025);
+
+            overflow-x: auto;
+        }
+
+
+        .linux-output-label {
+
+            margin-bottom: 9px;
+
+            color: #86efac;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-output-box pre {
+
+            margin: 0;
+
+            color: #b8e8c7;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           WARNING BOX
+        ====================================================== */
+
+        .linux-warning-box {
+
+            margin-top: 18px;
+
+            padding: 17px 20px;
+
+            border:
+                1px solid
+                rgba(251, 191, 36, 0.18);
+
+            border-left:
+                3px solid
+                #fbbf24;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(251, 191, 36, 0.035);
+        }
+
+
+        .linux-warning-box strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #fbbf24;
+
+            font-size: 13px;
+        }
+
+
+        .linux-warning-box p {
+
+            margin: 0;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           PRACTICAL TASK
+        ====================================================== */
+
+        .linux-task-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-task-list li {
+
+            position: relative;
+
+            padding:
+                10px 0 10px 25px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid
+                rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-task-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .linux-task-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 10px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .linux-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-flow-item {
+
+            padding: 12px 16px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .linux-result-box {
+
+            padding: 20px;
+
+            margin-top: 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.18);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .linux-result-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-size: 14px;
+        }
+
+
+        .linux-result-box p {
+
+            margin: 0;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform: translateY(-1px);
+        }
+
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-lab-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-lab-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-lab-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-lab-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-lab-header {
+
+                margin-bottom: 30px;
+            }
+
+
+            .linux-lab-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-lab-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-lab-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-lab-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-lab-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-lab-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-step-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-key-item {
+
+                font-size: 11px;
+
+                padding: 9px 11px;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-lab-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-lab-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-lab-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-lab-page">
+
+        <div class="linux-lab-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="linux-lab-header">
+
+                <div class="linux-lab-category">
+                    LINUX PRACTICAL LAB
+                </div>
+
+                <h1>
+                    Lab 06 - <span> Linux Processes</span>
+                </h1>
+
+                <p class="linux-lab-intro">
+
+                    In this practical lab, you will learn how Linux
+                    processes work, how to view running processes,
+                    identify process IDs, monitor processes and
+                    safely terminate processes using basic Linux commands.
+
+                </p>
+
+                <div class="linux-lab-badge">
+                    Hands-On Lab • Beginner
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 OBJECTIVE
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        🎯
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-objective">
+
+                    <strong>
+                        What You Will Practice
+                    </strong>
+
+                    <span>
+
+                        By completing this lab, you will learn how to
+                        view running processes, identify process IDs,
+                        monitor processes, find a specific process,
+                        understand process states and terminate a
+                        process safely.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 REQUIREMENTS
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        ⚙
+                    </div>
+
+                    <h2>
+                        Lab Requirements
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-step-grid">
+
+
+                    <div class="linux-step-box">
+
+                        <div class="linux-step-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Linux System
+                        </h3>
+
+                        <p>
+                            Ubuntu, Kali Linux, Debian or another
+                            Linux distribution.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-step-box">
+
+                        <div class="linux-step-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Terminal
+                        </h3>
+
+                        <p>
+                            Open the Linux Terminal to execute
+                            process-management commands.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-step-box">
+
+                        <div class="linux-step-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Sudo Access
+                        </h3>
+
+                        <p>
+                            Administrative access may be required
+                            for some process-management operations.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-step-box">
+
+                        <div class="linux-step-number">
+                            04
+                        </div>
+
+                        <h3>
+                            Basic Linux Knowledge
+                        </h3>
+
+                        <p>
+                            You should know how to open a terminal
+                            and execute basic Linux commands.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 1
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        01
+                    </div>
+
+                    <h2>
+                        Step 1 — View Running Processes
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>ps</strong> command displays information
+                    about processes currently running in the terminal
+                    session.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>ps</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>PID TTY          TIME CMD
+2145 pts/0    00:00:00 bash
+2198 pts/0    00:00:00 ps</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 2
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        02
+                    </div>
+
+                    <h2>
+                        Step 2 — View All Running Processes
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>ps aux</strong> to display processes
+                    from all users along with CPU and memory information.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>ps aux</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.1  22500  12000 ?        Ss   10:00   0:01 /sbin/init
+student   2145  0.0  0.2  18000   4500 pts/0    Ss   10:10   0:00 bash
+student   2205  0.0  0.1  12000   3000 pts/0    R+   10:15   0:00 ps aux</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 3
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        03
+                    </div>
+
+                    <h2>
+                        Step 3 — Monitor Processes in Real Time
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>top</strong> command provides a
+                    continuously updated view of running processes,
+                    CPU usage and memory usage.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>top</code>
+
+                </div>
+
+
+                <div class="linux-warning-box">
+
+                    <strong>
+                        Important
+                    </strong>
+
+                    <p>
+
+                        Press <strong>q</strong> inside the
+                        <strong>top</strong> interface to exit
+                        and return to the terminal.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 4
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        04
+                    </div>
+
+                    <h2>
+                        Step 4 — Identify a Process ID
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Every running Linux process has a unique
+                    <strong>Process ID (PID)</strong>. Use
+                    <strong>pgrep</strong> to find the PID of a process.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>pgrep bash</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>2145</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 5
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        05
+                    </div>
+
+                    <h2>
+                        Step 5 — Display Process Details
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the <strong>ps -p</strong> command to display
+                    detailed information about a process with a known PID.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>ps -p 2145 -f</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>UID        PID  PPID  C STIME TTY          TIME CMD
+student   2145  2100  0 10:10 pts/0    00:00:00 bash</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 6
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        06
+                    </div>
+
+                    <h2>
+                        Step 6 — Find a Specific Process
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>pgrep</strong> command can search
+                    for processes by name. For example, search for
+                    processes containing the name <strong>ssh</strong>.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>pgrep ssh</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>1532</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 7
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        07
+                    </div>
+
+                    <h2>
+                        Step 7 — Understand Process States
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux uses process states to describe what a
+                    process is currently doing. The <strong>STAT</strong>
+                    column in process output shows these states.
+
+                </p>
+
+
+                <div class="linux-step-grid">
+
+
+                    <div class="linux-step-box">
+
+                        <div class="linux-step-number">
+                            R
+                        </div>
+
+                        <h3>
+                            Running
+                        </h3>
+
+                        <p>
+                            The process is running or ready to run.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-step-box">
+
+                        <div class="linux-step-number">
+                            S
+                        </div>
+
+                        <h3>
+                            Sleeping
+                        </h3>
+
+                        <p>
+                            The process is waiting for an event
+                            or resource.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-step-box">
+
+                        <div class="linux-step-number">
+                            T
+                        </div>
+
+                        <h3>
+                            Stopped
+                        </h3>
+
+                        <p>
+                            The process has been stopped.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-step-box">
+
+                        <div class="linux-step-number">
+                            Z
+                        </div>
+
+                        <h3>
+                            Zombie
+                        </h3>
+
+                        <p>
+                            The process has finished but its
+                            parent has not yet collected its status.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 8
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        08
+                    </div>
+
+                    <h2>
+                        Step 8 — Terminate a Process
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>kill</strong> command sends a signal
+                    to a process. The normal termination signal is
+                    <strong>SIGTERM</strong>.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>kill 2145</code>
+
+                </div>
+
+
+                <div class="linux-warning-box">
+
+                    <strong>
+                        Safety Note
+                    </strong>
+
+                    <p>
+
+                        Replace <strong>2145</strong> with the PID of
+                        a process you own and intend to terminate.
+                        Do not randomly terminate system-critical
+                        processes.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 9
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        09
+                    </div>
+
+                    <h2>
+                        Step 9 — Force Terminate a Process
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    If a process does not respond to a normal
+                    termination signal, <strong>SIGKILL</strong>
+                    can be sent using signal number <strong>9</strong>.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>kill -9 2145</code>
+
+                </div>
+
+
+                <div class="linux-warning-box">
+
+                    <strong>
+                        Important
+                    </strong>
+
+                    <p>
+
+                        SIGKILL immediately terminates the process
+                        and does not allow it to perform normal cleanup.
+                        Use it only when necessary.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 10
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        10
+                    </div>
+
+                    <h2>
+                        Step 10 — View Process Tree
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>pstree</strong> command displays
+                    processes in a parent-child tree structure.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>pstree</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>systemd
+ ├─NetworkManager
+ ├─sshd
+ │  └─bash
+ └─cron</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 11
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        11
+                    </div>
+
+                    <h2>
+                        Step 11 — Check Process Priority
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux processes have a scheduling priority.
+                    The <strong>nice</strong> value influences how
+                    much CPU scheduling preference a process receives.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>ps -eo pid,ni,comm</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>PID  NI COMMAND
+1     0 systemd
+2145  0 bash
+2205  0 ps</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL FLOW
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        ↔
+                    </div>
+
+                    <h2>
+                        Practical Workflow
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        View Processes
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Identify PID
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Inspect Details
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Monitor
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Manage Process
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL TASK
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        🧪
+                    </div>
+
+                    <h2>
+                        Your Practical Task
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Now perform the following tasks yourself in
+                    your Linux terminal.
+
+                </p>
+
+
+                <ul class="linux-task-list">
+
+                    <li>
+                        Display the processes running in your current terminal.
+                    </li>
+
+                    <li>
+                        Display all processes using <strong>ps aux</strong>.
+                    </li>
+
+                    <li>
+                        Open the <strong>top</strong> process monitor.
+                    </li>
+
+                    <li>
+                        Find the PID of a <strong>bash</strong> process.
+                    </li>
+
+                    <li>
+                        Display detailed information about the PID.
+                    </li>
+
+                    <li>
+                        Display the process tree using <strong>pstree</strong>.
+                    </li>
+
+                    <li>
+                        Identify the process state from the <strong>STAT</strong> column.
+                    </li>
+
+                    <li>
+                        Safely terminate a test process that you started yourself.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FINAL VERIFICATION
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Final Verification
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Run the following commands to verify your
+                    process-management knowledge and configuration.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>ps
+ps aux
+pgrep bash
+ps -p &lt;PID&gt; -f
+pstree
+ps -eo pid,ni,comm</code>
+
+                </div>
+
+
+                <div class="linux-result-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <p>
+
+                        The output should display running processes,
+                        process IDs, process details, process hierarchy,
+                        process states and scheduling priority information.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY CONNECTION
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Cybersecurity Connection
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Process management is an important part of Linux
+                    security. Security analysts use process information
+                    to identify suspicious programs, investigate
+                    system activity and detect potentially malicious
+                    processes.
+
+                </p>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Process Monitoring
+                    </div>
+
+                    <div class="linux-key-item">
+                        PID Analysis
+                    </div>
+
+                    <div class="linux-key-item">
+                        Process States
+                    </div>
+
+                    <div class="linux-key-item">
+                        Malware Detection
+                    </div>
+
+                    <div class="linux-key-item">
+                        Incident Response
+                    </div>
+
+                    <div class="linux-key-item">
+                        System Administration
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SUMMARY
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lab Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-task-list">
+
+                    <li>
+                        <strong>ps</strong> displays information about processes.
+                    </li>
+
+                    <li>
+                        <strong>ps aux</strong> displays processes from all users.
+                    </li>
+
+                    <li>
+                        <strong>top</strong> provides real-time process monitoring.
+                    </li>
+
+                    <li>
+                        <strong>pgrep</strong> searches for processes by name.
+                    </li>
+
+                    <li>
+                        <strong>PID</strong> uniquely identifies a running process.
+                    </li>
+
+                    <li>
+                        <strong>kill</strong> sends a signal to a process.
+                    </li>
+
+                    <li>
+                        <strong>kill -9</strong> sends SIGKILL for immediate termination.
+                    </li>
+
+                    <li>
+                        <strong>pstree</strong> displays parent-child process relationships.
+                    </li>
+
+                    <li>
+                        <strong>nice</strong> is related to process scheduling priority.
+                    </li>
+
+                    <li>
+                        Process monitoring is useful for Linux system administration and cybersecurity.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-topic-navigation">
+
+                <a
+                    href="lab05.html"
+                    class="linux-topic-button previous"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Linux File Permissions
+                    </strong>
+
+                </a>
+
+
+                <a
+                    href="../theory/linux-services.html"
+                    class="linux-topic-button next"
+                >
+
+                    <strong>
+                        Next Topic: Linux Services
+                    </strong>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+
+    <!-- =====================================================
+         COPY COMMAND
+    ====================================================== -->
+
+    <script>
+
+        function copyCommand(button) {
+
+            const code =
+                button.parentElement
+                    .querySelector("code")
+                    .innerText
+                    .trim();
+
+            navigator.clipboard.writeText(code);
+
+            const originalText =
+                button.innerText;
+
+            button.innerText =
+                "Copied!";
+
+            setTimeout(() => {
+
+                button.innerText =
+                    originalText;
+
+            }, 1200);
+
+        }
+
+    </script>
+
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards =
+            document.querySelectorAll(
+                ".linux-lab-card"
+            );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+                void card.offsetWidth;
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(sweepTimeout);
+
+
+            sweepTimeout =
+                setTimeout(() => {
+
+                    sweepCards.forEach(card => {
+
+                        card.classList.remove(
+                            "mobile-sweep"
+                        );
+
+                    });
+
+                }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

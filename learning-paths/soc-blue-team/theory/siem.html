@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>What is SIEM? | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn what SIEM is, how Security Information and Event Management works, its components, benefits, workflow and practical security monitoring concepts.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        :root {
+            --siem-bg: #070c13;
+            --siem-panel: #0c141d;
+            --siem-panel-2: #101b26;
+
+            --siem-blue: #42a5ff;
+            --siem-cyan: #32d8ff;
+            --siem-green: #43d19e;
+            --siem-yellow: #ffd166;
+            --siem-red: #ff5964;
+
+            --siem-text: #edf6fc;
+            --siem-muted: #91a5b7;
+
+            --siem-border: #1d3040;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 12% 10%,
+                    rgba(66, 165, 255, .09),
+                    transparent 30%),
+                radial-gradient(circle at 88% 18%,
+                    rgba(50, 216, 255, .06),
+                    transparent 28%),
+                var(--siem-bg);
+
+            color: var(--siem-text);
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .siem-container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+
+        /* =========================================================
+   HERO
+   ========================================================= */
+
+        .siem-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 82px 0 68px;
+
+            border-bottom: 1px solid var(--siem-border);
+        }
+
+        .siem-hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 420px;
+            height: 420px;
+
+            right: -190px;
+            top: -190px;
+
+            border: 1px solid rgba(66, 165, 255, .12);
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 45px rgba(66, 165, 255, .025),
+                0 0 0 90px rgba(66, 165, 255, .015);
+        }
+
+        .siem-breadcrumb {
+            margin-bottom: 20px;
+
+            color: var(--siem-cyan);
+
+            font-size: 13px;
+            letter-spacing: .5px;
+        }
+
+        .siem-hero-grid {
+            display: grid;
+            grid-template-columns: 1.35fr .65fr;
+
+            gap: 45px;
+
+            align-items: center;
+        }
+
+        .siem-console-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 13px;
+            margin-bottom: 18px;
+
+            border: 1px solid rgba(66, 165, 255, .35);
+            border-radius: 4px;
+
+            background: rgba(66, 165, 255, .06);
+
+            color: var(--siem-blue);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .siem-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--siem-green);
+
+            box-shadow:
+                0 0 12px rgba(67, 209, 158, .8);
+        }
+
+        .siem-hero h1 {
+            margin: 0 0 18px;
+
+            font-size: clamp(38px, 5vw, 62px);
+            line-height: 1.05;
+
+            letter-spacing: -1px;
+        }
+
+        .siem-hero h1 span {
+            color: var(--siem-blue);
+        }
+
+        .siem-description {
+            max-width: 720px;
+
+            color: var(--siem-muted);
+
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+   SIEM COMMAND PANEL
+   ========================================================= */
+
+        .siem-command {
+            padding: 24px;
+
+            border: 1px solid var(--siem-border);
+            border-top: 2px solid var(--siem-blue);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(16, 27, 38, .98),
+                    rgba(8, 13, 20, .98));
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, .28);
+        }
+
+        .siem-command-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 18px;
+        }
+
+        .siem-command-header strong {
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .siem-online {
+            color: var(--siem-green);
+            font-size: 11px;
+        }
+
+        .siem-divider {
+            height: 1px;
+            background: var(--siem-border);
+
+            margin: 15px 0;
+        }
+
+        .siem-status {
+            display: flex;
+            justify-content: space-between;
+
+            padding: 8px 0;
+
+            color: var(--siem-muted);
+
+            font-size: 13px;
+        }
+
+        .siem-status strong {
+            color: var(--siem-text);
+            font-weight: normal;
+        }
+
+        .siem-status .active {
+            color: var(--siem-green);
+        }
+
+
+        /* =========================================================
+   SECTIONS
+   ========================================================= */
+
+        .siem-section {
+            padding: 70px 0;
+        }
+
+        .siem-title {
+            margin-bottom: 28px;
+        }
+
+        .siem-title h2 {
+            margin: 0 0 10px;
+
+            font-size: 32px;
+        }
+
+        .siem-title p {
+            margin: 0;
+
+            color: var(--siem-muted);
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+   DEFINITION
+   ========================================================= */
+
+        .siem-definition {
+            padding: 30px;
+
+            border: 1px solid rgba(66, 165, 255, .25);
+            border-left: 3px solid var(--siem-blue);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, .07),
+                    rgba(50, 216, 255, .025));
+        }
+
+        .siem-label {
+            margin-bottom: 12px;
+
+            color: var(--siem-cyan);
+
+            font-size: 12px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .siem-definition p {
+            margin: 0;
+
+            color: var(--siem-text);
+
+            font-size: 18px;
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+   HOW SIEM WORKS
+   ========================================================= */
+
+        .siem-explanation {
+            padding: 30px;
+
+            border: 1px solid var(--siem-border);
+            border-radius: 7px;
+
+            background: var(--siem-panel);
+        }
+
+        .siem-explanation p {
+            margin: 0 0 17px;
+
+            color: var(--siem-muted);
+
+            font-size: 15px;
+            line-height: 1.85;
+        }
+
+        .siem-explanation p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================================
+   COMPONENTS
+   ========================================================= */
+
+        .siem-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .siem-card {
+            padding: 24px;
+
+            border: 1px solid var(--siem-border);
+            border-radius: 7px;
+
+            background: var(--siem-panel);
+
+            transition: .2s ease;
+        }
+
+        .siem-card:hover {
+            border-color: rgba(66, 165, 255, .4);
+
+            transform: translateY(-2px);
+        }
+
+        .siem-number {
+            display: block;
+
+            margin-bottom: 14px;
+
+            color: var(--siem-blue);
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .siem-card h3 {
+            margin: 0 0 10px;
+
+            font-size: 17px;
+        }
+
+        .siem-card p {
+            margin: 0;
+
+            color: var(--siem-muted);
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+   SIEM PIPELINE
+   ========================================================= */
+
+        .siem-flow {
+            display: grid;
+
+            grid-template-columns: repeat(6, 1fr);
+
+            gap: 10px;
+
+            margin-top: 30px;
+        }
+
+        .siem-flow-item {
+            position: relative;
+
+            min-height: 120px;
+
+            padding: 18px 10px;
+
+            border: 1px solid var(--siem-border);
+            border-radius: 6px;
+
+            background: var(--siem-panel);
+
+            text-align: center;
+        }
+
+        .siem-flow-item::after {
+            content: "→";
+
+            position: absolute;
+
+            right: -15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--siem-cyan);
+
+            z-index: 2;
+        }
+
+        .siem-flow-item:last-child::after {
+            display: none;
+        }
+
+        .siem-flow-num {
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: var(--siem-cyan);
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .siem-flow-item strong {
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+   EXAMPLE
+   ========================================================= */
+
+        .siem-example {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .siem-example-box {
+            padding: 25px;
+
+            border: 1px solid var(--siem-border);
+            border-radius: 7px;
+
+            background: var(--siem-panel);
+        }
+
+        .siem-example-box h3 {
+            margin: 0 0 15px;
+
+            font-size: 17px;
+        }
+
+        .siem-example-box p {
+            margin: 0;
+
+            color: var(--siem-muted);
+
+            font-size: 14px;
+            line-height: 1.75;
+        }
+
+        .siem-alert-box {
+            border-top: 2px solid var(--siem-yellow);
+        }
+
+        .siem-response-box {
+            border-top: 2px solid var(--siem-green);
+        }
+
+
+        /* =========================================================
+   KEY CONCEPTS
+   ========================================================= */
+
+        .siem-key-list {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .siem-key {
+            padding: 17px 20px;
+
+            border: 1px solid var(--siem-border);
+            border-radius: 6px;
+
+            background: var(--siem-panel);
+        }
+
+        .siem-key strong {
+            color: var(--siem-text);
+        }
+
+        .siem-key span {
+            color: var(--siem-muted);
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   SUMMARY
+   ========================================================= */
+
+        .siem-summary {
+            padding: 30px;
+
+            border: 1px solid rgba(67, 209, 158, .25);
+            border-radius: 7px;
+
+            background: rgba(67, 209, 158, .035);
+        }
+
+        .siem-summary h2 {
+            margin-top: 0;
+
+            color: var(--siem-green);
+        }
+
+        .siem-summary p {
+            margin: 0;
+
+            color: var(--siem-muted);
+
+            line-height: 1.8;
+        }
+
+        /* =========================================================
+   PRACTICAL LAB CTA
+   ========================================================= */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+
+            margin-top: 35px;
+            padding: 24px 26px;
+
+            border: 1px solid rgba(66, 165, 255, 0.22);
+            border-left: 3px solid var(--aa-blue);
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 208, 0.025));
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.20);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* Top scanning line */
+
+        .lab-area::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(66, 165, 255, 0.7),
+                    rgba(53, 214, 208, 0.6),
+                    transparent);
+        }
+
+
+        /* Lab text */
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 0;
+        }
+
+
+        .lab-text strong {
+            color: var(--aa-text);
+
+            font-size: 16px;
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .lab-text span {
+            color: var(--aa-muted);
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* Lab button */
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            min-width: 155px;
+
+            padding: 12px 20px;
+
+            border: 1px solid rgba(66, 165, 255, 0.40);
+            border-radius: 5px;
+
+            color: var(--aa-blue);
+
+            background:
+                rgba(66, 165, 255, 0.07);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            text-decoration: none;
+
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        /* Hover */
+
+        .lab-button:hover {
+            color: #ffffff;
+
+            border-color: rgba(66, 165, 255, 0.75);
+
+            background:
+                rgba(66, 165, 255, 0.14);
+
+            box-shadow:
+                0 0 18px rgba(66, 165, 255, 0.16);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* Active */
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* =========================================================
+   LAB CTA RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .lab-area {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 18px;
+
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+        }
+
+        /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+        @media(max-width:950px) {
+
+            .siem-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .siem-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .siem-flow {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .siem-flow-item::after {
+                display: none;
+            }
+
+            .siem-example {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:768px) {
+
+            .nav-container {
+                width: 94%;
+                min-height: 64px;
+            }
+
+            .brand-logo svg {
+                width: 38px;
+                height: 46px;
+            }
+
+            .siem-hero {
+                padding: 70px 0 55px;
+            }
+
+            .siem-section {
+                padding: 60px 0;
+            }
+
+            .siem-flow {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:600px) {
+
+            .nav-container {
+                width: 92%;
+            }
+
+            .brand-logo svg {
+                width: 34px;
+                height: 42px;
+            }
+
+            .brand-name {
+                font-size: 17px;
+            }
+
+            .brand-tagline {
+                font-size: 8px;
+            }
+
+            .siem-hero {
+                padding: 55px 0 45px;
+            }
+
+            .siem-hero h1 {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .siem-description {
+                font-size: 15px;
+            }
+
+            .siem-section {
+                padding: 50px 0;
+            }
+
+            .siem-title h2 {
+                font-size: 26px;
+            }
+
+            .siem-definition,
+            .siem-explanation,
+            .siem-summary {
+                padding: 22px;
+            }
+
+            .siem-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .siem-flow {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .siem-example {
+                grid-template-columns: 1fr;
+            }
+
+            .siem-key-list {
+                grid-template-columns: 1fr;
+            }
+
+            .siem-topic-nav {
+                flex-direction: column;
+            }
+
+            .siem-nav {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media(max-width:380px) {
+
+            .siem-container {
+                width: 94%;
+            }
+
+            .siem-hero h1 {
+                font-size: 32px;
+            }
+
+            .siem-flow {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <header class="siem-hero">
+
+        <div class="siem-container">
+
+            <div class="siem-breadcrumb">
+                CyberNexa / SOC / Blue Team / SIEM / Theory
+            </div>
+
+            <div class="siem-hero-grid">
+
+                <div>
+
+                    <div class="siem-console-label">
+
+                        <span class="siem-dot"></span>
+
+                        SIEM OPERATIONS CENTER
+
+                    </div>
+
+                    <h1>
+                        What is <span>SIEM?</span>
+                    </h1>
+
+                    <p class="siem-description">
+
+                        Security Information and Event Management (SIEM) is a
+                        security technology that collects, centralizes, analyzes
+                        and correlates security events and logs from different
+                        systems to help security teams detect and investigate
+                        suspicious activity.
+
+                    </p>
+
+                </div>
+
+
+                <div class="siem-command">
+
+                    <div class="siem-command-header">
+
+                        <strong>
+                            SIEM COMMAND CENTER
+                        </strong>
+
+                        <span class="siem-online">
+                            ● ONLINE
+                        </span>
+
+                    </div>
+
+                    <div class="siem-divider"></div>
+
+                    <div class="siem-status">
+
+                        <span>Log Collection</span>
+
+                        <strong class="active">
+                            Active
+                        </strong>
+
+                    </div>
+
+                    <div class="siem-status">
+
+                        <span>Event Analysis</span>
+
+                        <strong class="active">
+                            Running
+                        </strong>
+
+                    </div>
+
+                    <div class="siem-status">
+
+                        <span>Correlation</span>
+
+                        <strong class="active">
+                            Enabled
+                        </strong>
+
+                    </div>
+
+                    <div class="siem-status">
+
+                        <span>Threat Monitoring</span>
+
+                        <strong>
+                            24 / 7
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+        <section class="siem-section">
+
+            <div class="siem-container">
+
+                <div class="siem-title">
+
+                    <h2>
+                        Definition
+                    </h2>
+
+                    <p>
+                        Understand the core purpose of SIEM in a modern Security Operations Center.
+                    </p>
+
+                </div>
+
+
+                <div class="siem-definition">
+
+                    <div class="siem-label">
+                        Core Definition
+                    </div>
+
+                    <p>
+
+                        SIEM (Security Information and Event Management) is a
+                        centralized security platform that collects logs and
+                        security events from multiple sources, analyzes and
+                        correlates them, and helps security teams identify,
+                        investigate and respond to potential security incidents.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     HOW SIEM WORKS
+====================================================== -->
+
+        <section class="siem-section">
+
+            <div class="siem-container">
+
+                <div class="siem-title">
+
+                    <h2>
+                        How SIEM Works
+                    </h2>
+
+                    <p>
+                        SIEM converts large amounts of raw security data into useful security information.
+                    </p>
+
+                </div>
+
+
+                <div class="siem-explanation">
+
+                    <p>
+
+                        Organizations generate security events from firewalls,
+                        servers, endpoints, applications, authentication systems
+                        and network devices.
+
+                    </p>
+
+                    <p>
+
+                        A SIEM collects these logs and brings them into a
+                        centralized platform where security analysts can search
+                        and analyze them.
+
+                    </p>
+
+                    <p>
+
+                        The SIEM can normalize and correlate events from different
+                        sources to identify patterns that may indicate suspicious
+                        or malicious activity.
+
+                    </p>
+
+                    <p>
+
+                        When a rule or correlation condition is triggered,
+                        the SIEM can generate an alert that a SOC analyst can
+                        investigate.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     CORE COMPONENTS
+====================================================== -->
+
+        <section class="siem-section">
+
+            <div class="siem-container">
+
+                <div class="siem-title">
+
+                    <h2>
+                        Core SIEM Components
+                    </h2>
+
+                    <p>
+                        The main functions that make SIEM useful for security monitoring.
+                    </p>
+
+                </div>
+
+
+                <div class="siem-grid">
+
+                    <div class="siem-card">
+
+                        <span class="siem-number">
+                            01 — COLLECTION
+                        </span>
+
+                        <h3>
+                            Log Collection
+                        </h3>
+
+                        <p>
+                            Collects security logs and events from servers,
+                            endpoints, firewalls, applications and other systems.
+                        </p>
+
+                    </div>
+
+
+                    <div class="siem-card">
+
+                        <span class="siem-number">
+                            02 — CENTRALIZATION
+                        </span>
+
+                        <h3>
+                            Centralized Storage
+                        </h3>
+
+                        <p>
+                            Brings security data from multiple sources into a
+                            central location for easier monitoring and investigation.
+                        </p>
+
+                    </div>
+
+
+                    <div class="siem-card">
+
+                        <span class="siem-number">
+                            03 — ANALYSIS
+                        </span>
+
+                        <h3>
+                            Event Analysis
+                        </h3>
+
+                        <p>
+                            Analyzes collected events to identify suspicious
+                            patterns and security-related activity.
+                        </p>
+
+                    </div>
+
+
+                    <div class="siem-card">
+
+                        <span class="siem-number">
+                            04 — CORRELATION
+                        </span>
+
+                        <h3>
+                            Event Correlation
+                        </h3>
+
+                        <p>
+                            Connects related events from different sources to
+                            identify activity that may represent an attack.
+                        </p>
+
+                    </div>
+
+
+                    <div class="siem-card">
+
+                        <span class="siem-number">
+                            05 — ALERTING
+                        </span>
+
+                        <h3>
+                            Security Alerts
+                        </h3>
+
+                        <p>
+                            Generates alerts when predefined detection rules or
+                            suspicious event patterns are triggered.
+                        </p>
+
+                    </div>
+
+
+                    <div class="siem-card">
+
+                        <span class="siem-number">
+                            06 — INVESTIGATION
+                        </span>
+
+                        <h3>
+                            Threat Investigation
+                        </h3>
+
+                        <p>
+                            Provides analysts with searchable security data to
+                            investigate alerts and understand incidents.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SIEM PIPELINE
+====================================================== -->
+
+        <section class="siem-section">
+
+            <div class="siem-container">
+
+                <div class="siem-title">
+
+                    <h2>
+                        SIEM Security Data Pipeline
+                    </h2>
+
+                    <p>
+                        A simplified representation of how security events move through a SIEM.
+                    </p>
+
+                </div>
+
+
+                <div class="siem-flow">
+
+                    <div class="siem-flow-item">
+
+                        <span class="siem-flow-num">
+                            01
+                        </span>
+
+                        <strong>
+                            Data Sources
+                        </strong>
+
+                    </div>
+
+
+                    <div class="siem-flow-item">
+
+                        <span class="siem-flow-num">
+                            02
+                        </span>
+
+                        <strong>
+                            Log Collection
+                        </strong>
+
+                    </div>
+
+
+                    <div class="siem-flow-item">
+
+                        <span class="siem-flow-num">
+                            03
+                        </span>
+
+                        <strong>
+                            Normalization
+                        </strong>
+
+                    </div>
+
+
+                    <div class="siem-flow-item">
+
+                        <span class="siem-flow-num">
+                            04
+                        </span>
+
+                        <strong>
+                            Correlation
+                        </strong>
+
+                    </div>
+
+
+                    <div class="siem-flow-item">
+
+                        <span class="siem-flow-num">
+                            05
+                        </span>
+
+                        <strong>
+                            Detection
+                        </strong>
+
+                    </div>
+
+
+                    <div class="siem-flow-item">
+
+                        <span class="siem-flow-num">
+                            06
+                        </span>
+
+                        <strong>
+                            Alert / Investigation
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     EXAMPLE
+====================================================== -->
+
+        <section class="siem-section">
+
+            <div class="siem-container">
+
+                <div class="siem-title">
+
+                    <h2>
+                        Real-World Example
+                    </h2>
+
+                    <p>
+                        See how SIEM can connect multiple security events.
+                    </p>
+
+                </div>
+
+
+                <div class="siem-example">
+
+                    <div class="siem-example-box siem-alert-box">
+
+                        <h3>
+                            ⚠ Suspicious Activity
+                        </h3>
+
+                        <p>
+
+                            A user account generates multiple failed login
+                            attempts followed by a successful login from an
+                            unusual source IP address.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="siem-example-box siem-response-box">
+
+                        <h3>
+                            ✓ SIEM Analysis
+                        </h3>
+
+                        <p>
+
+                            The SIEM correlates authentication events and
+                            generates an alert so the SOC analyst can investigate
+                            the account, source IP, timing and related activity.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+        <section class="siem-section">
+
+            <div class="siem-container">
+
+                <div class="siem-title">
+
+                    <h2>
+                        Key Concepts
+                    </h2>
+
+                    <p>
+                        Important SIEM terms to remember.
+                    </p>
+
+                </div>
+
+
+                <div class="siem-key-list">
+
+                    <div class="siem-key">
+
+                        <strong>Log:</strong>
+
+                        <span>
+                            A recorded event generated by a system or application.
+                        </span>
+
+                    </div>
+
+
+                    <div class="siem-key">
+
+                        <strong>Event:</strong>
+
+                        <span>
+                            An activity or occurrence recorded by a security system.
+                        </span>
+
+                    </div>
+
+
+                    <div class="siem-key">
+
+                        <strong>Correlation:</strong>
+
+                        <span>
+                            Connecting related events to identify meaningful patterns.
+                        </span>
+
+                    </div>
+
+
+                    <div class="siem-key">
+
+                        <strong>Alert:</strong>
+
+                        <span>
+                            A notification generated when suspicious activity is detected.
+                        </span>
+
+                    </div>
+
+
+                    <div class="siem-key">
+
+                        <strong>Rule:</strong>
+
+                        <span>
+                            A condition used to identify specific security activity.
+                        </span>
+
+                    </div>
+
+
+                    <div class="siem-key">
+
+                        <strong>SOC:</strong>
+
+                        <span>
+                            A security team that monitors and investigates security events.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+        <section class="siem-section">
+
+            <div class="siem-container">
+
+                <div class="siem-summary">
+
+                    <h2>
+                        Summary
+                    </h2>
+
+                    <p>
+
+                        SIEM is a central component of modern Security Operations.
+                        It collects logs and security events from multiple sources,
+                        centralizes the data, analyzes and correlates events,
+                        generates security alerts and provides analysts with the
+                        information required to investigate suspicious activity.
+                        SIEM helps SOC teams monitor an environment more efficiently
+                        and identify potential security incidents.
+
+                    </p>
+
+                </div>
+                
+<!-- LESSON COMPLETION -->
+<section class="siem-section" id="lesson-completion">
+    <div class="siem-container">
+
+        <div class="siem-explanation">
+
+            <div class="siem-title">
+                <h2>Lesson Completion</h2>
+                <p>
+                    You have completed the SIEM lesson.
+                    Review the key concepts and mark this lesson as completed.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="siem"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/siem.html"
+                data-status-id="siemCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="siemCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+
+        </div>
+
+    </div>
+</section>
+                <div class="lab-area">
+
+                    <div class="lab-text">
+                        <strong>Ready for the Practical Lab?</strong>
+
+                        <span>
+                            Test your understanding through an
+                            authorized SOC security-training simulation.
+                        </span>
+                    </div>
+
+                    <a href="../lab/siem-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

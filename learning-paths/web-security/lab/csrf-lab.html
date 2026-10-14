@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CSRF Security Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 10% 8%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 12%,
+                    rgba(0, 255, 176, 0.05),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b,
+                    #020a15,
+                    #01050b
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 40px 32px;
+
+            margin-bottom: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 34, 0.98),
+                    rgba(2, 10, 21, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 12px;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 40px;
+        }
+
+        .lab-hero h1 span {
+            color: #00bfff;
+        }
+
+        .lab-hero p {
+
+            max-width: 760px;
+
+            margin: 13px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           LAB INFO
+        ====================================================== */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.02);
+        }
+
+        .info-box small {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #526a7f;
+
+            font-size: 8px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .info-box strong {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+        }
+
+        .safe {
+            color: #00ffb0 !important;
+        }
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            padding: 25px;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+        }
+
+        .section-number {
+
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.22);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .section-title h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+        .lab-card p {
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           SIMULATOR
+        ====================================================== */
+
+        .simulator {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+        .request-box,
+        .response-box {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, 0.20);
+        }
+
+        .box-title {
+
+            margin-bottom: 12px;
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .request-line {
+
+            padding: 9px;
+
+            margin-bottom: 7px;
+
+            border-radius: 6px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            color: #71879b;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+        }
+
+        .request-line strong {
+            color: #dce9f4;
+        }
+
+        .result {
+
+            padding: 16px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 255, 176, 0.035);
+
+            border:
+                1px solid rgba(0, 255, 176, 0.10);
+
+            color: #8fa5bb;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        .result strong {
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           CONTROLS
+        ====================================================== */
+
+        .controls {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 15px;
+        }
+
+        button {
+
+            padding: 11px 16px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.22);
+
+            border-radius: 7px;
+
+            color: #cdefff;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            cursor: pointer;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        button:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            background:
+                rgba(0, 191, 255, 0.09);
+        }
+
+        /* =====================================================
+           MCQ
+        ====================================================== */
+
+        .question {
+
+            padding: 18px;
+
+            margin-bottom: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .question h3 {
+
+            margin: 0 0 13px;
+
+            color: #dce9f4;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .option {
+
+            display: block;
+
+            padding: 10px 12px;
+
+            margin-bottom: 7px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.07);
+
+            border-radius: 7px;
+
+            color: #71879b;
+
+            background:
+                rgba(0, 0, 0, 0.15);
+
+            cursor: pointer;
+
+            font-size: 11px;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.22);
+
+            color: #cdefff;
+        }
+
+        .option input {
+            margin-right: 8px;
+        }
+
+        .quiz-result {
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.12);
+
+            border-radius: 8px;
+
+            color: #8fa5bb;
+
+            background:
+                rgba(0, 255, 176, 0.025);
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           AUTHORIZATION NOTE
+        ====================================================== */
+
+        .authorization {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.16);
+
+            border-radius: 9px;
+
+            background:
+                rgba(255, 177, 0, 0.025);
+        }
+
+        .authorization strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffc44d;
+
+            font-size: 12px;
+        }
+
+        .authorization p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAV
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .lab-navigation a {
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 8px;
+
+            color: #71879b;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        .lab-navigation a:hover {
+
+            color: #cdefff;
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-info {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .simulator {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+
+                padding: 28px 20px;
+            }
+
+            .lab-hero h1 {
+
+                font-size: 30px;
+            }
+
+            .lab-card {
+
+                padding: 20px;
+            }
+
+            .lab-info {
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .lab-navigation {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                    </svg>
+
+                </div>
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- HERO -->
+
+            <section class="lab-hero">
+
+                <div class="lab-kicker">
+                    WEB SECURITY LAB / 07
+                </div>
+
+                <h1>
+                    <span>CSRF</span> Security Lab
+                </h1>
+
+                <p>
+
+                    Learn how CSRF protection works through a safe
+                    simulated request-validation environment and
+                    test your understanding with security MCQs.
+
+                </p>
+
+            </section>
+
+
+            <!-- INFO -->
+
+            <div class="lab-info">
+
+                <div class="info-box">
+
+                    <small>
+                        LAB TYPE
+                    </small>
+
+                    <strong>
+                        Interactive
+                    </strong>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <small>
+                        LEVEL
+                    </small>
+
+                    <strong>
+                        Intermediate
+                    </strong>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <small>
+                        ENVIRONMENT
+                    </small>
+
+                    <strong class="safe">
+                        Safe Training
+                    </strong>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <small>
+                        FOCUS
+                    </small>
+
+                    <strong>
+                        CSRF Defense
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SIMULATION
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="section-title">
+
+                    <div class="section-number">
+                        01
+                    </div>
+
+                    <h2>
+                        Request Validation Simulator
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    Select a request type and observe how a protected
+                    application evaluates the presence of a CSRF token.
+
+                    This is a simulation and does not send requests
+                    to any external website.
+
+                </p>
+
+
+                <div class="simulator">
+
+
+                    <div class="request-box">
+
+                        <div class="box-title">
+                            SIMULATED REQUEST
+                        </div>
+
+
+                        <div class="request-line">
+
+                            Method:
+                            <strong id="method">
+                                POST
+                            </strong>
+
+                        </div>
+
+
+                        <div class="request-line">
+
+                            Endpoint:
+                            <strong>
+                                /account/update
+                            </strong>
+
+                        </div>
+
+
+                        <div class="request-line">
+
+                            Session:
+                            <strong>
+                                AUTHENTICATED
+                            </strong>
+
+                        </div>
+
+
+                        <div class="request-line">
+
+                            CSRF Token:
+                            <strong id="token">
+                                MISSING
+                            </strong>
+
+                        </div>
+
+
+                        <div class="controls">
+
+                            <button onclick="simulate(false)">
+                                Request Without Token
+                            </button>
+
+                            <button onclick="simulate(true)">
+                                Request With Token
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="response-box">
+
+                        <div class="box-title">
+                            SERVER RESPONSE
+                        </div>
+
+                        <div
+                            class="result"
+                            id="result"
+                        >
+
+                            Waiting for simulated request...
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 LEARNING CHECK
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="section-title">
+
+                    <div class="section-number">
+                        02
+                    </div>
+
+                    <h2>
+                        CSRF Knowledge Check
+                    </h2>
+
+                </div>
+
+
+                <!-- Q1 -->
+
+                <div class="question">
+
+                    <h3>
+                        1. What does CSRF stand for?
+                    </h3>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="a"
+                        >
+                        Cross-Site Request Forgery
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="b"
+                        >
+                        Cross-System Request Firewall
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="c"
+                        >
+                        Client-Side Request Framework
+                    </label>
+
+                </div>
+
+
+                <!-- Q2 -->
+
+                <div class="question">
+
+                    <h3>
+                        2. CSRF primarily targets which type of behavior?
+                    </h3>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="a"
+                        >
+                        Unintended authenticated requests
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="b"
+                        >
+                        Physical hardware damage
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="c"
+                        >
+                        CPU overheating
+                    </label>
+
+                </div>
+
+
+                <!-- Q3 -->
+
+                <div class="question">
+
+                    <h3>
+                        3. Which control is commonly used to defend against CSRF?
+                    </h3>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="a"
+                        >
+                        CSRF token
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="b"
+                        >
+                        File compression
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="c"
+                        >
+                        Screen brightness
+                    </label>
+
+                </div>
+
+
+                <!-- Q4 -->
+
+                <div class="question">
+
+                    <h3>
+                        4. What is the purpose of a CSRF token?
+                    </h3>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="a"
+                        >
+                        To provide additional proof that the request
+                        is legitimate
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="b"
+                        >
+                        To increase CPU speed
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="c"
+                        >
+                        To encrypt the entire operating system
+                    </label>
+
+                </div>
+
+
+                <!-- Q5 -->
+
+                <div class="question">
+
+                    <h3>
+                        5. Which cookie attribute can help reduce
+                        cross-site request risks?
+                    </h3>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="a"
+                        >
+                        SameSite
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="b"
+                        >
+                        Filename
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="c"
+                        >
+                        FontSize
+                    </label>
+
+                </div>
+
+
+                <button onclick="checkQuiz()">
+                    Check Answers
+                </button>
+
+
+                <div
+                    class="quiz-result"
+                    id="quizResult"
+                >
+                    Complete the quiz and check your score.
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 AUTHORIZATION
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="authorization">
+
+                    <strong>
+                        ⚠ AUTHORIZED TRAINING ENVIRONMENT
+                    </strong>
+
+                    <p>
+
+                        This lab is intentionally simulated for learning.
+                        Do not test CSRF behavior against websites,
+                        accounts or systems without explicit authorization.
+                        Use your own applications or dedicated security
+                        training environments.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="lab-navigation">
+
+                <a href="xss-lab.html">
+                    ← Lab: XSS
+                </a>
+
+                <a href="web-security-lab.html">
+                    All Labs
+                </a>
+
+                <a href="../theory/idor.html">
+                    Next: IDOR →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <script>
+
+        /* =====================================================
+           CSRF SIMULATOR
+        ====================================================== */
+
+        function simulate(hasToken) {
+
+            const token = document.getElementById("token");
+            const result = document.getElementById("result");
+
+            if (hasToken) {
+
+                token.textContent = "VALID";
+
+                result.innerHTML = `
+                    <strong>✓ REQUEST ACCEPTED</strong><br><br>
+                    The simulated server found a valid CSRF token.
+                    The request can continue because the application
+                    received additional evidence that the request was
+                    intentionally generated.
+                `;
+
+            } else {
+
+                token.textContent = "MISSING";
+
+                result.innerHTML = `
+                    <strong style="color:#ff6675;">
+                        ✕ REQUEST REJECTED
+                    </strong><br><br>
+                    The simulated server rejected the state-changing
+                    request because the expected CSRF token was missing.
+                    This demonstrates the basic purpose of CSRF protection.
+                `;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           QUIZ
+        ====================================================== */
+
+        function checkQuiz() {
+
+            const answers = {
+
+                q1: "a",
+                q2: "a",
+                q3: "a",
+                q4: "a",
+                q5: "a"
+
+            };
+
+            let score = 0;
+
+            Object.keys(answers).forEach(function(question) {
+
+                const selected =
+                    document.querySelector(
+                        `input[name="${question}"]:checked`
+                    );
+
+                if (selected && selected.value === answers[question]) {
+
+                    score++;
+
+                }
+
+            });
+
+
+            const result =
+                document.getElementById("quizResult");
+
+
+            if (score === 5) {
+
+                result.innerHTML = `
+                    <strong style="color:#00ffb0;">
+                        ✓ Excellent! 5/5
+                    </strong>
+                    <br><br>
+                    You have a clear understanding of the basic
+                    CSRF security concepts.
+                `;
+
+            } else {
+
+                result.innerHTML = `
+                    <strong style="color:#00bfff;">
+                        Score: ${score}/5
+                    </strong>
+                    <br><br>
+                    Review the CSRF theory and try the quiz again.
+                `;
+
+            }
+
+        }
+
+    </script>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

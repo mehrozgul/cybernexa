@@ -1,0 +1,3629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab 03 - Linux SSH | CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN LAB PAGE
+        ====================================================== */
+
+        .linux-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .linux-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 40px;
+        }
+
+
+        .lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 12px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 43px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .lab-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .lab-intro {
+
+            max-width: 760px;
+
+            margin: 17px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB INFORMATION
+        ====================================================== */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .lab-info-card {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            text-align: center;
+        }
+
+
+        .lab-info-card strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #67e8f9;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .lab-info-card span {
+
+            color: #dbeafe;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           PROGRESS
+        ====================================================== */
+
+        .lab-progress-card {
+
+            margin-bottom: 25px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 12px;
+
+            background:
+                rgba(5, 22, 31, 0.92);
+        }
+
+
+        .progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .progress-top strong {
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        #progressText {
+
+            color: #67e8f9;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .progress-bar {
+
+            width: 100%;
+
+            height: 8px;
+
+            overflow: hidden;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.07);
+        }
+
+
+        .progress-fill {
+
+            width: 0%;
+
+            height: 100%;
+
+            border-radius: 10px;
+
+            background: #67e8f9;
+
+            transition: width 0.3s ease;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 20px;
+
+            padding: 28px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .lab-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.38);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.07);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .lab-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .lab-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .lab-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        /* =====================================================
+           OBJECTIVES
+        ====================================================== */
+
+        .objective-list {
+
+            margin: 15px 0 0;
+
+            padding-left: 20px;
+        }
+
+
+        .objective-list li {
+
+            margin-bottom: 9px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        .objective-list li::marker {
+
+            color: #67e8f9;
+        }
+
+
+        /* =====================================================
+           STEP CARD
+        ====================================================== */
+
+        .lab-step {
+
+            position: relative;
+
+            margin-top: 18px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 30px;
+
+            height: 30px;
+
+            margin-bottom: 10px;
+
+            border-radius: 50%;
+
+            color: #02080d;
+
+            background: #67e8f9;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        .lab-step h3 {
+
+            margin: 0 0 9px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+
+        .lab-step p {
+
+            margin: 0 0 12px;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .command-wrapper {
+
+            position: relative;
+
+            margin-top: 13px;
+        }
+
+
+        .command-box {
+
+            position: relative;
+
+            padding: 17px 55px 17px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 9px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+            white-space: pre;
+        }
+
+
+        /* =====================================================
+           COPY BUTTON
+        ====================================================== */
+
+        .copy-btn {
+
+            position: absolute;
+
+            top: 8px;
+
+            right: 8px;
+
+            padding: 7px 10px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 7px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .copy-btn:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.55);
+
+            background:
+                rgba(103, 232, 249, 0.13);
+        }
+
+
+        .copy-btn.copied {
+
+            color: #02080d;
+
+            background: #67e8f9;
+
+            border-color: #67e8f9;
+        }
+
+
+        /* =====================================================
+           HOW TO
+        ====================================================== */
+
+        .how-to {
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(103, 232, 249, 0.045);
+        }
+
+
+        .how-to strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 13px;
+        }
+
+
+        .how-to ol {
+
+            margin: 0;
+
+            padding-left: 20px;
+        }
+
+
+        .how-to li {
+
+            margin-bottom: 6px;
+
+            color: #b6c2cc;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           EXPECTED OUTPUT
+        ====================================================== */
+
+        .expected-output {
+
+            margin-top: 14px;
+
+            padding: 14px 16px;
+
+            border:
+                1px solid rgba(34, 197, 94, 0.18);
+
+            border-radius: 9px;
+
+            background:
+                rgba(34, 197, 94, 0.035);
+        }
+
+
+        .expected-output strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #86efac;
+
+            font-size: 12px;
+        }
+
+
+        .expected-output span {
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           CHECK TASK
+        ====================================================== */
+
+        .task-check {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .task-check input {
+
+            width: 17px;
+
+            height: 17px;
+
+            margin-top: 2px;
+
+            accent-color: #67e8f9;
+
+            cursor: pointer;
+        }
+
+
+        .task-check label {
+
+            color: #c3cdd5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           TASK LIST
+        ====================================================== */
+
+        .task-list {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+
+        .task-card {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .task-card strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #67e8f9;
+
+            font-size: 13px;
+        }
+
+
+        .task-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FINAL CHECK
+        ====================================================== */
+
+        .final-check {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .final-check h3 {
+
+            margin: 0 0 12px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+
+        .final-check label {
+
+            display: flex;
+
+            gap: 9px;
+
+            align-items: flex-start;
+
+            margin-bottom: 9px;
+
+            color: #b6c2cc;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+            cursor: pointer;
+        }
+
+
+        .final-check input {
+
+            margin-top: 3px;
+
+            accent-color: #67e8f9;
+        }
+
+
+        /* =====================================================
+           COMPLETE BUTTON
+        ====================================================== */
+
+        .complete-wrapper {
+
+            text-align: center;
+
+            margin-top: 30px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.17);
+
+            border-radius: 13px;
+
+            background:
+                rgba(4, 19, 27, 0.95);
+        }
+
+
+        .complete-wrapper p {
+
+            margin: 0 0 17px;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+        }
+
+
+        .complete-lab-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 14px 25px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            color: #02080d;
+
+            background: #67e8f9;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .complete-lab-btn:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 25px rgba(103, 232, 249, 0.20);
+        }
+
+
+        .complete-lab-btn:disabled {
+
+            cursor: not-allowed;
+
+            opacity: 0.45;
+
+            transform: none;
+
+            box-shadow: none;
+        }
+
+
+        /* =====================================================
+           COMPLETION MESSAGE
+        ====================================================== */
+
+        .completion-message {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(34, 197, 94, 0.35);
+
+            border-radius: 11px;
+
+            background:
+                rgba(34, 197, 94, 0.07);
+
+            text-align: center;
+        }
+
+
+        .completion-message.show {
+
+            display: block;
+
+            animation:
+                completionAppear 0.4s ease;
+        }
+
+
+        .completion-icon {
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .completion-message h3 {
+
+            margin: 0 0 6px;
+
+            color: #86efac;
+
+            font-size: 18px;
+        }
+
+
+        .completion-message p {
+
+            margin: 0;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+        }
+
+
+        @keyframes completionAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(8px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+            }
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 30px;
+        }
+
+
+        .lab-nav-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .lab-nav-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        .lab-nav-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-lab-page {
+
+                padding:
+                    50px 15px 65px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .lab-info {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .linux-lab-page {
+
+                padding:
+                    42px 12px 55px;
+            }
+
+
+            .lab-header {
+
+                margin-bottom: 30px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .lab-intro {
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .lab-card {
+
+                padding: 21px 18px;
+
+                border-radius: 12px;
+            }
+
+
+            .lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .lab-card p {
+
+                font-size: 13px;
+            }
+
+
+            .lab-step {
+
+                padding: 17px;
+            }
+
+
+            .task-list {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .lab-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .lab-nav-button {
+
+                justify-content: center;
+
+                width: 100%;
+            }
+
+
+            .complete-lab-btn {
+
+                width: 100%;
+            }
+        }
+
+
+        @media (max-width: 380px) {
+
+            .lab-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-lab-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .lab-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="linux-lab-page">
+
+        <div class="linux-lab-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="lab-header">
+
+                <div class="lab-category">
+                    LINUX • PRACTICAL LAB
+                </div>
+
+                <h1>
+                    Lab 08 — Linux <span>SSH</span>
+                </h1>
+
+                <p class="lab-intro">
+
+                    In this practical lab, you will learn the basics
+                    of Secure Shell (SSH), check the SSH service,
+                    identify your Linux IP address, connect to an SSH
+                    server, verify the connection, and understand
+                    why SSH is important in cybersecurity.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LAB INFORMATION
+            ================================================== -->
+
+            <div class="lab-info">
+
+                <div class="lab-info-card">
+
+                    <strong>
+                        Lab
+                    </strong>
+
+                    <span>
+                        Practical Lab 08
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info-card">
+
+                    <strong>
+                        Topic
+                    </strong>
+
+                    <span>
+                        Linux SSH
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info-card">
+
+                    <strong>
+                        Level
+                    </strong>
+
+                    <span>
+                        Beginner
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PROGRESS
+            ================================================== -->
+
+            <div class="lab-progress-card">
+
+                <div class="progress-top">
+
+                    <strong>
+                        Lab Progress
+                    </strong>
+
+                    <span id="progressText">
+                        0 / 10 completed
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SSH INTRODUCTION
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        What is SSH?
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    SSH stands for
+                    <strong>Secure Shell</strong>.
+                    It is a network protocol used to securely
+                    access and manage a remote computer through
+                    a command-line interface.
+
+                </p>
+
+
+                <div class="task-list">
+
+                    <div class="task-card">
+
+                        <strong>
+                            Default Port
+                        </strong>
+
+                        <p>
+                            SSH normally uses
+                            <strong>TCP port 22</strong>.
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Security
+                        </strong>
+
+                        <p>
+                            SSH encrypts the communication between
+                            the client and server.
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Client
+                        </strong>
+
+                        <p>
+                            The computer from which you initiate
+                            the SSH connection.
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Server
+                        </strong>
+
+                        <p>
+                            The Linux system that accepts SSH
+                            connections.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 OBJECTIVES
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        🎯
+                    </div>
+
+                    <h2>
+                        Lab Objectives
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    After completing this lab, you should be able
+                    to understand and perform basic SSH operations.
+
+                </p>
+
+
+                <ul class="objective-list">
+
+                    <li>
+                        Understand the purpose of SSH.
+                    </li>
+
+                    <li>
+                        Identify the default SSH port.
+                    </li>
+
+                    <li>
+                        Check the SSH service status.
+                    </li>
+
+                    <li>
+                        Install the OpenSSH server.
+                    </li>
+
+                    <li>
+                        Start and enable the SSH service.
+                    </li>
+
+                    <li>
+                        Find the Linux system IP address.
+                    </li>
+
+                    <li>
+                        Connect to an SSH server.
+                    </li>
+
+                    <li>
+                        Verify and close an SSH session.
+                    </li>
+
+                    <li>
+                        Understand SSH from a cybersecurity perspective.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 REQUIREMENTS
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        💻
+                    </div>
+
+                    <h2>
+                        Lab Requirements
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    You need a Linux system with terminal access.
+                    Ubuntu, Debian, Kali Linux, or another
+                    Debian-based distribution can be used.
+
+                </p>
+
+
+                <div class="how-to">
+
+                    <strong>
+                        Recommended Environment
+                    </strong>
+
+                    <ol>
+
+                        <li>
+                            Open your Linux virtual machine or
+                            physical Linux system.
+                        </li>
+
+                        <li>
+                            Make sure the system has network access.
+                        </li>
+
+                        <li>
+                            Open the Terminal.
+                        </li>
+
+                        <li>
+                            Run the commands in the following steps.
+                        </li>
+
+                    </ol>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 01
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        01
+                    </div>
+
+                    <h2>
+                        Step 1 — Check Your Current User
+                    </h2>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="step-number">
+                        1
+                    </div>
+
+                    <h3>
+                        Use whoami
+                    </h3>
+
+                    <p>
+
+                        The <strong>whoami</strong> command displays
+                        the username of the currently logged-in user.
+
+                    </p>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>whoami</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(this, 'whoami')"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="how-to">
+
+                        <strong>
+                            How to perform it
+                        </strong>
+
+                        <ol>
+
+                            <li>
+                                Open the Linux Terminal.
+                            </li>
+
+                            <li>
+                                Type or paste the command.
+                            </li>
+
+                            <li>
+                                Press Enter.
+                            </li>
+
+                            <li>
+                                Observe the username.
+                            </li>
+
+                        </ol>
+
+                    </div>
+
+
+                    <div class="expected-output">
+
+                        <strong>
+                            Expected Result
+                        </strong>
+
+                        <span>
+                            Linux should display your current
+                            username, such as
+                            <strong>user</strong>.
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-check">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                            id="check1"
+                        >
+
+                        <label for="check1">
+                            I successfully checked my Linux username.
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 02
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        02
+                    </div>
+
+                    <h2>
+                        Step 2 — Check SSH Installation
+                    </h2>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="step-number">
+                        2
+                    </div>
+
+                    <h3>
+                        Check the SSH client
+                    </h3>
+
+                    <p>
+
+                        Linux systems commonly include an SSH client.
+                        Use the following command to check whether
+                        SSH is available.
+
+                    </p>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>ssh -V</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(this, 'ssh -V')"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-output">
+
+                        <strong>
+                            Expected Result
+                        </strong>
+
+                        <span>
+                            The terminal should display an OpenSSH
+                            version, for example
+                            <strong>OpenSSH 9.x</strong>.
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-check">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                            id="check2"
+                        >
+
+                        <label for="check2">
+                            I successfully checked the SSH client.
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 03
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        03
+                    </div>
+
+                    <h2>
+                        Step 3 — Install OpenSSH Server
+                    </h2>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <h3>
+                        Install the SSH server
+                    </h3>
+
+                    <p>
+
+                        The OpenSSH server allows your Linux system
+                        to accept incoming SSH connections.
+
+                    </p>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>sudo apt update
+sudo apt install openssh-server</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(
+                                    this,
+                                    `sudo apt update
+sudo apt install openssh-server`
+                                )"
+                            >
+                                Copy All
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="how-to">
+
+                        <strong>
+                            How to perform it
+                        </strong>
+
+                        <ol>
+
+                            <li>
+                                Run the first command to update
+                                package information.
+                            </li>
+
+                            <li>
+                                Run the second command.
+                            </li>
+
+                            <li>
+                                If prompted, type
+                                <strong>Y</strong> and press Enter.
+                            </li>
+
+                            <li>
+                                Wait for the installation to finish.
+                            </li>
+
+                        </ol>
+
+                    </div>
+
+
+                    <div class="expected-output">
+
+                        <strong>
+                            Expected Result
+                        </strong>
+
+                        <span>
+                            The OpenSSH server package should be
+                            installed successfully.
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-check">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                            id="check3"
+                        >
+
+                        <label for="check3">
+                            I successfully installed OpenSSH Server.
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 04
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        04
+                    </div>
+
+                    <h2>
+                        Step 4 — Check SSH Service
+                    </h2>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="step-number">
+                        4
+                    </div>
+
+                    <h3>
+                        Check ssh service status
+                    </h3>
+
+                    <p>
+
+                        The <strong>systemctl</strong> command can
+                        be used to check whether the SSH service
+                        is running.
+
+                    </p>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>sudo systemctl status ssh</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(
+                                    this,
+                                    'sudo systemctl status ssh'
+                                )"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-output">
+
+                        <strong>
+                            Expected Result
+                        </strong>
+
+                        <span>
+                            Look for a status similar to
+                            <strong>active (running)</strong>.
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-check">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                            id="check4"
+                        >
+
+                        <label for="check4">
+                            I successfully checked the SSH service status.
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 05
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        05
+                    </div>
+
+                    <h2>
+                        Step 5 — Start and Enable SSH
+                    </h2>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="step-number">
+                        5
+                    </div>
+
+                    <h3>
+                        Start the SSH service
+                    </h3>
+
+                    <p>
+
+                        If the SSH service is not running, start it
+                        and enable it so that it can start
+                        automatically when the system boots.
+
+                    </p>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>sudo systemctl start ssh
+sudo systemctl enable ssh</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(
+                                    this,
+                                    `sudo systemctl start ssh
+sudo systemctl enable ssh`
+                                )"
+                            >
+                                Copy All
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>sudo systemctl status ssh</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(
+                                    this,
+                                    'sudo systemctl status ssh'
+                                )"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-output">
+
+                        <strong>
+                            Expected Result
+                        </strong>
+
+                        <span>
+                            The SSH service should show
+                            <strong>active (running)</strong>.
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-check">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                            id="check5"
+                        >
+
+                        <label for="check5">
+                            I successfully started and enabled SSH.
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 06
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        06
+                    </div>
+
+                    <h2>
+                        Step 6 — Find Your IP Address
+                    </h2>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="step-number">
+                        6
+                    </div>
+
+                    <h3>
+                        Use the ip command
+                    </h3>
+
+                    <p>
+
+                        An SSH client needs the IP address of the
+                        remote system. Use the following command
+                        to view your network interfaces.
+
+                    </p>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>ip addr</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(
+                                    this,
+                                    'ip addr'
+                                )"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="how-to">
+
+                        <strong>
+                            What to look for
+                        </strong>
+
+                        <ol>
+
+                            <li>
+                                Find your active network interface.
+                            </li>
+
+                            <li>
+                                Look for an
+                                <strong>inet</strong> address.
+                            </li>
+
+                            <li>
+                                Note the local IPv4 address.
+                            </li>
+
+                        </ol>
+
+                    </div>
+
+
+                    <div class="expected-output">
+
+                        <strong>
+                            Example
+                        </strong>
+
+                        <span>
+                            You may see an address such as
+                            <strong>192.168.1.20</strong>.
+                            Your actual IP address may be different.
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-check">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                            id="check6"
+                        >
+
+                        <label for="check6">
+                            I successfully found my Linux IP address.
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 07
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        07
+                    </div>
+
+                    <h2>
+                        Step 7 — Test SSH Locally
+                    </h2>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="step-number">
+                        7
+                    </div>
+
+                    <h3>
+                        Connect to localhost
+                    </h3>
+
+                    <p>
+
+                        You can test the SSH server on the same
+                        Linux machine by connecting to
+                        <strong>localhost</strong>.
+
+                    </p>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>ssh localhost</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(
+                                    this,
+                                    'ssh localhost'
+                                )"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="how-to">
+
+                        <strong>
+                            How to perform it
+                        </strong>
+
+                        <ol>
+
+                            <li>
+                                Run the SSH command.
+                            </li>
+
+                            <li>
+                                If asked whether you want to continue,
+                                type <strong>yes</strong>.
+                            </li>
+
+                            <li>
+                                Enter your Linux user's password.
+                            </li>
+
+                            <li>
+                                Observe the new shell session.
+                            </li>
+
+                        </ol>
+
+                    </div>
+
+
+                    <div class="expected-output">
+
+                        <strong>
+                            Expected Result
+                        </strong>
+
+                        <span>
+                            You should successfully enter an SSH
+                            session on your own Linux machine.
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-check">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                            id="check7"
+                        >
+
+                        <label for="check7">
+                            I successfully connected using SSH localhost.
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 08
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        08
+                    </div>
+
+                    <h2>
+                        Step 8 — Verify the SSH Session
+                    </h2>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="step-number">
+                        8
+                    </div>
+
+                    <h3>
+                        Check the connected user
+                    </h3>
+
+                    <p>
+
+                        After connecting through SSH, use
+                        <strong>whoami</strong> and
+                        <strong>hostname</strong> to verify the
+                        current session.
+
+                    </p>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>whoami
+hostname</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(
+                                    this,
+                                    `whoami
+hostname`
+                                )"
+                            >
+                                Copy All
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-output">
+
+                        <strong>
+                            Expected Result
+                        </strong>
+
+                        <span>
+                            The commands should display your Linux
+                            username and the hostname of the system.
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-check">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                            id="check8"
+                        >
+
+                        <label for="check8">
+                            I successfully verified my SSH session.
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 09
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        09
+                    </div>
+
+                    <h2>
+                        Step 9 — Exit the SSH Session
+                    </h2>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="step-number">
+                        9
+                    </div>
+
+                    <h3>
+                        Use exit
+                    </h3>
+
+                    <p>
+
+                        The <strong>exit</strong> command closes
+                        the current SSH session and returns you
+                        to the original terminal.
+
+                    </p>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>exit</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(
+                                    this,
+                                    'exit'
+                                )"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expected-output">
+
+                        <strong>
+                            Expected Result
+                        </strong>
+
+                        <span>
+                            The SSH connection should close and you
+                            should return to your previous shell.
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-check">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                            id="check9"
+                        >
+
+                        <label for="check9">
+                            I successfully closed the SSH session.
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 10
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        10
+                    </div>
+
+                    <h2>
+                        Step 10 — Connect Using IP Address
+                    </h2>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="step-number">
+                        10
+                    </div>
+
+                    <h3>
+                        Use username and IP address
+                    </h3>
+
+                    <p>
+
+                        SSH can connect to a remote Linux machine
+                        using its username and IP address.
+
+                    </p>
+
+
+                    <div class="command-wrapper">
+
+                        <div class="command-box">
+
+                            <code>ssh username@192.168.1.20</code>
+
+                            <button
+                                class="copy-btn"
+                                onclick="copyCommand(
+                                    this,
+                                    'ssh username@192.168.1.20'
+                                )"
+                            >
+                                Copy
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="how-to">
+
+                        <strong>
+                            Important
+                        </strong>
+
+                        <ol>
+
+                            <li>
+                                Replace <strong>username</strong>
+                                with the actual Linux username.
+                            </li>
+
+                            <li>
+                                Replace
+                                <strong>192.168.1.20</strong>
+                                with the actual server IP.
+                            </li>
+
+                            <li>
+                                Enter the password when prompted.
+                            </li>
+
+                        </ol>
+
+                    </div>
+
+
+                    <div class="expected-output">
+
+                        <strong>
+                            Expected Result
+                        </strong>
+
+                        <span>
+                            If the remote system is reachable and
+                            SSH is configured correctly, an SSH
+                            session should be established.
+                        </span>
+
+                    </div>
+
+
+                    <div class="task-check">
+
+                        <input
+                            type="checkbox"
+                            class="lab-check"
+                            id="check10"
+                        >
+
+                        <label for="check10">
+                            I understand how to connect to an SSH server
+                            using username and IP address.
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SSH COMMAND SUMMARY
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        SSH Command Summary
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    These are the main commands used in this lab.
+                </p>
+
+
+                <div class="task-list">
+
+                    <div class="task-card">
+
+                        <strong>
+                            Check SSH Version
+                        </strong>
+
+                        <p>
+                            <code>ssh -V</code>
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Check SSH Service
+                        </strong>
+
+                        <p>
+                            <code>sudo systemctl status ssh</code>
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Find IP Address
+                        </strong>
+
+                        <p>
+                            <code>ip addr</code>
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Connect to SSH
+                        </strong>
+
+                        <p>
+                            <code>ssh username@IP</code>
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Local SSH Test
+                        </strong>
+
+                        <p>
+                            <code>ssh localhost</code>
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Exit SSH
+                        </strong>
+
+                        <p>
+                            <code>exit</code>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY CONNECTION
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why SSH Matters in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    SSH is widely used by system administrators,
+                    security professionals, and penetration testers
+                    to securely manage Linux systems remotely.
+
+                </p>
+
+
+                <div class="task-list">
+
+                    <div class="task-card">
+
+                        <strong>
+                            Secure Remote Access
+                        </strong>
+
+                        <p>
+                            SSH provides encrypted remote terminal
+                            access to Linux systems.
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Port 22
+                        </strong>
+
+                        <p>
+                            SSH commonly listens on
+                            <strong>TCP port 22</strong>.
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Authentication
+                        </strong>
+
+                        <p>
+                            SSH can use passwords or stronger
+                            public-key authentication.
+                        </p>
+
+                    </div>
+
+
+                    <div class="task-card">
+
+                        <strong>
+                            Security Monitoring
+                        </strong>
+
+                        <p>
+                            SSH login activity can be monitored
+                            through system logs.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FINAL PRACTICAL TASK
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        🧪
+                    </div>
+
+                    <h2>
+                        Final Practical Task
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Now perform the following sequence without
+                    looking at the previous steps.
+
+                </p>
+
+
+                <div class="how-to">
+
+                    <strong>
+                        Your Task
+                    </strong>
+
+                    <ol>
+
+                        <li>
+                            Check your current username.
+                        </li>
+
+                        <li>
+                            Check the SSH client version.
+                        </li>
+
+                        <li>
+                            Check the SSH service status.
+                        </li>
+
+                        <li>
+                            Find your Linux IP address.
+                        </li>
+
+                        <li>
+                            Connect to your local SSH server.
+                        </li>
+
+                        <li>
+                            Verify the username and hostname.
+                        </li>
+
+                        <li>
+                            Exit the SSH session.
+                        </li>
+
+                    </ol>
+
+                </div>
+
+
+                <p style="margin-top:18px;">
+
+                    You can use the following commands:
+
+                </p>
+
+
+                <div class="command-wrapper">
+
+                    <div class="command-box">
+
+                        <code>whoami
+ssh -V
+sudo systemctl status ssh
+ip addr
+ssh localhost
+whoami
+hostname
+exit</code>
+
+                        <button
+                            class="copy-btn"
+                            onclick="copyCommand(
+                                this,
+                                `whoami
+ssh -V
+sudo systemctl status ssh
+ip addr
+ssh localhost
+whoami
+hostname
+exit`
+                            )"
+                        >
+                            Copy All
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="expected-output">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        You should be able to check your Linux
+                        username, verify SSH availability, identify
+                        your IP address, establish a local SSH
+                        connection, verify the session, and exit
+                        successfully.
+
+                    </span>
+
+                </div>
+
+
+                <div class="task-check">
+
+                    <input
+                        type="checkbox"
+                        class="lab-check"
+                        id="finalTask"
+                    >
+
+                    <label for="finalTask">
+
+                        I successfully completed the final SSH
+                        practical task.
+
+                    </label>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FINAL CHECKLIST
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-card-heading">
+
+                    <div class="lab-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lab Completion Checklist
+                    </h2>
+
+                </div>
+
+
+                <div class="final-check">
+
+                    <h3>
+                        Before completing Lab 08
+                    </h3>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="completion-check"
+                        >
+
+                        I understand what SSH is.
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="completion-check"
+                        >
+
+                        I know that SSH normally uses TCP port 22.
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="completion-check"
+                        >
+
+                        I can check the SSH version.
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="completion-check"
+                        >
+
+                        I can check the SSH service status.
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="completion-check"
+                        >
+
+                        I can start and enable the SSH service.
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="completion-check"
+                        >
+
+                        I can find my Linux IP address.
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="completion-check"
+                        >
+
+                        I can connect using ssh localhost.
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="completion-check"
+                        >
+
+                        I understand SSH username and IP syntax.
+
+                    </label>
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="completion-check"
+                        >
+
+                        I completed the final practical task.
+
+                    </label>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 COMPLETE LAB
+            ================================================== -->
+
+            <div class="complete-wrapper">
+
+                <p>
+
+                    Complete all practical steps and checklist items
+                    before marking this lab as completed.
+
+                </p>
+
+
+                <button
+                    id="completeLabBtn"
+                    class="complete-lab-btn"
+                    disabled
+                >
+
+                    ✓ Complete Lab 08
+
+                </button>
+
+
+                <div
+                    id="completionMessage"
+                    class="completion-message"
+                >
+
+                    <div class="completion-icon">
+                        🎉
+                    </div>
+
+                    <h3>
+                        Lab 03 Completed Successfully!
+                    </h3>
+
+                    <p>
+
+                        You have completed the Linux SSH
+                        practical lab.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="lab-navigation">
+
+
+                <a
+                    href="lab07.html"
+                    class="lab-nav-button"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Linux Services
+                    </strong>
+
+                </a>
+
+
+                <a
+                    href="../theory/linux-package-management.html"
+                    class="lab-nav-button"
+                >
+
+                    <strong>
+                        Next Topic: Package Management
+                    </strong>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+
+    <!-- =====================================================
+         LAB JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        /* =====================================================
+           COPY COMMAND
+        ====================================================== */
+
+        function copyCommand(button, command) {
+
+            navigator.clipboard.writeText(command)
+
+                .then(() => {
+
+                    const originalText =
+                        button.textContent;
+
+                    button.textContent =
+                        "Copied!";
+
+                    button.classList.add(
+                        "copied"
+                    );
+
+
+                    setTimeout(() => {
+
+                        button.textContent =
+                            originalText;
+
+                        button.classList.remove(
+                            "copied"
+                        );
+
+                    }, 1200);
+
+                })
+
+                .catch(() => {
+
+                    button.textContent =
+                        "Copy Failed";
+
+                    setTimeout(() => {
+
+                        button.textContent =
+                            "Copy";
+
+                    }, 1200);
+
+                });
+
+        }
+
+
+
+        /* =====================================================
+           PROGRESS SYSTEM
+        ====================================================== */
+
+        const labChecks =
+            document.querySelectorAll(
+                ".lab-check"
+            );
+
+
+        const completionChecks =
+            document.querySelectorAll(
+                ".completion-check"
+            );
+
+
+        const progressFill =
+            document.getElementById(
+                "progressFill"
+            );
+
+
+        const progressText =
+            document.getElementById(
+                "progressText"
+            );
+
+
+        const completeLabBtn =
+            document.getElementById(
+                "completeLabBtn"
+            );
+
+
+        const completionMessage =
+            document.getElementById(
+                "completionMessage"
+            );
+
+
+        function updateLabProgress() {
+
+            const totalLabChecks =
+                labChecks.length;
+
+
+            const completedLabChecks =
+                document.querySelectorAll(
+                    ".lab-check:checked"
+                ).length;
+
+
+            const totalCompletionChecks =
+                completionChecks.length;
+
+
+            const completedCompletionChecks =
+                document.querySelectorAll(
+                    ".completion-check:checked"
+                ).length;
+
+
+            const total =
+                totalLabChecks +
+                totalCompletionChecks;
+
+
+            const completed =
+                completedLabChecks +
+                completedCompletionChecks;
+
+
+            const percentage =
+                total === 0
+                    ? 0
+                    : Math.round(
+                        (completed / total) * 100
+                    );
+
+
+            progressFill.style.width =
+                percentage + "%";
+
+
+            progressText.textContent =
+                completed +
+                " / " +
+                total +
+                " completed";
+
+
+            const allLabStepsComplete =
+                completedLabChecks ===
+                totalLabChecks;
+
+
+            const allChecklistComplete =
+                completedCompletionChecks ===
+                totalCompletionChecks;
+
+
+            completeLabBtn.disabled =
+                !(
+                    allLabStepsComplete &&
+                    allChecklistComplete
+                );
+
+        }
+
+
+        labChecks.forEach(check => {
+
+            check.addEventListener(
+                "change",
+                updateLabProgress
+            );
+
+        });
+
+
+        completionChecks.forEach(check => {
+
+            check.addEventListener(
+                "change",
+                updateLabProgress
+            );
+
+        });
+
+
+
+        /* =====================================================
+           COMPLETE LAB
+        ====================================================== */
+
+        completeLabBtn.addEventListener(
+            "click",
+            function () {
+
+                completionMessage.classList.add(
+                    "show"
+                );
+
+
+                completeLabBtn.disabled =
+                    true;
+
+
+                completeLabBtn.textContent =
+                    "✓ Lab Completed";
+
+
+                completionMessage.scrollIntoView({
+
+                    behavior: "smooth",
+
+                    block: "center"
+
+                });
+
+            }
+        );
+
+
+        updateLabProgress();
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HTTP / HTTPS Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(125, 80, 255, 0.07),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b,
+                    #020914 50%,
+                    #01050b
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 950px;
+
+            margin: auto;
+        }
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 38px 32px;
+
+            margin-bottom: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 18, 35, .98),
+                    rgba(2, 10, 23, .98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #7d50ff,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 12px;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: white;
+
+            font-size: 38px;
+        }
+
+        .lab-hero h1 span {
+
+            color: #00bfff;
+        }
+
+        .lab-hero p {
+
+            max-width: 700px;
+
+            margin: 14px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        .lab-card {
+
+            padding: 25px;
+
+            margin-bottom: 17px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, .97),
+                    rgba(2, 11, 21, .97)
+                );
+        }
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            margin-bottom: 16px;
+        }
+
+        .lab-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 191, 255, .25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            font-family: monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .lab-heading h2 {
+
+            margin: 0;
+
+            color: white;
+
+            font-size: 19px;
+        }
+
+        .lab-question {
+
+            margin-bottom: 15px;
+
+            color: #cbd9e6;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        .options {
+
+            display: grid;
+
+            gap: 9px;
+        }
+
+        .option {
+
+            width: 100%;
+
+            padding: 13px 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, .10);
+
+            border-radius: 8px;
+
+            color: #8499ac;
+
+            background:
+                rgba(0, 191, 255, .018);
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition:
+                border-color .2s ease,
+                background .2s ease,
+                transform .2s ease;
+        }
+
+        .option:hover {
+
+            transform: translateX(2px);
+
+            border-color:
+                rgba(0, 191, 255, .30);
+
+            background:
+                rgba(0, 191, 255, .035);
+        }
+
+        .option.selected {
+
+            border-color: #00bfff;
+
+            color: #dff8ff;
+
+            background:
+                rgba(0, 191, 255, .07);
+        }
+
+        .traffic-box {
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, .10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, .25);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        .traffic-line {
+
+            margin-bottom: 9px;
+
+            color: #70869a;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+        .traffic-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .blue {
+            color: #00bfff;
+        }
+
+        .green {
+            color: #00ffb0;
+        }
+
+        .purple {
+            color: #a879ff;
+        }
+
+        .submit-area {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, .12);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 191, 255, .025);
+        }
+
+        .submit-button {
+
+            padding: 12px 21px;
+
+            border:
+                1px solid rgba(0, 191, 255, .30);
+
+            border-radius: 8px;
+
+            color: #dff8ff;
+
+            background:
+                rgba(0, 191, 255, .06);
+
+            cursor: pointer;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .submit-button:hover {
+
+            background:
+                rgba(0, 191, 255, .11);
+
+            border-color:
+                rgba(0, 191, 255, .55);
+        }
+
+        #result {
+
+            margin-top: 15px;
+
+            padding: 16px;
+
+            border-radius: 9px;
+
+            color: #a7bacb;
+
+            background:
+                rgba(0, 0, 0, .20);
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+        .progress {
+
+            height: 5px;
+
+            margin-bottom: 20px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,.06);
+        }
+
+        .progress-bar {
+
+            width: 0%;
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00bfff,
+                    #7d50ff
+                );
+
+            transition: width .3s ease;
+        }
+
+        .navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .navigation a {
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0,191,255,.09);
+
+            border-radius: 8px;
+
+            color: #71879b;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+                font-size: 29px;
+            }
+
+            .lab-card {
+                padding: 20px;
+            }
+
+            .submit-area {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .submit-button {
+                width: 100%;
+            }
+
+            .navigation {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+<div class="lab-container">
+
+
+<section class="lab-hero">
+
+    <div class="lab-kicker">
+        WEB SECURITY LAB / 02
+    </div>
+
+    <h1>
+        <span>HTTP / HTTPS</span> Security Lab
+    </h1>
+
+    <p>
+        Analyze simulated web traffic, identify HTTP request and response
+        components, distinguish HTTP from HTTPS and apply basic secure
+        communication concepts.
+    </p>
+
+</section>
+
+
+<div class="progress">
+
+    <div
+        class="progress-bar"
+        id="progressBar">
+    </div>
+
+</div>
+
+
+<!-- TRAFFIC ANALYSIS -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-number">
+            01
+        </div>
+
+        <h2>
+            Analyze the Traffic
+        </h2>
+
+    </div>
+
+    <p class="lab-question">
+        Examine this simulated browser-to-server communication.
+        Identify what type of communication is being shown.
+    </p>
+
+    <div class="traffic-box">
+
+        <div class="traffic-line">
+            <span class="blue">
+                GET /login HTTP/1.1
+            </span>
+        </div>
+
+        <div class="traffic-line">
+            Host:
+            <span class="green">
+                training.cybernexa.local
+            </span>
+        </div>
+
+        <div class="traffic-line">
+            Accept:
+            <span class="purple">
+                text/html
+            </span>
+        </div>
+
+        <div class="traffic-line">
+            → Server processes request
+        </div>
+
+        <div class="traffic-line">
+            <span class="green">
+                HTTP/1.1 200 OK
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- QUESTIONS -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-number">
+            02
+        </div>
+
+        <h2>
+            Concept Check
+        </h2>
+
+    </div>
+
+    <div
+        class="question"
+        data-answer="HTTP"
+    >
+
+        <div class="lab-question">
+            1. Which protocol is represented by
+            <strong>GET /login HTTP/1.1</strong>?
+        </div>
+
+        <div class="options">
+
+            <button class="option"
+                onclick="selectAnswer(this, 'HTTP')">
+                HTTP
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'FTP')">
+                FTP
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'DNS')">
+                DNS
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'SSH')">
+                SSH
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="question"
+        data-answer="200 OK"
+        style="margin-top:25px;"
+    >
+
+        <div class="lab-question">
+            2. What does the status code
+            <strong>200 OK</strong> indicate?
+        </div>
+
+        <div class="options">
+
+            <button class="option"
+                onclick="selectAnswer(this, '200 OK')">
+                Request was successfully processed
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, '404')">
+                Resource was not found
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, '500')">
+                Server error
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, '401')">
+                Authentication required
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="question"
+        data-answer="HTTPS"
+        style="margin-top:25px;"
+    >
+
+        <div class="lab-question">
+            3. Which protocol provides HTTP communication
+            protected by TLS?
+        </div>
+
+        <div class="options">
+
+            <button class="option"
+                onclick="selectAnswer(this, 'HTTP')">
+                HTTP
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'HTTPS')">
+                HTTPS
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'FTP')">
+                FTP
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'DNS')">
+                DNS
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="question"
+        data-answer="TLS"
+        style="margin-top:25px;"
+    >
+
+        <div class="lab-question">
+            4. What technology provides the security layer
+            used by HTTPS?
+        </div>
+
+        <div class="options">
+
+            <button class="option"
+                onclick="selectAnswer(this, 'TCP')">
+                TCP
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'DNS')">
+                DNS
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'TLS')">
+                TLS
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'HTML')">
+                HTML
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="question"
+        data-answer="404"
+        style="margin-top:25px;"
+    >
+
+        <div class="lab-question">
+            5. Which status code indicates that a requested
+            resource was not found?
+        </div>
+
+        <div class="options">
+
+            <button class="option"
+                onclick="selectAnswer(this, '200')">
+                200
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, '404')">
+                404
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, '301')">
+                301
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, '500')">
+                500
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PRACTICAL DECISION -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-number">
+            03
+        </div>
+
+        <h2>
+            Security Decision
+        </h2>
+
+    </div>
+
+    <div
+        class="question"
+        data-answer="HTTPS"
+    >
+
+        <div class="lab-question">
+            You are configuring a training website that handles
+            login credentials. Which protocol should be used
+            to protect communication in transit?
+        </div>
+
+        <div class="options">
+
+            <button class="option"
+                onclick="selectAnswer(this, 'HTTP')">
+                HTTP
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'HTTPS')">
+                HTTPS
+            </button>
+
+            <button class="option"
+                onclick="selectAnswer(this, 'FTP')">
+                FTP
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- RESULT -->
+
+<section class="lab-card">
+
+    <div class="lab-heading">
+
+        <div class="lab-number">
+            04
+        </div>
+
+        <h2>
+            Lab Result
+        </h2>
+
+    </div>
+
+    <div class="submit-area">
+
+        <div>
+
+            <strong style="color:white;">
+                Complete the questions
+            </strong>
+
+            <div
+                style="
+                color:#71879b;
+                font-size:11px;
+                margin-top:5px;
+                "
+            >
+                Submit your answers to calculate your score.
+            </div>
+
+        </div>
+
+        <button
+            class="submit-button"
+            onclick="checkLab()"
+        >
+            Check Lab →
+        </button>
+
+    </div>
+
+    <div id="result">
+        Your result will appear here.
+    </div>
+
+</section>
+
+
+<div class="navigation">
+
+    <a href="how-websites-work-lab.html">
+        ← Previous: Website Work
+    </a>
+
+    <a href="../theory/cookies.html">
+        Next Theory: Cookies →
+    </a>
+
+</div>
+
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<script src="../../../js/navbar.js"></script>
+
+<script>
+
+    const answers = {};
+
+    function selectAnswer(button, answer) {
+
+        const question = button.closest(".question");
+
+        question
+            .querySelectorAll(".option")
+            .forEach(option => {
+
+                option.classList.remove("selected");
+
+            });
+
+        button.classList.add("selected");
+
+        answers[question.dataset.answer] = answer;
+
+    }
+
+
+    function checkLab() {
+
+        const questions =
+            document.querySelectorAll(".question");
+
+        let correct = 0;
+        let answered = 0;
+
+        questions.forEach(question => {
+
+            const correctAnswer =
+                question.dataset.answer;
+
+            if (answers[correctAnswer]) {
+
+                answered++;
+
+                if (
+                    answers[correctAnswer]
+                    === correctAnswer
+                ) {
+
+                    correct++;
+
+                }
+
+            }
+
+        });
+
+
+        const total = questions.length;
+
+        const percentage =
+            Math.round((correct / total) * 100);
+
+        const result =
+            document.getElementById("result");
+
+        const progress =
+            document.getElementById("progressBar");
+
+        progress.style.width =
+            percentage + "%";
+
+
+        if (answered < total) {
+
+            result.innerHTML =
+                "⚠ Please answer all questions before completing the lab.";
+
+            return;
+
+        }
+
+
+        if (percentage >= 80) {
+
+            result.innerHTML =
+                "✓ <strong>Lab Completed!</strong><br>" +
+                "Score: " + correct + "/" + total +
+                " (" + percentage + "%)<br><br>" +
+                "Excellent. You correctly understood the basic " +
+                "HTTP/HTTPS concepts, request-response flow, " +
+                "status codes and TLS.";
+
+        } else {
+
+            result.innerHTML =
+                "Lab submitted.<br>" +
+                "Score: " + correct + "/" + total +
+                " (" + percentage + "%)<br><br>" +
+                "Review the HTTP/HTTPS theory and try the lab again.";
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

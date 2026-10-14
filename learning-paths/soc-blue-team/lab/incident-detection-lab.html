@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Incident Detection Lab | CyberNexa</title>
+
+<meta name="description"
+      content="Practical Incident Detection laboratory for SOC and Blue Team learners. Analyze security events and identify potential incidents.">
+
+<link rel="stylesheet"
+      href="../../../css/base.css">
+
+<link rel="stylesheet"
+      href="../../../css/navbar.css">
+
+<link rel="stylesheet"
+      href="../../../css/footer.css">
+
+
+<style>
+
+/* =========================================================
+   CYBERNEXA SOC / BLUE TEAM
+   INCIDENT DETECTION PRACTICAL LAB
+   ========================================================= */
+
+:root {
+
+    --lab-bg: #070b12;
+
+    --lab-panel: #0c131d;
+
+    --lab-panel-2: #101a27;
+
+    --lab-blue: #42a5ff;
+
+    --lab-cyan: #35d9ff;
+
+    --lab-purple: #9b6cff;
+
+    --lab-green: #43d19e;
+
+    --lab-yellow: #ffd166;
+
+    --lab-red: #ff5364;
+
+    --lab-orange: #ff9f43;
+
+    --lab-text: #edf5fb;
+
+    --lab-muted: #91a4b5;
+
+    --lab-border: #1e3041;
+
+}
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+html {
+    overflow-x: hidden;
+}
+
+
+body {
+
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(66, 165, 255, 0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(155, 108, 255, 0.07),
+            transparent 28%
+        ),
+        var(--lab-bg);
+
+    color: var(--lab-text);
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    overflow-x: hidden;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+
+.lab-container {
+
+    width:
+        min(1150px, 92%);
+
+    margin:
+        auto;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+    width: 100%;
+    overflow: hidden;
+}
+
+
+.nav-container {
+
+    width:
+        min(1150px, 92%);
+
+    margin:
+        0 auto;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    min-height:
+        70px;
+}
+
+
+.brand {
+
+    max-width:
+        100%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    min-width:
+        0;
+}
+
+
+.brand-logo {
+    flex-shrink: 0;
+}
+
+
+.brand-text {
+    min-width: 0;
+}
+
+
+.brand-name,
+.brand-tagline {
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.lab-hero {
+
+    padding:
+        70px 0 55px;
+
+    border-bottom:
+        1px solid var(--lab-border);
+}
+
+
+.lab-breadcrumb {
+
+    margin-bottom:
+        18px;
+
+    color:
+        var(--lab-cyan);
+
+    font-size:
+        13px;
+
+    letter-spacing:
+        .4px;
+}
+
+
+.lab-hero-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.3fr .7fr;
+
+    gap:
+        40px;
+
+    align-items:
+        center;
+}
+
+
+.lab-label {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    padding:
+        8px 13px;
+
+    margin-bottom:
+        18px;
+
+    border:
+        1px solid
+        rgba(53, 217, 255, .35);
+
+    border-radius:
+        4px;
+
+    background:
+        rgba(53, 217, 255, .05);
+
+    color:
+        var(--lab-cyan);
+
+    font-size:
+        11px;
+
+    font-weight:
+        bold;
+
+    letter-spacing:
+        1px;
+
+    text-transform:
+        uppercase;
+}
+
+
+.lab-dot {
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--lab-green);
+
+    box-shadow:
+        0 0 12px
+        rgba(67, 209, 158, .7);
+}
+
+
+.lab-hero h1 {
+
+    margin:
+        0 0 15px;
+
+    font-size:
+        clamp(36px, 5vw, 58px);
+
+    line-height:
+        1.05;
+}
+
+
+.lab-hero h1 span {
+    color:
+        var(--lab-cyan);
+}
+
+
+.lab-description {
+
+    max-width:
+        700px;
+
+    color:
+        var(--lab-muted);
+
+    font-size:
+        16px;
+
+    line-height:
+        1.8;
+}
+
+
+/* =========================================================
+   LAB STATUS
+   ========================================================= */
+
+.lab-status {
+
+    padding:
+        23px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-top:
+        2px solid
+        var(--lab-cyan);
+
+    border-radius:
+        7px;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--lab-panel-2),
+            var(--lab-panel)
+        );
+}
+
+
+.lab-status-header {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    margin-bottom:
+        15px;
+}
+
+
+.lab-status-header strong {
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        1px;
+}
+
+
+.lab-status-live {
+
+    color:
+        var(--lab-green);
+
+    font-size:
+        10px;
+}
+
+
+.lab-line {
+
+    height:
+        1px;
+
+    background:
+        var(--lab-border);
+
+    margin:
+        14px 0;
+}
+
+
+.lab-status-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    padding:
+        7px 0;
+
+    color:
+        var(--lab-muted);
+
+    font-size:
+        12px;
+}
+
+
+.lab-status-row strong {
+
+    color:
+        var(--lab-text);
+
+    font-weight:
+        normal;
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.lab-section {
+
+    padding:
+        55px 0;
+}
+
+
+.lab-section-title {
+
+    margin-bottom:
+        25px;
+}
+
+
+.lab-section-title h2 {
+
+    margin:
+        0 0 9px;
+
+    font-size:
+        29px;
+}
+
+
+.lab-section-title p {
+
+    margin:
+        0;
+
+    color:
+        var(--lab-muted);
+
+    line-height:
+        1.7;
+}
+
+
+/* =========================================================
+   INSTRUCTIONS
+   ========================================================= */
+
+.lab-instructions {
+
+    padding:
+        25px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-left:
+        3px solid
+        var(--lab-purple);
+
+    border-radius:
+        7px;
+
+    background:
+        var(--lab-panel);
+}
+
+
+.lab-instructions h3 {
+
+    margin:
+        0 0 13px;
+
+    font-size:
+        17px;
+}
+
+
+.lab-instructions ol {
+
+    margin:
+        0;
+
+    padding-left:
+        20px;
+
+    color:
+        var(--lab-muted);
+
+    line-height:
+        1.8;
+}
+
+
+.lab-instructions li {
+    margin-bottom:
+        5px;
+}
+
+
+/* =========================================================
+   CONTROL PANEL
+   ========================================================= */
+
+.lab-control-panel {
+
+    margin-top:
+        22px;
+
+    padding:
+        20px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius:
+        7px;
+
+    background:
+        var(--lab-panel);
+}
+
+
+.lab-controls {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        10px;
+}
+
+
+.lab-select {
+
+    min-width:
+        180px;
+
+    padding:
+        11px 13px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius:
+        5px;
+
+    background:
+        var(--lab-panel-2);
+
+    color:
+        var(--lab-text);
+
+    outline:
+        none;
+}
+
+
+.lab-button {
+
+    padding:
+        11px 17px;
+
+    border:
+        1px solid
+        rgba(53, 217, 255, .4);
+
+    border-radius:
+        5px;
+
+    background:
+        rgba(53, 217, 255, .07);
+
+    color:
+        var(--lab-cyan);
+
+    cursor:
+        pointer;
+
+    font-weight:
+        bold;
+
+    transition:
+        .2s ease;
+}
+
+
+.lab-button:hover {
+
+    background:
+        rgba(53, 217, 255, .13);
+}
+
+
+.lab-button.secondary {
+
+    border-color:
+        var(--lab-border);
+
+    background:
+        transparent;
+
+    color:
+        var(--lab-muted);
+}
+
+
+/* =========================================================
+   EVENT TABLE
+   ========================================================= */
+
+.lab-table-wrapper {
+
+    margin-top:
+        20px;
+
+    overflow-x:
+        auto;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius:
+        7px;
+}
+
+
+.lab-table {
+
+    width:
+        100%;
+
+    min-width:
+        850px;
+
+    border-collapse:
+        collapse;
+
+    background:
+        var(--lab-panel);
+}
+
+
+.lab-table th {
+
+    padding:
+        14px;
+
+    background:
+        var(--lab-panel-2);
+
+    color:
+        var(--lab-cyan);
+
+    border-bottom:
+        1px solid
+        var(--lab-border);
+
+    font-size:
+        12px;
+
+    text-align:
+        left;
+
+    letter-spacing:
+        .5px;
+}
+
+
+.lab-table td {
+
+    padding:
+        14px;
+
+    border-bottom:
+        1px solid
+        rgba(30, 48, 65, .7);
+
+    color:
+        var(--lab-muted);
+
+    font-size:
+        13px;
+}
+
+
+.lab-table tr:last-child td {
+    border-bottom:
+        none;
+}
+
+
+.lab-table tr.detected {
+
+    background:
+        rgba(255, 83, 100, .055);
+}
+
+
+.lab-table tr:hover {
+
+    background:
+        rgba(53, 217, 255, .035);
+}
+
+
+/* =========================================================
+   SEVERITY
+   ========================================================= */
+
+.lab-severity {
+
+    display:
+        inline-block;
+
+    padding:
+        4px 8px;
+
+    border-radius:
+        3px;
+
+    font-size:
+        10px;
+
+    font-weight:
+        bold;
+
+    letter-spacing:
+        .5px;
+}
+
+
+.severity-low {
+
+    color:
+        var(--lab-green);
+
+    background:
+        rgba(67, 209, 158, .08);
+}
+
+
+.severity-medium {
+
+    color:
+        var(--lab-yellow);
+
+    background:
+        rgba(255, 209, 102, .08);
+}
+
+
+.severity-high {
+
+    color:
+        var(--lab-orange);
+
+    background:
+        rgba(255, 159, 67, .09);
+}
+
+
+.severity-critical {
+
+    color:
+        var(--lab-red);
+
+    background:
+        rgba(255, 83, 100, .09);
+}
+
+
+/* =========================================================
+   DETECTION RESULT
+   ========================================================= */
+
+.lab-result {
+
+    display:
+        none;
+
+    margin-top:
+        22px;
+
+    padding:
+        25px;
+
+    border:
+        1px solid
+        rgba(67, 209, 158, .25);
+
+    border-left:
+        3px solid
+        var(--lab-green);
+
+    border-radius:
+        7px;
+
+    background:
+        rgba(67, 209, 158, .035);
+}
+
+
+.lab-result.show {
+    display:
+        block;
+}
+
+
+.lab-result h3 {
+
+    margin:
+        0 0 12px;
+
+    color:
+        var(--lab-green);
+}
+
+
+.lab-result p {
+
+    margin:
+        0;
+
+    color:
+        var(--lab-muted);
+
+    line-height:
+        1.75;
+}
+
+
+/* =========================================================
+   INVESTIGATION PANEL
+   ========================================================= */
+
+.lab-investigation {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        18px;
+
+    margin-top:
+        22px;
+}
+
+
+.lab-investigation-box {
+
+    padding:
+        22px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius:
+        7px;
+
+    background:
+        var(--lab-panel);
+}
+
+
+.lab-investigation-box h3 {
+
+    margin:
+        0 0 13px;
+
+    font-size:
+        16px;
+}
+
+
+.lab-investigation-box p {
+
+    margin:
+        0;
+
+    color:
+        var(--lab-muted);
+
+    line-height:
+        1.7;
+
+    font-size:
+        14px;
+}
+
+
+/* =========================================================
+   OUTPUT
+   ========================================================= */
+
+.lab-output {
+
+    margin-top:
+        22px;
+
+    padding:
+        20px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius:
+        7px;
+
+    background:
+        #05090e;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    color:
+        var(--lab-cyan);
+
+    font-size:
+        13px;
+
+    line-height:
+        1.8;
+
+    white-space:
+        pre-wrap;
+}
+
+
+/* =========================================================
+   COMPLETION
+   ========================================================= */
+
+.lab-completion {
+
+    margin-top:
+        25px;
+
+    padding:
+        22px;
+
+    border:
+        1px solid
+        rgba(67, 209, 158, .25);
+
+    border-radius:
+        7px;
+
+    background:
+        rgba(67, 209, 158, .035);
+
+    text-align:
+        center;
+}
+
+
+.lab-completion h3 {
+
+    margin:
+        0 0 10px;
+
+    color:
+        var(--lab-green);
+}
+
+
+.lab-completion p {
+
+    margin:
+        0;
+
+    color:
+        var(--lab-muted);
+
+    line-height:
+        1.7;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.lab-topic-nav {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        15px;
+
+    margin-top:
+        35px;
+}
+
+
+.lab-nav-button {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    padding:
+        12px 17px;
+
+    border:
+        1px solid
+        var(--lab-border);
+
+    border-radius:
+        5px;
+
+    color:
+        var(--lab-muted);
+
+    font-size:
+        13px;
+
+    transition:
+        .2s ease;
+}
+
+
+.lab-nav-button:hover {
+
+    color:
+        var(--lab-cyan);
+
+    border-color:
+        rgba(53, 217, 255, .4);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .lab-hero-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .lab-investigation {
+        grid-template-columns:
+            1fr;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .nav-container {
+        width:
+            94%;
+
+        min-height:
+            64px;
+
+        padding:
+            8px 0;
+    }
+
+    .brand-logo svg {
+        width:
+            38px;
+
+        height:
+            46px;
+    }
+
+    .brand-name {
+        font-size:
+            19px;
+    }
+
+    .brand-tagline {
+        font-size:
+            9px;
+    }
+
+    .lab-hero {
+        padding:
+            60px 0 45px;
+    }
+
+    .lab-section {
+        padding:
+            50px 0;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .nav-container {
+        width:
+            92%;
+
+        min-height:
+            62px;
+    }
+
+    .brand-logo svg {
+        width:
+            34px;
+
+        height:
+            42px;
+    }
+
+    .brand-name {
+        font-size:
+            17px;
+    }
+
+    .brand-tagline {
+        font-size:
+            8px;
+    }
+
+    .lab-container {
+        width:
+            92%;
+    }
+
+    .lab-hero h1 {
+        font-size:
+            34px;
+    }
+
+    .lab-description {
+        font-size:
+            14px;
+    }
+
+    .lab-controls {
+        flex-direction:
+            column;
+    }
+
+    .lab-select,
+    .lab-button {
+        width:
+            100%;
+    }
+
+    .lab-topic-nav {
+        flex-direction:
+            column;
+    }
+
+    .lab-nav-button {
+        width:
+            100%;
+
+        justify-content:
+            center;
+    }
+}
+
+
+@media (max-width: 380px) {
+
+    .lab-container {
+        width:
+            94%;
+    }
+
+    .lab-hero h1 {
+        font-size:
+            31px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="../../../index.html" class="brand">
+
+<div class="brand-logo">
+
+<svg viewBox="0 0 50 60">
+
+<path
+d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+fill="none"
+stroke="currentColor"
+stroke-width="3"
+/>
+
+<rect
+x="18"
+y="25"
+width="14"
+height="14"
+rx="2"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<path
+d="M20 25 V20 C20 16 30 16 30 20 V25"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<circle
+cx="25"
+cy="31"
+r="2"
+fill="currentColor"
+/>
+
+<path
+d="M25 33 V36"
+stroke="currentColor"
+stroke-width="2"
+/>
+
+</svg>
+
+</div>
+
+
+<div class="brand-text">
+
+<div class="brand-name">
+Cyber<span>Nexa</span>
+</div>
+
+<div class="brand-tagline">
+Cybersecurity &amp; IT Learning
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="lab-hero">
+
+<div class="lab-container">
+
+<div class="lab-breadcrumb">
+CyberNexa / SOC / Blue Team / Incident Detection / Practical Lab
+</div>
+
+
+<div class="lab-hero-grid">
+
+<div>
+
+<div class="lab-label">
+
+<span class="lab-dot"></span>
+
+SOC PRACTICAL LAB
+
+</div>
+
+
+<h1>
+Incident <span>Detection Lab</span>
+</h1>
+
+
+<p class="lab-description">
+
+Analyze simulated SOC security events, identify suspicious
+activity, validate detection alerts and determine which events
+should be escalated as potential incidents.
+
+</p>
+
+</div>
+
+
+<div class="lab-status">
+
+<div class="lab-status-header">
+
+<strong>
+SOC LAB CONSOLE
+</strong>
+
+<span class="lab-status-live">
+● ONLINE
+</span>
+
+</div>
+
+
+<div class="lab-line"></div>
+
+
+<div class="lab-status-row">
+
+<span>Environment</span>
+
+<strong>
+Simulation
+</strong>
+
+</div>
+
+
+<div class="lab-status-row">
+
+<span>Data Source</span>
+
+<strong>
+Security Events
+</strong>
+
+</div>
+
+
+<div class="lab-status-row">
+
+<span>Detection</span>
+
+<strong>
+Rule Based
+</strong>
+
+</div>
+
+
+<div class="lab-status-row">
+
+<span>Difficulty</span>
+
+<strong>
+Beginner
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     OBJECTIVE
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Lab Objective</h2>
+
+<p>
+Learn how a SOC analyst identifies potential incidents from security events.
+</p>
+
+</div>
+
+
+<div class="lab-instructions">
+
+<h3>What You Need To Do</h3>
+
+<ol>
+
+<li>Review the security events shown below.</li>
+
+<li>Select a severity filter if required.</li>
+
+<li>Run the detection engine.</li>
+
+<li>Identify events marked as suspicious.</li>
+
+<li>Inspect the detected events.</li>
+
+<li>Determine which activity should be escalated.</li>
+
+</ol>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     EVENT ANALYSIS
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="lab-container">
+
+<div class="lab-section-title">
+
+<h2>Security Event Analysis</h2>
+
+<p>
+The following events represent simulated SOC telemetry.
+</p>
+
+</div>
+
+
+<div class="lab-control-panel">
+
+<div class="lab-controls">
+
+<select
+id="severityFilter"
+class="lab-select">
+
+<option value="all">
+All Severity Levels
+</option>
+
+<option value="low">
+Low
+</option>
+
+<option value="medium">
+Medium
+</option>
+
+<option value="high">
+High
+</option>
+
+<option value="critical">
+Critical
+</option>
+
+</select>
+
+
+<button
+class="lab-button"
+onclick="runDetection()">
+
+Run Detection
+
+</button>
+
+
+<button
+class="lab-button secondary"
+onclick="resetLab()">
+
+Reset Lab
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="lab-table-wrapper">
+
+<table class="lab-table">
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Time</th>
+
+<th>Source</th>
+
+<th>Event</th>
+
+<th>Severity</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="eventTable">
+
+<tr
+data-severity="low"
+data-suspicious="false">
+
+<td>EVT-001</td>
+
+<td>09:12:04</td>
+
+<td>Workstation-07</td>
+
+<td>Successful user login</td>
+
+<td>
+
+<span class="lab-severity severity-low">
+LOW
+</span>
+
+</td>
+
+<td>Normal</td>
+
+</tr>
+
+
+<tr
+data-severity="medium"
+data-suspicious="false">
+
+<td>EVT-002</td>
+
+<td>09:14:18</td>
+
+<td>Server-02</td>
+
+<td>Multiple failed logins</td>
+
+<td>
+
+<span class="lab-severity severity-medium">
+MEDIUM
+</span>
+
+</td>
+
+<td>Review</td>
+
+</tr>
+
+
+<tr
+data-severity="high"
+data-suspicious="true">
+
+<td>EVT-003</td>
+
+<td>09:16:43</td>
+
+<td>Server-02</td>
+
+<td>Successful login after repeated failures</td>
+
+<td>
+
+<span class="lab-severity severity-high">
+HIGH
+</span>
+
+</td>
+
+<td>Suspicious</td>
+
+</tr>
+
+
+<tr
+data-severity="low"
+data-suspicious="false">
+
+<td>EVT-004</td>
+
+<td>09:19:11</td>
+
+<td>Workstation-03</td>
+
+<td>Normal DNS request</td>
+
+<td>
+
+<span class="lab-severity severity-low">
+LOW
+</span>
+
+</td>
+
+<td>Normal</td>
+
+</tr>
+
+
+<tr
+data-severity="critical"
+data-suspicious="true">
+
+<td>EVT-005</td>
+
+<td>09:21:55</td>
+
+<td>Endpoint-12</td>
+
+<td>Connection to known malicious IP</td>
+
+<td>
+
+<span class="lab-severity severity-critical">
+CRITICAL
+</span>
+
+</td>
+
+<td>Suspicious</td>
+
+</tr>
+
+
+<tr
+data-severity="medium"
+data-suspicious="false">
+
+<td>EVT-006</td>
+
+<td>09:24:30</td>
+
+<td>Firewall-01</td>
+
+<td>Blocked outbound connection</td>
+
+<td>
+
+<span class="lab-severity severity-medium">
+MEDIUM
+</span>
+
+</td>
+
+<td>Blocked</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- =====================================================
+     RESULT
+====================================================== -->
+
+<div
+id="detectionResult"
+class="lab-result">
+
+<h3>
+Detection Result
+</h3>
+
+<p id="resultText">
+</p>
+
+</div>
+
+
+<!-- =====================================================
+     INVESTIGATION
+====================================================== -->
+
+<div class="lab-investigation">
+
+
+<div class="lab-investigation-box">
+
+<h3>
+Detection Finding
+</h3>
+
+<p>
+
+The detection engine identifies events that match suspicious
+conditions such as repeated authentication failures followed
+by successful access or communication with a known malicious IP.
+
+</p>
+
+</div>
+
+
+<div class="lab-investigation-box">
+
+<h3>
+SOC Analyst Action
+</h3>
+
+<p>
+
+A suspicious event should be investigated using additional logs,
+endpoint information, network activity and threat intelligence.
+Confirmed or high-risk activity should be escalated.
+
+</p>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     OUTPUT
+====================================================== -->
+
+<div
+id="labOutput"
+class="lab-output">
+
+SOC INCIDENT DETECTION CONSOLE
+--------------------------------
+
+Waiting for detection analysis...
+
+</div>
+
+
+<!-- =====================================================
+     COMPLETION
+====================================================== -->
+
+<div class="lab-completion">
+
+<h3>
+✓ Lab Completion Criteria
+</h3>
+
+<p>
+
+You should be able to identify suspicious events,
+distinguish normal activity from potential incidents,
+and understand when an alert should be escalated.
+
+</p>
+
+</div>
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<div class="lab-topic-nav">
+
+<a
+href="threat-intelligence-lab.html"
+class="lab-nav-button">
+← Lab: Threat Intelligence
+</a>
+
+<a
+href="../theory/network-monitoring.html"
+class="lab-nav-button">
+
+Next Theory: Network Monitoring →
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div>
+
+<div class="footer-brand">
+Cyber<span>Nexa</span>
+</div>
+
+<p>
+Cybersecurity &amp; IT Learning
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="../../../index.html">
+Home
+</a>
+
+<a href="../../../footer/about.html">
+About
+</a>
+
+<a href="../../../footer/contact.html">
+Contact
+</a>
+
+<a href="../../../footer/privacy-policy.html">
+Privacy Policy
+</a>
+
+<a href="../../../footer/disclaimer.html">
+Disclaimer
+</a>
+
+</div>
+
+</div>
+
+
+<div class="copyright">
+
+© 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+function runDetection() {
+
+    const filter =
+        document.getElementById(
+            "severityFilter"
+        ).value;
+
+
+    const rows =
+        document.querySelectorAll(
+            "#eventTable tr"
+        );
+
+
+    let detected = 0;
+    let visible = 0;
+
+
+    rows.forEach(row => {
+
+        const severity =
+            row.dataset.severity;
+
+        const suspicious =
+            row.dataset.suspicious === "true";
+
+
+        const matchesFilter =
+            filter === "all" ||
+            severity === filter;
+
+
+        row.style.display =
+            matchesFilter
+            ? ""
+            : "none";
+
+
+        if (matchesFilter) {
+
+            visible++;
+
+            if (suspicious) {
+
+                detected++;
+
+                row.classList.add(
+                    "detected"
+                );
+
+            } else {
+
+                row.classList.remove(
+                    "detected"
+                );
+
+            }
+
+        }
+
+    });
+
+
+    const result =
+        document.getElementById(
+            "detectionResult"
+        );
+
+
+    const resultText =
+        document.getElementById(
+            "resultText"
+        );
+
+
+    result.classList.add("show");
+
+
+    resultText.innerHTML =
+        "Detection analysis completed. " +
+        detected +
+        " suspicious event(s) identified " +
+        "from " +
+        visible +
+        " visible event(s). " +
+        "Suspicious activity should be investigated " +
+        "before escalation.";
+
+
+    const output =
+        document.getElementById(
+            "labOutput"
+        );
+
+
+    output.textContent =
+
+`SOC INCIDENT DETECTION CONSOLE
+--------------------------------
+
+Detection Status : COMPLETE
+Events Analyzed  : ${visible}
+Suspicious Events: ${detected}
+
+Detection Rules:
+[1] Repeated authentication failures
+[2] Successful login after failures
+[3] Known malicious IP communication
+
+Result:
+Potential security incidents detected.
+
+Recommended Action:
+Investigate suspicious events,
+collect supporting evidence,
+validate the alert,
+and escalate confirmed incidents.`;
+
+}
+
+
+function resetLab() {
+
+    const rows =
+        document.querySelectorAll(
+            "#eventTable tr"
+        );
+
+
+    rows.forEach(row => {
+
+        row.style.display = "";
+
+        row.classList.remove(
+            "detected"
+        );
+
+    });
+
+
+    document.getElementById(
+        "severityFilter"
+    ).value = "all";
+
+
+    document.getElementById(
+        "detectionResult"
+    ).classList.remove("show");
+
+
+    document.getElementById(
+        "labOutput"
+    ).textContent =
+
+`SOC INCIDENT DETECTION CONSOLE
+--------------------------------
+
+Waiting for detection analysis...`;
+
+}
+
+</script>
+
+</body>
+</html>

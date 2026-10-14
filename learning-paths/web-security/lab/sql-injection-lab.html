@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SQL Injection Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 88% 15%,
+                    rgba(99, 102, 241, 0.07),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b,
+                    #020914,
+                    #01050b
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            padding: 38px 32px;
+            margin-bottom: 20px;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(4, 22, 37, 0.98),
+                    rgba(2, 10, 22, 0.98)
+                );
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #6366f1,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+            text-transform: uppercase;
+
+            margin-bottom: 10px;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 38px;
+        }
+
+        .lab-hero h1 span {
+            color: #00bfff;
+        }
+
+        .lab-hero p {
+
+            max-width: 760px;
+
+            margin: 14px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           LAB INFO
+        ====================================================== */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 9px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .info-box small {
+
+            display: block;
+
+            color: #536a7f;
+
+            font-size: 9px;
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 5px;
+        }
+
+        .info-box strong {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            margin-bottom: 15px;
+
+            padding: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .question-number {
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 9px;
+        }
+
+        .lab-card h2 {
+
+            margin: 0 0 14px;
+
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .question {
+
+            color: #9bb0c2;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+            margin-bottom: 15px;
+        }
+
+        /* =====================================================
+           OPTIONS
+        ====================================================== */
+
+        .options {
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 12px 14px;
+
+            border: 1px solid rgba(0, 191, 255, 0.09);
+            border-radius: 8px;
+
+            color: #8499ab;
+
+            background: rgba(0, 191, 255, 0.018);
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.28);
+
+            color: #d5f6ff;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+        }
+
+        .option input {
+            accent-color: #00bfff;
+        }
+
+        /* =====================================================
+           OUTPUT
+        ====================================================== */
+
+        .output {
+
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .output.correct {
+
+            display: block;
+
+            border: 1px solid rgba(0, 255, 176, 0.18);
+
+            background:
+                rgba(0, 255, 176, 0.035);
+
+            color: #a8e9d5;
+        }
+
+        .output.wrong {
+
+            display: block;
+
+            border: 1px solid rgba(255, 177, 0, 0.18);
+
+            background:
+                rgba(255, 177, 0, 0.035);
+
+            color: #d9bb79;
+        }
+
+        /* =====================================================
+           SIMULATED INPUT LAB
+        ====================================================== */
+
+        .simulator {
+
+            padding: 20px;
+
+            border: 1px solid rgba(99, 102, 241, 0.16);
+            border-radius: 10px;
+
+            background: #02070d;
+        }
+
+        .simulator-label {
+
+            color: #818cf8;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 10px;
+        }
+
+        .simulator input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid rgba(0, 191, 255, 0.18);
+            border-radius: 7px;
+
+            outline: none;
+
+            color: #dce9f4;
+
+            background: #050b12;
+
+            font-family: Consolas, monospace;
+        }
+
+        .simulator button {
+
+            margin-top: 10px;
+
+            padding: 10px 16px;
+
+            border: 1px solid rgba(0, 191, 255, 0.30);
+            border-radius: 7px;
+
+            color: #d5f6ff;
+
+            background: rgba(0, 191, 255, 0.06);
+
+            cursor: pointer;
+
+            font-weight: 700;
+        }
+
+        .simulator button:hover {
+
+            background:
+                rgba(0, 191, 255, 0.12);
+        }
+
+        .sim-output {
+
+            margin-top: 12px;
+
+            padding: 13px;
+
+            border-radius: 7px;
+
+            color: #8198aa;
+
+            background: #01050a;
+
+            font-family: Consolas, monospace;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           SCORE
+        ====================================================== */
+
+        .score-card {
+
+            margin-top: 20px;
+
+            padding: 25px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.035),
+                    rgba(99, 102, 241, 0.025)
+                );
+        }
+
+        .score-card h2 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+        #score {
+
+            color: #00bfff;
+
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .submit-btn {
+
+            margin-top: 16px;
+
+            padding: 12px 22px;
+
+            border: 1px solid rgba(0, 191, 255, 0.30);
+            border-radius: 8px;
+
+            color: #d5f6ff;
+
+            background:
+                rgba(0, 191, 255, 0.055);
+
+            cursor: pointer;
+
+            font-weight: 800;
+        }
+
+        .submit-btn:hover {
+
+            background:
+                rgba(0, 191, 255, 0.10);
+        }
+
+        /* =====================================================
+           NAV
+        ====================================================== */
+
+        .topic-navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .topic-navigation a {
+
+            padding: 13px;
+
+            border: 1px solid rgba(0, 191, 255, 0.09);
+            border-radius: 8px;
+
+            color: #71879b;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .topic-navigation a:hover {
+
+            color: #d5f6ff;
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-info {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+                font-size: 29px;
+            }
+
+            .lab-card {
+                padding: 20px;
+            }
+
+            .lab-info {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+    <div class="lab-container">
+
+
+        <!-- HERO -->
+
+        <section class="lab-hero">
+
+            <div class="lab-kicker">
+                WEB SECURITY / PRACTICAL LAB
+            </div>
+
+            <h1>
+                <span>SQL Injection</span> Lab
+            </h1>
+
+            <p>
+                Test your understanding of SQL Injection concepts,
+                vulnerable query patterns, secure database practices
+                and defensive techniques in this simulated authorized
+                training environment.
+            </p>
+
+        </section>
+
+
+        <!-- INFO -->
+
+        <div class="lab-info">
+
+            <div class="info-box">
+
+                <small>
+                    Type
+                </small>
+
+                <strong>
+                    Interactive Lab
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Level
+                </small>
+
+                <strong>
+                    Beginner
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Environment
+                </small>
+
+                <strong>
+                    Simulated
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <small>
+                    Focus
+                </small>
+
+                <strong>
+                    SQL Injection
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIMULATOR -->
+
+        <section class="lab-card">
+
+            <div class="question-number">
+                LAB SIMULATION
+            </div>
+
+            <h2>
+                Identify the Security Behavior
+            </h2>
+
+            <div class="simulator">
+
+                <div class="simulator-label">
+                    AUTHORIZED TRAINING LOGIN
+                </div>
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter a sample username"
+                >
+
+                <button onclick="analyzeInput()">
+                    Analyze Input
+                </button>
+
+                <div class="sim-output" id="simOutput">
+                    Waiting for lab input...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Q1 -->
+
+        <section class="lab-card">
+
+            <div class="question-number">
+                QUESTION 01
+            </div>
+
+            <h2>
+                What is the primary cause of SQL Injection?
+            </h2>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q1" value="a">
+                    Using HTTPS
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q1" value="b">
+                    Unsafe handling of user input in SQL queries
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q1" value="c">
+                    Using CSS
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q1" value="d">
+                    Using a firewall
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- Q2 -->
+
+        <section class="lab-card">
+
+            <div class="question-number">
+                QUESTION 02
+            </div>
+
+            <h2>
+                Which technique is commonly used to prevent SQL Injection?
+            </h2>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q2" value="a">
+                    Prepared statements
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q2" value="b">
+                    Disabling CSS
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q2" value="c">
+                    Increasing screen resolution
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q2" value="d">
+                    Removing HTTPS
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- Q3 -->
+
+        <section class="lab-card">
+
+            <div class="question-number">
+                QUESTION 03
+            </div>
+
+            <h2>
+                Why should database accounts follow least privilege?
+            </h2>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q3" value="a">
+                    To make pages load faster
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q3" value="b">
+                    To increase monitor brightness
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q3" value="c">
+                    To reduce the potential impact of a compromise
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q3" value="d">
+                    To remove authentication
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- Q4 -->
+
+        <section class="lab-card">
+
+            <div class="question-number">
+                QUESTION 04
+            </div>
+
+            <h2>
+                In a secure application, what should happen to user input?
+            </h2>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q4" value="a">
+                    It should automatically become SQL syntax
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q4" value="b">
+                    It should be handled as data through parameterized queries
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q4" value="c">
+                    It should always be ignored
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q4" value="d">
+                    It should be stored as executable code
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- Q5 -->
+
+        <section class="lab-card">
+
+            <div class="question-number">
+                QUESTION 05
+            </div>
+
+            <h2>
+                SQL Injection testing should be performed where?
+            </h2>
+
+            <div class="options">
+
+                <label class="option">
+                    <input type="radio" name="q5" value="a">
+                    Any public website
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q5" value="b">
+                    Only authorized environments
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q5" value="c">
+                    Random websites
+                </label>
+
+                <label class="option">
+                    <input type="radio" name="q5" value="d">
+                    Unowned production systems
+                </label>
+
+            </div>
+
+        </section>
+
+
+        <!-- SCORE -->
+
+        <section class="score-card">
+
+            <h2>
+                Lab Result
+            </h2>
+
+            <div>
+                <span id="score">
+                    0 / 5
+                </span>
+            </div>
+
+            <button
+                class="submit-btn"
+                onclick="checkQuiz()"
+            >
+                Submit Lab
+            </button>
+
+            <div
+                id="resultMessage"
+                style="
+                    margin-top:12px;
+                    color:#8198aa;
+                    font-size:12px;
+                "
+            ></div>
+
+        </section>
+
+
+        <!-- NAVIGATION -->
+
+        <div class="topic-navigation">
+
+            <a href="authentication-authorization-lab.html">
+                ← Lab: Authorization
+            </a>
+
+            <a href="web-security-lab.html">
+                All Labs
+            </a>
+
+            <a href="../theory/xss.html">
+                Next Theory: XSS →
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script src="../../../js/navbar.js"></script>
+
+
+<script>
+
+    /* =====================================================
+       SAFE SQL INJECTION SIMULATION
+    ====================================================== */
+
+    function analyzeInput() {
+
+        const input =
+            document.getElementById("username").value;
+
+        const output =
+            document.getElementById("simOutput");
+
+        if (!input.trim()) {
+
+            output.innerHTML =
+                "Status: <span style='color:#ffc44d'>WAITING</span><br>" +
+                "Enter sample input to analyze its security characteristics.";
+
+            return;
+        }
+
+        const sqlPattern =
+            /('|--|;|\bOR\b|\bAND\b)/i;
+
+        if (sqlPattern.test(input)) {
+
+            output.innerHTML =
+                "Input classification: " +
+                "<span style='color:#ffb14d'>SUSPICIOUS</span><br>" +
+                "The simulator detected characters or SQL-related operators " +
+                "commonly associated with injection testing.<br><br>" +
+                "Training note: Real applications should use parameterized " +
+                "queries instead of concatenating input into SQL statements.";
+
+        } else {
+
+            output.innerHTML =
+                "Input classification: " +
+                "<span style='color:#00ffb0'>NORMAL DATA</span><br>" +
+                "No obvious SQL-related pattern was detected by this " +
+                "simplified training simulator.<br><br>" +
+                "Note: Pattern matching alone is not a complete security defense.";
+        }
+    }
+
+
+    /* =====================================================
+       QUIZ
+    ====================================================== */
+
+    function checkQuiz() {
+
+        const answers = {
+
+            q1: "b",
+            q2: "a",
+            q3: "c",
+            q4: "b",
+            q5: "b"
+
+        };
+
+        let score = 0;
+
+        for (const question in answers) {
+
+            const selected =
+                document.querySelector(
+                    'input[name="' +
+                    question +
+                    '"]:checked'
+                );
+
+            if (
+                selected &&
+                selected.value === answers[question]
+            ) {
+
+                score++;
+
+            }
+        }
+
+        document.getElementById("score").textContent =
+            score + " / 5";
+
+        const message =
+            document.getElementById("resultMessage");
+
+        if (score === 5) {
+
+            message.textContent =
+                "Excellent. You understand the core SQL Injection concepts.";
+
+            message.style.color =
+                "#00ffb0";
+
+        } else if (score >= 3) {
+
+            message.textContent =
+                "Good work. Review the theory once more and try again.";
+
+            message.style.color =
+                "#00bfff";
+
+        } else {
+
+            message.textContent =
+                "Review SQL Injection, parameterized queries and least privilege.";
+
+            message.style.color =
+                "#ffc44d";
+        }
+    }
+
+</script>
+
+
+</body>
+
+</html>

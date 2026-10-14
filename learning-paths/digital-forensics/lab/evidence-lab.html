@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Evidence Lab - Digital Forensics | CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ===================================================== */
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 60px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(128, 102, 255, 0.08),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 191, 255, 0.06),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    180deg,
+                    #05060d,
+                    #080a14 50%,
+                    #05060d
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+
+            max-width: 1000px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           LAB HEADER
+        ===================================================== */
+
+        .lab-header {
+
+            position: relative;
+
+            padding: 30px;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid rgba(128, 102, 255, 0.17);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(14, 16, 29, 0.98),
+                    rgba(7, 9, 18, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-header::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #8066ff,
+                    #00bfff,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            margin-bottom: 10px;
+
+            color: #9b8aff;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 34px;
+        }
+
+        .lab-header h1 span {
+
+            color: #9b8aff;
+        }
+
+        .lab-description {
+
+            max-width: 760px;
+
+            margin: 12px 0 0;
+
+            color: #838da1;
+
+            font-size: 12px;
+
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           LAB INFO
+        ===================================================== */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 9px;
+
+            margin-bottom: 18px;
+        }
+
+        .info-item {
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(128, 102, 255, 0.09);
+
+            border-radius: 8px;
+
+            background:
+                rgba(128, 102, 255, 0.018);
+        }
+
+        .info-item small {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #59647a;
+
+            font-size: 8px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+        .info-item strong {
+
+            color: #dbe2f0;
+
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           AUTHORIZED NOTICE
+        ===================================================== */
+
+        .notice {
+
+            padding: 17px;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .notice strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+        }
+
+        .notice p {
+
+            margin: 0;
+
+            color: #778398;
+
+            font-size: 10.5px;
+
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           LAB CARD
+        ===================================================== */
+
+        .lab-card {
+
+            padding: 23px;
+
+            margin-bottom: 15px;
+
+            border:
+                1px solid rgba(128, 102, 255, 0.10);
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(13, 15, 27, 0.98),
+                    rgba(7, 9, 18, 0.98)
+                );
+        }
+
+        .question-number {
+
+            color: #8066ff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 9px;
+        }
+
+        .lab-card h2 {
+
+            margin: 0 0 13px;
+
+            color: #ffffff;
+
+            font-size: 15px;
+
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           OPTIONS
+        ===================================================== */
+
+        .options {
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 11px 13px;
+
+            border:
+                1px solid rgba(128, 102, 255, 0.08);
+
+            border-radius: 7px;
+
+            color: #7e899d;
+
+            background:
+                rgba(128, 102, 255, 0.018);
+
+            cursor: pointer;
+
+            font-size: 10.5px;
+
+            transition: 0.2s ease;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(128, 102, 255, 0.25);
+
+            color: #d2cbff;
+        }
+
+        .option input {
+
+            accent-color: #8066ff;
+        }
+
+        /* =====================================================
+           PRACTICAL SCENARIO
+        ===================================================== */
+
+        .scenario {
+
+            padding: 18px;
+
+            margin-top: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .scenario-label {
+
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+        }
+
+        .scenario p {
+
+            margin: 0;
+
+            color: #7c879a;
+
+            font-size: 10.5px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           HASH SIMULATION
+        ===================================================== */
+
+        .hash-box {
+
+            margin-top: 12px;
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.10);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 255, 176, 0.018);
+
+            font-family:
+                Consolas,
+                monospace;
+        }
+
+        .hash-row {
+
+            display: grid;
+
+            grid-template-columns:
+                100px 1fr;
+
+            gap: 10px;
+
+            margin-bottom: 8px;
+        }
+
+        .hash-row:last-child {
+
+            margin-bottom: 0;
+        }
+
+        .hash-label {
+
+            color: #657188;
+
+            font-size: 9px;
+        }
+
+        .hash-value {
+
+            color: #62e9c0;
+
+            font-size: 9px;
+
+            word-break: break-all;
+        }
+
+        /* =====================================================
+           CHECKBOX TASK
+        ===================================================== */
+
+        .task-list {
+
+            display: grid;
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+        .task {
+
+            display: flex;
+
+            gap: 9px;
+
+            align-items: flex-start;
+
+            padding: 11px;
+
+            border:
+                1px solid rgba(128, 102, 255, 0.08);
+
+            border-radius: 7px;
+
+            color: #7b869a;
+
+            background:
+                rgba(128, 102, 255, 0.018);
+
+            font-size: 10.5px;
+
+            line-height: 1.6;
+        }
+
+        .task input {
+
+            margin-top: 2px;
+
+            accent-color: #8066ff;
+        }
+
+        /* =====================================================
+           BUTTON
+        ===================================================== */
+
+        .submit-area {
+
+            padding: 20px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(128, 102, 255, 0.12);
+
+            border-radius: 10px;
+
+            background:
+                rgba(128, 102, 255, 0.02);
+        }
+
+        .submit-button {
+
+            padding: 12px 23px;
+
+            border:
+                1px solid rgba(128, 102, 255, 0.35);
+
+            border-radius: 7px;
+
+            color: #e0dcff;
+
+            background:
+                rgba(128, 102, 255, 0.07);
+
+            cursor: pointer;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .submit-button:hover {
+
+            background:
+                rgba(128, 102, 255, 0.13);
+        }
+
+        /* =====================================================
+           RESULT
+        ===================================================== */
+
+        #result {
+
+            display: none;
+
+            margin-top: 14px;
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.13);
+
+            border-radius: 8px;
+
+            color: #79e9c3;
+
+            background:
+                rgba(0, 255, 176, 0.025);
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           NAV
+        ===================================================== */
+.lab-navigation {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-top: 22px;
+}
+
+.lab-navigation a {
+
+    flex: 0 0 auto;
+
+    min-width: 220px;
+
+    padding: 13px 18px;
+
+    border:
+        1px solid rgba(139, 120, 255, 0.08);
+
+    border-radius: 8px;
+
+    color: #7b8598;
+
+    background:
+        rgba(139, 120, 255, 0.018);
+
+    text-align: center;
+
+    text-decoration: none;
+
+    font-size: 10.5px;
+
+    font-weight: 700;
+}
+
+.lab-navigation a:hover {
+
+    color: #ffffff;
+
+    border-color:
+        rgba(139, 120, 255, 0.28);
+}
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-info {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 42px 12px 60px;
+            }
+
+            .lab-header {
+
+                padding: 23px 18px;
+            }
+
+            .lab-header h1 {
+
+                font-size: 28px;
+            }
+
+            .lab-card {
+
+                padding: 19px;
+            }
+
+            .hash-row {
+
+                grid-template-columns: 1fr;
+                gap: 3px;
+            }
+
+            .lab-navigation {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.lab-navigation a {
+    width: 100%;
+}
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+<div class="lab-container">
+
+
+    <!-- HEADER -->
+
+    <section class="lab-header">
+
+        <div class="lab-kicker">
+            DIGITAL FORENSICS / PRACTICAL LAB / 02
+        </div>
+
+        <h1>
+            Digital <span>Evidence</span> Lab
+        </h1>
+
+        <p class="lab-description">
+            Practice evidence identification, preservation, integrity
+            verification and chain-of-custody decisions using a simulated
+            forensic investigation environment.
+        </p>
+
+    </section>
+
+
+    <!-- INFO -->
+
+    <div class="lab-info">
+
+        <div class="info-item">
+            <small>Environment</small>
+            <strong>Training Lab</strong>
+        </div>
+
+        <div class="info-item">
+            <small>Difficulty</small>
+            <strong>Beginner</strong>
+        </div>
+
+        <div class="info-item">
+            <small>Mode</small>
+            <strong>Simulation</strong>
+        </div>
+
+        <div class="info-item">
+            <small>Focus</small>
+            <strong>Evidence Handling</strong>
+        </div>
+
+    </div>
+
+
+    <!-- NOTICE -->
+
+    <div class="notice">
+
+        <strong>
+            🔐 AUTHORIZED FORENSIC ENVIRONMENT
+        </strong>
+
+        <p>
+            This laboratory uses simulated evidence only. Do not collect,
+            modify or analyze data from systems or devices without
+            authorization. The objective is to learn professional forensic
+            decision-making and evidence-handling principles.
+        </p>
+
+    </div>
+
+
+    <!-- QUESTION 01 -->
+
+    <section class="lab-card">
+
+        <div class="question-number">
+            QUESTION 01
+        </div>
+
+        <h2>
+            Which item is an example of digital evidence?
+        </h2>
+
+        <div class="options">
+
+            <label class="option">
+                <input type="radio" name="q1" value="wrong">
+                A physical notebook only
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="correct">
+                A system log containing recorded authentication events
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="wrong">
+                A laboratory chair
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="wrong">
+                A printed blank paper
+            </label>
+
+        </div>
+
+    </section>
+
+
+    <!-- QUESTION 02 -->
+
+    <section class="lab-card">
+
+        <div class="question-number">
+            QUESTION 02
+        </div>
+
+        <h2>
+            What is the primary purpose of preserving digital evidence?
+        </h2>
+
+        <div class="options">
+
+            <label class="option">
+                <input type="radio" name="q2" value="wrong">
+                To make the evidence look different
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="correct">
+                To maintain its integrity and reliability
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="wrong">
+                To delete unnecessary records
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="wrong">
+                To hide the evidence
+            </label>
+
+        </div>
+
+    </section>
+
+
+    <!-- SCENARIO -->
+
+    <section class="lab-card">
+
+        <div class="question-number">
+            FORENSIC SCENARIO
+        </div>
+
+        <h2>
+            Evidence Handling Decision
+        </h2>
+
+        <div class="scenario">
+
+            <div class="scenario-label">
+                CASE CNX-DF-002
+            </div>
+
+            <p>
+                An investigator receives a forensic image created from an
+                authorized training disk. The investigator wants to confirm
+                that the image has not changed since acquisition.
+                Which technique should be considered?
+            </p>
+
+        </div>
+
+
+        <div class="options" style="margin-top:12px;">
+
+            <label class="option">
+                <input type="radio" name="q3" value="wrong">
+                Rename the forensic image
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="correct">
+                Compare an appropriate cryptographic hash value
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="wrong">
+                Open and edit the original image
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="wrong">
+                Delete the original image
+            </label>
+
+        </div>
+
+    </section>
+
+
+    <!-- HASH SIMULATION -->
+
+    <section class="lab-card">
+
+        <div class="question-number">
+            INTEGRITY SIMULATION
+        </div>
+
+        <h2>
+            Compare the Evidence Fingerprints
+        </h2>
+
+        <p style="color:#7c879a;font-size:10.5px;line-height:1.8;">
+            In this simulated example, compare the acquisition hash with
+            the verification hash. Identical values indicate that the
+            simulated data produced the same fingerprint.
+        </p>
+
+        <div class="hash-box">
+
+            <div class="hash-row">
+
+                <div class="hash-label">
+                    Acquisition
+                </div>
+
+                <div class="hash-value">
+                    9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+                </div>
+
+            </div>
+
+
+            <div class="hash-row">
+
+                <div class="hash-label">
+                    Verification
+                </div>
+
+                <div class="hash-value">
+                    9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="options" style="margin-top:12px;">
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="q4"
+                    value="correct"
+                >
+
+                The values match, so the simulated verification is consistent.
+
+            </label>
+
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="q4"
+                    value="wrong"
+                >
+
+                The values are different.
+
+            </label>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHAIN OF CUSTODY -->
+
+    <section class="lab-card">
+
+        <div class="question-number">
+            CHAIN OF CUSTODY TASK
+        </div>
+
+        <h2>
+            Select the Records That Should Be Documented
+        </h2>
+
+        <div class="task-list">
+
+            <label class="task">
+
+                <input
+                    type="checkbox"
+                    class="task-correct"
+                >
+
+                Evidence identification number
+
+            </label>
+
+
+            <label class="task">
+
+                <input
+                    type="checkbox"
+                    class="task-correct"
+                >
+
+                Date and time of evidence handling
+
+            </label>
+
+
+            <label class="task">
+
+                <input
+                    type="checkbox"
+                    class="task-correct"
+                >
+
+                Person responsible for handling the evidence
+
+            </label>
+
+
+            <label class="task">
+
+                <input
+                    type="checkbox"
+                    class="task-correct"
+                >
+
+                Action performed on the evidence
+
+            </label>
+
+
+            <label class="task">
+
+                <input
+                    type="checkbox"
+                >
+
+                Investigator's favorite color
+
+            </label>
+
+        </div>
+
+    </section>
+
+
+    <!-- FINAL QUESTION -->
+
+    <section class="lab-card">
+
+        <div class="question-number">
+            QUESTION 05
+        </div>
+
+        <h2>
+            Which approach is most appropriate when learning digital
+            forensics?
+        </h2>
+
+        <div class="options">
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="q5"
+                    value="correct"
+                >
+
+                Use authorized training evidence and controlled laboratory
+                environments.
+
+            </label>
+
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="q5"
+                    value="wrong"
+                >
+
+                Examine any person's device without permission.
+
+            </label>
+
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="q5"
+                    value="wrong"
+                >
+
+                Modify original evidence to make analysis easier.
+
+            </label>
+
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="q5"
+                    value="wrong"
+                >
+
+                Ignore evidence documentation.
+
+            </label>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUBMIT -->
+
+    <div class="submit-area">
+
+        <button
+            class="submit-button"
+            onclick="checkLab()"
+        >
+            VERIFY FORENSIC LAB →
+        </button>
+
+        <div id="result"></div>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="lab-navigation">
+
+        <a href="digital-forensics-introduction-lab.html">
+            ← Lab: Introduction
+        </a>
+
+        <a href="../theory/file-metadata.html">
+            Next Theory: File Metadata →
+        </a>
+
+    </div>
+
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script src="../../../js/navbar.js"></script>
+
+
+<script>
+
+function checkLab() {
+
+    let score = 0;
+
+    const questions = ["q1", "q2", "q3", "q4", "q5"];
+
+    questions.forEach(function(question) {
+
+        const selected =
+            document.querySelector(
+                'input[name="' + question + '"]:checked'
+            );
+
+        if (selected && selected.value === "correct") {
+            score++;
+        }
+
+    });
+
+
+    const correctTasks =
+        document.querySelectorAll(".task-correct");
+
+    correctTasks.forEach(function(task) {
+
+        if (task.checked) {
+            score += 0.25;
+        }
+
+    });
+
+
+    const total = 6;
+
+    const result =
+        document.getElementById("result");
+
+    result.style.display = "block";
+
+
+    if (score >= 5) {
+
+        result.innerHTML =
+            "✓ FORNSIC LAB PASSED — Score: " +
+            score.toFixed(2) +
+            "/" +
+            total +
+            "<br><br>" +
+            "Excellent. You understand the basic principles of " +
+            "digital evidence, integrity and chain of custody.";
+
+    } else if (score >= 3.5) {
+
+        result.innerHTML =
+            "◐ LAB COMPLETED — Score: " +
+            score.toFixed(2) +
+            "/" +
+            total +
+            "<br><br>" +
+            "Good progress. Review evidence preservation, " +
+            "integrity and chain-of-custody concepts once more.";
+
+    } else {
+
+        result.innerHTML =
+            "○ NEEDS REVIEW — Score: " +
+            score.toFixed(2) +
+            "/" +
+            total +
+            "<br><br>" +
+            "Review the Evidence theory page and attempt the lab again.";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

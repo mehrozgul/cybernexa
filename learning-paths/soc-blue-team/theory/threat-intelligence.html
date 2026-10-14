@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Threat Intelligence | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn what Threat Intelligence is, why it matters, intelligence types, lifecycle, sources, IOCs and how security teams use threat intelligence.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        :root {
+            --ti-bg: #071019;
+            --ti-panel: #0c1721;
+            --ti-panel-2: #101e2b;
+
+            --ti-cyan: #38d9ff;
+            --ti-blue: #4da3ff;
+            --ti-purple: #9b7bff;
+            --ti-green: #43d19e;
+            --ti-orange: #ffb454;
+            --ti-red: #ff5c69;
+
+            --ti-text: #edf7fc;
+            --ti-muted: #91a8b8;
+            --ti-border: #203544;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 10% 10%,
+                    rgba(56, 217, 255, 0.09),
+                    transparent 30%),
+                radial-gradient(circle at 90% 20%,
+                    rgba(155, 123, 255, 0.08),
+                    transparent 30%),
+                var(--ti-bg);
+
+            color: var(--ti-text);
+            font-family: Arial, Helvetica, sans-serif;
+
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .ti-container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+
+        /* =========================================================
+   HERO
+   ========================================================= */
+
+        .ti-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 82px 0 70px;
+
+            border-bottom: 1px solid var(--ti-border);
+        }
+
+        .ti-hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 460px;
+            height: 460px;
+
+            right: -220px;
+            top: -190px;
+
+            border: 1px solid rgba(56, 217, 255, 0.12);
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 45px rgba(56, 217, 255, 0.025),
+                0 0 0 90px rgba(56, 217, 255, 0.015);
+        }
+
+        .ti-breadcrumb {
+            margin-bottom: 22px;
+
+            color: var(--ti-cyan);
+
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        .ti-hero-grid {
+            display: grid;
+
+            grid-template-columns: 1.35fr 0.65fr;
+
+            gap: 45px;
+
+            align-items: center;
+        }
+
+        .ti-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 13px;
+
+            margin-bottom: 18px;
+
+            border: 1px solid rgba(56, 217, 255, 0.3);
+
+            border-radius: 4px;
+
+            background: rgba(56, 217, 255, 0.06);
+
+            color: var(--ti-cyan);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .ti-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--ti-cyan);
+
+            box-shadow:
+                0 0 12px rgba(56, 217, 255, 0.8);
+        }
+
+        .ti-hero h1 {
+            margin: 0 0 18px;
+
+            font-size: clamp(38px, 5vw, 62px);
+
+            line-height: 1.05;
+
+            letter-spacing: -1px;
+        }
+
+        .ti-hero h1 span {
+            color: var(--ti-cyan);
+        }
+
+        .ti-description {
+            max-width: 720px;
+
+            color: var(--ti-muted);
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+   INTELLIGENCE PANEL
+   ========================================================= */
+
+        .ti-intel-panel {
+            padding: 24px;
+
+            border: 1px solid var(--ti-border);
+
+            border-top: 2px solid var(--ti-cyan);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(16, 30, 43, 0.98),
+                    rgba(7, 14, 21, 0.98));
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .ti-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 17px;
+        }
+
+        .ti-panel-header strong {
+            font-size: 12px;
+
+            letter-spacing: 1px;
+        }
+
+        .ti-live {
+            color: var(--ti-green);
+
+            font-size: 10px;
+        }
+
+        .ti-divider {
+            height: 1px;
+
+            background: var(--ti-border);
+
+            margin: 15px 0;
+        }
+
+        .ti-status-row {
+            display: flex;
+            justify-content: space-between;
+
+            padding: 8px 0;
+
+            color: var(--ti-muted);
+
+            font-size: 13px;
+        }
+
+        .ti-status-row strong {
+            color: var(--ti-text);
+
+            font-weight: normal;
+        }
+
+        .ti-status-row .cyan {
+            color: var(--ti-cyan);
+        }
+
+
+        /* =========================================================
+   SECTIONS
+   ========================================================= */
+
+        .ti-section {
+            padding: 70px 0;
+        }
+
+        .ti-section-title {
+            margin-bottom: 28px;
+        }
+
+        .ti-section-title h2 {
+            margin: 0 0 10px;
+
+            font-size: 32px;
+        }
+
+        .ti-section-title p {
+            color: var(--ti-muted);
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+   DEFINITION
+   ========================================================= */
+
+        .ti-definition {
+            padding: 29px;
+
+            border: 1px solid rgba(56, 217, 255, 0.24);
+
+            border-left: 3px solid var(--ti-cyan);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(56, 217, 255, 0.065),
+                    rgba(77, 163, 255, 0.025));
+        }
+
+        .ti-definition-label {
+            margin-bottom: 12px;
+
+            color: var(--ti-cyan);
+
+            font-size: 12px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .ti-definition p {
+            margin: 0;
+
+            color: var(--ti-text);
+
+            font-size: 18px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+   CORE EXPLANATION
+   ========================================================= */
+
+        .ti-content-card {
+            padding: 30px;
+
+            border: 1px solid var(--ti-border);
+
+            border-left: 3px solid var(--ti-blue);
+
+            border-radius: 7px;
+
+            background: var(--ti-panel);
+        }
+
+        .ti-content-card p {
+            margin: 0 0 16px;
+
+            color: var(--ti-muted);
+
+            line-height: 1.85;
+
+            font-size: 15px;
+        }
+
+        .ti-content-card p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================================
+   INTELLIGENCE TYPES
+   ========================================================= */
+
+        .ti-type-grid {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 16px;
+        }
+
+        .ti-type {
+            padding: 24px;
+
+            border: 1px solid var(--ti-border);
+
+            border-radius: 7px;
+
+            background: var(--ti-panel);
+
+            transition: 0.2s ease;
+        }
+
+        .ti-type:hover {
+            border-color: rgba(56, 217, 255, 0.4);
+
+            transform: translateY(-2px);
+        }
+
+        .ti-type-number {
+            display: block;
+
+            margin-bottom: 14px;
+
+            color: var(--ti-cyan);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+        }
+
+        .ti-type h3 {
+            margin: 0 0 10px;
+
+            font-size: 17px;
+        }
+
+        .ti-type p {
+            margin: 0;
+
+            color: var(--ti-muted);
+
+            font-size: 14px;
+
+            line-height: 1.65;
+        }
+
+
+        /* =========================================================
+   LIFECYCLE
+   ========================================================= */
+
+        .ti-lifecycle {
+            display: grid;
+
+            grid-template-columns: repeat(5, 1fr);
+
+            gap: 10px;
+
+            margin-top: 30px;
+        }
+
+        .ti-life-step {
+            position: relative;
+
+            min-height: 120px;
+
+            padding: 18px 12px;
+
+            border: 1px solid var(--ti-border);
+
+            border-radius: 6px;
+
+            background: var(--ti-panel);
+
+            text-align: center;
+        }
+
+        .ti-life-step::after {
+            content: "→";
+
+            position: absolute;
+
+            right: -15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--ti-cyan);
+
+            z-index: 2;
+        }
+
+        .ti-life-step:last-child::after {
+            display: none;
+        }
+
+        .ti-life-number {
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: var(--ti-cyan);
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .ti-life-step strong {
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+   SOURCES
+   ========================================================= */
+
+        .ti-source-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 16px;
+        }
+
+        .ti-source {
+            padding: 23px;
+
+            border: 1px solid var(--ti-border);
+
+            border-radius: 7px;
+
+            background: var(--ti-panel);
+        }
+
+        .ti-source h3 {
+            margin: 0 0 10px;
+
+            font-size: 17px;
+        }
+
+        .ti-source p {
+            margin: 0;
+
+            color: var(--ti-muted);
+
+            font-size: 14px;
+
+            line-height: 1.65;
+        }
+
+
+        /* =========================================================
+   EXAMPLE
+   ========================================================= */
+
+        .ti-example {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .ti-example-box {
+            padding: 25px;
+
+            border: 1px solid var(--ti-border);
+
+            border-radius: 7px;
+
+            background: var(--ti-panel);
+        }
+
+        .ti-example-box h3 {
+            margin: 0 0 15px;
+
+            font-size: 17px;
+        }
+
+        .ti-example-box p {
+            margin: 0;
+
+            color: var(--ti-muted);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        .ti-example-box.signal {
+            border-top: 2px solid var(--ti-red);
+        }
+
+        .ti-example-box.intelligence {
+            border-top: 2px solid var(--ti-green);
+        }
+
+
+        /* =========================================================
+   KEY CONCEPTS
+   ========================================================= */
+
+        .ti-key-list {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .ti-key {
+            padding: 17px 20px;
+
+            border: 1px solid var(--ti-border);
+
+            border-radius: 6px;
+
+            background: var(--ti-panel);
+        }
+
+        .ti-key strong {
+            color: var(--ti-text);
+        }
+
+        .ti-key span {
+            color: var(--ti-muted);
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================================================
+   SUMMARY
+   ========================================================= */
+
+        .ti-summary {
+            padding: 30px;
+
+            border: 1px solid rgba(67, 209, 158, 0.25);
+
+            border-radius: 7px;
+
+            background: rgba(67, 209, 158, 0.035);
+        }
+
+        .ti-summary h2 {
+            margin-top: 0;
+
+            color: var(--ti-green);
+        }
+
+        .ti-summary p {
+            margin: 0;
+
+            color: var(--ti-muted);
+
+            line-height: 1.8;
+        }
+
+        /* =========================================================
+   PRACTICAL LAB CTA
+   ========================================================= */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+
+            margin-top: 35px;
+            padding: 24px 26px;
+
+            border: 1px solid rgba(66, 165, 255, 0.22);
+            border-left: 3px solid var(--aa-blue);
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 208, 0.025));
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.20);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* Top scanning line */
+
+        .lab-area::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(66, 165, 255, 0.7),
+                    rgba(53, 214, 208, 0.6),
+                    transparent);
+        }
+
+
+        /* Lab text */
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 0;
+        }
+
+
+        .lab-text strong {
+            color: var(--aa-text);
+
+            font-size: 16px;
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .lab-text span {
+            color: var(--aa-muted);
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* Lab button */
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            min-width: 155px;
+
+            padding: 12px 20px;
+
+            border: 1px solid rgba(66, 165, 255, 0.40);
+            border-radius: 5px;
+
+            color: var(--aa-blue);
+
+            background:
+                rgba(66, 165, 255, 0.07);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            text-decoration: none;
+
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        /* Hover */
+
+        .lab-button:hover {
+            color: #ffffff;
+
+            border-color: rgba(66, 165, 255, 0.75);
+
+            background:
+                rgba(66, 165, 255, 0.14);
+
+            box-shadow:
+                0 0 18px rgba(66, 165, 255, 0.16);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* Active */
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* =========================================================
+   LAB CTA RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .lab-area {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 18px;
+
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+        }
+
+        /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 1000px) {
+
+            .ti-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ti-type-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .ti-lifecycle {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .ti-life-step::after {
+                display: none;
+            }
+
+            .ti-source-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+
+        @media (max-width: 768px) {
+
+            .nav-container {
+                width: 94%;
+                min-height: 64px;
+                padding: 8px 0;
+            }
+
+            .ti-hero {
+                padding: 70px 0 55px;
+            }
+
+            .ti-section {
+                padding: 60px 0;
+            }
+
+            .ti-lifecycle {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .ti-example {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .nav-container {
+                width: 92%;
+                min-height: 62px;
+            }
+
+            .brand-logo svg {
+                width: 34px;
+                height: 42px;
+            }
+
+            .brand-name {
+                font-size: 17px;
+            }
+
+            .brand-tagline {
+                font-size: 8px;
+            }
+
+            .ti-hero {
+                padding: 55px 0 45px;
+            }
+
+            .ti-breadcrumb {
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .ti-hero h1 {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .ti-description {
+                font-size: 15px;
+            }
+
+            .ti-intel-panel {
+                padding: 20px;
+            }
+
+            .ti-section {
+                padding: 50px 0;
+            }
+
+            .ti-section-title h2 {
+                font-size: 26px;
+            }
+
+            .ti-section-title p {
+                font-size: 14px;
+            }
+
+            .ti-definition {
+                padding: 22px;
+            }
+
+            .ti-definition p {
+                font-size: 16px;
+            }
+
+            .ti-content-card {
+                padding: 22px;
+            }
+
+            .ti-content-card p {
+                font-size: 14px;
+            }
+
+            .ti-type-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ti-lifecycle {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .ti-source-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ti-example {
+                grid-template-columns: 1fr;
+            }
+
+            .ti-key-list {
+                grid-template-columns: 1fr;
+            }
+
+            .ti-summary {
+                padding: 22px;
+            }
+
+            .ti-topic-nav {
+                flex-direction: column;
+            }
+
+            .ti-nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+
+        @media (max-width: 380px) {
+
+            .ti-container {
+                width: 94%;
+            }
+
+            .ti-hero h1 {
+                font-size: 32px;
+            }
+
+            .ti-lifecycle {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <header class="ti-hero">
+
+        <div class="ti-container">
+
+            <div class="ti-breadcrumb">
+                CyberNexa / SOC / Blue Team / Threat Intelligence
+            </div>
+
+
+            <div class="ti-hero-grid">
+
+                <div>
+
+                    <div class="ti-badge">
+
+                        <span class="ti-dot"></span>
+
+                        Threat Intelligence Training
+
+                    </div>
+
+
+                    <h1>
+                        What is <span>Threat Intelligence?</span>
+                    </h1>
+
+
+                    <p class="ti-description">
+
+                        Threat Intelligence is the process of collecting, analyzing
+                        and applying information about threats, threat actors,
+                        indicators and attack techniques to improve an organization's
+                        security decisions.
+
+                    </p>
+
+                </div>
+
+
+                <div class="ti-intel-panel">
+
+                    <div class="ti-panel-header">
+
+                        <strong>
+                            INTELLIGENCE CENTER
+                        </strong>
+
+                        <span class="ti-live">
+                            ● ANALYSIS
+                        </span>
+
+                    </div>
+
+
+                    <div class="ti-divider"></div>
+
+
+                    <div class="ti-status-row">
+
+                        <span>Focus</span>
+
+                        <strong class="cyan">
+                            Threat Activity
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ti-status-row">
+
+                        <span>Data</span>
+
+                        <strong>
+                            Security Intelligence
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ti-status-row">
+
+                        <span>Purpose</span>
+
+                        <strong>
+                            Risk Awareness
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ti-status-row">
+
+                        <span>Used By</span>
+
+                        <strong>
+                            SOC / Blue Team
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+        <section class="ti-section">
+
+            <div class="ti-container">
+
+                <div class="ti-section-title">
+
+                    <h2>Definition</h2>
+
+                    <p>
+                        Understand the basic meaning of Threat Intelligence.
+                    </p>
+
+                </div>
+
+
+                <div class="ti-definition">
+
+                    <div class="ti-definition-label">
+                        Core Definition
+                    </div>
+
+                    <p>
+
+                        Threat Intelligence is analyzed information about
+                        cybersecurity threats that helps security teams understand
+                        threats, identify suspicious activity, assess risk and
+                        make informed defensive decisions.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     CORE EXPLANATION
+====================================================== -->
+
+        <section class="ti-section">
+
+            <div class="ti-container">
+
+                <div class="ti-section-title">
+
+                    <h2>How Threat Intelligence Works</h2>
+
+                    <p>
+                        Threat intelligence turns raw security information into
+                        useful knowledge for defenders.
+                    </p>
+
+                </div>
+
+
+                <div class="ti-content-card">
+
+                    <p>
+
+                        Security teams collect information from sources such as
+                        security logs, threat reports, malware analysis, security
+                        research, vulnerability information and indicators of
+                        compromise.
+
+                    </p>
+
+                    <p>
+
+                        Raw information by itself may not provide enough context.
+                        Analysts therefore investigate and correlate the information
+                        to understand what the activity represents.
+
+                    </p>
+
+                    <p>
+
+                        For example, an IP address found in a security event may
+                        be investigated against known threat intelligence sources.
+                        If the address is associated with malicious activity,
+                        the information can help analysts prioritize the event.
+
+                    </p>
+
+                    <p>
+
+                        The resulting intelligence can then support detection,
+                        alert analysis, threat hunting, incident response and
+                        security decision-making.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     TYPES
+====================================================== -->
+
+        <section class="ti-section">
+
+            <div class="ti-container">
+
+                <div class="ti-section-title">
+
+                    <h2>Types of Threat Intelligence</h2>
+
+                    <p>
+                        Different intelligence types serve different security
+                        and decision-making requirements.
+                    </p>
+
+                </div>
+
+
+                <div class="ti-type-grid">
+
+
+                    <div class="ti-type">
+
+                        <span class="ti-type-number">
+                            TYPE 01
+                        </span>
+
+                        <h3>Strategic</h3>
+
+                        <p>
+
+                            High-level intelligence used by leadership to understand
+                            major threats, trends and organizational risk.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="ti-type">
+
+                        <span class="ti-type-number">
+                            TYPE 02
+                        </span>
+
+                        <h3>Tactical</h3>
+
+                        <p>
+
+                            Information about attacker techniques, tactics and
+                            procedures that helps defenders understand how attacks
+                            are performed.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="ti-type">
+
+                        <span class="ti-type-number">
+                            TYPE 03
+                        </span>
+
+                        <h3>Operational</h3>
+
+                        <p>
+
+                            Intelligence related to specific campaigns, threat actors
+                            or attack activities that can support security operations.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="ti-type">
+
+                        <span class="ti-type-number">
+                            TYPE 04
+                        </span>
+
+                        <h3>Technical</h3>
+
+                        <p>
+
+                            Technical indicators such as IP addresses, domains,
+                            hashes, URLs and other artifacts associated with suspicious
+                            or malicious activity.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     LIFECYCLE
+====================================================== -->
+
+        <section class="ti-section">
+
+            <div class="ti-container">
+
+                <div class="ti-section-title">
+
+                    <h2>Threat Intelligence Lifecycle</h2>
+
+                    <p>
+                        A simplified lifecycle for turning information into useful
+                        security intelligence.
+                    </p>
+
+                </div>
+
+
+                <div class="ti-lifecycle">
+
+
+                    <div class="ti-life-step">
+
+                        <span class="ti-life-number">
+                            01
+                        </span>
+
+                        <strong>
+                            Planning
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ti-life-step">
+
+                        <span class="ti-life-number">
+                            02
+                        </span>
+
+                        <strong>
+                            Collection
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ti-life-step">
+
+                        <span class="ti-life-number">
+                            03
+                        </span>
+
+                        <strong>
+                            Processing
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ti-life-step">
+
+                        <span class="ti-life-number">
+                            04
+                        </span>
+
+                        <strong>
+                            Analysis
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ti-life-step">
+
+                        <span class="ti-life-number">
+                            05
+                        </span>
+
+                        <strong>
+                            Dissemination
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SOURCES
+====================================================== -->
+
+        <section class="ti-section">
+
+            <div class="ti-container">
+
+                <div class="ti-section-title">
+
+                    <h2>Threat Intelligence Sources</h2>
+
+                    <p>
+                        Threat intelligence can come from multiple security data
+                        and information sources.
+                    </p>
+
+                </div>
+
+
+                <div class="ti-source-grid">
+
+
+                    <div class="ti-source">
+
+                        <h3>Security Logs</h3>
+
+                        <p>
+
+                            Authentication, network and system logs can reveal
+                            suspicious activity and useful investigation data.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="ti-source">
+
+                        <h3>Threat Reports</h3>
+
+                        <p>
+
+                            Security research and threat reports provide information
+                            about campaigns, techniques and threat actors.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="ti-source">
+
+                        <h3>Indicators</h3>
+
+                        <p>
+
+                            IP addresses, domains, URLs, hashes and other artifacts
+                            can provide technical evidence about threats.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     EXAMPLE
+====================================================== -->
+
+        <section class="ti-section">
+
+            <div class="ti-container">
+
+                <div class="ti-section-title">
+
+                    <h2>Simple Example</h2>
+
+                    <p>
+                        See how threat intelligence can support SOC analysis.
+                    </p>
+
+                </div>
+
+
+                <div class="ti-example">
+
+
+                    <div class="ti-example-box signal">
+
+                        <h3>⚠ Suspicious Activity</h3>
+
+                        <p>
+
+                            A SOC analyst observes a connection from an unfamiliar
+                            external IP address to an internal system.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="ti-example-box intelligence">
+
+                        <h3>✓ Intelligence Check</h3>
+
+                        <p>
+
+                            The analyst checks the IP against available threat
+                            intelligence information. If the IP is associated with
+                            malicious activity, the event can receive additional
+                            investigation priority.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+        <section class="ti-section">
+
+            <div class="ti-container">
+
+                <div class="ti-section-title">
+
+                    <h2>Key Concepts</h2>
+
+                    <p>
+                        Important terms to remember.
+                    </p>
+
+                </div>
+
+
+                <div class="ti-key-list">
+
+
+                    <div class="ti-key">
+
+                        <strong>Threat Intelligence:</strong>
+
+                        <span>
+                            Analyzed information that helps understand and respond
+                            to cybersecurity threats.
+                        </span>
+
+                    </div>
+
+
+                    <div class="ti-key">
+
+                        <strong>Threat Actor:</strong>
+
+                        <span>
+                            An individual or group responsible for malicious cyber
+                            activity.
+                        </span>
+
+                    </div>
+
+
+                    <div class="ti-key">
+
+                        <strong>IOC:</strong>
+
+                        <span>
+                            An artifact that may indicate malicious or suspicious
+                            activity.
+                        </span>
+
+                    </div>
+
+
+                    <div class="ti-key">
+
+                        <strong>TTPs:</strong>
+
+                        <span>
+                            Tactics, techniques and procedures associated with
+                            attacker behavior.
+                        </span>
+
+                    </div>
+
+
+                    <div class="ti-key">
+
+                        <strong>Intelligence Source:</strong>
+
+                        <span>
+                            A source that provides information used for threat
+                            analysis and security decisions.
+                        </span>
+
+                    </div>
+
+
+                    <div class="ti-key">
+
+                        <strong>Analysis:</strong>
+
+                        <span>
+                            The process of examining information and adding context
+                            to make it useful for defenders.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+        <section class="ti-section">
+
+            <div class="ti-container">
+
+                <div class="ti-summary">
+
+                    <h2>Summary</h2>
+
+                    <p>
+
+                        Threat Intelligence helps SOC and Blue Team professionals
+                        understand cyber threats by collecting, processing and
+                        analyzing relevant information. It can provide context
+                        for suspicious events, support IOC investigation, improve
+                        detection and help security teams make better defensive
+                        decisions. Threat intelligence becomes more useful when
+                        raw information is transformed into actionable security
+                        knowledge.
+
+                    </p>
+
+                </div>
+<!-- =====================================================
+     LESSON COMPLETION
+====================================================== -->
+
+<section class="ti-section" id="lesson-completion">
+
+    <div class="ti-container">
+
+        <div class="ti-content-card">
+
+            <div class="ti-section-title">
+                <h2>Lesson Completion</h2>
+
+                <p>
+                    You have completed the Threat Intelligence lesson.
+                    Review the key concepts and mark this lesson
+                    as completed.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="threat-intelligence"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/threat-intelligence.html"
+                data-status-id="threatIntelligenceCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="threatIntelligenceCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+                <div class="lab-area">
+
+                    <div class="lab-text">
+                        <strong>Ready for the Practical Lab?</strong>
+
+                        <span>
+                            Test your understanding through an
+                            authorized SOC security-training simulation.
+                        </span>
+                    </div>
+
+                    <a href="../lab/threat-intelligence-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberNexa | Lab 09: Windows Firewall Lab</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(14, 165, 233, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .lab-container {
+
+            width: 100%;
+
+            max-width: 1050px;
+
+            margin: auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+        .lab-category {
+
+            color: #60a5fa;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 14px;
+        }
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 42px;
+
+            font-weight: 800;
+        }
+
+        .lab-header h1 span {
+
+            color: #60a5fa;
+        }
+
+        .lab-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+        .lab-badges {
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 22px;
+        }
+
+        .lab-badge {
+
+            padding: 8px 13px;
+
+            border: 1px solid rgba(96,165,250,.20);
+
+            border-radius: 20px;
+
+            color: #bfdbfe;
+
+            background: rgba(96,165,250,.055);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           CARD
+        ====================================================== */
+
+        .lab-card {
+
+            position: relative;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(96,165,250,.15);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7,22,38,.98),
+                    rgba(3,13,20,.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,.28);
+
+            overflow: hidden;
+        }
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .lab-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(96,165,250,.30);
+
+            border-radius: 10px;
+
+            color: #60a5fa;
+
+            background: rgba(96,165,250,.07);
+
+            font-weight: 800;
+        }
+
+        .lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+        }
+
+        .lab-card h3 {
+
+            color: #60a5fa;
+
+            font-size: 16px;
+
+            margin: 0 0 10px;
+        }
+
+        .lab-card p {
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+
+            margin: 0 0 14px;
+        }
+
+        /* =====================================================
+           STEPS
+        ====================================================== */
+
+        .lab-step {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border: 1px solid rgba(96,165,250,.13);
+
+            border-radius: 11px;
+
+            background: rgba(96,165,250,.035);
+        }
+
+        .lab-step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 30px;
+
+            height: 30px;
+
+            margin-bottom: 12px;
+
+            border-radius: 50%;
+
+            color: #dbeafe;
+
+            background: rgba(37,99,235,.20);
+
+            border: 1px solid rgba(96,165,250,.35);
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           COMMAND
+        ====================================================== */
+
+        .lab-command {
+
+            margin-top: 15px;
+
+            padding: 18px 20px;
+
+            border: 1px solid rgba(96,165,250,.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+        .lab-command-label {
+
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #64748b;
+
+            font-size: 10px;
+
+            letter-spacing: 1.5px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+        }
+
+        .lab-command code {
+
+            color: #93c5fd;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           NOTE
+        ====================================================== */
+
+        .lab-note {
+
+            padding: 18px;
+
+            margin-top: 18px;
+
+            border-left: 3px solid #60a5fa;
+
+            border-radius: 0 10px 10px 0;
+
+            background: rgba(96,165,250,.055);
+
+            color: #c3cdd5;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           CHECKLIST
+        ====================================================== */
+
+        .lab-checklist {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+        .lab-checklist li {
+
+            position: relative;
+
+            padding: 10px 0 10px 25px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            border-bottom:
+                1px solid rgba(96,165,250,.07);
+        }
+
+        .lab-checklist li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+
+            color: #60a5fa;
+
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .lab-result {
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            border: 1px solid rgba(96,165,250,.16);
+
+            border-radius: 10px;
+
+            background: rgba(96,165,250,.035);
+        }
+
+        .lab-result strong {
+
+            color: #f8fafc;
+        }
+
+        .lab-result span {
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+        .lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border: 1px solid rgba(96,165,250,.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background: rgba(96,165,250,.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .lab-button:hover {
+
+            border-color: rgba(96,165,250,.65);
+
+            background: rgba(96,165,250,.10);
+        }
+
+        @media (max-width:600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 55px;
+            }
+
+            .lab-header h1 {
+
+                font-size: 30px;
+            }
+
+            .lab-card {
+
+                padding: 21px 18px;
+            }
+
+            .lab-navigation {
+
+                flex-direction: column;
+            }
+
+            .lab-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+    
+        /* =====================================================
+           STANDARDIZED LAB NAVIGATION
+        ====================================================== */
+
+        .windows-lab-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .windows-lab-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 20px;
+            border: 1px solid rgba(103, 232, 249, 0.25);
+            border-radius: 9px;
+            color: #dbeafe;
+            background: rgba(103, 232, 249, 0.05);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .windows-lab-button:hover {
+            border-color: rgba(103, 232, 249, 0.65);
+            background: rgba(103, 232, 249, 0.12);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .windows-lab-button span {
+            color: #67e8f9;
+            font-size: 16px;
+        }
+
+        .windows-lab-button.theory {
+            border-color: rgba(96, 165, 250, 0.35);
+            background: rgba(96, 165, 250, 0.08);
+            color: #93c5fd;
+        }
+
+        .windows-lab-button.theory:hover {
+            border-color: rgba(96, 165, 250, 0.75);
+            background: rgba(96, 165, 250, 0.16);
+            color: #ffffff;
+        }
+
+        @media (max-width: 650px) {
+            .windows-lab-navigation {
+                flex-direction: column;
+                align-items: stretch;
+                margin-top: 25px;
+            }
+
+            .windows-lab-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- HEADER -->
+
+            <header class="lab-header">
+
+                <div class="lab-category">
+                    WINDOWS PRACTICAL LAB
+                </div>
+
+                <h1>Windows Firewall <span>Lab 09</span></h1>
+
+                <p class="lab-intro">
+
+                    Learn how to inspect Windows Firewall profiles,
+                    open the Advanced Firewall console, examine
+                    firewall rules and safely create and remove a
+                    test firewall rule on your own Windows system.
+
+                </p>
+
+                <div class="lab-badges">
+
+                    <div class="lab-badge">
+                        Beginner
+                    </div>
+
+                    <div class="lab-badge">
+                        Defensive Security
+                    </div>
+
+                    <div class="lab-badge">
+                        Windows
+                    </div>
+
+                    <div class="lab-badge">
+                        PowerShell
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- OBJECTIVE -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        🎯
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    In this lab you will inspect the Windows Firewall
+                    configuration and practice creating a temporary
+                    local firewall rule for learning purposes.
+
+                </p>
+
+                <ul class="lab-checklist">
+
+                    <li>
+                        Open Windows Firewall with Advanced Security.
+                    </li>
+
+                    <li>
+                        Check the current firewall profiles.
+                    </li>
+
+                    <li>
+                        View existing firewall rules.
+                    </li>
+
+                    <li>
+                        Create a temporary test rule.
+                    </li>
+
+                    <li>
+                        Verify the rule.
+                    </li>
+
+                    <li>
+                        Remove the test rule after the lab.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- STEP 1 -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        01
+                    </div>
+
+                    <h2>
+                        Open Windows Firewall
+                    </h2>
+
+                </div>
+
+                <div class="lab-step">
+
+                    <div class="lab-step-number">
+                        1
+                    </div>
+
+                    <h3>
+                        Open Run
+                    </h3>
+
+                    <p>
+
+                        Press:
+
+                    </p>
+
+                    <div class="lab-command">
+
+                        <span class="lab-command-label">
+                            Keyboard
+                        </span>
+
+                        <code>
+                            Windows + R
+                        </code>
+
+                    </div>
+
+                </div>
+
+
+                <div class="lab-step">
+
+                    <div class="lab-step-number">
+                        2
+                    </div>
+
+                    <h3>
+                        Open Advanced Firewall
+                    </h3>
+
+                    <p>
+
+                        Enter the following command:
+
+                    </p>
+
+                    <div class="lab-command">
+
+                        <span class="lab-command-label">
+                            Run
+                        </span>
+
+                        <code>
+                            wf.msc
+                        </code>
+
+                    </div>
+
+                </div>
+
+                <div class="lab-result">
+
+                    <strong>
+                        Expected Result:
+                    </strong>
+
+                    <br>
+
+                    <span>
+
+                        Windows Defender Firewall with Advanced
+                        Security should open.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 2 -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        02
+                    </div>
+
+                    <h2>
+                        Check Firewall Profiles
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    Open PowerShell as Administrator and run:
+
+                </p>
+
+                <div class="lab-command">
+
+                    <span class="lab-command-label">
+                        PowerShell
+                    </span>
+
+                    <code>
+                        Get-NetFirewallProfile
+                    </code>
+
+                </div>
+
+                <div class="lab-result">
+
+                    <strong>
+                        Look For:
+                    </strong>
+
+                    <br>
+
+                    <span>
+
+                        Domain, Private and Public profiles and
+                        their enabled status.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 3 -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        03
+                    </div>
+
+                    <h2>
+                        Check Firewall Status
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    Run the following command:
+
+                </p>
+
+                <div class="lab-command">
+
+                    <span class="lab-command-label">
+                        PowerShell
+                    </span>
+
+                    <code>
+                        Get-NetFirewallProfile |
+                        Select-Object Name, Enabled
+                    </code>
+
+                </div>
+
+                <div class="lab-result">
+
+                    <strong>
+                        Expected Information:
+                    </strong>
+
+                    <br>
+
+                    <span>
+
+                        The command displays each firewall profile
+                        and whether Windows Firewall is enabled
+                        for that profile.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 4 -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        04
+                    </div>
+
+                    <h2>
+                        View Firewall Rules
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    Use PowerShell to display firewall rules:
+
+                </p>
+
+                <div class="lab-command">
+
+                    <span class="lab-command-label">
+                        PowerShell
+                    </span>
+
+                    <code>
+                        Get-NetFirewallRule
+                    </code>
+
+                </div>
+
+                <div class="lab-result">
+
+                    <strong>
+                        Learning Point:
+                    </strong>
+
+                    <br>
+
+                    <span>
+
+                        Windows contains many predefined firewall
+                        rules. Each rule can have properties such
+                        as direction, action, profile and enabled
+                        status.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 5 -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        05
+                    </div>
+
+                    <h2>
+                        View Enabled Rules
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    To display enabled firewall rules, run:
+
+                </p>
+
+                <div class="lab-command">
+
+                    <span class="lab-command-label">
+                        PowerShell
+                    </span>
+
+                    <code>
+                        Get-NetFirewallRule |
+                        Where-Object Enabled -eq "True"
+                    </code>
+
+                </div>
+
+                <div class="lab-result">
+
+                    <strong>
+                        Expected Result:
+                    </strong>
+
+                    <br>
+
+                    <span>
+
+                        PowerShell displays firewall rules that are
+                        currently enabled.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 6 -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        06
+                    </div>
+
+                    <h2>
+                        Create a Temporary Test Rule
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    For this controlled local lab, create a temporary
+                    inbound rule that blocks TCP port 5555.
+
+                </p>
+
+                <div class="lab-command">
+
+                    <span class="lab-command-label">
+                        PowerShell — Administrator
+                    </span>
+
+                    <code>
+                        New-NetFirewallRule -DisplayName
+                        "CyberNexa-Lab-Test-5555"
+                        -Direction Inbound
+                        -Protocol TCP
+                        -LocalPort 5555
+                        -Action Block
+                    </code>
+
+                </div>
+
+                <div class="lab-note">
+
+                    This rule is only a learning example. Port 5555
+                    is used here as a test port. Do not use this
+                    procedure to interfere with systems you do not
+                    own or administer.
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 7 -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        07
+                    </div>
+
+                    <h2>
+                        Verify the Test Rule
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    Search for the rule that you created:
+
+                </p>
+
+                <div class="lab-command">
+
+                    <span class="lab-command-label">
+                        PowerShell
+                    </span>
+
+                    <code>
+                        Get-NetFirewallRule
+                        -DisplayName
+                        "CyberNexa-Lab-Test-5555"
+                    </code>
+
+                </div>
+
+                <div class="lab-result">
+
+                    <strong>
+                        Expected Result:
+                    </strong>
+
+                    <br>
+
+                    <span>
+
+                        The rule should appear with its configured
+                        name, direction and action.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 8 -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        08
+                    </div>
+
+                    <h2>
+                        Remove the Test Rule
+                    </h2>
+
+                </div>
+
+                <p>
+
+                    After completing the lab, remove the temporary
+                    rule.
+
+                </p>
+
+                <div class="lab-command">
+
+                    <span class="lab-command-label">
+                        PowerShell — Administrator
+                    </span>
+
+                    <code>
+                        Remove-NetFirewallRule
+                        -DisplayName
+                        "CyberNexa-Lab-Test-5555"
+                    </code>
+
+                </div>
+
+                <div class="lab-result">
+
+                    <strong>
+                        Expected Result:
+                    </strong>
+
+                    <br>
+
+                    <span>
+
+                        The temporary CyberNexa lab rule should no
+                        longer exist.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- STEP 9 -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        09
+                    </div>
+
+                    <h2>
+                        Verify Rule Removal
+                    </h2>
+
+                </div>
+
+                <div class="lab-command">
+
+                    <span class="lab-command-label">
+                        PowerShell
+                    </span>
+
+                    <code>
+                        Get-NetFirewallRule
+                        -DisplayName
+                        "CyberNexa-Lab-Test-5555"
+                    </code>
+
+                </div>
+
+                <div class="lab-result">
+
+                    <strong>
+                        Expected Result:
+                    </strong>
+
+                    <br>
+
+                    <span>
+
+                        The temporary test rule should no longer
+                        be listed.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- KNOWLEDGE CHECK -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        ?
+                    </div>
+
+                    <h2>
+                        Lab Knowledge Check
+                    </h2>
+
+                </div>
+
+                <ul class="lab-checklist">
+
+                    <li>
+                        What is the purpose of Windows Firewall?
+                    </li>
+
+                    <li>
+                        What is the difference between inbound and outbound traffic?
+                    </li>
+
+                    <li>
+                        What are Domain, Private and Public profiles?
+                    </li>
+
+                    <li>
+                        What is a firewall rule?
+                    </li>
+
+                    <li>
+                        What does wf.msc open?
+                    </li>
+
+                    <li>
+                        Which PowerShell command displays firewall profiles?
+                    </li>
+
+                    <li>
+                        Why should temporary lab rules be removed after testing?
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- FINAL CHECKLIST -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lab Completion Checklist
+                    </h2>
+
+                </div>
+
+                <ul class="lab-checklist">
+
+                    <li>
+                        Windows Firewall Advanced Security opened.
+                    </li>
+
+                    <li>
+                        Firewall profiles inspected.
+                    </li>
+
+                    <li>
+                        Firewall status checked.
+                    </li>
+
+                    <li>
+                        Firewall rules viewed.
+                    </li>
+
+                    <li>
+                        Temporary test rule created.
+                    </li>
+
+                    <li>
+                        Test rule verified.
+                    </li>
+
+                    <li>
+                        Test rule removed.
+                    </li>
+
+                    <li>
+                        Rule removal verified.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="windows-lab-navigation">
+
+                <a
+                    href="lab08.html"
+                    class="windows-lab-button"
+                >
+                    <span>←</span>
+                    <strong>Previous: Lab 08: Event Viewer</strong>
+                </a>
+
+                <a
+                    href="../theory/windows-security.html"
+                    class="windows-lab-button theory"
+                >
+                    <span>📘</span>
+                    <strong>Theory: Windows Security</strong>
+                </a>
+
+                <!-- <a
+                    href="lab10.html"
+                    class="windows-lab-button"
+                >
+                    <strong>Next: Lab 10: Windows Security</strong>
+                    <span>→</span>
+                </a> -->
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

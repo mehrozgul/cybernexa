@@ -1,0 +1,2462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Routing Practical Lab | CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .network-lab-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            padding: 55px 15px 65px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(14, 165, 233, 0.13),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+        .network-lab-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .network-lab-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .network-lab-category {
+            display: inline-block;
+            margin-bottom: 12px;
+
+            color: #22d3ee;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .network-lab-header h1 {
+            margin: 0;
+            color: #f8fafc;
+            font-size: 42px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        .network-lab-header h1 span {
+            color: #38bdf8;
+        }
+
+        .network-lab-intro {
+            max-width: 720px;
+            margin: 14px auto 0;
+
+            color: #aebbc5;
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           LAB INFO
+        ===================================================== */
+
+        .network-lab-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .network-info-card {
+            padding: 14px;
+
+            border: 1px solid rgba(34, 211, 238, 0.15);
+            border-radius: 9px;
+
+            background: rgba(34, 211, 238, 0.035);
+        }
+
+        .network-info-icon {
+            margin-bottom: 7px;
+            color: #22d3ee;
+            font-size: 17px;
+        }
+
+        .network-info-label {
+            margin-bottom: 3px;
+
+            color: #71808c;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .network-info-value {
+            color: #e2e8f0;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .network-lab-progress {
+            margin-bottom: 25px;
+            padding: 14px 16px;
+
+            border: 1px solid rgba(34, 211, 238, 0.16);
+            border-radius: 10px;
+
+            background: rgba(34, 211, 238, 0.035);
+        }
+
+        .network-progress-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 9px;
+        }
+
+        .network-progress-title {
+            color: #f8fafc;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .network-progress-count {
+            color: #22d3ee;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .network-progress-track {
+            width: 100%;
+            height: 4px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(34, 211, 238, 0.10);
+        }
+
+        .network-progress-bar {
+            width: 66.66%;
+            height: 100%;
+
+            background: linear-gradient(
+                90deg,
+                #22d3ee,
+                #38bdf8
+            );
+        }
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .network-section {
+            margin-bottom: 18px;
+            padding: 20px;
+
+            border: 1px solid rgba(34, 211, 238, 0.15);
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+        }
+
+        .network-section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            margin-bottom: 12px;
+
+            color: #f8fafc;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .network-section-icon {
+            color: #22d3ee;
+            font-size: 18px;
+        }
+
+        .network-section p {
+            margin: 0 0 12px;
+
+            color: #aebbc5;
+            font-size: 10px;
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           DIAGRAM
+        ===================================================== */
+
+        .network-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 10px;
+            margin: 20px 0;
+
+            flex-wrap: wrap;
+        }
+
+        .network-node {
+            min-width: 110px;
+            padding: 13px 10px;
+
+            border: 1px solid rgba(34, 211, 238, 0.20);
+            border-radius: 8px;
+
+            text-align: center;
+
+            background: rgba(34, 211, 238, 0.045);
+        }
+
+        .network-node-icon {
+            margin-bottom: 5px;
+            color: #22d3ee;
+            font-size: 20px;
+        }
+
+        .network-node-title {
+            color: #f8fafc;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .network-node-text {
+            margin-top: 3px;
+            color: #7f909d;
+            font-size: 8px;
+        }
+
+        .network-arrow {
+            color: #38bdf8;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           TASK
+        ===================================================== */
+
+        .network-task {
+            margin-top: 12px;
+            padding: 14px;
+
+            border-left: 3px solid #22d3ee;
+            border-radius: 7px;
+
+            background: rgba(34, 211, 238, 0.045);
+        }
+
+        .network-task-title {
+            margin-bottom: 7px;
+            color: #67e8f9;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .network-task p {
+            margin: 0;
+            color: #aebbc5;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           COMMAND BLOCK
+        ===================================================== */
+
+        .network-command {
+            position: relative;
+
+            margin: 12px 0;
+            padding: 15px;
+
+            border: 1px solid rgba(34, 211, 238, 0.13);
+            border-radius: 8px;
+
+            background: #010508;
+
+            overflow-x: auto;
+        }
+
+        .network-command-label {
+            margin-bottom: 8px;
+
+            color: #22d3ee;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+        }
+
+        .network-command code {
+            color: #dbeafe;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 10px;
+            line-height: 1.8;
+
+            white-space: pre;
+        }
+
+        .network-copy {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+
+            padding: 5px 8px;
+
+            border: 1px solid rgba(34, 211, 238, 0.18);
+            border-radius: 5px;
+
+            color: #67e8f9;
+            background: rgba(34, 211, 238, 0.05);
+
+            font-size: 8px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .network-copy:hover {
+            border-color: rgba(34, 211, 238, 0.55);
+            background: rgba(34, 211, 238, 0.09);
+        }
+
+        /* =====================================================
+           OUTPUT
+        ===================================================== */
+
+        .network-output {
+            margin-top: 10px;
+            padding: 14px;
+
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 8px;
+
+            background: #010508;
+
+            overflow-x: auto;
+        }
+
+        .network-output-title {
+            margin-bottom: 7px;
+
+            color: #60a5fa;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .network-output pre {
+            margin: 0;
+
+            color: #94a3b8;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 9px;
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+        /* =====================================================
+           CHECKLIST
+        ===================================================== */
+
+        .network-checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .network-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+
+            padding: 10px;
+
+            border: 1px solid rgba(34, 211, 238, 0.10);
+            border-radius: 7px;
+
+            background: rgba(34, 211, 238, 0.025);
+        }
+
+        .network-check input {
+            margin-top: 2px;
+            accent-color: #22d3ee;
+            cursor: pointer;
+        }
+
+        .network-check label {
+            color: #aebbc5;
+            font-size: 10px;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           KEY CONCEPTS
+        ===================================================== */
+
+        .network-concepts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .network-concept {
+            padding: 12px;
+
+            border: 1px solid rgba(34, 211, 238, 0.12);
+            border-radius: 8px;
+
+            background: rgba(34, 211, 238, 0.025);
+        }
+
+        .network-concept strong {
+            display: block;
+            margin-bottom: 5px;
+
+            color: #67e8f9;
+            font-size: 10px;
+        }
+
+        .network-concept span {
+            color: #8999a5;
+            font-size: 9px;
+            line-height: 1.55;
+        }
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .network-table-wrap {
+            margin-top: 12px;
+            overflow-x: auto;
+            border: 1px solid rgba(34, 211, 238, 0.10);
+            border-radius: 8px;
+        }
+
+        .network-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+            background: #010508;
+        }
+
+        .network-table th,
+        .network-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(34, 211, 238, 0.08);
+            text-align: left;
+            font-size: 9px;
+        }
+
+        .network-table th {
+            color: #67e8f9;
+            background: rgba(34, 211, 238, 0.045);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .network-table td {
+            color: #aebbc5;
+        }
+
+        .network-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* =====================================================
+           SAFETY
+        ===================================================== */
+
+        .network-safety {
+            margin-top: 18px;
+            padding: 17px;
+
+            border: 1px solid rgba(96, 165, 250, 0.18);
+            border-radius: 9px;
+
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .network-safety h2 {
+            margin: 0 0 8px;
+            color: #f8fafc;
+            font-size: 13px;
+        }
+
+        .network-safety p {
+            margin: 0;
+            color: #aebbc5;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .network-navigation {
+            display: flex;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .network-button {
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid rgba(34, 211, 238, 0.16);
+            border-radius: 8px;
+
+            color: #dbeafe;
+            background: rgba(34, 211, 238, 0.035);
+
+            text-decoration: none;
+            text-align: center;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+        .network-button:hover {
+            border-color: rgba(34, 211, 238, 0.55);
+            background: rgba(34, 211, 238, 0.08);
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .network-lab-page {
+                padding: 45px 10px 55px;
+            }
+
+            .network-lab-header h1 {
+                font-size: 30px;
+            }
+
+            .network-lab-intro {
+                font-size: 11px;
+            }
+
+            .network-lab-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .network-concepts {
+                grid-template-columns: 1fr;
+            }
+
+            .network-diagram {
+                flex-direction: column;
+            }
+
+            .network-arrow {
+                transform: rotate(90deg);
+            }
+
+            .network-navigation {
+                flex-direction: column;
+            }
+
+            .network-button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            .network-lab-info {
+                grid-template-columns: 1fr;
+            }
+
+            .network-section {
+                padding: 15px;
+            }
+
+            .network-lab-header h1 {
+                font-size: 27px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="network-lab-page">
+
+<div class="network-lab-container">
+
+
+<header class="network-lab-header">
+
+    <div class="network-lab-category">
+        🌐 NETWORKING PRACTICAL LAB
+    </div>
+
+    <h1>
+        <span>Routing</span> Practical Lab
+    </h1>
+
+    <p class="network-lab-intro">
+        Configure static routing between two Cisco routers,
+        connect different networks, verify routing tables and
+        test end-to-end connectivity using Cisco Packet Tracer.
+    </p>
+
+</header>
+
+
+<!-- =====================================================
+     INFO
+====================================================== -->
+
+<div class="network-lab-info">
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">🌐</div>
+
+        <div class="network-info-label">
+            Category
+        </div>
+
+        <div class="network-info-value">
+            Networking
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">🛣️</div>
+
+        <div class="network-info-label">
+            Topic
+        </div>
+
+        <div class="network-info-value">
+            Routing
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">🧪</div>
+
+        <div class="network-info-label">
+            Environment
+        </div>
+
+        <div class="network-info-value">
+            Cisco Packet Tracer
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">📊</div>
+
+        <div class="network-info-label">
+            Level
+        </div>
+
+        <div class="network-info-value">
+            Beginner
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PROGRESS
+====================================================== -->
+
+<div class="network-lab-progress">
+
+    <div class="network-progress-top">
+
+        <div class="network-progress-title">
+            Networking Practical Path
+        </div>
+
+        <div class="network-progress-count">
+            Routing Lab
+        </div>
+
+    </div>
+
+    <div class="network-progress-track">
+
+        <div
+            class="network-progress-bar"
+            style="width: 66.66%;"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     OBJECTIVE
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🎯
+        </span>
+
+        Lab Objective
+
+    </div>
+
+    <p>
+        In this practical lab, you will connect two different
+        IP networks using two Cisco routers.
+    </p>
+
+    <p>
+        You will configure router interfaces, assign IP addresses,
+        create static routes and verify communication between
+        networks.
+    </p>
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 What You Will Learn
+        </div>
+
+        <p>
+            You will practice routing concepts, router interfaces,
+            static routes, next-hop addresses, routing tables,
+            default gateways and connectivity testing.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TOPOLOGY
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🔗
+        </span>
+
+        Network Topology
+
+    </div>
+
+    <p>
+        Build the following topology in Cisco Packet Tracer.
+        Use two routers, two switches and four PCs.
+    </p>
+
+    <div class="network-diagram">
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                PC1 / PC2
+            </div>
+
+            <div class="network-node-text">
+                LAN 1
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                🔀
+            </div>
+
+            <div class="network-node-title">
+                Switch SW1
+            </div>
+
+            <div class="network-node-text">
+                192.168.10.0/24
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                📡
+            </div>
+
+            <div class="network-node-title">
+                Router R1
+            </div>
+
+            <div class="network-node-text">
+                10.0.0.1
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                📡
+            </div>
+
+            <div class="network-node-title">
+                Router R2
+            </div>
+
+            <div class="network-node-text">
+                10.0.0.2
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                🔀
+            </div>
+
+            <div class="network-node-title">
+                Switch SW2
+            </div>
+
+            <div class="network-node-text">
+                192.168.20.0/24
+            </div>
+
+        </div>
+
+
+        <div class="network-arrow">
+            →
+        </div>
+
+
+        <div class="network-node">
+
+            <div class="network-node-icon">
+                💻
+            </div>
+
+            <div class="network-node-title">
+                PC3 / PC4
+            </div>
+
+            <div class="network-node-text">
+                LAN 2
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧩 Network Plan
+        </div>
+
+        <p>
+            LAN 1 = 192.168.10.0/24 &nbsp; | &nbsp;
+            Router Link = 10.0.0.0/30 &nbsp; | &nbsp;
+            LAN 2 = 192.168.20.0/24
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     IP ADDRESSING
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📋
+        </span>
+
+        IP Addressing Plan
+
+    </div>
+
+    <p>
+        Use the following addressing scheme for the Packet Tracer
+        routing lab.
+    </p>
+
+
+    <div class="network-table-wrap">
+
+        <table class="network-table">
+
+            <thead>
+
+                <tr>
+                    <th>Device</th>
+                    <th>Interface</th>
+                    <th>IP Address</th>
+                    <th>Subnet Mask</th>
+                    <th>Gateway</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+                    <td>PC1</td>
+                    <td>FastEthernet</td>
+                    <td>192.168.10.10</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.10.1</td>
+                </tr>
+
+                <tr>
+                    <td>PC2</td>
+                    <td>FastEthernet</td>
+                    <td>192.168.10.11</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.10.1</td>
+                </tr>
+
+                <tr>
+                    <td>R1</td>
+                    <td>G0/0</td>
+                    <td>192.168.10.1</td>
+                    <td>255.255.255.0</td>
+                    <td>—</td>
+                </tr>
+
+                <tr>
+                    <td>R1</td>
+                    <td>G0/1</td>
+                    <td>10.0.0.1</td>
+                    <td>255.255.255.252</td>
+                    <td>—</td>
+                </tr>
+
+                <tr>
+                    <td>R2</td>
+                    <td>G0/0</td>
+                    <td>10.0.0.2</td>
+                    <td>255.255.255.252</td>
+                    <td>—</td>
+                </tr>
+
+                <tr>
+                    <td>R2</td>
+                    <td>G0/1</td>
+                    <td>192.168.20.1</td>
+                    <td>255.255.255.0</td>
+                    <td>—</td>
+                </tr>
+
+                <tr>
+                    <td>PC3</td>
+                    <td>FastEthernet</td>
+                    <td>192.168.20.10</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.20.1</td>
+                </tr>
+
+                <tr>
+                    <td>PC4</td>
+                    <td>FastEthernet</td>
+                    <td>192.168.20.11</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.20.1</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 01
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            01
+        </span>
+
+        Configure Router R1 Interfaces
+
+    </div>
+
+    <p>
+        Configure the LAN interface and the router-to-router
+        interface on R1.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Cisco IOS — R1
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`enable
+configure terminal
+interface g0/0
+ip address 192.168.10.1 255.255.255.0
+no shutdown
+exit
+interface g0/1
+ip address 10.0.0.1 255.255.255.252
+no shutdown
+end`, this)"
+        >
+            Copy
+        </button>
+
+        <code>enable
+configure terminal
+interface g0/0
+ip address 192.168.10.1 255.255.255.0
+no shutdown
+exit
+interface g0/1
+ip address 10.0.0.1 255.255.255.252
+no shutdown
+end</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Verification
+        </div>
+
+        <pre>show ip interface brief
+
+GigabitEthernet0/0   192.168.10.1   up   up
+GigabitEthernet0/1   10.0.0.1       up   up</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 Understand the Result
+        </div>
+
+        <p>
+            R1 now has one interface connected to LAN 1 and another
+            interface connected to R2.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 02
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            02
+        </span>
+
+        Configure Router R2 Interfaces
+
+    </div>
+
+    <p>
+        Configure the LAN interface and the router-to-router
+        interface on R2.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Cisco IOS — R2
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`enable
+configure terminal
+interface g0/0
+ip address 10.0.0.2 255.255.255.252
+no shutdown
+exit
+interface g0/1
+ip address 192.168.20.1 255.255.255.0
+no shutdown
+end`, this)"
+        >
+            Copy
+        </button>
+
+        <code>enable
+configure terminal
+interface g0/0
+ip address 10.0.0.2 255.255.255.252
+no shutdown
+exit
+interface g0/1
+ip address 192.168.20.1 255.255.255.0
+no shutdown
+end</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Verification
+        </div>
+
+        <pre>show ip interface brief
+
+GigabitEthernet0/0   10.0.0.2       up   up
+GigabitEthernet0/1   192.168.20.1   up   up</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 Important
+        </div>
+
+        <p>
+            R2 must have an interface in the router-to-router network
+            and another interface in LAN 2.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 03
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            03
+        </span>
+
+        Configure Static Route on R1
+
+    </div>
+
+    <p>
+        R1 knows its directly connected networks, but it does not
+        automatically know the remote LAN behind R2. Add a static
+        route to LAN 2 using R2 as the next hop.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Cisco IOS — R1
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`enable
+configure terminal
+ip route 192.168.20.0 255.255.255.0 10.0.0.2
+end`, this)"
+        >
+            Copy
+        </button>
+
+        <code>enable
+configure terminal
+ip route 192.168.20.0 255.255.255.0 10.0.0.2
+end</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Verification
+        </div>
+
+        <pre>show ip route
+
+S    192.168.20.0/24 [1/0] via 10.0.0.2</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 Understand the Result
+        </div>
+
+        <p>
+            The S in the routing table represents a static route.
+            R1 will forward traffic for 192.168.20.0/24 to R2 at
+            10.0.0.2.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 04
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            04
+        </span>
+
+        Configure Static Route on R2
+
+    </div>
+
+    <p>
+        R2 also needs a route back to LAN 1. Configure the remote
+        network using R1 as the next-hop router.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Cisco IOS — R2
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`enable
+configure terminal
+ip route 192.168.10.0 255.255.255.0 10.0.0.1
+end`, this)"
+        >
+            Copy
+        </button>
+
+        <code>enable
+configure terminal
+ip route 192.168.10.0 255.255.255.0 10.0.0.1
+end</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Verification
+        </div>
+
+        <pre>show ip route
+
+S    192.168.10.0/24 [1/0] via 10.0.0.1</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔁 Why Is the Return Route Needed?
+        </div>
+
+        <p>
+            Communication requires a path in both directions.
+            R2 needs to know how to send response traffic back
+            to the 192.168.10.0/24 network.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 05
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            05
+        </span>
+
+        Configure PC IP Addresses
+
+    </div>
+
+    <p>
+        Configure each PC with an IP address from the correct LAN
+        and use the router interface as its default gateway.
+    </p>
+
+
+    <div class="network-table-wrap">
+
+        <table class="network-table">
+
+            <thead>
+
+                <tr>
+                    <th>PC</th>
+                    <th>Network</th>
+                    <th>IP Address</th>
+                    <th>Subnet Mask</th>
+                    <th>Gateway</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+                    <td>PC1</td>
+                    <td>LAN 1</td>
+                    <td>192.168.10.10</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.10.1</td>
+                </tr>
+
+                <tr>
+                    <td>PC2</td>
+                    <td>LAN 1</td>
+                    <td>192.168.10.11</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.10.1</td>
+                </tr>
+
+                <tr>
+                    <td>PC3</td>
+                    <td>LAN 2</td>
+                    <td>192.168.20.10</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.20.1</td>
+                </tr>
+
+                <tr>
+                    <td>PC4</td>
+                    <td>LAN 2</td>
+                    <td>192.168.20.11</td>
+                    <td>255.255.255.0</td>
+                    <td>192.168.20.1</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 Packet Tracer
+        </div>
+
+        <p>
+            On each PC, open Desktop → IP Configuration and enter
+            the corresponding IP address, subnet mask and default gateway.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 06
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            06
+        </span>
+
+        Verify Routing Tables
+
+    </div>
+
+    <p>
+        Use the show ip route command on both routers to verify
+        directly connected networks and static routes.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Cisco IOS — R1 / R2
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`show ip route
+show ip interface brief`, this)"
+        >
+            Copy
+        </button>
+
+        <code>show ip route
+show ip interface brief</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            What to Check
+        </div>
+
+        <pre>R1:
+Connected → 192.168.10.0/24
+Connected → 10.0.0.0/30
+Static    → 192.168.20.0/24 via 10.0.0.2
+
+R2:
+Connected → 192.168.20.0/24
+Connected → 10.0.0.0/30
+Static    → 192.168.10.0/24 via 10.0.0.1</pre>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     STEP 07
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            07
+        </span>
+
+        Test Connectivity
+
+    </div>
+
+    <p>
+        First test communication inside each LAN. Then test
+        communication between the two different networks.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            PC Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`ping 192.168.10.11
+ping 192.168.20.10`, this)"
+        >
+            Copy
+        </button>
+
+        <code>ping 192.168.10.11
+ping 192.168.20.10</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Expected Result
+        </div>
+
+        <pre>Reply from 192.168.10.11: bytes=32 time&lt;1ms TTL=128
+
+Reply from 192.168.20.10: bytes=32 time&lt;1ms TTL=127</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 Understand the Result
+        </div>
+
+        <p>
+            A successful cross-network ping shows that the PCs,
+            router interfaces, static routes and return path are
+            working together.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ROUTING CONCEPTS
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🧭
+        </span>
+
+        Routing Concepts
+
+    </div>
+
+
+    <div class="network-concepts">
+
+        <div class="network-concept">
+
+            <strong>Routing</strong>
+
+            <span>
+                The process of selecting a path for packets to
+                travel between different networks.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Static Route</strong>
+
+            <span>
+                A route manually configured by a network administrator.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Next Hop</strong>
+
+            <span>
+                The next router address to which traffic should
+                be forwarded.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Routing Table</strong>
+
+            <span>
+                A table used by a router to determine where packets
+                should be forwarded.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Default Gateway</strong>
+
+            <span>
+                The router interface used by a host to reach
+                another network.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Connected Route</strong>
+
+            <span>
+                A route automatically created when a router interface
+                is configured and active.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TROUBLESHOOTING
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🛠️
+        </span>
+
+        Common Troubleshooting
+
+    </div>
+
+
+    <div class="network-concepts">
+
+        <div class="network-concept">
+
+            <strong>Interface Down</strong>
+
+            <span>
+                Check the interface status with show ip interface
+                brief and use no shutdown if required.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Wrong IP</strong>
+
+            <span>
+                Verify that router and PC addresses belong to
+                the correct subnet.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Wrong Gateway</strong>
+
+            <span>
+                Check that every PC uses the router interface
+                in its own LAN as the default gateway.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Missing Route</strong>
+
+            <span>
+                Use show ip route and verify that the remote
+                network has a valid route.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Wrong Next Hop</strong>
+
+            <span>
+                Check that the static route points to the correct
+                neighboring router address.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Return Path</strong>
+
+            <span>
+                Make sure the destination router also has a route
+                back to the source network.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CYBERSECURITY IMPORTANCE
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🛡️
+        </span>
+
+        Why Routing Matters in Cybersecurity
+
+    </div>
+
+    <p>
+        Routing is an important networking concept for cybersecurity
+        because security devices and systems must understand how
+        traffic moves between different networks.
+    </p>
+
+
+    <div class="network-concepts">
+
+        <div class="network-concept">
+
+            <strong>Network Segmentation</strong>
+
+            <span>
+                Routing allows communication between separated
+                network segments under defined conditions.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Access Control</strong>
+
+            <span>
+                Routing combined with ACLs can help control which
+                traffic is allowed between networks.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Traffic Flow</strong>
+
+            <span>
+                Understanding routes helps security analysts
+                understand how packets move through a network.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Firewall Placement</strong>
+
+            <span>
+                Routers and firewalls can be positioned between
+                networks to enforce security policies.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Network Monitoring</strong>
+
+            <span>
+                Routing information can help identify expected
+                network paths during security monitoring.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Incident Response</strong>
+
+            <span>
+                Understanding routes helps determine how systems
+                can communicate during network investigations.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     COMPLETION CHECKLIST
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            ✓
+        </span>
+
+        Lab Completion Checklist
+
+    </div>
+
+
+    <div class="network-checklist">
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check1"
+            >
+
+            <label for="check1">
+                I configured the LAN interface on R1.
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check2"
+            >
+
+            <label for="check2">
+                I configured the router-to-router interface on R1.
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check3"
+            >
+
+            <label for="check3">
+                I configured the LAN interface on R2.
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check4"
+            >
+
+            <label for="check4">
+                I configured the router-to-router interface on R2.
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check5"
+            >
+
+            <label for="check5">
+                I configured the static route on R1.
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check6"
+            >
+
+            <label for="check6">
+                I configured the return static route on R2.
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check7"
+            >
+
+            <label for="check7">
+                I configured the correct IP address and gateway on each PC.
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check8"
+            >
+
+            <label for="check8">
+                I verified the routing tables using show ip route.
+            </label>
+
+        </div>
+
+
+        <div class="network-check">
+
+            <input
+                type="checkbox"
+                id="check9"
+            >
+
+            <label for="check9">
+                I successfully tested communication between both LANs.
+            </label>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🧠
+        </span>
+
+        Key Concepts
+
+    </div>
+
+
+    <div class="network-concepts">
+
+        <div class="network-concept">
+
+            <strong>Router</strong>
+
+            <span>
+                A Layer 3 device that forwards packets between
+                different networks.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Routing Table</strong>
+
+            <span>
+                Contains information about available network paths.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Static Routing</strong>
+
+            <span>
+                Routes manually configured by an administrator.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Next Hop</strong>
+
+            <span>
+                The neighboring router used to reach a remote network.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Default Gateway</strong>
+
+            <span>
+                The router address used by a host for remote networks.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>Inter-Network Communication</strong>
+
+            <span>
+                Communication between devices located in different
+                IP networks.
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📘
+        </span>
+
+        Practical Lab Summary
+
+    </div>
+
+    <p>
+        In this lab, you connected two separate LANs using two
+        Cisco routers.
+    </p>
+
+    <p>
+        You configured router interfaces, assigned IP addresses
+        and created static routes using next-hop addresses.
+    </p>
+
+    <p>
+        You then verified routing tables and tested communication
+        between the two networks using ping.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     SAFETY
+====================================================== -->
+
+<section class="network-safety">
+
+    <h2>
+        🧪 Learning Safety
+    </h2>
+
+    <p>
+        Perform these configurations only in your own Cisco Packet
+        Tracer lab or on network devices you are explicitly authorized
+        to administer. Use the commands for legitimate networking,
+        administration and cybersecurity learning.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<div class="network-navigation">
+
+    <a
+        href="lab20.html"
+        class="network-button"
+    >
+        Previous: Lab  
+    </a>
+
+
+    <a
+        href="../theory/network-troubleshooting.html"
+        class="network-button"
+    >
+        ☰ Network Troubleshooting
+    </a>
+
+<!-- 
+    <a
+        href="acl-practical-lab.html"
+        class="network-button"
+    >
+        Next Topic →
+    </a> -->
+
+</div>
+
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script src="../../../js/navbar.js"></script>
+
+
+<script>
+
+function copyCommand(command, button) {
+
+    navigator.clipboard.writeText(command);
+
+    const originalText = button.innerText;
+
+    button.innerText = "Copied";
+
+    setTimeout(() => {
+
+        button.innerText = originalText;
+
+    }, 1200);
+
+}
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>File Upload Vulnerabilities Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 10% 8%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 10%,
+                    rgba(0, 255, 176, 0.05),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* HERO */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 38px 32px;
+
+            margin-bottom: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.15);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 34, 0.98),
+                    rgba(2, 10, 20, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            margin-bottom: 12px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 38px;
+            line-height: 1.15;
+        }
+
+        .lab-hero h1 span {
+
+            color: #00ffb0;
+        }
+
+        .lab-hero p {
+
+            max-width: 760px;
+
+            margin: 14px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.85;
+        }
+
+        /* INFO */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .info-box small {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+        .info-box strong {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+        }
+
+        .safe {
+
+            color: #00ffb0 !important;
+        }
+
+        /* CARD */
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            margin-bottom: 16px;
+        }
+
+        .number {
+
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.22);
+
+            border-radius: 7px;
+
+            color: #00ffb0;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+        .lab-card > p {
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* SIMULATOR */
+
+        .simulator {
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.12);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, 0.22);
+        }
+
+        .simulator-title {
+
+            margin-bottom: 12px;
+
+            color: #00ffb0;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .upload-area {
+
+            padding: 24px;
+
+            text-align: center;
+
+            border:
+                1px dashed rgba(0, 191, 255, 0.25);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .upload-area input {
+
+            width: 100%;
+
+            margin: 10px 0;
+
+            color: #8fa5bb;
+
+            font-size: 11px;
+        }
+
+        .analyze-btn {
+
+            padding: 11px 18px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.30);
+
+            border-radius: 7px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .analyze-btn:hover {
+
+            border-color:
+                rgba(0, 255, 176, 0.55);
+
+            background:
+                rgba(0, 255, 176, 0.09);
+        }
+
+        .result {
+
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            color: #8fa5bb;
+
+            background:
+                rgba(0, 0, 0, 0.30);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+        /* MCQ */
+
+        .question {
+
+            padding: 18px;
+
+            margin-bottom: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .question:last-child {
+
+            margin-bottom: 0;
+        }
+
+        .question p {
+
+            margin: 0 0 12px;
+
+            color: #dce9f4;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            line-height: 1.7;
+        }
+
+        .option {
+
+            display: block;
+
+            margin: 7px 0;
+
+            padding: 9px 11px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.07);
+
+            border-radius: 6px;
+
+            color: #71879b;
+
+            cursor: pointer;
+
+            font-size: 11px;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 255, 176, 0.22);
+
+            color: #ccefe5;
+        }
+
+        .option input {
+
+            margin-right: 7px;
+        }
+
+        .submit-btn {
+
+            width: 100%;
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.28);
+
+            border-radius: 8px;
+
+            color: #d8f7ff;
+
+            background:
+                rgba(0, 191, 255, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .score {
+
+            margin-top: 14px;
+
+            text-align: center;
+
+            color: #00ffb0;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        /* WARNING */
+
+        .warning {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.18);
+
+            border-radius: 9px;
+
+            background:
+                rgba(255, 177, 0, 0.025);
+        }
+
+        .warning strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffc44d;
+
+            font-size: 12px;
+        }
+
+        .warning p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 11px;
+
+            line-height: 1.75;
+        }
+
+        /* NAVIGATION */
+
+        .navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .navigation a {
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 8px;
+
+            color: #71879b;
+
+            background:
+                rgba(0, 191, 255, 0.02);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .navigation a:hover {
+
+            color: #ccefe5;
+
+            border-color:
+                rgba(0, 255, 176, 0.25);
+        }
+
+        @media (max-width: 800px) {
+
+            .lab-info {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+
+                font-size: 30px;
+            }
+
+            .lab-card {
+
+                padding: 20px;
+            }
+
+            .lab-info {
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .navigation {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+<div class="lab-container">
+
+
+    <!-- HERO -->
+
+    <section class="lab-hero">
+
+        <div class="lab-kicker">
+            WEB SECURITY LAB / 07
+        </div>
+
+        <h1>
+            <span>File Upload</span>
+            Vulnerabilities Lab
+        </h1>
+
+        <p>
+            Analyze how a secure web application should handle uploaded
+            files. This laboratory uses a browser-based simulation and
+            knowledge assessment rather than attacking a real server.
+        </p>
+
+    </section>
+
+
+    <!-- INFO -->
+
+    <div class="lab-info">
+
+        <div class="info-box">
+
+            <small>
+                Lab Type
+            </small>
+
+            <strong>
+                Simulation
+            </strong>
+
+        </div>
+
+        <div class="info-box">
+
+            <small>
+                Level
+            </small>
+
+            <strong>
+                Intermediate
+            </strong>
+
+        </div>
+
+        <div class="info-box">
+
+            <small>
+                Environment
+            </small>
+
+            <strong class="safe">
+                Safe / Local
+            </strong>
+
+        </div>
+
+        <div class="info-box">
+
+            <small>
+                Focus
+            </small>
+
+            <strong>
+                Upload Validation
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRACTICAL -->
+
+    <section class="lab-card">
+
+        <div class="heading">
+
+            <div class="number">
+                01
+            </div>
+
+            <h2>
+                Practical Upload Security Simulator
+            </h2>
+
+        </div>
+
+        <p>
+            Select a local file. The simulator will inspect its filename,
+            extension and size and demonstrate how an application could
+            apply basic security rules.
+        </p>
+
+
+        <div class="simulator">
+
+            <div class="simulator-title">
+                LOCAL UPLOAD ANALYZER
+            </div>
+
+            <div class="upload-area">
+
+                <div>
+                    Choose a file for the local security simulation.
+                </div>
+
+                <input
+                    type="file"
+                    id="fileInput"
+                >
+
+                <button
+                    class="analyze-btn"
+                    onclick="analyzeFile()"
+                >
+                    Analyze Upload
+                </button>
+
+            </div>
+
+            <div
+                class="result"
+                id="result"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MCQS -->
+
+    <section class="lab-card">
+
+        <div class="heading">
+
+            <div class="number">
+                02
+            </div>
+
+            <h2>
+                Knowledge Check
+            </h2>
+
+        </div>
+
+        <div class="question">
+
+            <p>
+                1. What should an application treat an uploaded file as?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q1" value="a">
+                Trusted input
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="b">
+                Untrusted input
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="c">
+                System configuration
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <p>
+                2. Which control helps prevent unexpectedly large uploads?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q2" value="a">
+                File-size limit
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="b">
+                Larger filenames
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="c">
+                Public storage
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <p>
+                3. Why should uploaded files preferably be isolated from
+                executable application areas?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q3" value="a">
+                To make filenames longer
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="b">
+                To reduce the possibility of unintended execution
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="c">
+                To remove authentication
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <p>
+                4. Which approach is stronger than trusting only a filename
+                extension?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q4" value="a">
+                Content-aware validation
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q4" value="b">
+                No validation
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q4" value="c">
+                Predictable filenames
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <p>
+                5. What should control access to private uploaded files?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q5" value="a">
+                Authorization checks
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q5" value="b">
+                Filename length
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q5" value="c">
+                Browser theme
+            </label>
+
+        </div>
+
+
+        <button
+            class="submit-btn"
+            onclick="checkQuiz()"
+        >
+            Submit Security Assessment
+        </button>
+
+        <div
+            class="score"
+            id="score"
+        ></div>
+
+    </section>
+
+
+    <!-- SECURITY RULES -->
+
+    <section class="lab-card">
+
+        <div class="heading">
+
+            <div class="number">
+                03
+            </div>
+
+            <h2>
+                Secure Upload Checklist
+            </h2>
+
+        </div>
+
+        <div class="warning">
+
+            <strong>
+                ⚠ Authorized / Defensive Learning
+            </strong>
+
+            <p>
+                In a real application, validate file type and content,
+                enforce size limits, generate safe server-side filenames,
+                isolate uploaded files, apply least privilege and verify
+                authorization before allowing users to access stored files.
+                Perform security testing only on systems you own or are
+                explicitly authorized to assess.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="navigation">
+
+        <a href="idor-lab.html">
+            ← Lab: IDOR
+        </a>
+
+        <a href="web-security-lab.html">
+            All Labs
+        </a>
+
+        <a href="../theory/command-injection.html">
+            Next Theory: Command Injection →
+        </a>
+
+    </div>
+
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+    /* =====================================================
+       LOCAL FILE UPLOAD SIMULATOR
+       ===================================================== */
+
+    function analyzeFile() {
+
+        const input =
+            document.getElementById("fileInput");
+
+        const result =
+            document.getElementById("result");
+
+        if (!input.files.length) {
+
+            result.style.display = "block";
+
+            result.innerHTML =
+                "<span style='color:#ffc44d;'>⚠ Please select a local file first.</span>";
+
+            return;
+        }
+
+        const file = input.files[0];
+
+        const fileName = file.name;
+
+        const fileSize = file.size;
+
+        const extension =
+            fileName.includes(".")
+                ? fileName
+                    .split(".")
+                    .pop()
+                    .toLowerCase()
+                : "none";
+
+        const allowedTypes = [
+            "jpg",
+            "jpeg",
+            "png",
+            "gif",
+            "pdf",
+            "txt",
+            "doc",
+            "docx"
+        ];
+
+        const maxSize =
+            5 * 1024 * 1024;
+
+        let messages = [];
+
+        if (!allowedTypes.includes(extension)) {
+
+            messages.push(
+                "⚠ Extension is outside the example allowlist."
+            );
+
+        } else {
+
+            messages.push(
+                "✓ Extension is present in the example allowlist."
+            );
+
+        }
+
+        if (fileSize > maxSize) {
+
+            messages.push(
+                "⚠ File exceeds the example 5 MB size limit."
+            );
+
+        } else {
+
+            messages.push(
+                "✓ File is within the example size limit."
+            );
+
+        }
+
+        messages.push(
+            "ℹ A real application should also perform stronger content validation and secure server-side storage."
+        );
+
+        result.style.display = "block";
+
+        result.innerHTML =
+
+            "<strong style='color:#00bfff;'>UPLOAD ANALYSIS</strong><br><br>" +
+
+            "File: " +
+            escapeHTML(fileName) +
+            "<br>" +
+
+            "Extension: " +
+            escapeHTML(extension) +
+            "<br>" +
+
+            "Size: " +
+            formatBytes(fileSize) +
+            "<br><br>" +
+
+            messages.join("<br>");
+
+    }
+
+
+    function formatBytes(bytes) {
+
+        if (bytes === 0) {
+            return "0 Bytes";
+        }
+
+        const units = [
+            "Bytes",
+            "KB",
+            "MB",
+            "GB"
+        ];
+
+        const index =
+            Math.floor(
+                Math.log(bytes) /
+                Math.log(1024)
+            );
+
+        return (
+            (bytes /
+                Math.pow(1024, index))
+                .toFixed(2)
+            + " "
+            + units[index]
+        );
+
+    }
+
+
+    function escapeHTML(value) {
+
+        return value
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =====================================================
+       QUIZ
+       ===================================================== */
+
+    function checkQuiz() {
+
+        const answers = {
+
+            q1: "b",
+            q2: "a",
+            q3: "b",
+            q4: "a",
+            q5: "a"
+
+        };
+
+        let score = 0;
+
+        Object.keys(answers).forEach(function(question) {
+
+            const selected =
+                document.querySelector(
+                    'input[name="' +
+                    question +
+                    '"]:checked'
+                );
+
+            if (
+                selected &&
+                selected.value === answers[question]
+            ) {
+
+                score++;
+
+            }
+
+        });
+
+        const scoreBox =
+            document.getElementById("score");
+
+        scoreBox.innerHTML =
+            "Security Assessment Score: " +
+            score +
+            " / 5";
+
+    }
+
+</script>
+
+
+<script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

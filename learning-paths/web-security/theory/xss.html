@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cross-Site Scripting (XSS) - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           WEB SECURITY PAGE
+        ====================================================== */
+
+        .ws-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 8%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(80, 120, 255, 0.065),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .ws-container {
+
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .ws-hero {
+
+            position: relative;
+
+            padding: 42px 35px;
+            margin-bottom: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.17);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 35, 0.98),
+                    rgba(2, 10, 22, 0.98)
+                );
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.30);
+        }
+
+        .ws-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #6c63ff,
+                    transparent
+                );
+        }
+
+        .ws-hero-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(260px, 0.75fr);
+
+            gap: 35px;
+
+            align-items: center;
+        }
+
+        .ws-kicker {
+
+            display: inline-flex;
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .ws-kicker::before {
+
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00bfff;
+
+            box-shadow:
+                0 0 12px rgba(0, 191, 255, 0.70);
+        }
+
+        .ws-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 46px;
+            line-height: 1.12;
+
+            font-weight: 850;
+
+            letter-spacing: -1px;
+        }
+
+        .ws-hero h1 span {
+            color: #00bfff;
+        }
+
+        .ws-description {
+
+            max-width: 700px;
+
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           BROWSER SECURITY PANEL
+        ====================================================== */
+
+        .browser-panel {
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 0, 0, 0.34);
+
+            overflow: hidden;
+
+            box-shadow:
+                inset 0 0 25px rgba(0, 191, 255, 0.025);
+        }
+
+        .browser-top {
+
+            display: flex;
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 12px 14px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.09);
+        }
+
+        .browser-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #405263;
+        }
+
+        .browser-address {
+
+            flex: 1;
+
+            margin-left: 6px;
+
+            padding: 6px 9px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 5px;
+
+            color: #60788d;
+
+            font-family: Consolas, monospace;
+            font-size: 9px;
+        }
+
+        .browser-content {
+
+            padding: 18px;
+        }
+
+        .browser-status {
+
+            margin-bottom: 10px;
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+        }
+
+        .browser-line {
+
+            margin-bottom: 7px;
+
+            color: #70869a;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+        }
+
+        .browser-line strong {
+            color: #dce9f4;
+        }
+
+        .danger {
+            color: #ff6b7a !important;
+        }
+
+        /* =====================================================
+           META
+        ====================================================== */
+
+        .ws-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .meta-value.blue {
+            color: #00bfff;
+        }
+
+        /* =====================================================
+           CARD
+        ====================================================== */
+
+        .ws-card {
+
+            margin-bottom: 18px;
+
+            padding: 27px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .card-heading {
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .card-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .card-heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .ws-card p {
+
+            margin: 0 0 12px;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .ws-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .definition {
+
+            padding: 21px;
+
+            border-left:
+                3px solid #00bfff;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 191, 255, 0.055),
+                    rgba(0, 191, 255, 0.012)
+                );
+        }
+
+        .definition-label {
+
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .definition p {
+
+            margin: 0;
+
+            color: #d5edf7;
+
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           XSS TYPES
+        ====================================================== */
+
+        .type-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+        .type-card {
+
+            min-height: 155px;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .type-card:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(0, 191, 255, 0.30);
+        }
+
+        .type-id {
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .type-card h3 {
+
+            margin: 11px 0 7px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .type-card p {
+
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .flow {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-top: 18px;
+        }
+
+        .flow-item {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            text-align: center;
+        }
+
+        .flow-number {
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .flow-item h3 {
+
+            margin: 9px 0 6px;
+
+            color: #ffffff;
+
+            font-size: 12px;
+        }
+
+        .flow-item span {
+
+            color: #71879b;
+
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           IMPACT
+        ====================================================== */
+
+        .impact-list {
+
+            display: grid;
+
+            gap: 9px;
+
+            margin-top: 16px;
+        }
+
+        .impact {
+
+            display: grid;
+
+            grid-template-columns: 30px 1fr;
+
+            gap: 11px;
+
+            padding: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .impact-icon {
+
+            width: 27px;
+            height: 27px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 6px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.05);
+        }
+
+        .impact strong {
+
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #dce9f4;
+
+            font-size: 12px;
+        }
+
+        .impact span {
+
+            color: #70869a;
+
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           DEFENSE
+        ====================================================== */
+
+        .defense-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 11px;
+
+            margin-top: 17px;
+        }
+
+        .defense-item {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .defense-item h3 {
+
+            margin: 0 0 6px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .defense-item p {
+
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           AUTHORIZED WARNING
+        ====================================================== */
+
+        .warning-box {
+
+            padding: 21px;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.17);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .warning-title {
+
+            margin-bottom: 9px;
+
+            color: #ffc44d;
+
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .warning-box p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .summary {
+
+            padding: 25px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.035),
+                    rgba(108, 99, 255, 0.025)
+                );
+        }
+
+        .summary-title {
+
+            margin-bottom: 9px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .summary h2 {
+
+            margin: 0 0 10px;
+
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .summary p {
+
+            max-width: 760px;
+
+            margin: 0 auto;
+
+            color: #7e94a8;
+
+            font-size: 12px;
+
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           LAB CTA
+        ====================================================== */
+
+        .lab-area {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 25px;
+
+            padding: 21px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 12px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .lab-text strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .lab-text span {
+
+            color: #71879b;
+
+            font-size: 11px;
+        }
+
+        .lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 12px 20px;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 8px;
+
+            color: #d7f6ff;
+
+            background:
+                rgba(0, 191, 255, 0.055);
+
+            text-decoration: none;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .lab-button:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            background:
+                rgba(0, 191, 255, 0.09);
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .ws-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .type-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .ws-meta {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .flow {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .ws-page {
+                padding: 45px 12px 60px;
+            }
+
+            .ws-hero {
+                padding: 27px 20px;
+            }
+
+            .ws-hero h1 {
+                font-size: 31px;
+            }
+
+            .ws-description {
+                font-size: 12px;
+            }
+
+            .ws-card {
+                padding: 20px;
+            }
+
+            .type-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow {
+                grid-template-columns: 1fr;
+            }
+
+            .defense-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-area {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<main class="ws-page">
+
+    <div class="ws-container">
+
+
+        <!-- HERO -->
+
+        <section class="ws-hero">
+
+            <div class="ws-hero-grid">
+
+
+                <div>
+
+                    <div class="ws-kicker">
+                        WEB SECURITY / 07
+                    </div>
+
+                    <h1>
+                        <span>Cross-Site</span>
+                        Scripting
+                    </h1>
+
+                    <p class="ws-description">
+
+                        Understand how Cross-Site Scripting (XSS) occurs when
+                        untrusted input is incorrectly treated as executable
+                        browser content, how different XSS types work, what
+                        impact they can have and how modern web applications
+                        defend against them.
+
+                    </p>
+
+                </div>
+
+
+                <div class="browser-panel">
+
+                    <div class="browser-top">
+
+                        <span class="browser-dot"></span>
+                        <span class="browser-dot"></span>
+                        <span class="browser-dot"></span>
+
+                        <div class="browser-address">
+                            https://cybernexa.local/profile
+                        </div>
+
+                    </div>
+
+                    <div class="browser-content">
+
+                        <div class="browser-status">
+                            WEB SECURITY MONITOR
+                        </div>
+
+                        <div class="browser-line">
+                            Input: <strong>UNTRUSTED</strong>
+                        </div>
+
+                        <div class="browser-line">
+                            Output: <strong class="danger">UNSAFE CONTEXT</strong>
+                        </div>
+
+                        <div class="browser-line">
+                            Control: <strong>REQUIRED</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- META -->
+
+        <div class="ws-meta">
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Domain
+                </span>
+
+                <span class="meta-value">
+                    Web Security
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Level
+                </span>
+
+                <span class="meta-value">
+                    Beginner
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Environment
+                </span>
+
+                <span class="meta-value blue">
+                    Local Lab
+                </span>
+
+            </div>
+
+
+            <div class="meta-item">
+
+                <span class="meta-label">
+                    Focus
+                </span>
+
+                <span class="meta-value">
+                    Input Security
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- 01 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    01
+                </div>
+
+                <h2>
+                    What is XSS?
+                </h2>
+
+            </div>
+
+
+            <div class="definition">
+
+                <div class="definition-label">
+                    Core Definition
+                </div>
+
+                <p>
+
+                    Cross-Site Scripting (XSS) is a web application security
+                    vulnerability in which attacker-controlled or untrusted
+                    input is interpreted by a user's browser as executable
+                    content instead of being treated as ordinary data.
+
+                    The vulnerability usually appears when an application
+                    places untrusted data into an unsafe HTML, JavaScript or
+                    DOM context without appropriate validation, encoding or
+                    sanitization.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- 02 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    02
+                </div>
+
+                <h2>
+                    How XSS Works
+                </h2>
+
+            </div>
+
+            <p>
+
+                A typical XSS vulnerability involves three important
+                components: an untrusted input source, an unsafe output
+                context and a browser that interprets the resulting content.
+
+            </p>
+
+
+            <div class="flow">
+
+                <div class="flow-item">
+
+                    <div class="flow-number">
+                        STEP 01
+                    </div>
+
+                    <h3>
+                        Input
+                    </h3>
+
+                    <span>
+                        Untrusted data enters the application.
+                    </span>
+
+                </div>
+
+
+                <div class="flow-item">
+
+                    <div class="flow-number">
+                        STEP 02
+                    </div>
+
+                    <h3>
+                        Processing
+                    </h3>
+
+                    <span>
+                        Application handles the input incorrectly.
+                    </span>
+
+                </div>
+
+
+                <div class="flow-item">
+
+                    <div class="flow-number">
+                        STEP 03
+                    </div>
+
+                    <h3>
+                        Output
+                    </h3>
+
+                    <span>
+                        Data reaches an unsafe browser context.
+                    </span>
+
+                </div>
+
+
+                <div class="flow-item">
+
+                    <div class="flow-number">
+                        STEP 04
+                    </div>
+
+                    <h3>
+                        Browser
+                    </h3>
+
+                    <span>
+                        Browser interprets content unexpectedly.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 03 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    03
+                </div>
+
+                <h2>
+                    Types of XSS
+                </h2>
+
+            </div>
+
+            <div class="type-grid">
+
+
+                <div class="type-card">
+
+                    <div class="type-id">
+                        TYPE 01
+                    </div>
+
+                    <h3>
+                        Reflected XSS
+                    </h3>
+
+                    <p>
+
+                        Malicious input is included in a request and is
+                        immediately reflected by the application's response.
+                        The browser processes the unsafe response in the
+                        affected context.
+
+                    </p>
+
+                </div>
+
+
+                <div class="type-card">
+
+                    <div class="type-id">
+                        TYPE 02
+                    </div>
+
+                    <h3>
+                        Stored XSS
+                    </h3>
+
+                    <p>
+
+                        Untrusted content is stored by an application and
+                        later displayed to users through an unsafe output
+                        context.
+
+                    </p>
+
+                </div>
+
+
+                <div class="type-card">
+
+                    <div class="type-id">
+                        TYPE 03
+                    </div>
+
+                    <h3>
+                        DOM-Based XSS
+                    </h3>
+
+                    <p>
+
+                        The vulnerability occurs primarily in client-side
+                        JavaScript when unsafe data is written into a dangerous
+                        DOM context.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 04 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    04
+                </div>
+
+                <h2>
+                    Security Impact
+                </h2>
+
+            </div>
+
+            <p>
+
+                The actual impact of XSS depends on the application,
+                browser context, user privileges and available security
+                controls.
+
+            </p>
+
+
+            <div class="impact-list">
+
+
+                <div class="impact">
+
+                    <div class="impact-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            User Session Risk
+                        </strong>
+
+                        <span>
+                            An XSS vulnerability may allow unsafe browser-side
+                            actions to occur in the context of a victim.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="impact">
+
+                    <div class="impact-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Content Manipulation
+                        </strong>
+
+                        <span>
+                            Attackers may be able to alter what a victim sees
+                            on a vulnerable page.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="impact">
+
+                    <div class="impact-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Account-Level Consequences
+                        </strong>
+
+                        <span>
+                            In some vulnerable applications, XSS can be used
+                            to perform actions with the victim's privileges.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="impact">
+
+                    <div class="impact-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Data Exposure
+                        </strong>
+
+                        <span>
+                            Unsafe client-side behavior can contribute to
+                            exposure of information available to the affected
+                            browser context.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 05 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    05
+                </div>
+
+                <h2>
+                    Common Unsafe Contexts
+                </h2>
+
+            </div>
+
+            <p>
+
+                XSS prevention requires understanding where untrusted data is
+                placed. The same input may be safe in one context but unsafe
+                in another.
+
+            </p>
+
+
+            <div class="defense-grid">
+
+                <div class="defense-item">
+
+                    <h3>
+                        HTML Context
+                    </h3>
+
+                    <p>
+                        Untrusted data is inserted directly into HTML markup
+                        without appropriate output encoding.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        JavaScript Context
+                    </h3>
+
+                    <p>
+                        Untrusted values are inserted into JavaScript code
+                        instead of being treated strictly as data.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        URL Context
+                    </h3>
+
+                    <p>
+                        User-controlled values are placed into URLs or
+                        attributes without appropriate validation.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        DOM Context
+                    </h3>
+
+                    <p>
+                        Client-side code writes untrusted data into dangerous
+                        DOM APIs or browser execution contexts.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 06 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    06
+                </div>
+
+                <h2>
+                    XSS Prevention
+                </h2>
+
+            </div>
+
+            <div class="defense-grid">
+
+                <div class="defense-item">
+
+                    <h3>
+                        Output Encoding
+                    </h3>
+
+                    <p>
+                        Encode data according to the context in which it will
+                        be displayed.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Safe DOM APIs
+                    </h3>
+
+                    <p>
+                        Prefer APIs such as textContent when displaying
+                        ordinary user-controlled text.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Input Validation
+                    </h3>
+
+                    <p>
+                        Validate input according to expected formats and
+                        application requirements.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Content Security Policy
+                    </h3>
+
+                    <p>
+                        CSP can reduce the impact of some classes of
+                        client-side injection by restricting executable
+                        content sources.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Secure Cookies
+                    </h3>
+
+                    <p>
+                        HttpOnly and Secure cookie attributes can strengthen
+                        session protection, although they do not fix XSS itself.
+                    </p>
+
+                </div>
+
+
+                <div class="defense-item">
+
+                    <h3>
+                        Framework Protections
+                    </h3>
+
+                    <p>
+                        Modern frameworks often provide automatic escaping,
+                        but developers must still understand unsafe escape
+                        hatches and rendering APIs.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 07 -->
+
+        <section class="ws-card">
+
+            <div class="card-heading">
+
+                <div class="card-number">
+                    07
+                </div>
+
+                <h2>
+                    Authorized Learning Environment
+                </h2>
+
+            </div>
+
+
+            <div class="warning-box">
+
+                <div class="warning-title">
+                    ⚠ LOCAL / AUTHORIZED LAB ONLY
+                </div>
+
+                <p>
+
+                    XSS testing should be performed only against applications
+                    that you own or have explicit permission to test.
+                    CyberNexa labs are designed for local learning and
+                    controlled experimentation. Do not test payloads against
+                    real websites, accounts or systems without authorization.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- SUMMARY -->
+
+        <section class="summary">
+
+            <div class="summary-title">
+                Web Security Summary
+            </div>
+
+            <h2>
+                Understand the Input. Control the Context. Secure the Browser.
+            </h2>
+
+            <p>
+
+                XSS is fundamentally an output-context problem. A secure
+                application treats untrusted input as data rather than
+                executable browser content. Developers should combine
+                context-aware output encoding, safe DOM APIs, validation,
+                secure browser controls and appropriate security headers.
+
+            </p>
+
+        </section>
+<!-- LESSON COMPLETION -->
+
+<section class="ws-card" id="lessonCompletion">
+
+    <div class="card-heading">
+
+        <div class="card-number">08</div>
+
+        <h2>Lesson Completion</h2>
+
+    </div>
+
+    <p>
+        You have completed the Cross-Site Scripting (XSS) lesson.
+        Review the key concepts and mark this lesson as completed.
+    </p>
+
+    <button
+        type="button"
+        class="lab-button"
+        data-lesson-progress
+        data-course-id="web-security"
+        data-lesson-id="xss"
+        data-dashboard-url="../learning-paths/web-security/theory/xss.html"
+        data-status-id="xssCompletionStatus"
+    >
+        Mark Lesson as Completed
+    </button>
+
+    <p
+        id="xssCompletionStatus"
+        role="status"
+        aria-live="polite"
+        style="margin-top: 12px;"
+    ></p>
+
+</section>
+        <!-- LAB CTA -->
+
+        <div class="lab-area">
+
+            <div class="lab-text">
+
+                <strong>
+                    Ready for the XSS Lab?
+                </strong>
+
+                <span>
+                    Practice XSS concepts in a controlled local learning
+                    environment and test your understanding.
+                </span>
+
+            </div>
+
+
+            <a
+                href="../lab/xss-lab.html"
+                class="lab-button"
+            >
+                🧪 Launch XSS Lab →
+            </a>
+
+        </div>
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+
+</html>

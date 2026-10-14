@@ -1,0 +1,2658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HTTP Status Codes Practical Lab | CyberNexa</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 202, 255, 0.09),
+                    transparent 32%
+                ),
+                #020914;
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #030c19;
+            border-bottom: 1px solid rgba(0,202,255,.18);
+        }
+
+        .nav-container {
+            width: min(1200px,100%);
+            margin: auto;
+            padding: 15px 24px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 48px;
+            color: #00caff;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            color: white;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            color: #7890a8;
+            font-size: 10px;
+        }
+
+        /* ================= PAGE ================= */
+
+        .page {
+            width: min(1050px,calc(100% - 32px));
+            margin: auto;
+            padding: 42px 0 70px;
+        }
+
+        .breadcrumb {
+            color: #72879c;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .breadcrumb span {
+            color: #00caff;
+            margin: 0 7px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .article-header {
+            padding: 34px;
+            border: 1px solid rgba(0,202,255,.24);
+            border-left: 4px solid #00caff;
+            border-radius: 12px;
+            background: rgba(0,202,255,.035);
+            margin-bottom: 25px;
+        }
+
+        .label {
+            color: #00caff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            color: white;
+            font-size: clamp(30px,5vw,48px);
+            line-height: 1.15;
+            margin: 10px 0 15px;
+        }
+
+        .intro {
+            color: #a9bdd1;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        /* ================= LAB INFO ================= */
+
+        .lab-info {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .lab-info-card {
+            padding: 16px;
+            background: #041221;
+            border: 1px solid rgba(0,202,255,.14);
+            border-radius: 9px;
+        }
+
+        .lab-info-card strong {
+            display: block;
+            color: #00caff;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .lab-info-card span {
+            color: #b3c3d3;
+            font-size: 13px;
+        }
+
+        /* ================= PROGRESS ================= */
+
+        .progress-box {
+            padding: 20px;
+            margin-bottom: 25px;
+            background: #041221;
+            border: 1px solid rgba(0,202,255,.18);
+            border-radius: 10px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-top strong {
+            color: white;
+        }
+
+        #progressText {
+            color: #00e68a;
+            font-weight: 700;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #01060c;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #00e68a;
+            transition: width .3s ease;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section {
+            margin-top: 22px;
+            padding: 28px;
+            background: #041221;
+            border: 1px solid rgba(0,202,255,.14);
+            border-radius: 11px;
+        }
+
+        .section h2 {
+            color: white;
+            font-size: clamp(21px,3vw,27px);
+            line-height: 1.3;
+            margin: 0 0 13px;
+        }
+
+        .section h3 {
+            color: #00caff;
+            font-size: 18px;
+            margin: 22px 0 8px;
+        }
+
+        .section p {
+            color: #aebfd0;
+            font-size: 15px;
+            margin: 9px 0;
+        }
+
+        /* ================= OBJECTIVES ================= */
+
+        .list {
+            padding-left: 20px;
+        }
+
+        .list li {
+            color: #aebfd0;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        /* ================= TASK ================= */
+
+        .task {
+            margin-top: 20px;
+            padding: 22px;
+            background: #020b15;
+            border: 1px solid rgba(0,202,255,.14);
+            border-radius: 9px;
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task-number {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 50%;
+            border: 1px solid #00caff;
+            color: #00caff;
+            font-weight: 900;
+        }
+
+        .task-title h3 {
+            margin: 0;
+            color: white;
+        }
+
+        /* ================= CODE ================= */
+
+        .code-title {
+            margin-top: 18px;
+            margin-bottom: 7px;
+            color: #00caff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .code-container {
+            position: relative;
+        }
+
+        .code {
+            width: 100%;
+            padding: 16px;
+            padding-right: 75px;
+            background: #01060c;
+            border: 1px solid rgba(0,202,255,.16);
+            border-left: 3px solid #00caff;
+            border-radius: 7px;
+            color: #7ee7ff;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            overflow-x: auto;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 9px;
+            right: 9px;
+            padding: 7px 11px;
+            background: #061822;
+            border: 1px solid rgba(0,202,255,.35);
+            border-radius: 6px;
+            color: #00caff;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .copy-btn:hover {
+            background: #00caff;
+            color: #02100a;
+        }
+
+        /* ================= TERMINAL ================= */
+
+        .terminal {
+            margin-top: 18px;
+            border: 1px solid rgba(0,202,255,.22);
+            border-radius: 9px;
+            overflow: hidden;
+        }
+
+        .terminal-bar {
+            padding: 9px 14px;
+            background: #071822;
+            color: #00caff;
+            font-family: Consolas,monospace;
+            font-size: 12px;
+        }
+
+        .terminal-body {
+            padding: 18px;
+            background: #01060c;
+            color: #b9eaff;
+            font-family: Consolas,monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            overflow-x: auto;
+        }
+
+        /* ================= RESPONSE ================= */
+
+        .response {
+            margin-top: 15px;
+            padding: 18px;
+            border-radius: 8px;
+            background: #01060c;
+            border-left: 4px solid #00caff;
+            font-family: Consolas,monospace;
+            color: #a9eaff;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* ================= TIP ================= */
+
+        .tip {
+            margin-top: 18px;
+            padding: 18px;
+            border-left: 4px solid #00e68a;
+            border-radius: 7px;
+            background: rgba(0,230,138,.04);
+        }
+
+        .tip strong {
+            color: #00e68a;
+        }
+
+        /* ================= WARNING ================= */
+
+        .warning {
+            margin-top: 18px;
+            padding: 18px;
+            border-left: 4px solid #ffbd00;
+            border-radius: 7px;
+            background: rgba(255,189,0,.04);
+        }
+
+        .warning strong {
+            color: #ffbd00;
+        }
+
+        /* ================= CHECK ================= */
+
+        .complete-check {
+            margin-top: 18px;
+            padding: 14px;
+            border: 1px solid rgba(0,202,255,.18);
+            border-radius: 8px;
+            background: rgba(0,202,255,.025);
+        }
+
+        .complete-check label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #b8c9d9;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .complete-check input {
+            width: 18px;
+            height: 18px;
+            accent-color: #00e68a;
+        }
+
+        /* ================= STATUS GRID ================= */
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(2,minmax(0,1fr));
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .status-card {
+            min-width: 0;
+            padding: 19px;
+            background: #020b15;
+            border: 1px solid rgba(0,202,255,.14);
+            border-radius: 9px;
+        }
+
+        .status-card h3 {
+            margin-top: 0;
+        }
+
+        .status-card p {
+            font-size: 13px;
+        }
+
+        .status-code {
+            display: inline-block;
+            margin-bottom: 8px;
+            padding: 4px 9px;
+            border-radius: 5px;
+            background: rgba(0,202,255,.08);
+            color: #00caff;
+            font-family: Consolas,monospace;
+            font-weight: bold;
+        }
+
+        /* ================= FLOW ================= */
+
+        .flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .flow-box {
+            padding: 13px 17px;
+            border: 1px solid rgba(0,202,255,.22);
+            border-radius: 8px;
+            background: #020b15;
+            color: #00caff;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .arrow {
+            color: #00e68a;
+            font-size: 20px;
+        }
+
+        /* ================= QUIZ ================= */
+
+        .quiz-question {
+            margin-top: 18px;
+            padding: 18px;
+            background: #020b15;
+            border: 1px solid rgba(0,202,255,.12);
+            border-radius: 8px;
+        }
+
+        .quiz-question p {
+            color: white;
+            font-weight: 700;
+        }
+
+        .option {
+            display: block;
+            margin: 9px 0;
+            padding: 9px 11px;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 6px;
+            color: #aebfd0;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            border-color: rgba(0,202,255,.35);
+        }
+
+        .option input {
+            margin-right: 8px;
+        }
+
+        .quiz-button {
+            margin-top: 20px;
+            padding: 11px 20px;
+            border: 1px solid #00caff;
+            border-radius: 22px;
+            background: transparent;
+            color: #00caff;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .quiz-button:hover {
+            background: #00caff;
+            color: #02100a;
+        }
+
+        #quizResult {
+            margin-top: 15px;
+            font-weight: 700;
+        }
+
+        /* ================= COMPLETION ================= */
+
+        .completion {
+            margin-top: 25px;
+            padding: 28px;
+            text-align: center;
+            border: 1px solid rgba(0,230,138,.25);
+            border-left: 4px solid #00e68a;
+            border-radius: 11px;
+            background: rgba(0,230,138,.035);
+        }
+
+        .completion h2 {
+            color: #00e68a;
+            margin-top: 0;
+        }
+
+        .completion-status {
+            color: #00e68a;
+            font-weight: 800;
+        }
+
+        /* ================= NAVIGATION ================= */
+
+        .article-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .article-navigation a {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border: 1px solid rgba(0,202,255,.2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #9eb2c7;
+            font-size: 13px;
+        }
+
+        .article-navigation a:hover {
+            color: #00caff;
+            border-color: #00caff;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            border-top: 1px solid rgba(0,202,255,.15);
+            background: #020914;
+            padding: 38px 20px 20px;
+        }
+
+        .footer-container {
+            width: min(1050px,100%);
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #71869c;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            width: min(1050px,100%);
+            margin: 25px auto 0;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,.05);
+            text-align: center;
+            color: #52667b;
+            font-size: 10px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width:850px) {
+
+            .lab-info {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+        }
+
+        @media (max-width:700px) {
+
+            .page {
+                width: calc(100% - 24px);
+                padding-top: 28px;
+            }
+
+            .article-header,
+            .section {
+                padding: 20px;
+            }
+
+            .lab-info,
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-navigation {
+                flex-direction: column;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+            .code,
+            .response,
+            .terminal-body {
+                font-size: 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58
+                        C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="page">
+
+
+    <!-- BREADCRUMB -->
+
+    <div class="breadcrumb">
+
+        Practical Labs
+        <span>›</span>
+        Web Security
+        <span>›</span>
+        HTTP Status Codes
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <section class="article-header">
+
+        <div class="label">
+            WEB SECURITY PRACTICAL LAB
+        </div>
+
+        <h1>
+            HTTP Status Codes Lab
+        </h1>
+
+        <p class="intro">
+            Practice HTTP response analysis using curl, inspect
+            response headers, identify common HTTP status codes
+            and understand how different responses appear to a client.
+        </p>
+
+    </section>
+
+
+    <!-- LAB INFO -->
+
+    <div class="lab-info">
+
+        <div class="lab-info-card">
+            <strong>LEVEL</strong>
+            <span>Beginner</span>
+        </div>
+
+        <div class="lab-info-card">
+            <strong>CATEGORY</strong>
+            <span>Web Security</span>
+        </div>
+
+        <div class="lab-info-card">
+            <strong>PLATFORM</strong>
+            <span>Linux / Terminal</span>
+        </div>
+
+        <div class="lab-info-card">
+            <strong>TYPE</strong>
+            <span>Hands-on Lab</span>
+        </div>
+
+    </div>
+
+
+    <!-- PROGRESS -->
+
+    <div class="progress-box">
+
+        <div class="progress-top">
+
+            <strong>
+                Lab Progress
+            </strong>
+
+            <span id="progressText">
+                0 / 10 Tasks
+            </span>
+
+        </div>
+
+        <div class="progress-track">
+
+            <div
+                class="progress-fill"
+                id="progressFill">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= OBJECTIVES ================= -->
+
+    <section class="section">
+
+        <h2>
+            Lab Objectives
+        </h2>
+
+        <p>
+            In this lab you will practice the HTTP concepts
+            covered in the tutorial.
+        </p>
+
+        <ul class="list">
+
+            <li>
+                Send HTTP requests using curl.
+            </li>
+
+            <li>
+                Inspect HTTP response headers.
+            </li>
+
+            <li>
+                Identify 2xx successful responses.
+            </li>
+
+            <li>
+                Identify 3xx redirection responses.
+            </li>
+
+            <li>
+                Understand 4xx client-error responses.
+            </li>
+
+            <li>
+                Understand 5xx server-error responses.
+            </li>
+
+            <li>
+                Compare 401 and 403 responses.
+            </li>
+
+            <li>
+                Understand the meaning of 404 and 429.
+            </li>
+
+            <li>
+                Read an HTTP response structure.
+            </li>
+
+            <li>
+                Perform a basic HTTP security-oriented analysis.
+            </li>
+
+        </ul>
+
+        <div class="warning">
+
+            <strong>Authorization:</strong>
+
+            Perform HTTP testing only against websites,
+            applications and systems that you own or are
+            explicitly authorized to test.
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 1 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 01 — Inspect a Successful HTTP Response
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    1
+                </div>
+
+                <h3>
+                    Check a 200 OK response
+                </h3>
+
+            </div>
+
+            <p>
+                Use curl with the <strong>-I</strong> option to
+                request the HTTP response headers.
+            </p>
+
+            <div class="code-title">
+                COMMAND
+            </div>
+
+            <div class="code-container">
+
+                <pre class="code" id="code1">curl -I https://example.com</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code1',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="terminal">
+
+                <div class="terminal-bar">
+                    Example Output
+                </div>
+
+                <div class="terminal-body">HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: ...
+
+</div>
+
+            </div>
+
+            <p>
+                The important part is the status line:
+            </p>
+
+            <div class="response">
+HTTP/1.1 200 OK
+            </div>
+
+            <p>
+                This indicates that the server successfully
+                processed the request.
+            </p>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 01.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 2 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 02 — Inspect HTTP Headers
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    2
+                </div>
+
+                <h3>
+                    Understand response headers
+                </h3>
+
+            </div>
+
+            <p>
+                Run:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code2">curl -I https://example.com</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code2',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                Look for headers such as:
+            </p>
+
+            <div class="response">HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: ...
+Server: ...</div>
+
+            <h3>
+                What should you identify?
+            </h3>
+
+            <ul class="list">
+
+                <li>
+                    HTTP version
+                </li>
+
+                <li>
+                    Status code
+                </li>
+
+                <li>
+                    Content-Type
+                </li>
+
+                <li>
+                    Content-Length, if provided
+                </li>
+
+                <li>
+                    Other response headers
+                </li>
+
+            </ul>
+
+            <div class="tip">
+
+                <strong>Security connection:</strong>
+
+                HTTP headers can provide useful information
+                during legitimate web application analysis.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 02.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 3 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 03 — Test a 404 Not Found Response
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    3
+                </div>
+
+                <h3>
+                    Request a nonexistent resource
+                </h3>
+
+            </div>
+
+            <p>
+                Use a clearly nonexistent path on the test
+                domain:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code3">curl -I https://example.com/this-page-does-not-exist</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code3',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                You may receive a response similar to:
+            </p>
+
+            <div class="response">
+HTTP/1.1 404 Not Found
+            </div>
+
+            <p>
+                A 404 response means that the server could not
+                find the requested resource.
+            </p>
+
+            <div class="tip">
+
+                <strong>Important:</strong>
+
+                A 404 does not mean that the entire website
+                is unavailable. It normally refers to the
+                requested resource.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 03.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 4 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 04 — Understand Redirects
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    4
+                </div>
+
+                <h3>
+                    Inspect redirect behavior
+                </h3>
+
+            </div>
+
+            <p>
+                Run:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code4">curl -I http://example.com</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code4',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <p>
+                A server may respond with a redirect such as:
+            </p>
+
+            <div class="response">
+HTTP/1.1 301 Moved Permanently
+Location: https://example.com/
+            </div>
+
+            <h3>
+                Follow Redirects
+            </h3>
+
+            <p>
+                Use <strong>-L</strong> to tell curl to follow
+                redirects:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code5">curl -I -L http://example.com</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code5',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Remember:</strong>
+
+                301 indicates a permanent redirect, while
+                302 generally indicates a temporary redirect.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 04.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 5 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 05 — Understand 401 Unauthorized
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    5
+                </div>
+
+                <h3>
+                    Authentication-related response
+                </h3>
+
+            </div>
+
+            <p>
+                A 401 response indicates that the request does
+                not contain valid authentication credentials
+                for the requested protected resource.
+            </p>
+
+            <div class="response">
+HTTP/1.1 401 Unauthorized
+            </div>
+
+            <h3>
+                Practice Question
+            </h3>
+
+            <p>
+                If a protected resource requires authentication
+                and the request does not provide valid credentials,
+                which status code should you understand first?
+            </p>
+
+            <div class="status-grid">
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        401
+                    </div>
+
+                    <h3>
+                        Authentication
+                    </h3>
+
+                    <p>
+                        Used when valid authentication credentials
+                        are missing or not accepted.
+                    </p>
+
+                </div>
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        403
+                    </div>
+
+                    <h3>
+                        Access Refused
+                    </h3>
+
+                    <p>
+                        The server understood the request but
+                        refuses to authorize access.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 05.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 6 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 06 — Understand 403 Forbidden
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    6
+                </div>
+
+                <h3>
+                    Authorization-related response
+                </h3>
+
+            </div>
+
+            <p>
+                A 403 response indicates that the server understood
+                the request but refuses to fulfill it.
+            </p>
+
+            <div class="response">
+HTTP/1.1 403 Forbidden
+            </div>
+
+            <h3>
+                401 vs 403
+            </h3>
+
+            <div class="status-grid">
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        401
+                    </div>
+
+                    <h3>
+                        Authentication
+                    </h3>
+
+                    <p>
+                        The client lacks valid authentication
+                        credentials for the resource.
+                    </p>
+
+                </div>
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        403
+                    </div>
+
+                    <h3>
+                        Authorization
+                    </h3>
+
+                    <p>
+                        The server understands the request but
+                        refuses access.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Easy memory trick:</strong>
+
+                401 → Authentication
+
+                <br>
+
+                403 → Access / Authorization refusal
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 06.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 7 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 07 — Understand 405 Method Not Allowed
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    7
+                </div>
+
+                <h3>
+                    Understand allowed HTTP methods
+                </h3>
+
+            </div>
+
+            <p>
+                A 405 response means the HTTP method is known
+                but is not allowed for the requested resource.
+            </p>
+
+            <div class="response">
+HTTP/1.1 405 Method Not Allowed
+Allow: GET, HEAD
+            </div>
+
+            <p>
+                The <strong>Allow</strong> header may indicate
+                which methods are supported.
+            </p>
+
+            <div class="tip">
+
+                <strong>Security connection:</strong>
+
+                Understanding HTTP methods is important when
+                analyzing how a web application handles requests.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 07.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 8 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 08 — Understand 429 Too Many Requests
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    8
+                </div>
+
+                <h3>
+                    Understand rate limiting
+                </h3>
+
+            </div>
+
+            <p>
+                A 429 response indicates that the client has sent
+                too many requests within a specified period.
+            </p>
+
+            <div class="response">
+HTTP/1.1 429 Too Many Requests
+            </div>
+
+            <p>
+                This status is commonly associated with
+                rate-limiting controls.
+            </p>
+
+            <div class="tip">
+
+                <strong>Security connection:</strong>
+
+                Rate limiting can help applications control
+                excessive request activity.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 08.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 9 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 09 — Understand 5xx Server Errors
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    9
+                </div>
+
+                <h3>
+                    Identify server-side response classes
+                </h3>
+
+            </div>
+
+            <p>
+                5xx responses indicate that the server encountered
+                a problem while processing the request.
+            </p>
+
+            <div class="status-grid">
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        500
+                    </div>
+
+                    <h3>
+                        Internal Server Error
+                    </h3>
+
+                    <p>
+                        Generic server-side error.
+                    </p>
+
+                </div>
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        502
+                    </div>
+
+                    <h3>
+                        Bad Gateway
+                    </h3>
+
+                    <p>
+                        Invalid response from an upstream server.
+                    </p>
+
+                </div>
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        503
+                    </div>
+
+                    <h3>
+                        Service Unavailable
+                    </h3>
+
+                    <p>
+                        Server temporarily cannot handle
+                        the request.
+                    </p>
+
+                </div>
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        504
+                    </div>
+
+                    <h3>
+                        Gateway Timeout
+                    </h3>
+
+                    <p>
+                        Gateway or proxy did not receive a timely
+                        upstream response.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 09.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= TASK 10 ================= -->
+
+    <section class="section">
+
+        <h2>
+            Task 10 — Perform a Basic HTTP Analysis
+        </h2>
+
+        <div class="task">
+
+            <div class="task-title">
+
+                <div class="task-number">
+                    10
+                </div>
+
+                <h3>
+                    Combine your knowledge
+                </h3>
+
+            </div>
+
+            <p>
+                Run the following commands against the authorized
+                test domain:
+            </p>
+
+            <div class="code-container">
+
+                <pre class="code" id="code6">curl -I https://example.com
+curl -I https://example.com/does-not-exist
+curl -I -L http://example.com</pre>
+
+                <button
+                    class="copy-btn"
+                    onclick="copyCode('code6',this)">
+                    Copy
+                </button>
+
+            </div>
+
+            <h3>
+                Record Your Observations
+            </h3>
+
+            <div class="status-grid">
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        Request 1
+                    </div>
+
+                    <h3>
+                        Normal Resource
+                    </h3>
+
+                    <p>
+                        Record the status code returned by the
+                        normal request.
+                    </p>
+
+                </div>
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        Request 2
+                    </div>
+
+                    <h3>
+                        Missing Resource
+                    </h3>
+
+                    <p>
+                        Record the status code returned for the
+                        nonexistent path.
+                    </p>
+
+                </div>
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        Request 3
+                    </div>
+
+                    <h3>
+                        Redirect
+                    </h3>
+
+                    <p>
+                        Check whether the response includes a
+                        Location header.
+                    </p>
+
+                </div>
+
+                <div class="status-card">
+
+                    <div class="status-code">
+                        Analysis
+                    </div>
+
+                    <h3>
+                        Explain
+                    </h3>
+
+                    <p>
+                        Identify whether each response is 2xx,
+                        3xx, 4xx or 5xx.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="tip">
+
+                <strong>Goal:</strong>
+
+                Do not just memorize status codes. Learn to
+                look at an HTTP response and interpret what the
+                server is communicating to the client.
+
+            </div>
+
+            <div class="complete-check">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        class="task-check">
+
+                    I completed Task 10.
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= RESPONSE STRUCTURE ================= -->
+
+    <section class="section">
+
+        <h2>
+            Understand a Complete HTTP Response
+        </h2>
+
+        <div class="response">HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: 1250
+Server: ExampleServer
+
+&lt;html&gt;
+...
+&lt;/html&gt;</div>
+
+        <div class="flow">
+
+            <div class="flow-box">
+                HTTP Version
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-box">
+                Status Code
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-box">
+                Headers
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="flow-box">
+                Response Body
+            </div>
+
+        </div>
+
+        <ul class="list">
+
+            <li>
+                <strong>HTTP/1.1</strong> → protocol version
+            </li>
+
+            <li>
+                <strong>200</strong> → status code
+            </li>
+
+            <li>
+                <strong>OK</strong> → reason phrase
+            </li>
+
+            <li>
+                <strong>Content-Type</strong> → type of returned content
+            </li>
+
+            <li>
+                <strong>Content-Length</strong> → size information
+            </li>
+
+            <li>
+                Response body → actual returned content
+            </li>
+
+        </ul>
+
+    </section>
+
+
+    <!-- ================= SECURITY ANALYSIS ================= -->
+
+    <section class="section">
+
+        <h2>
+            Practical Security Analysis
+        </h2>
+
+        <p>
+            HTTP status codes can provide useful context during
+            authorized web application troubleshooting and security
+            analysis.
+        </p>
+
+        <div class="status-grid">
+
+            <div class="status-card">
+
+                <div class="status-code">
+                    200
+                </div>
+
+                <h3>
+                    Success
+                </h3>
+
+                <p>
+                    The request was successfully processed.
+                </p>
+
+            </div>
+
+            <div class="status-card">
+
+                <div class="status-code">
+                    301 / 302
+                </div>
+
+                <h3>
+                    Redirect
+                </h3>
+
+                <p>
+                    The response directs the client toward another
+                    resource or location.
+                </p>
+
+            </div>
+
+            <div class="status-card">
+
+                <div class="status-code">
+                    401
+                </div>
+
+                <h3>
+                    Authentication
+                </h3>
+
+                <p>
+                    Valid authentication credentials are required
+                    or were not accepted.
+                </p>
+
+            </div>
+
+            <div class="status-card">
+
+                <div class="status-code">
+                    403
+                </div>
+
+                <h3>
+                    Access Refused
+                </h3>
+
+                <p>
+                    The server refuses to authorize access.
+                </p>
+
+            </div>
+
+            <div class="status-card">
+
+                <div class="status-code">
+                    404
+                </div>
+
+                <h3>
+                    Resource Not Found
+                </h3>
+
+                <p>
+                    The requested resource could not be found.
+                </p>
+
+            </div>
+
+            <div class="status-card">
+
+                <div class="status-code">
+                    429
+                </div>
+
+                <h3>
+                    Rate Limiting
+                </h3>
+
+                <p>
+                    Too many requests have been received within
+                    the applicable limit.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= QUIZ ================= -->
+
+    <section class="section">
+
+        <h2>
+            Practical Quiz
+        </h2>
+
+
+        <div class="quiz-question">
+
+            <p>
+                1. Which status code normally indicates a successful request?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q1" value="a">
+                200
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="b">
+                404
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="c">
+                500
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                2. Which status code indicates that a resource was not found?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q2" value="a">
+                201
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="b">
+                404
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="c">
+                503
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                3. Which status code is associated with authentication?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q3" value="a">
+                401
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="b">
+                301
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="c">
+                204
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                4. Which status code means the server understood
+                the request but refuses access?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q4" value="a">
+                403
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q4" value="b">
+                302
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q4" value="c">
+                201
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                5. Which status code is commonly associated with
+                rate limiting?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q5" value="a">
+                429
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q5" value="b">
+                301
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q5" value="c">
+                100
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                6. Which class represents server errors?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q6" value="a">
+                2xx
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q6" value="b">
+                4xx
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q6" value="c">
+                5xx
+            </label>
+
+        </div>
+
+
+        <div class="quiz-question">
+
+            <p>
+                7. Which curl option requests response headers?
+            </p>
+
+            <label class="option">
+                <input type="radio" name="q7" value="a">
+                -I
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q7" value="b">
+                -L
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q7" value="c">
+                -X
+            </label>
+
+        </div>
+
+
+        <button
+            class="quiz-button"
+            onclick="checkQuiz()">
+
+            Check Answers
+
+        </button>
+
+
+        <div id="quizResult"></div>
+
+    </section>
+
+
+    <!-- ================= QUICK REVISION ================= -->
+
+    <section class="section">
+
+        <h2>
+            Quick Revision
+        </h2>
+
+        <div class="status-grid">
+
+            <div class="status-card">
+                <div class="status-code">1xx</div>
+                <h3>Informational</h3>
+                <p>Request processing information.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">2xx</div>
+                <h3>Success</h3>
+                <p>Request successfully processed.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">3xx</div>
+                <h3>Redirection</h3>
+                <p>Additional action or another location.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">4xx</div>
+                <h3>Client Error</h3>
+                <p>Problem associated with the request.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">5xx</div>
+                <h3>Server Error</h3>
+                <p>Server-side processing problem.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">401</div>
+                <h3>Authentication</h3>
+                <p>Valid authentication credentials are required.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">403</div>
+                <h3>Forbidden</h3>
+                <p>Access is refused.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">404</div>
+                <h3>Not Found</h3>
+                <p>Requested resource was not found.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">429</div>
+                <h3>Too Many Requests</h3>
+                <p>Rate limit condition.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">500</div>
+                <h3>Internal Server Error</h3>
+                <p>Generic server-side error.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">503</div>
+                <h3>Service Unavailable</h3>
+                <p>Server temporarily unavailable.</p>
+            </div>
+
+            <div class="status-card">
+                <div class="status-code">504</div>
+                <h3>Gateway Timeout</h3>
+                <p>Upstream response was not received in time.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= COMPLETION ================= -->
+
+    <section class="completion">
+
+        <h2>
+            Lab Completion
+        </h2>
+
+        <p>
+            Complete all ten practical tasks and then attempt
+            the quiz to test your understanding.
+        </p>
+
+        <p
+            id="completionStatus"
+            class="completion-status">
+
+            Complete all tasks to finish the lab.
+
+        </p>
+
+    </section>
+
+
+    <!-- ================= NAVIGATION ================= -->
+
+    <div class="article-navigation">
+<!-- 
+        <a href="linux-commands-lab.html">
+            ← Previous Lab
+        </a>
+
+        <a href="../index.html">
+            All Labs
+        </a> -->
+
+        <a href="../../index.html">
+            Back to Home →
+        </a>
+
+    </div>
+
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    /* ================= COPY BUTTON ================= */
+
+    function copyCode(id, button) {
+
+        const code =
+            document.getElementById(id);
+
+        navigator.clipboard
+            .writeText(code.innerText)
+            .then(function () {
+
+                const oldText =
+                    button.innerText;
+
+                button.innerText =
+                    "Copied!";
+
+                setTimeout(function () {
+
+                    button.innerText =
+                        oldText;
+
+                }, 1500);
+
+            })
+            .catch(function () {
+
+                button.innerText =
+                    "Error";
+
+                setTimeout(function () {
+
+                    button.innerText =
+                        "Copy";
+
+                }, 1500);
+
+            });
+
+    }
+
+
+    /* ================= PROGRESS ================= */
+
+    const checkboxes =
+        document.querySelectorAll(".task-check");
+
+    const progressFill =
+        document.getElementById("progressFill");
+
+    const progressText =
+        document.getElementById("progressText");
+
+    const completionStatus =
+        document.getElementById("completionStatus");
+
+
+    function updateProgress() {
+
+        let completed = 0;
+
+        checkboxes.forEach(function (checkbox) {
+
+            if (checkbox.checked) {
+                completed++;
+            }
+
+        });
+
+        const total =
+            checkboxes.length;
+
+        const percentage =
+            (completed / total) * 100;
+
+        progressFill.style.width =
+            percentage + "%";
+
+        progressText.innerText =
+            completed + " / " + total + " Tasks";
+
+
+        if (completed === total) {
+
+            completionStatus.innerText =
+                "Lab Completed — Excellent Work!";
+
+        } else {
+
+            completionStatus.innerText =
+                "Complete all ten tasks to finish the lab.";
+
+        }
+
+    }
+
+
+    checkboxes.forEach(function (checkbox) {
+
+        checkbox.addEventListener(
+            "change",
+            updateProgress
+        );
+
+    });
+
+
+    /* ================= QUIZ ================= */
+
+    function checkQuiz() {
+
+        const answers = {
+
+            q1: "a",
+            q2: "b",
+            q3: "a",
+            q4: "a",
+            q5: "a",
+            q6: "c",
+            q7: "a"
+
+        };
+
+
+        let score = 0;
+
+        const total =
+            Object.keys(answers).length;
+
+
+        for (const question in answers) {
+
+            const selected =
+                document.querySelector(
+                    'input[name="' +
+                    question +
+                    '"]:checked'
+                );
+
+
+            if (
+                selected &&
+                selected.value ===
+                answers[question]
+            ) {
+
+                score++;
+
+            }
+
+        }
+
+
+        const result =
+            document.getElementById(
+                "quizResult"
+            );
+
+
+        if (score === total) {
+
+            result.innerText =
+                "Excellent! You scored " +
+                score +
+                "/" +
+                total +
+                ".";
+
+            result.style.color =
+                "#00e68a";
+
+        } else {
+
+            result.innerText =
+                "Your score is " +
+                score +
+                "/" +
+                total +
+                ". Review the HTTP status codes and try again.";
+
+            result.style.color =
+                "#ffbd00";
+
+        }
+
+    }
+    /* ================= INITIALIZE ================= */
+    updateProgress();
+</script>
+</body>
+</html>

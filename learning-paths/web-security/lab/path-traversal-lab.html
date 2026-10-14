@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Path Traversal Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 12% 8%,
+                    rgba(0, 191, 255, .07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 88% 12%,
+                    rgba(0, 255, 176, .055),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: auto;
+        }
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 40px 35px;
+            margin-bottom: 24px;
+
+            border: 1px solid rgba(0, 191, 255, .16);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 34, .98),
+                    rgba(2, 10, 20, .98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+
+            margin-bottom: 13px;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #fff;
+
+            font-size: 42px;
+        }
+
+        .lab-hero h1 span {
+
+            color: #00bfff;
+        }
+
+        .lab-hero p {
+
+            max-width: 760px;
+
+            margin: 15px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .lab-status {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        .status-card {
+
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, .1);
+            border-radius: 9px;
+
+            background: rgba(0, 191, 255, .025);
+        }
+
+        .status-card small {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .status-card strong {
+
+            color: #00ffb0;
+
+            font-size: 11px;
+        }
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 27px;
+
+            border: 1px solid rgba(0, 191, 255, .11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, .97),
+                    rgba(2, 11, 21, .97)
+                );
+        }
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .lab-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(0, 191, 255, .22);
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .lab-heading h2 {
+
+            margin: 0;
+
+            color: #fff;
+
+            font-size: 20px;
+        }
+
+        .lab-card p {
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+            line-height: 1.85;
+        }
+
+        /* SIMULATOR */
+
+        .simulator {
+
+            padding: 20px;
+
+            border: 1px solid rgba(0, 255, 176, .12);
+            border-radius: 10px;
+
+            background: #01060b;
+        }
+
+        .sim-label {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: #00bfff;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .path-input {
+
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 1px solid rgba(0, 191, 255, .18);
+            border-radius: 7px;
+
+            outline: none;
+
+            color: #ccefff;
+            background: #020b14;
+
+            font-family: Consolas, monospace;
+
+            font-size: 12px;
+        }
+
+        .path-input:focus {
+
+            border-color: rgba(0, 191, 255, .55);
+        }
+
+        .sim-buttons {
+
+            display: flex;
+
+            gap: 9px;
+
+            margin-top: 12px;
+        }
+
+        .sim-button {
+
+            padding: 11px 17px;
+
+            border: 1px solid rgba(0, 191, 255, .25);
+            border-radius: 7px;
+
+            color: #ccefff;
+            background: rgba(0, 191, 255, .045);
+
+            cursor: pointer;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .sim-button:hover {
+
+            border-color: rgba(0, 191, 255, .55);
+            background: rgba(0, 191, 255, .09);
+        }
+
+        .sim-output {
+
+            min-height: 100px;
+
+            margin-top: 15px;
+            padding: 15px;
+
+            border: 1px solid rgba(0, 255, 176, .08);
+            border-radius: 8px;
+
+            color: #71879b;
+            background: #02070c;
+
+            font-family: Consolas, monospace;
+
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .safe {
+            color: #00ffb0;
+        }
+
+        .danger {
+            color: #ffcc55;
+        }
+
+        /* MCQ */
+
+        .question {
+
+            margin-bottom: 18px;
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, .09);
+            border-radius: 9px;
+
+            background: rgba(0, 191, 255, .018);
+        }
+
+        .question:last-child {
+            margin-bottom: 0;
+        }
+
+        .question-title {
+
+            margin-bottom: 12px;
+
+            color: #dce9f4;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            line-height: 1.7;
+        }
+
+        .option {
+
+            display: block;
+
+            margin: 7px 0;
+
+            padding: 10px 12px;
+
+            border: 1px solid rgba(0, 191, 255, .07);
+            border-radius: 7px;
+
+            color: #71879b;
+
+            background: rgba(0, 0, 0, .15);
+
+            cursor: pointer;
+
+            font-size: 11px;
+        }
+
+        .option:hover {
+
+            border-color: rgba(0, 191, 255, .2);
+            color: #ccefff;
+        }
+
+        .option input {
+
+            margin-right: 8px;
+        }
+
+        .submit {
+
+            width: 100%;
+
+            margin-top: 18px;
+            padding: 13px;
+
+            border: 1px solid rgba(0, 255, 176, .3);
+            border-radius: 8px;
+
+            color: #c8fff0;
+            background: rgba(0, 255, 176, .05);
+
+            cursor: pointer;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .submit:hover {
+
+            border-color: rgba(0, 255, 176, .55);
+            background: rgba(0, 255, 176, .09);
+        }
+
+        .result {
+
+            margin-top: 15px;
+            padding: 16px;
+
+            border-radius: 8px;
+
+            color: #9bb1c3;
+
+            background: rgba(0, 191, 255, .025);
+
+            font-family: Consolas, monospace;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .lab-warning {
+
+            padding: 19px;
+
+            border: 1px solid rgba(255, 177, 0, .17);
+            border-radius: 9px;
+
+            background: rgba(255, 177, 0, .035);
+        }
+
+        .lab-warning strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffc44d;
+
+            font-size: 12px;
+        }
+
+        .lab-warning span {
+
+            color: #899bad;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .navigation a {
+
+            padding: 14px;
+
+            border: 1px solid rgba(0, 191, 255, .09);
+            border-radius: 8px;
+
+            color: #71879b;
+
+            background: rgba(0, 191, 255, .02);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .navigation a:hover {
+
+            color: #ccefff;
+
+            border-color: rgba(0, 191, 255, .25);
+        }
+
+        @media (max-width: 700px) {
+
+            .lab-status {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-hero {
+                padding: 28px 20px;
+            }
+
+            .lab-hero h1 {
+                font-size: 31px;
+            }
+
+            .lab-card {
+                padding: 20px;
+            }
+
+            .navigation {
+                grid-template-columns: 1fr;
+            }
+
+            .sim-buttons {
+                flex-direction: column;
+            }
+
+            .sim-button {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+<div class="lab-container">
+
+
+    <!-- HERO -->
+
+    <section class="lab-hero">
+
+        <div class="lab-kicker">
+            WEB SECURITY LAB / 13
+        </div>
+
+        <h1>
+            <span>Path Traversal</span> Lab
+        </h1>
+
+        <p>
+            Practice identifying unsafe file-path handling through a
+            controlled browser-based simulation. The laboratory does not
+            access your computer's real filesystem.
+        </p>
+
+    </section>
+
+
+    <!-- STATUS -->
+
+    <div class="lab-status">
+
+        <div class="status-card">
+            <small>Environment</small>
+            <strong>AUTHORIZED SANDBOX</strong>
+        </div>
+
+        <div class="status-card">
+            <small>Mode</small>
+            <strong>SIMULATION</strong>
+        </div>
+
+        <div class="status-card">
+            <small>Target</small>
+            <strong>TRAINING APP</strong>
+        </div>
+
+    </div>
+
+
+    <!-- OBJECTIVE -->
+
+    <section class="lab-card">
+
+        <div class="lab-heading">
+
+            <div class="lab-number">
+                01
+            </div>
+
+            <h2>
+                Lab Objective
+            </h2>
+
+        </div>
+
+        <p>
+            Your objective is to identify whether a requested resource
+            remains inside the application's permitted directory.
+            The simulator will classify the supplied path and explain
+            the security decision.
+        </p>
+
+    </section>
+
+
+    <!-- SIMULATOR -->
+
+    <section class="lab-card">
+
+        <div class="lab-heading">
+
+            <div class="lab-number">
+                02
+            </div>
+
+            <h2>
+                Safe Path Validation Simulator
+            </h2>
+
+        </div>
+
+        <div class="simulator">
+
+            <label class="sim-label">
+                REQUESTED RESOURCE
+            </label>
+
+            <input
+                type="text"
+                id="pathInput"
+                class="path-input"
+                placeholder="Example: documents/report.pdf"
+            >
+
+            <div class="sim-buttons">
+
+                <button
+                    class="sim-button"
+                    onclick="validatePath()"
+                >
+                    Analyze Path
+                </button>
+
+                <button
+                    class="sim-button"
+                    onclick="loadSafePath()"
+                >
+                    Load Safe Example
+                </button>
+
+            </div>
+
+            <div
+                id="simOutput"
+                class="sim-output"
+            >
+                Waiting for input...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONCEPT -->
+
+    <section class="lab-card">
+
+        <div class="lab-heading">
+
+            <div class="lab-number">
+                03
+            </div>
+
+            <h2>
+                What Should a Secure Application Do?
+            </h2>
+
+        </div>
+
+        <p>
+            A secure application should resolve the requested path and
+            verify that the final location remains inside the directory
+            explicitly assigned to that feature.
+        </p>
+
+        <p>
+            It should also apply allowlisting where possible, use
+            appropriate filesystem permissions and avoid exposing
+            unnecessary server-side resources.
+        </p>
+
+    </section>
+
+
+    <!-- WARNING -->
+
+    <section class="lab-card">
+
+        <div class="lab-warning">
+
+            <strong>
+                ⚠ AUTHORIZED TRAINING ENVIRONMENT
+            </strong>
+
+            <span>
+                This simulator is designed for learning only. Do not use
+                path-manipulation techniques against systems, websites or
+                files without explicit authorization.
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- MCQS -->
+
+    <section class="lab-card">
+
+        <div class="lab-heading">
+
+            <div class="lab-number">
+                04
+            </div>
+
+            <h2>
+                Knowledge Check
+            </h2>
+
+        </div>
+
+
+        <div class="question">
+
+            <div class="question-title">
+                1. What is the main cause of Path Traversal?
+            </div>
+
+            <label class="option">
+                <input type="radio" name="q1" value="a">
+                Strong password policy
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="b">
+                Improper handling of user-controlled file paths
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="c">
+                Encrypted communication
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <div class="question-title">
+                2. Which principle helps limit filesystem exposure?
+            </div>
+
+            <label class="option">
+                <input type="radio" name="q2" value="a">
+                Least privilege
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="b">
+                Unlimited permissions
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="c">
+                Disable validation
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <div class="question-title">
+                3. What should an application validate?
+            </div>
+
+            <label class="option">
+                <input type="radio" name="q3" value="a">
+                Only the user's browser
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="b">
+                The final resolved path and its permitted location
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="c">
+                Only the filename color
+            </label>
+
+        </div>
+
+
+        <button
+            class="submit"
+            onclick="checkQuiz()"
+        >
+            Submit Knowledge Check
+        </button>
+
+        <div
+            id="quizResult"
+            class="result"
+        >
+            Score will appear here.
+        </div>
+
+    </section>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="navigation">
+
+        <a href="command-injection-lab.html">
+            ← Lab: Command Injection
+        </a>
+
+        <a href="web-security-lab.html">
+            All Labs
+        </a>
+
+        <a href="../theory/security-headers.html">
+            Next Theory: Security Headers →
+        </a>
+
+    </div>
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+    function validatePath() {
+
+        const input =
+            document.getElementById("pathInput").value.trim();
+
+        const output =
+            document.getElementById("simOutput");
+
+        if (!input) {
+
+            output.innerHTML =
+                '<span class="danger">[!] Please provide a simulated resource path.</span>';
+
+            return;
+        }
+
+        /*
+         * SAFE TRAINING SIMULATION
+         *
+         * This does not access the real filesystem.
+         * It only demonstrates the security concept.
+         */
+
+        const suspiciousPatterns = [
+            "../",
+            "..\\",
+            "%2e%2e",
+            "%252e%252e"
+        ];
+
+        const suspicious =
+            suspiciousPatterns.some(pattern =>
+                input.toLowerCase().includes(pattern)
+            );
+
+        if (suspicious) {
+
+            output.innerHTML =
+                '<span class="danger">[!] SIMULATION RESULT: PATH REJECTED</span><br><br>' +
+                'Reason: The simulated request contains a path-navigation pattern.<br>' +
+                'Security decision: DENY<br>' +
+                'Recommended control: Resolve and validate the final path before access.';
+
+        } else {
+
+            output.innerHTML =
+                '<span class="safe">[+] SIMULATION RESULT: PATH ACCEPTED</span><br><br>' +
+                'The simulated resource remains within the expected application path.<br>' +
+                'Security decision: ALLOW<br>' +
+                'Note: A real application must still perform server-side validation.';
+        }
+    }
+
+
+    function loadSafePath() {
+
+        document.getElementById("pathInput").value =
+            "documents/security-report.pdf";
+
+        validatePath();
+    }
+
+
+    function checkQuiz() {
+
+        const answers = {
+            q1: "b",
+            q2: "a",
+            q3: "b"
+        };
+
+        let score = 0;
+
+        Object.keys(answers).forEach(question => {
+
+            const selected =
+                document.querySelector(
+                    'input[name="' + question + '"]:checked'
+                );
+
+            if (selected && selected.value === answers[question]) {
+                score++;
+            }
+
+        });
+
+        const result =
+            document.getElementById("quizResult");
+
+        result.innerHTML =
+            "LAB SCORE: " +
+            score +
+            " / 3<br><br>" +
+            (
+                score === 3
+                    ? "Excellent. You understand the core Path Traversal concepts."
+                    : "Review path validation, canonicalization and least privilege, then try again."
+            );
+    }
+
+</script>
+
+
+<script src="../../../js/navbar.js"></script>
+
+</body>
+</html>

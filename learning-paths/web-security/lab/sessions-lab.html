@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Sessions Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 255, 176, 0.05),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: auto;
+        }
+
+        /* HERO */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 40px 34px;
+            margin-bottom: 22px;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 35, 0.98),
+                    rgba(2, 10, 21, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-hero h1 {
+
+            margin: 12px 0 10px;
+
+            color: #ffffff;
+
+            font-size: 40px;
+            line-height: 1.15;
+        }
+
+        .lab-hero h1 span {
+            color: #00bfff;
+        }
+
+        .lab-hero p {
+
+            max-width: 760px;
+
+            margin: 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.85;
+        }
+
+        /* LAB NOTICE */
+
+        .lab-notice {
+
+            margin-bottom: 18px;
+            padding: 18px;
+
+            border: 1px solid rgba(255, 177, 0, 0.16);
+            border-radius: 10px;
+
+            background: rgba(255, 177, 0, 0.025);
+        }
+
+        .lab-notice strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #ffc44d;
+
+            font-size: 12px;
+        }
+
+        .lab-notice span {
+
+            color: #8799aa;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* CARD */
+
+        .lab-card {
+
+            margin-bottom: 18px;
+            padding: 25px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            margin-bottom: 14px;
+        }
+
+        .lab-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+
+            background: rgba(0, 191, 255, 0.04);
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .lab-heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+        .lab-card p {
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.85;
+        }
+
+        /* SIMULATOR */
+
+        .simulator {
+
+            padding: 20px;
+
+            border: 1px solid rgba(0, 255, 176, 0.10);
+            border-radius: 10px;
+
+            background: #01060c;
+        }
+
+        .sim-status {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+        }
+
+        .status-label {
+
+            color: #71879b;
+
+            font-size: 10px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .status-value {
+
+            color: #ff6b6b;
+
+            font-family: Consolas, monospace;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .session-display {
+
+            padding: 16px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+            border-radius: 8px;
+
+            background: rgba(0, 191, 255, 0.02);
+
+            font-family: Consolas, monospace;
+        }
+
+        .session-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 8px 0;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.035);
+        }
+
+        .session-row:last-child {
+            border-bottom: 0;
+        }
+
+        .session-key {
+            color: #526b80;
+        }
+
+        .session-value {
+            color: #9bd9c8;
+
+            text-align: right;
+        }
+
+        .lab-buttons {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-top: 15px;
+        }
+
+        .lab-btn {
+
+            padding: 10px 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+            border-radius: 7px;
+
+            color: #cceeff;
+
+            background: rgba(0, 191, 255, 0.04);
+
+            cursor: pointer;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .lab-btn:hover {
+
+            border-color: rgba(0, 191, 255, 0.55);
+
+            background: rgba(0, 191, 255, 0.08);
+        }
+
+        .lab-output {
+
+            min-height: 42px;
+
+            margin-top: 14px;
+
+            padding: 12px;
+
+            border-radius: 7px;
+
+            color: #8fa5bb;
+
+            background: rgba(0, 0, 0, 0.35);
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* CHECKLIST */
+
+        .checklist {
+
+            display: grid;
+
+            gap: 9px;
+
+            margin-top: 15px;
+        }
+
+        .check-item {
+
+            padding: 12px;
+
+            border: 1px solid rgba(0, 191, 255, 0.08);
+            border-radius: 8px;
+
+            color: #8fa5bb;
+
+            background: rgba(0, 191, 255, 0.018);
+
+            font-size: 11px;
+        }
+
+        .check-item input {
+            margin-right: 8px;
+            accent-color: #00bfff;
+        }
+
+        /* MCQ */
+
+        .question {
+
+            margin-bottom: 16px;
+
+            padding: 17px;
+
+            border: 1px solid rgba(0, 191, 255, 0.08);
+            border-radius: 9px;
+
+            background: rgba(0, 191, 255, 0.018);
+        }
+
+        .question:last-child {
+            margin-bottom: 0;
+        }
+
+        .question-title {
+
+            margin-bottom: 11px;
+
+            color: #dce9f4;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            line-height: 1.7;
+        }
+
+        .option {
+
+            display: block;
+
+            margin: 7px 0;
+
+            color: #71879b;
+
+            font-size: 11px;
+
+            cursor: pointer;
+        }
+
+        .option input {
+            margin-right: 7px;
+            accent-color: #00bfff;
+        }
+
+        .quiz-button {
+
+            margin-top: 16px;
+
+            padding: 12px 20px;
+
+            border: 1px solid rgba(0, 255, 176, 0.30);
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background: rgba(0, 255, 176, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .quiz-result {
+
+            margin-top: 14px;
+
+            padding: 13px;
+
+            border-radius: 8px;
+
+            color: #9bd9c8;
+
+            background: rgba(0, 255, 176, 0.025);
+
+            font-family: Consolas, monospace;
+
+            font-size: 11px;
+        }
+
+        /* NAVIGATION */
+
+        .navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .navigation a {
+
+            padding: 14px;
+
+            border: 1px solid rgba(0, 191, 255, 0.09);
+            border-radius: 8px;
+
+            color: #71879b;
+
+            background: rgba(0, 191, 255, 0.02);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .navigation a:hover {
+
+            color: #cceeff;
+
+            border-color: rgba(0, 191, 255, 0.25);
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+                font-size: 30px;
+            }
+
+            .lab-card {
+                padding: 20px;
+            }
+
+            .navigation {
+                grid-template-columns: 1fr;
+            }
+
+            .sim-status {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .session-row {
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .session-value {
+                text-align: left;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="lab-page">
+
+<div class="lab-container">
+
+
+    <!-- HERO -->
+
+    <section class="lab-hero">
+
+        <div class="lab-kicker">
+            WEB SECURITY LAB / 03
+        </div>
+
+        <h1>
+            Web <span>Sessions</span> Lab
+        </h1>
+
+        <p>
+            Explore how a web session is created, maintained and terminated
+            through a safe browser-based simulation. This laboratory does
+            not interact with real websites or real authentication tokens.
+        </p>
+
+    </section>
+
+
+    <!-- NOTICE -->
+
+    <div class="lab-notice">
+
+        <strong>
+            ⚠ Authorized Training Environment
+        </strong>
+
+        <span>
+            This lab is an educational simulation designed for CyberNexa.
+            Use practical security testing only in systems and environments
+            for which you have explicit authorization.
+        </span>
+
+    </div>
+
+
+    <!-- 01 -->
+
+    <section class="lab-card">
+
+        <div class="lab-heading">
+
+            <div class="lab-number">
+                01
+            </div>
+
+            <h2>
+                Session Lifecycle Simulator
+            </h2>
+
+        </div>
+
+        <p>
+            Use the controls below to simulate a simplified web session.
+            Observe how the session state changes after login, a request
+            and logout.
+        </p>
+
+
+        <div class="simulator">
+
+            <div class="sim-status">
+
+                <span class="status-label">
+                    Current Session State
+                </span>
+
+                <span
+                    id="status"
+                    class="status-value"
+                >
+                    NOT AUTHENTICATED
+                </span>
+
+            </div>
+
+
+            <div class="session-display">
+
+                <div class="session-row">
+
+                    <span class="session-key">
+                        User
+                    </span>
+
+                    <span
+                        id="user"
+                        class="session-value"
+                    >
+                        Guest
+                    </span>
+
+                </div>
+
+
+                <div class="session-row">
+
+                    <span class="session-key">
+                        Session ID
+                    </span>
+
+                    <span
+                        id="sessionId"
+                        class="session-value"
+                    >
+                        None
+                    </span>
+
+                </div>
+
+
+                <div class="session-row">
+
+                    <span class="session-key">
+                        Requests
+                    </span>
+
+                    <span
+                        id="requests"
+                        class="session-value"
+                    >
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="session-row">
+
+                    <span class="session-key">
+                        Security
+                    </span>
+
+                    <span
+                        id="security"
+                        class="session-value"
+                    >
+                        Waiting
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="lab-buttons">
+
+                <button
+                    class="lab-btn"
+                    onclick="loginSession()"
+                >
+                    Login
+                </button>
+
+                <button
+                    class="lab-btn"
+                    onclick="sendRequest()"
+                >
+                    Send Request
+                </button>
+
+                <button
+                    class="lab-btn"
+                    onclick="logoutSession()"
+                >
+                    Logout
+                </button>
+
+                <button
+                    class="lab-btn"
+                    onclick="resetSession()"
+                >
+                    Reset
+                </button>
+
+            </div>
+
+
+            <div
+                id="output"
+                class="lab-output"
+            >
+                Waiting for laboratory action...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 02 -->
+
+    <section class="lab-card">
+
+        <div class="lab-heading">
+
+            <div class="lab-number">
+                02
+            </div>
+
+            <h2>
+                Session Security Checklist
+            </h2>
+
+        </div>
+
+        <p>
+            Mark the controls that should normally be considered when
+            designing a secure session management system.
+        </p>
+
+
+        <div class="checklist">
+
+            <label class="check-item">
+                <input type="checkbox">
+                Use HTTPS to protect session traffic.
+            </label>
+
+            <label class="check-item">
+                <input type="checkbox">
+                Use unpredictable session identifiers.
+            </label>
+
+            <label class="check-item">
+                <input type="checkbox">
+                Apply appropriate cookie security attributes.
+            </label>
+
+            <label class="check-item">
+                <input type="checkbox">
+                Expire sessions according to security requirements.
+            </label>
+
+            <label class="check-item">
+                <input type="checkbox">
+                Publish real session identifiers in source code.
+            </label>
+
+        </div>
+
+    </section>
+
+
+    <!-- 03 -->
+
+    <section class="lab-card">
+
+        <div class="lab-heading">
+
+            <div class="lab-number">
+                03
+            </div>
+
+            <h2>
+                Knowledge Check
+            </h2>
+
+        </div>
+
+
+        <div class="question">
+
+            <div class="question-title">
+                Q1. Why are sessions commonly used in web applications?
+            </div>
+
+            <label class="option">
+                <input type="radio" name="q1" value="a">
+                To make HTTP permanently stateful
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="b">
+                To maintain user context between requests
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q1" value="c">
+                To replace HTTPS
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <div class="question-title">
+                Q2. Which cookie attribute helps prevent client-side
+                scripts from directly reading a session cookie?
+            </div>
+
+            <label class="option">
+                <input type="radio" name="q2" value="a">
+                HttpOnly
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="b">
+                Public
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q2" value="c">
+                Cache-Control
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <div class="question-title">
+                Q3. What should happen to a session after logout?
+            </div>
+
+            <label class="option">
+                <input type="radio" name="q3" value="a">
+                It should remain active forever
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="b">
+                It should be appropriately invalidated
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q3" value="c">
+                It should be publicly displayed
+            </label>
+
+        </div>
+
+
+        <div class="question">
+
+            <div class="question-title">
+                Q4. Why should session identifiers be unpredictable?
+            </div>
+
+            <label class="option">
+                <input type="radio" name="q4" value="a">
+                To make the website load faster
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q4" value="b">
+                To reduce the risk of attackers guessing valid identifiers
+            </label>
+
+            <label class="option">
+                <input type="radio" name="q4" value="c">
+                To disable authentication
+            </label>
+
+        </div>
+
+
+        <button
+            class="quiz-button"
+            onclick="checkQuiz()"
+        >
+            Check Answers
+        </button>
+
+
+        <div
+            id="quizResult"
+            class="quiz-result"
+        >
+            Result will appear here.
+        </div>
+
+    </section>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="navigation">
+
+        <a href="cookies-lab.html">
+            ← Lab: Cookies
+        </a>
+
+        <a href="web-security-lab.html">
+            All Labs
+        </a>
+
+        <a href="../theory/authentication-authorization.html">
+            Next Theory: Authentication →
+        </a>
+
+    </div>
+
+
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+    let authenticated = false;
+
+    let requestCount = 0;
+
+    let sessionId = null;
+
+
+    function generateSessionId() {
+
+        return "LAB-" +
+            Math.random()
+                .toString(36)
+                .substring(2, 8)
+                .toUpperCase();
+
+    }
+
+
+    function updateDisplay() {
+
+        const status =
+            document.getElementById("status");
+
+        const user =
+            document.getElementById("user");
+
+        const id =
+            document.getElementById("sessionId");
+
+        const requests =
+            document.getElementById("requests");
+
+        const security =
+            document.getElementById("security");
+
+
+        if (authenticated) {
+
+            status.textContent =
+                "AUTHENTICATED";
+
+            status.style.color =
+                "#00ffb0";
+
+            user.textContent =
+                "Training User";
+
+            id.textContent =
+                sessionId;
+
+            security.textContent =
+                "Protected";
+
+        } else {
+
+            status.textContent =
+                "NOT AUTHENTICATED";
+
+            status.style.color =
+                "#ff6b6b";
+
+            user.textContent =
+                "Guest";
+
+            id.textContent =
+                "None";
+
+            security.textContent =
+                "Waiting";
+        }
+
+
+        requests.textContent =
+            requestCount;
+
+    }
+
+
+    function loginSession() {
+
+        if (authenticated) {
+
+            showOutput(
+                "A training session is already active."
+            );
+
+            return;
+        }
+
+
+        authenticated = true;
+
+        requestCount = 0;
+
+        sessionId = generateSessionId();
+
+
+        updateDisplay();
+
+
+        showOutput(
+            "LOGIN SUCCESS: A simulated session has been created. " +
+            "The displayed identifier is generated locally for this lab."
+        );
+
+    }
+
+
+    function sendRequest() {
+
+        if (!authenticated) {
+
+            showOutput(
+                "REQUEST BLOCKED: No authenticated training session exists."
+            );
+
+            return;
+        }
+
+
+        requestCount++;
+
+        updateDisplay();
+
+
+        showOutput(
+            "REQUEST ACCEPTED: The simulated application associated " +
+            "this request with the active training session."
+        );
+
+    }
+
+
+    function logoutSession() {
+
+        if (!authenticated) {
+
+            showOutput(
+                "LOGOUT: There is no active training session."
+            );
+
+            return;
+        }
+
+
+        authenticated = false;
+
+        sessionId = null;
+
+
+        updateDisplay();
+
+
+        showOutput(
+            "LOGOUT SUCCESS: The simulated session has been invalidated."
+        );
+
+    }
+
+
+    function resetSession() {
+
+        authenticated = false;
+
+        requestCount = 0;
+
+        sessionId = null;
+
+
+        updateDisplay();
+
+
+        showOutput(
+            "LAB RESET: Session state has returned to the initial state."
+        );
+
+    }
+
+
+    function showOutput(message) {
+
+        document.getElementById("output")
+            .textContent = message;
+
+    }
+
+
+    function checkQuiz() {
+
+        const answers = {
+
+            q1: "b",
+            q2: "a",
+            q3: "b",
+            q4: "b"
+
+        };
+
+
+        let score = 0;
+
+        let answered = 0;
+
+
+        for (const question in answers) {
+
+            const selected =
+                document.querySelector(
+                    'input[name="' +
+                    question +
+                    '"]:checked'
+                );
+
+
+            if (selected) {
+
+                answered++;
+
+                if (
+                    selected.value ===
+                    answers[question]
+                ) {
+
+                    score++;
+
+                }
+
+            }
+
+        }
+
+
+        const result =
+            document.getElementById(
+                "quizResult"
+            );
+
+
+        if (answered < 4) {
+
+            result.textContent =
+                "Please answer all 4 questions.";
+
+            result.style.color =
+                "#ffc44d";
+
+            return;
+        }
+
+
+        result.textContent =
+            "Score: " +
+            score +
+            "/4 — " +
+            (
+                score === 4
+                    ? "Excellent! Session security concepts are clear."
+                    : "Review the session security theory and try again."
+            );
+
+
+        result.style.color =
+            score === 4
+                ? "#00ffb0"
+                : "#ffc44d";
+
+    }
+
+
+    updateDisplay();
+
+</script>
+
+
+<script src="../../../js/navbar.js"></script>
+
+</body>
+</html>

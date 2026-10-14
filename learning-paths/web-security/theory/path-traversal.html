@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Path Traversal - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .ws-page {
+            min-height: calc(100vh - 80px);
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(circle at 12% 8%,
+                    rgba(0, 191, 255, .07),
+                    transparent 28%),
+                radial-gradient(circle at 88% 12%,
+                    rgba(0, 255, 176, .055),
+                    transparent 30%),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .ws-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        /* HERO */
+
+        .ws-hero {
+            position: relative;
+            padding: 42px 35px;
+            margin-bottom: 24px;
+
+            border: 1px solid rgba(0, 191, 255, .16);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 34, .98),
+                    rgba(2, 10, 20, .98)
+                );
+
+            overflow: hidden;
+        }
+
+        .ws-hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .ws-hero-grid {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(250px, .75fr);
+
+            gap: 35px;
+            align-items: center;
+        }
+
+        .ws-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 14px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .ws-kicker::before {
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+            background: #00bfff;
+
+            box-shadow:
+                0 0 12px rgba(0, 191, 255, .7);
+        }
+
+        .ws-hero h1 {
+            margin: 0;
+
+            color: #fff;
+
+            font-size: 46px;
+            line-height: 1.12;
+            letter-spacing: -1px;
+        }
+
+        .ws-hero h1 span {
+            color: #00bfff;
+        }
+
+        .ws-description {
+            max-width: 700px;
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        /* TERMINAL */
+
+        .terminal {
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, .15);
+            border-radius: 11px;
+
+            background: rgba(0, 0, 0, .35);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        .terminal-top {
+            display: flex;
+            gap: 6px;
+
+            padding-bottom: 12px;
+            margin-bottom: 13px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, .08);
+        }
+
+        .terminal-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+            background: #405263;
+        }
+
+        .terminal-title {
+            margin-left: auto;
+
+            color: #52687c;
+
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+            margin-bottom: 9px;
+
+            color: #71879b;
+
+            font-size: 11px;
+        }
+
+        .green {
+            color: #00ffb0;
+        }
+
+        .blue {
+            color: #00bfff;
+        }
+
+        /* META */
+
+        .meta {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .meta-item {
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, .1);
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, .025);
+        }
+
+        .meta-label {
+            display: block;
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: #dce9f4;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* CARD */
+
+        .card {
+            margin-bottom: 18px;
+            padding: 27px;
+
+            border: 1px solid rgba(0, 191, 255, .11);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, .97),
+                    rgba(2, 11, 21, .97)
+                );
+        }
+
+        .heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .number {
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, .22);
+            border-radius: 7px;
+
+            color: #00bfff;
+            background: rgba(0, 191, 255, .045);
+
+            font-family: Consolas, monospace;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .heading h2 {
+            margin: 0;
+
+            color: #fff;
+
+            font-size: 20px;
+        }
+
+        .card p {
+            margin: 0 0 12px;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        /* DEFINITION */
+
+        .definition {
+            padding: 21px;
+
+            border-left: 3px solid #00bfff;
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 191, 255, .055),
+                    rgba(0, 191, 255, .01)
+                );
+        }
+
+        .definition-label {
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .definition p {
+            margin: 0;
+
+            color: #cce9f4;
+            font-size: 14px;
+        }
+
+        /* FLOW */
+
+        .flow {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .flow-card {
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, .1);
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, .025);
+        }
+
+        .flow-card strong {
+            display: block;
+            margin-bottom: 7px;
+
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .flow-card span {
+            color: #71879b;
+
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        /* CODE */
+
+        .code-box {
+            margin-top: 16px;
+            padding: 18px;
+
+            border: 1px solid rgba(0, 255, 176, .1);
+            border-radius: 9px;
+
+            background: #01060b;
+
+            overflow-x: auto;
+        }
+
+        .code-box code {
+            color: #9bb1c3;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        /* WARNING */
+
+        .warning {
+            padding: 20px;
+
+            border: 1px solid rgba(255, 177, 0, .17);
+            border-radius: 10px;
+
+            background:
+                rgba(255, 177, 0, .035);
+        }
+
+        .warning strong {
+            display: block;
+            margin-bottom: 8px;
+
+            color: #ffc44d;
+            font-size: 13px;
+        }
+
+        .warning p {
+            margin: 0;
+
+            color: #899bad;
+            font-size: 12px;
+        }
+
+        /* SUMMARY */
+
+        .summary {
+            padding: 25px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 191, 255, .14);
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, .035),
+                    rgba(0, 255, 176, .02)
+                );
+        }
+
+        .summary-label {
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .summary h2 {
+            margin: 0 0 10px;
+
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .summary p {
+            max-width: 760px;
+            margin: auto;
+
+            color: #7e94a8;
+
+            font-size: 12px;
+            line-height: 1.85;
+        }
+
+        /* LAB CTA */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 25px;
+            padding: 21px;
+
+            border: 1px solid rgba(0, 191, 255, .14);
+            border-radius: 12px;
+
+            background: rgba(0, 191, 255, .025);
+        }
+
+        .lab-text strong {
+            display: block;
+            margin-bottom: 5px;
+
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .lab-text span {
+            color: #71879b;
+            font-size: 11px;
+        }
+
+        .lab-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 12px 20px;
+
+            flex-shrink: 0;
+
+            border: 1px solid rgba(0, 191, 255, .3);
+            border-radius: 8px;
+
+            color: #ccefff;
+            background: rgba(0, 191, 255, .05);
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .lab-button:hover {
+            border-color: rgba(0, 191, 255, .55);
+            background: rgba(0, 191, 255, .09);
+        }
+        @media (max-width: 800px) {
+            .ws-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .meta {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .ws-page {
+                padding: 45px 12px 60px;
+            }
+
+            .ws-hero {
+                padding: 27px 20px;
+            }
+
+            .ws-hero h1 {
+                font-size: 31px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .flow {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-area {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<main class="ws-page">
+
+<div class="ws-container">
+
+    <!-- HERO -->
+
+    <section class="ws-hero">
+
+        <div class="ws-hero-grid">
+
+            <div>
+
+                <div class="ws-kicker">
+                    WEB SECURITY / 13
+                </div>
+
+                <h1>
+                    <span>Path</span> Traversal
+                </h1>
+
+                <p class="ws-description">
+                    Learn how insecure file-handling logic can allow an
+                    application to access resources outside its intended
+                    directory, why this vulnerability occurs, how it can
+                    expose sensitive information, and how developers can
+                    prevent it.
+                </p>
+
+            </div>
+
+
+            <div class="terminal">
+
+                <div class="terminal-top">
+
+                    <span class="terminal-dot"></span>
+                    <span class="terminal-dot"></span>
+                    <span class="terminal-dot"></span>
+
+                    <span class="terminal-title">
+                        WEB SECURITY LAB
+                    </span>
+
+                </div>
+
+                <div class="terminal-line">
+                    <span class="green">student@cybernexa</span>:~$
+                    <span class="blue">path-traversal --lab</span>
+                </div>
+
+                <div class="terminal-line">
+                    Target:
+                    <span class="blue">SANDBOX</span>
+                </div>
+
+                <div class="terminal-line">
+                    Protection:
+                    <span class="green">ENABLED</span>
+                </div>
+
+                <div class="terminal-line">
+                    Status:
+                    <span class="green">READY</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- META -->
+
+    <div class="meta">
+
+        <div class="meta-item">
+            <span class="meta-label">Domain</span>
+            <span class="meta-value">Web Security</span>
+        </div>
+
+        <div class="meta-item">
+            <span class="meta-label">Level</span>
+            <span class="meta-value">Intermediate</span>
+        </div>
+
+        <div class="meta-item">
+            <span class="meta-label">Category</span>
+            <span class="meta-value">File Handling</span>
+        </div>
+
+        <div class="meta-item">
+            <span class="meta-label">Environment</span>
+            <span class="meta-value green">Authorized Lab</span>
+        </div>
+
+    </div>
+
+
+    <!-- 01 -->
+
+    <section class="card">
+
+        <div class="heading">
+            <div class="number">01</div>
+            <h2>What is Path Traversal?</h2>
+        </div>
+
+        <div class="definition">
+
+            <div class="definition-label">
+                Core Definition
+            </div>
+
+            <p>
+                Path Traversal is a web security vulnerability that occurs
+                when an application does not properly validate user-controlled
+                file paths. An attacker may attempt to manipulate a path so
+                that the application accesses a file outside its intended
+                directory.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 02 -->
+
+    <section class="card">
+
+        <div class="heading">
+            <div class="number">02</div>
+            <h2>How Path Traversal Happens</h2>
+        </div>
+
+        <p>
+            Many web applications provide functionality such as downloading
+            reports, displaying images, loading documents or retrieving
+            configuration files.
+        </p>
+
+        <p>
+            If the application directly uses a user-supplied filename without
+            proper validation, the input may influence the filesystem path
+            selected by the server.
+        </p>
+
+        <div class="flow">
+
+            <div class="flow-card">
+                <strong>01 — User Input</strong>
+                <span>
+                    A filename or resource identifier is supplied through
+                    a request.
+                </span>
+            </div>
+
+            <div class="flow-card">
+                <strong>02 — Unsafe Handling</strong>
+                <span>
+                    The server combines the input with a filesystem path
+                    without sufficient validation.
+                </span>
+            </div>
+
+            <div class="flow-card">
+                <strong>03 — Unauthorized Resource</strong>
+                <span>
+                    The application may access a resource outside its
+                    intended directory.
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 03 -->
+
+    <section class="card">
+
+        <div class="heading">
+            <div class="number">03</div>
+            <h2>Why Path Traversal is Dangerous</h2>
+        </div>
+
+        <p>
+            The impact depends on the application's permissions and the files
+            that are reachable from the vulnerable functionality.
+        </p>
+
+        <div class="flow">
+
+            <div class="flow-card">
+                <strong>Information Disclosure</strong>
+                <span>
+                    Sensitive application or configuration information
+                    may become accessible.
+                </span>
+            </div>
+
+            <div class="flow-card">
+                <strong>Credential Exposure</strong>
+                <span>
+                    Improperly protected secrets or credentials may be exposed.
+                </span>
+            </div>
+
+            <div class="flow-card">
+                <strong>Application Compromise</strong>
+                <span>
+                    In severe cases, exposed information may contribute to
+                    further compromise.
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 04 -->
+
+    <section class="card">
+
+        <div class="heading">
+            <div class="number">04</div>
+            <h2>Common Root Causes</h2>
+        </div>
+
+        <div class="flow">
+
+            <div class="flow-card">
+                <strong>Untrusted Input</strong>
+                <span>
+                    File paths are accepted directly from users.
+                </span>
+            </div>
+
+            <div class="flow-card">
+                <strong>Weak Validation</strong>
+                <span>
+                    The application checks extensions but not the complete
+                    resolved path.
+                </span>
+            </div>
+
+            <div class="flow-card">
+                <strong>Unsafe File APIs</strong>
+                <span>
+                    Server-side filesystem functions receive uncontrolled
+                    path information.
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 05 -->
+
+    <section class="card">
+
+        <div class="heading">
+            <div class="number">05</div>
+            <h2>Secure Development</h2>
+        </div>
+
+        <p>
+            Developers should never assume that a filename supplied by a
+            client is safe. File access should be constrained to an explicitly
+            permitted directory.
+        </p>
+
+        <div class="code-box">
+
+<code>
+const baseDirectory = "/application/uploads/";
+
+const requestedFile = getUserInput();
+
+const resolvedPath = resolve(baseDirectory, requestedFile);
+
+if (!resolvedPath.startsWith(baseDirectory)) {
+    denyRequest();
+}
+</code>
+
+        </div>
+
+        <p>
+            The exact implementation depends on the programming language
+            and framework. The important security principle is to resolve
+            and validate the final path rather than trusting raw user input.
+        </p>
+
+    </section>
+
+
+    <!-- 06 -->
+
+    <section class="card">
+
+        <div class="heading">
+            <div class="number">06</div>
+            <h2>Security Controls</h2>
+        </div>
+
+        <div class="flow">
+
+            <div class="flow-card">
+                <strong>Allowlisting</strong>
+                <span>
+                    Permit only known files or identifiers instead of
+                    accepting arbitrary paths.
+                </span>
+            </div>
+
+            <div class="flow-card">
+                <strong>Canonicalization</strong>
+                <span>
+                    Resolve the final filesystem path before authorization.
+                </span>
+            </div>
+
+            <div class="flow-card">
+                <strong>Least Privilege</strong>
+                <span>
+                    Run applications with only the filesystem permissions
+                    they actually require.
+                </span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 07 -->
+
+    <section class="card">
+
+        <div class="heading">
+            <div class="number">07</div>
+            <h2>Authorized Testing Scenario</h2>
+        </div>
+
+        <p>
+            In a controlled Web Security laboratory, a training application
+            may intentionally contain an unsafe file-reading feature.
+            Students can use predefined sandbox resources to understand
+            how path validation affects application behavior.
+        </p>
+
+        <div class="warning">
+
+            <strong>
+                ⚠ AUTHORIZED ENVIRONMENT ONLY
+            </strong>
+
+            <p>
+                Path Traversal testing should only be performed against
+                applications and systems that you own or have explicit
+                permission to test. The CyberNexa lab uses simulated
+                resources and does not access the student's real operating
+                system.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+
+    <section class="summary">
+
+        <div class="summary-label">
+            Module Summary
+        </div>
+
+        <h2>
+            Validate the Path. Protect the Resource.
+        </h2>
+
+        <p>
+            Path Traversal occurs when untrusted path information can influence
+            server-side file access outside the intended directory. Strong
+            input validation, canonical path checking, allowlisting and
+            least-privilege permissions are important defenses against this
+            vulnerability.
+        </p>
+
+    </section>
+    <!-- LESSON COMPLETION -->
+
+    <section class="card" id="lessonCompletion">
+
+        <div class="heading">
+            <div class="number">08</div>
+            <h2>Lesson Completion</h2>
+        </div>
+
+        <p>
+            You have reviewed the core concepts of Path Traversal,
+            its security risks, and the techniques used to prevent
+            insecure file access.
+        </p>
+
+        <p>
+            Mark this lesson as complete when you have finished
+            studying the topic.
+        </p>
+
+        <button
+            type="button"
+            class="lab-button"
+            data-lesson-progress
+            data-course-id="web-security"
+            data-lesson-id="path-traversal"
+            data-dashboard-url="../learning-paths/web-security/theory/path-traversal.html"
+            data-status-id="pathTraversalCompletionStatus">
+            Mark Lesson as Complete
+        </button>
+
+        <p
+            id="pathTraversalCompletionStatus"
+            role="status"
+            aria-live="polite"
+            style="margin-top: 15px;">
+        </p>
+
+    </section>
+    <!-- LAB -->
+
+    <div class="lab-area">
+
+        <div class="lab-text">
+
+            <strong>
+                Ready for the Practical Lab?
+            </strong>
+
+            <span>
+                Analyze a safe simulated file-access scenario and test
+                your understanding of Path Traversal.
+            </span>
+
+        </div>
+
+        <a
+            href="../lab/path-traversal-lab.html"
+            class="lab-button"
+        >
+            🧪 Launch Lab →
+        </a>
+
+    </div>
+</div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">Home</a>
+
+            <a href="../../../footer/about.html">About</a>
+
+            <a href="../../../footer/contact.html">Contact</a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

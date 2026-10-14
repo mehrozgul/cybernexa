@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Users & Groups - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .linux-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-topic-header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .linux-topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-topic-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ====================================================== */
+
+        .linux-search-wrapper {
+
+            position: relative;
+
+            max-width: 720px;
+
+            margin: 0 auto 35px;
+        }
+
+
+        .linux-search-wrapper input {
+
+            width: 100%;
+
+            padding: 15px 52px 15px 18px;
+
+            border: 1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 10px;
+
+            outline: none;
+
+            color: #e2e8f0;
+
+            background: rgba(3, 13, 20, 0.95);
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .linux-search-wrapper input::placeholder {
+
+            color: #71808c;
+        }
+
+
+        .linux-search-wrapper input:focus {
+
+            border-color: rgba(103, 232, 249, 0.55);
+
+            box-shadow:
+                0 0 20px rgba(103, 232, 249, 0.08);
+        }
+
+
+        .linux-search-clear {
+
+            position: absolute;
+
+            top: 50%;
+            right: 16px;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            cursor: pointer;
+
+            display: none;
+        }
+
+
+        .linux-search-status {
+
+            margin-top: 9px;
+
+            color: #71808c;
+
+            font-size: 11px;
+
+            text-align: center;
+        }
+
+
+        .linux-search-no-results {
+
+            display: none;
+
+            padding: 20px;
+
+            margin-bottom: 22px;
+
+            border: 1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            color: #aebbc5;
+
+            background: rgba(103, 232, 249, 0.035);
+
+            text-align: center;
+
+            font-size: 13px;
+        }
+
+
+        .linux-search-hidden {
+
+            display: none !important;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           DESKTOP HOVER
+        ====================================================== */
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-card::after,
+        .linux-user-card::after,
+        .linux-command-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent
+                );
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover::after,
+            .linux-user-card:hover::after,
+            .linux-command-card:hover::after {
+
+                animation:
+                    linuxLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-card p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .linux-definition-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid
+                #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-definition-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-definition-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           USER / GROUP GRID
+        ====================================================== */
+
+        .linux-user-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-user-card {
+
+            position: relative;
+
+            padding: 20px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-user-card:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.35);
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .linux-user-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+
+        .linux-user-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .linux-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+
+        /* =====================================================
+           COMMAND CARDS
+        ====================================================== */
+
+        .linux-command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-command-card {
+
+            position: relative;
+
+            padding: 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+        }
+
+
+        .linux-command-card code {
+
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .linux-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-flow-item {
+
+            padding: 12px 16px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .linux-summary-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-summary-list li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 23px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid
+                rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-summary-list li:last-child {
+            border-bottom: none;
+        }
+
+
+        .linux-summary-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform: translateY(-1px);
+        }
+
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-learning-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-topic-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-learning-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-topic-header {
+
+                margin-bottom: 30px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-topic-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-search-wrapper {
+
+                margin-bottom: 28px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-definition-box {
+
+                padding: 16px;
+            }
+
+
+            .linux-definition-box span {
+
+                font-size: 13px;
+            }
+
+
+            .linux-user-grid,
+            .linux-command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-key-item {
+
+                font-size: 11px;
+
+                padding: 9px 11px;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-learning-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+        #navbar-placeholder a[href*="linux"] svg,
+#navbar-placeholder a[href*="linux"] i {
+    width: 18px;
+    height: 18px;
+    font-size: 16px;
+}
+/* Page-specific fix: Linux navbar icon */
+#navbar-placeholder a[href*="linux"] svg,
+#navbar-placeholder a[href*="linux"] i,
+#navbar-placeholder a[href*="linux"] .nav-icon,
+#navbar-placeholder a[href*="linux"] .nav-icon-wrapper {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    font-size: 16px !important;
+}
+
+/* Keep the Linux navigation item compact */
+#navbar-placeholder a[href*="linux"] {
+    gap: 8px;
+}
+    </style>
+</head>
+<body>
+
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-learning-page">
+
+        <div class="linux-learning-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="linux-topic-header">
+
+                <div class="linux-topic-category">
+                    LINUX
+                </div>
+
+                <h1>
+                    Linux <span>Users &amp; Groups</span>
+                </h1>
+
+                <p class="linux-topic-intro">
+
+                    Linux uses users and groups to manage identity,
+                    access and permissions. Understanding them is
+                    essential for Linux administration and cybersecurity.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 SEARCH
+            ================================================== -->
+
+            <div class="linux-search-wrapper">
+
+                <input
+                    type="text"
+                    id="linuxSearch"
+                    placeholder="Search Linux users, groups, commands or concepts..."
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    id="linuxSearchClear"
+                    class="linux-search-clear"
+                    aria-label="Clear search"
+                >
+                    ×
+                </button>
+
+                <div
+                    id="linuxSearchStatus"
+                    class="linux-search-status"
+                >
+                    Search this Linux topic
+                </div>
+
+            </div>
+
+
+
+            <div
+                id="linuxSearchNoResults"
+                class="linux-search-no-results"
+            >
+                No matching Linux content found.
+            </div>
+
+
+
+            <!-- =================================================
+                 DEFINITION
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        👤
+                    </div>
+
+                    <h2>
+                        What are Linux Users &amp; Groups?
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-definition-box">
+
+                    <strong>
+                        Simple Definition
+                    </strong>
+
+                    <span>
+
+                        A <strong>user</strong> represents an account
+                        that can access a Linux system, while a
+                        <strong>group</strong> is a collection of users
+                        used to manage access and permissions more easily.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 USERS
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        U
+                    </div>
+
+                    <h2>
+                        Linux Users
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Every person or service that needs access to a
+                    Linux system can have a user account.
+
+                </p>
+
+
+                <div class="linux-user-grid">
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Root User
+                        </h3>
+
+                        <p>
+
+                            The root account is the administrator account
+                            with extensive privileges over the system.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Regular User
+                        </h3>
+
+                        <p>
+
+                            A normal user account is generally used for
+                            everyday activities with limited privileges.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            System User
+                        </h3>
+
+                        <p>
+
+                            System accounts are commonly used by services
+                            and applications rather than interactive users.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            User ID (UID)
+                        </h3>
+
+                        <p>
+
+                            Linux identifies users internally using
+                            numerical User IDs called UIDs.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 GROUPS
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        G
+                    </div>
+
+                    <h2>
+                        Linux Groups
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A group allows multiple users to share access
+                    permissions to files, directories and resources.
+
+                </p>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        User 1
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Group
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Shared Access
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRIMARY / SECONDARY GROUP
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        Primary &amp; Secondary Groups
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-user-grid">
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Primary Group
+                        </h3>
+
+                        <p>
+
+                            The primary group is the main group associated
+                            with a user's account and is used as the default
+                            group for many file operations.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            Secondary Group
+                        </h3>
+
+                        <p>
+
+                            A user can belong to additional groups.
+                            These are called secondary groups and can
+                            provide additional access.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 UID GID
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ID
+                    </div>
+
+                    <h2>
+                        UID and GID
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-user-grid">
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            UID
+                        </h3>
+
+                        <p>
+
+                            UID stands for User ID. It is the numerical
+                            identifier assigned to a Linux user.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <h3>
+                            GID
+                        </h3>
+
+                        <p>
+
+                            GID stands for Group ID. It is the numerical
+                            identifier assigned to a Linux group.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        id username
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 IMPORTANT FILES
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        /
+                    </div>
+
+                    <h2>
+                        Important User &amp; Group Files
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            /etc/passwd
+                        </code>
+
+                        <p>
+                            Contains information about Linux user accounts.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            /etc/shadow
+                        </code>
+
+                        <p>
+                            Stores protected password-related information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            /etc/group
+                        </code>
+
+                        <p>
+                            Contains information about groups.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            /etc/gshadow
+                        </code>
+
+                        <p>
+                            Contains protected group-related information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 USEFUL COMMANDS
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Basic User &amp; Group Commands
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux provides commands for viewing and managing
+                    users and groups.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            whoami
+                        </code>
+
+                        <p>
+                            Displays the username of the current user.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            id
+                        </code>
+
+                        <p>
+                            Displays UID, GID and group information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            who
+                        </code>
+
+                        <p>
+                            Shows users currently logged into the system.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            groups
+                        </code>
+
+                        <p>
+                            Shows the groups associated with a user.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            passwd
+                        </code>
+
+                        <p>
+                            Changes or manages a user's password.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            getent group
+                        </code>
+
+                        <p>
+                            Displays group information from configured
+                            system databases.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CREATE USER
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        +
+                    </div>
+
+                    <h2>
+                        Creating a User
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>useradd</strong> command can be used
+                    to create a new user account.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        sudo useradd username
+                    </code>
+
+                </div>
+
+
+                <p>
+
+                    A password can then be assigned using the
+                    <strong>passwd</strong> command.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        sudo passwd username
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CREATE GROUP
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        +
+                    </div>
+
+                    <h2>
+                        Creating a Group
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>groupadd</strong> command creates
+                    a new group.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        sudo groupadd developers
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ADD USER TO GROUP
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ↔
+                    </div>
+
+                    <h2>
+                        Adding a User to a Group
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A user can be added to an existing group using
+                    the <strong>usermod</strong> command.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        sudo usermod -aG developers username
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 REMOVE USER FROM GROUP
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        −
+                    </div>
+
+                    <h2>
+                        Removing a User from a Group
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    On many Linux systems, a user can be removed
+                    from a secondary group using the
+                    <strong>gpasswd</strong> command.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        sudo gpasswd -d username developers
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECURITY
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why Users &amp; Groups Matter in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    User and group management is important in
+                    cybersecurity because access should be limited
+                    according to a user's required responsibilities.
+
+                </p>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Authentication
+                    </div>
+
+                    <div class="linux-key-item">
+                        Authorization
+                    </div>
+
+                    <div class="linux-key-item">
+                        Least Privilege
+                    </div>
+
+                    <div class="linux-key-item">
+                        Access Control
+                    </div>
+
+                    <div class="linux-key-item">
+                        Account Management
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SUMMARY
+            ================================================== -->
+
+            <section class="linux-card linux-search-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Quick Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-summary-list">
+
+                    <li>
+                        Linux uses users to identify accounts.
+                    </li>
+
+                    <li>
+                        Groups allow multiple users to share access.
+                    </li>
+
+                    <li>
+                        UID identifies a user numerically.
+                    </li>
+
+                    <li>
+                        GID identifies a group numerically.
+                    </li>
+
+                    <li>
+                        A user can have a primary group and additional
+                        secondary groups.
+                    </li>
+
+                    <li>
+                        /etc/passwd contains user account information.
+                    </li>
+
+                    <li>
+                        /etc/shadow contains protected password-related
+                        information.
+                    </li>
+
+                    <li>
+                        /etc/group contains group information.
+                    </li>
+
+                    <li>
+                        useradd can create a user.
+                    </li>
+
+                    <li>
+                        groupadd can create a group.
+                    </li>
+
+                    <li>
+                        usermod can modify user membership and properties.
+                    </li>
+
+                    <li>
+                        Proper user and group management supports
+                        least-privilege security.
+                    </li>
+
+                </ul>
+
+            </section>
+            
+<!-- Lesson Completion -->
+<section class="linux-card" id="lessonCompletion">
+    <div class="linux-card-heading">
+        <div class="linux-icon" aria-hidden="true">✓</div>
+        <h2>Complete This Lesson</h2>
+    </div>
+
+    <p>
+        Mark this lesson as complete after studying all the topics.
+        Your progress will be saved to your CyberNexa account.
+    </p>
+
+    <button
+        type="button"
+        class="linux-topic-button"
+        data-lesson-progress
+        data-course-id="linux"
+        data-lesson-id="linux-users-groups"
+        data-dashboard-url="../learning-paths/linux/theory/linux-users-groups.html"
+        data-status-id="lessonCompletionStatus">
+
+        Mark Lesson Complete
+    </button>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite">
+    </p>
+</section>
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-topic-navigation">
+
+
+                <a
+                    href="linux-commands.html"
+                    class="linux-topic-button previous"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Linux Commands
+                    </strong>
+
+                </a>
+                
+                <a href="../lab/lab04.html" class="linux-topic-button practical-lab">
+                    <span>🧪</span>
+ <strong>Perform Lab</strong>                </a>
+            </div>
+        </div>
+    </main>
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+    <script>
+
+        const linuxSearch =
+            document.getElementById("linuxSearch");
+
+        const linuxSearchClear =
+            document.getElementById("linuxSearchClear");
+
+        const linuxSearchStatus =
+            document.getElementById("linuxSearchStatus");
+
+        const linuxSearchNoResults =
+            document.getElementById("linuxSearchNoResults");
+
+        const linuxSearchCards =
+            document.querySelectorAll(".linux-search-card");
+
+
+        function performLinuxSearch() {
+
+            const query =
+                linuxSearch.value
+                    .trim()
+                    .toLowerCase();
+
+
+            let visibleCount = 0;
+
+
+            linuxSearchCards.forEach(card => {
+
+                const content =
+                    card.innerText.toLowerCase();
+
+
+                if (
+                    query === "" ||
+                    content.includes(query)
+                ) {
+
+                    card.classList.remove(
+                        "linux-search-hidden"
+                    );
+
+                    visibleCount++;
+
+                } else {
+
+                    card.classList.add(
+                        "linux-search-hidden"
+                    );
+
+                }
+
+            });
+
+
+            if (query === "") {
+
+                linuxSearchStatus.textContent =
+                    "Search this Linux topic";
+
+                linuxSearchClear.style.display =
+                    "none";
+
+                linuxSearchNoResults.style.display =
+                    "none";
+
+                return;
+            }
+
+
+            linuxSearchClear.style.display =
+                "block";
+
+
+            if (visibleCount === 0) {
+
+                linuxSearchStatus.textContent =
+                    "0 matching results";
+
+                linuxSearchNoResults.style.display =
+                    "block";
+
+            } else {
+
+                linuxSearchStatus.textContent =
+                    visibleCount +
+                    " matching Linux section" +
+                    (visibleCount === 1 ? "" : "s");
+
+                linuxSearchNoResults.style.display =
+                    "none";
+            }
+
+        }
+
+
+        linuxSearch.addEventListener(
+            "input",
+            performLinuxSearch
+        );
+
+
+        linuxSearchClear.addEventListener(
+            "click",
+            () => {
+
+                linuxSearch.value = "";
+
+                performLinuxSearch();
+
+                linuxSearch.focus();
+
+            }
+        );
+
+    </script>
+
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+         Sweep only when user scrolls/touches.
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards =
+            document.querySelectorAll(
+                ".linux-card, .linux-user-card, .linux-command-card"
+            );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+                void card.offsetWidth;
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(sweepTimeout);
+
+
+            sweepTimeout =
+                setTimeout(() => {
+
+                    sweepCards.forEach(card => {
+
+                        card.classList.remove(
+                            "mobile-sweep"
+                        );
+
+                    });
+
+                }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Python Cybersecurity Labs | CyberNexa</title>
+    
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 202, 255, 0.08),
+                    transparent 30%
+                ),
+                #030b16;
+
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
+            background: #030c19;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 16px 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #00caff;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            color: #7f94aa;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .labs-page {
+            max-width: 1050px;
+            margin: auto;
+
+            padding: 35px 20px 70px;
+        }
+
+        .breadcrumb {
+            color: #6f849a;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb span {
+            color: #00caff;
+            padding: 0 7px;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .labs-header {
+            padding: 32px;
+
+            border: 1px solid rgba(0, 230, 138, 0.25);
+            border-left: 4px solid #00e68a;
+
+            border-radius: 9px;
+
+            background: rgba(0, 230, 138, 0.04);
+        }
+
+        .labs-label {
+            color: #00e68a;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+        }
+
+        .labs-header h1 {
+            color: white;
+
+            font-size: 34px;
+
+            margin: 10px 0;
+        }
+
+        .labs-header p {
+            color: #9fb1c5;
+
+            font-size: 14px;
+            line-height: 1.7;
+
+            max-width: 800px;
+
+            margin: 0;
+        }
+
+        /* =====================================================
+           LAB CARDS
+        ===================================================== */
+
+        .labs-section {
+            margin-top: 25px;
+        }
+
+        .section-title {
+            color: white;
+
+            font-size: 22px;
+
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: #8fa4b9;
+
+            font-size: 13px;
+
+            margin-bottom: 20px;
+        }
+
+        .lab-card {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 20px;
+            margin-bottom: 12px;
+
+            border: 1px solid rgba(0, 202, 255, 0.15);
+            border-left: 3px solid #00e68a;
+
+            border-radius: 8px;
+
+            background: #041221;
+
+            transition: 0.25s ease;
+        }
+
+        .lab-card:hover {
+            border-color: rgba(0, 230, 138, 0.45);
+
+            transform: translateX(4px);
+
+            box-shadow:
+                0 0 18px rgba(0, 230, 138, 0.06);
+        }
+
+        .lab-info {
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+        }
+
+        .lab-number {
+            min-width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: rgba(0, 230, 138, 0.08);
+
+            border: 1px solid rgba(0, 230, 138, 0.25);
+
+            color: #00e68a;
+
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .lab-text h3 {
+            margin: 0 0 5px;
+
+            color: white;
+
+            font-size: 16px;
+        }
+
+        .lab-text p {
+            margin: 0;
+
+            color: #7f94aa;
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .open-lab {
+            display: inline-block;
+
+            padding: 9px 16px;
+
+            border-radius: 20px;
+
+            color: #00e68a;
+
+            border: 1px solid rgba(0, 230, 138, 0.35);
+
+            background: rgba(0, 230, 138, 0.05);
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            white-space: nowrap;
+
+            transition: 0.2s ease;
+        }
+
+        .open-lab:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            border-top: 1px solid rgba(0, 202, 255, 0.15);
+
+            background: #020914;
+
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            max-width: 1050px;
+
+            margin: auto;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .footer-brand {
+            color: white;
+
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #6f849a;
+
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+
+            gap: 18px;
+
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+
+            text-decoration: none;
+
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            max-width: 1050px;
+
+            margin: 25px auto 0;
+
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255,255,255,0.05);
+
+            text-align: center;
+
+            color: #52667b;
+
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .labs-page {
+                padding: 25px 15px 55px;
+            }
+
+            .labs-header {
+                padding: 23px;
+            }
+
+            .labs-header h1 {
+                font-size: 27px;
+            }
+
+            .lab-card {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .open-lab {
+                width: 100%;
+
+                text-align: center;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58
+                        C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="labs-page">
+
+
+    <div class="breadcrumb">
+
+        Python for Cybersecurity
+        <span>›</span>
+        Practical Labs
+
+    </div>
+
+
+    <section class="labs-header">
+
+        <div class="labs-label">
+            PYTHON PRACTICAL ENVIRONMENT
+        </div>
+
+        <h1>
+            Python Cybersecurity Labs
+        </h1>
+
+        <p>
+            Practice Python concepts through cybersecurity-focused
+            exercises. Each lab provides a Python environment,
+            instructions, code editor and expected output.
+        </p>
+
+    </section>
+
+
+    <section class="labs-section">
+
+        <h2 class="section-title">
+            Practical Python Labs
+        </h2>
+
+        <p class="section-description">
+            Select a lab to practice the corresponding Python topic.
+        </p>
+
+
+        <!-- 01 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    01
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Python Basics Lab
+                    </h3>
+
+                    <p>
+                        Practice basic Python syntax and program structure.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="python-basics-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 02 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    02
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Variables Lab
+                    </h3>
+
+                    <p>
+                        Store IP addresses, ports and security information.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="variables-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 03 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    03
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Conditions Lab
+                    </h3>
+
+                    <p>
+                        Build security decisions using if, elif and else.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="conditions-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 04 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    04
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Loops Lab
+                    </h3>
+
+                    <p>
+                        Automate repeated security-related operations.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="loops-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 05 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    05
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Functions Lab
+                    </h3>
+
+                    <p>
+                        Create reusable functions for security tasks.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="functions-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 06 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    06
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Lists &amp; Dictionaries Lab
+                    </h3>
+
+                    <p>
+                        Manage collections of cybersecurity information.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="lists-dictionaries-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 07 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    07
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        File Handling Lab
+                    </h3>
+
+                    <p>
+                        Read security logs and generate security reports.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="file-handling-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 08 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    08
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Exceptions Lab
+                    </h3>
+
+                    <p>
+                        Handle errors safely in cybersecurity programs.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="exceptions-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 09 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    09
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Modules Lab
+                    </h3>
+
+                    <p>
+                        Use Python modules to perform security tasks.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="modules-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 10 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    10
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Sockets Lab
+                    </h3>
+
+                    <p>
+                        Practice basic network communication using sockets.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="sockets-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 11 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    11
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Requests Lab
+                    </h3>
+
+                    <p>
+                        Send HTTP requests and inspect web responses.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="requests-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 12 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    12
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Automation Lab
+                    </h3>
+
+                    <p>
+                        Automate repetitive cybersecurity operations.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="automation-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+        <!-- 13 -->
+
+        <article class="lab-card">
+
+            <div class="lab-info">
+
+                <div class="lab-number">
+                    13
+                </div>
+
+                <div class="lab-text">
+
+                    <h3>
+                        Security Scripts Lab
+                    </h3>
+
+                    <p>
+                        Build a practical Python security script.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a href="security-scripts-lab.html"
+               class="open-lab">
+                Open Lab →
+            </a>
+
+        </article>
+
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const labs =
+                document.querySelectorAll(".lab-card");
+
+            labs.forEach(function (lab) {
+
+                lab.addEventListener(
+                    "mouseenter",
+                    function () {
+
+                        lab.style.transition =
+                            "0.25s ease";
+
+                    }
+                );
+
+            });
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

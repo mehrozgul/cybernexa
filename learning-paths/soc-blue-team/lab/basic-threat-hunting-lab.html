@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Basic Threat Hunting Lab | CyberNexa</title>
+
+    <meta name="description"
+        content="Practice basic threat hunting using simulated security logs and investigation queries.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        :root {
+            --lab-bg: #070d14;
+            --lab-panel: #0d151f;
+            --lab-panel-2: #111d29;
+
+            --lab-cyan: #36d9ff;
+            --lab-blue: #4d8dff;
+            --lab-purple: #9b7cff;
+
+            --lab-green: #42d69a;
+            --lab-orange: #ffae52;
+            --lab-red: #ff5b68;
+
+            --lab-text: #edf7ff;
+            --lab-muted: #91a5b7;
+            --lab-border: #203342;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+
+            background:
+                radial-gradient(circle at 12% 12%,
+                    rgba(54, 217, 255, 0.07),
+                    transparent 30%),
+                radial-gradient(circle at 88% 20%,
+                    rgba(155, 124, 255, 0.06),
+                    transparent 28%),
+                var(--lab-bg);
+
+            color: var(--lab-text);
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .lab-container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+
+        /* =========================================================
+   NAVBAR
+========================================================= */
+
+        .navbar {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .nav-container {
+            width: min(1150px, 92%);
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+
+            min-height: 70px;
+        }
+
+        .brand {
+            max-width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            min-width: 0;
+        }
+
+        .brand-logo {
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-name,
+        .brand-tagline {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* =========================================================
+   LAB HERO
+========================================================= */
+
+        .lab-hero {
+            padding: 65px 0 45px;
+
+            border-bottom: 1px solid var(--lab-border);
+        }
+
+        .lab-breadcrumb {
+            margin-bottom: 18px;
+
+            color: var(--lab-cyan);
+
+            font-size: 13px;
+        }
+
+        .lab-hero-grid {
+            display: grid;
+
+            grid-template-columns: 1fr auto;
+
+            gap: 30px;
+
+            align-items: end;
+        }
+
+        .lab-badge {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 13px;
+
+            margin-bottom: 15px;
+
+            border: 1px solid rgba(54, 217, 255, 0.32);
+
+            border-radius: 4px;
+
+            background: rgba(54, 217, 255, 0.05);
+
+            color: var(--lab-cyan);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--lab-cyan);
+
+            box-shadow:
+                0 0 12px rgba(54, 217, 255, 0.8);
+        }
+
+        .lab-hero h1 {
+            margin: 0 0 14px;
+
+            font-size: clamp(36px, 5vw, 56px);
+
+            line-height: 1.05;
+        }
+
+        .lab-hero h1 span {
+            color: var(--lab-cyan);
+        }
+
+        .lab-description {
+            max-width: 760px;
+
+            color: var(--lab-muted);
+
+            font-size: 16px;
+
+            line-height: 1.8;
+        }
+
+        .lab-level {
+            padding: 12px 17px;
+
+            border: 1px solid var(--lab-border);
+
+            border-radius: 5px;
+
+            color: var(--lab-orange);
+
+            font-size: 12px;
+
+            white-space: nowrap;
+        }
+
+        /* =========================================================
+   LAB SECTION
+========================================================= */
+
+        .lab-section {
+            padding: 50px 0;
+        }
+
+        .lab-section-title {
+            margin-bottom: 22px;
+        }
+
+        .lab-section-title h2 {
+            margin: 0 0 8px;
+
+            font-size: 27px;
+        }
+
+        .lab-section-title p {
+            margin: 0;
+
+            color: var(--lab-muted);
+
+            line-height: 1.7;
+        }
+
+        /* =========================================================
+   INSTRUCTIONS
+========================================================= */
+
+        .lab-info-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+        }
+
+        .lab-info {
+            padding: 20px;
+
+            border: 1px solid var(--lab-border);
+
+            border-radius: 7px;
+
+            background: var(--lab-panel);
+        }
+
+        .lab-info strong {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: var(--lab-cyan);
+
+            font-size: 12px;
+
+            letter-spacing: 0.5px;
+        }
+
+        .lab-info span {
+            color: var(--lab-muted);
+
+            font-size: 14px;
+        }
+
+        /* =========================================================
+   HYPOTHESIS PANEL
+========================================================= */
+
+        .hunt-panel {
+            padding: 25px;
+
+            border: 1px solid var(--lab-border);
+
+            border-radius: 7px;
+
+            background: var(--lab-panel);
+        }
+
+        .hunt-label {
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: var(--lab-purple);
+
+            font-size: 11px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .hunt-panel p {
+            margin: 0 0 18px;
+
+            color: var(--lab-muted);
+
+            line-height: 1.7;
+        }
+
+        .hypothesis-options {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 10px;
+        }
+
+        .hypothesis-btn {
+            padding: 14px;
+
+            border: 1px solid var(--lab-border);
+
+            border-radius: 5px;
+
+            background: var(--lab-panel-2);
+
+            color: var(--lab-muted);
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            transition: 0.2s ease;
+        }
+
+        .hypothesis-btn:hover,
+        .hypothesis-btn.active {
+            border-color: rgba(54, 217, 255, 0.5);
+
+            color: var(--lab-cyan);
+
+            background: rgba(54, 217, 255, 0.055);
+        }
+
+        /* =========================================================
+   QUERY AREA
+========================================================= */
+
+        .query-box {
+            padding: 25px;
+
+            border: 1px solid var(--lab-border);
+
+            border-top: 2px solid var(--lab-cyan);
+
+            border-radius: 7px;
+
+            background: #080f17;
+        }
+
+        .query-box label {
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: var(--lab-text);
+
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+
+            min-height: 125px;
+
+            padding: 16px;
+
+            resize: vertical;
+
+            border: 1px solid var(--lab-border);
+
+            border-radius: 5px;
+
+            outline: none;
+
+            background: #050a10;
+
+            color: var(--lab-cyan);
+
+            font-family: Consolas, monospace;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        textarea:focus {
+            border-color: rgba(54, 217, 255, 0.5);
+
+            box-shadow:
+                0 0 0 2px rgba(54, 217, 255, 0.05);
+        }
+
+        .query-actions {
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 14px;
+        }
+
+        .lab-btn {
+            padding: 11px 18px;
+
+            border: 1px solid rgba(54, 217, 255, 0.35);
+
+            border-radius: 5px;
+
+            background: rgba(54, 217, 255, 0.06);
+
+            color: var(--lab-cyan);
+
+            cursor: pointer;
+
+            font-size: 13px;
+        }
+
+        .lab-btn.secondary {
+            border-color: var(--lab-border);
+
+            background: transparent;
+
+            color: var(--lab-muted);
+        }
+
+        /* =========================================================
+   LOG TABLE
+========================================================= */
+
+        .log-wrapper {
+            overflow-x: auto;
+
+            border: 1px solid var(--lab-border);
+
+            border-radius: 7px;
+        }
+
+        .log-table {
+            width: 100%;
+
+            min-width: 850px;
+
+            border-collapse: collapse;
+
+            background: var(--lab-panel);
+        }
+
+        .log-table th {
+            padding: 13px;
+
+            border-bottom: 1px solid var(--lab-border);
+
+            background: #0a131d;
+
+            color: var(--lab-cyan);
+
+            font-size: 11px;
+
+            text-align: left;
+
+            letter-spacing: 0.5px;
+        }
+
+        .log-table td {
+            padding: 13px;
+
+            border-bottom: 1px solid rgba(32, 51, 66, 0.65);
+
+            color: var(--lab-muted);
+
+            font-family: Consolas, monospace;
+
+            font-size: 12px;
+        }
+
+        .log-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .log-table tr.suspicious {
+            background: rgba(255, 91, 104, 0.045);
+        }
+
+        .log-table tr.suspicious td:last-child {
+            color: var(--lab-red);
+        }
+
+        .log-table tr.normal td:last-child {
+            color: var(--lab-green);
+        }
+
+        /* =========================================================
+   RESULT
+========================================================= */
+
+        .result-panel {
+            margin-top: 20px;
+
+            padding: 23px;
+
+            border: 1px solid var(--lab-border);
+
+            border-radius: 7px;
+
+            background: var(--lab-panel);
+        }
+
+        .result-header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 15px;
+        }
+
+        .result-header strong {
+            font-size: 14px;
+        }
+
+        .result-status {
+            color: var(--lab-orange);
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+        .result-content {
+            color: var(--lab-muted);
+
+            line-height: 1.75;
+
+            font-size: 14px;
+        }
+
+        .result-content strong {
+            color: var(--lab-text);
+        }
+
+        .result-success {
+            margin-top: 15px;
+
+            padding: 13px 15px;
+
+            border-left: 3px solid var(--lab-green);
+
+            background: rgba(66, 214, 154, 0.04);
+
+            color: var(--lab-green);
+
+            font-size: 13px;
+        }
+
+        /* =========================================================
+   CHECKLIST
+========================================================= */
+
+        .checklist {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 10px;
+        }
+
+        .check-item {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            padding: 15px;
+
+            border: 1px solid var(--lab-border);
+
+            border-radius: 6px;
+
+            background: var(--lab-panel);
+        }
+
+        .check-item input {
+            margin-top: 3px;
+
+            accent-color: var(--lab-cyan);
+        }
+
+        .check-item label {
+            color: var(--lab-muted);
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            cursor: pointer;
+        }
+
+        /* =========================================================
+   COMPLETION
+========================================================= */
+
+        .completion {
+            margin-top: 25px;
+
+            padding: 25px;
+
+            border: 1px solid rgba(66, 214, 154, 0.25);
+
+            border-radius: 7px;
+
+            background: rgba(66, 214, 154, 0.035);
+
+            text-align: center;
+        }
+
+        .completion h3 {
+            margin: 0 0 10px;
+
+            color: var(--lab-green);
+        }
+
+        .completion p {
+            margin: 0;
+
+            color: var(--lab-muted);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+        /* =========================================================
+   NAVIGATION
+========================================================= */
+
+        .lab-navigation {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            padding: 0 0 60px;
+        }
+
+        .lab-nav-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 12px 17px;
+
+            border: 1px solid var(--lab-border);
+
+            border-radius: 5px;
+
+            color: var(--lab-muted);
+
+            font-size: 13px;
+        }
+
+        .lab-nav-btn:hover {
+            color: var(--lab-cyan);
+
+            border-color: rgba(54, 217, 255, 0.4);
+        }
+
+        /* =========================================================
+   RESPONSIVE
+========================================================= */
+
+        @media (max-width: 900px) {
+
+            .lab-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .hypothesis-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .lab-container {
+                width: 92%;
+            }
+
+            .lab-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checklist {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-navigation {
+                flex-direction: column;
+            }
+
+            .lab-nav-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .nav-container {
+                width: 92%;
+                min-height: 62px;
+            }
+
+            .brand-logo svg {
+                width: 34px;
+                height: 42px;
+            }
+
+            .brand-name {
+                font-size: 17px;
+            }
+
+            .brand-tagline {
+                font-size: 8px;
+            }
+
+            .lab-hero {
+                padding: 55px 0 40px;
+            }
+
+            .lab-hero h1 {
+                font-size: 36px;
+            }
+
+            .lab-description {
+                font-size: 14px;
+            }
+
+            .lab-level {
+                width: 100%;
+
+                text-align: center;
+            }
+
+            .lab-section {
+                padding: 45px 0;
+            }
+
+            .query-actions {
+                flex-direction: column;
+            }
+
+            .lab-btn {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z" fill="none"
+                            stroke="currentColor" stroke-width="3" />
+
+                        <rect x="18" y="25" width="14" height="14" rx="2" fill="none" stroke="currentColor"
+                            stroke-width="2.5" />
+
+                        <path d="M20 25 V20 C20 16 30 16 30 20 V25" fill="none" stroke="currentColor"
+                            stroke-width="2.5" />
+
+                        <circle cx="25" cy="31" r="2" fill="currentColor" />
+
+                        <path d="M25 33 V36" stroke="currentColor" stroke-width="2" />
+
+                    </svg>
+
+                </div>
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <header class="lab-hero">
+
+        <div class="lab-container">
+
+            <div class="lab-breadcrumb">
+                CyberNexa / SOC / Blue Team / Basic Threat Hunting / Practical Lab
+            </div>
+
+            <div class="lab-hero-grid">
+
+                <div>
+
+                    <div class="lab-badge">
+
+                        <span class="lab-dot"></span>
+
+                        Practical SOC Lab
+
+                    </div>
+
+                    <h1>
+                        Basic <span>Threat Hunting</span> Lab
+                    </h1>
+
+                    <p class="lab-description">
+                        Practice a simplified threat hunting workflow by creating a
+                        hypothesis, searching simulated security logs and identifying
+                        patterns that require further investigation.
+                    </p>
+
+                </div>
+
+                <div class="lab-level">
+                    Difficulty: Beginner
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <main>
+
+        <!-- =====================================================
+     LAB OBJECTIVE
+====================================================== -->
+
+        <section class="lab-section">
+
+            <div class="lab-container">
+
+                <div class="lab-section-title">
+
+                    <h2>Lab Objective</h2>
+
+                    <p>
+                        Learn how a SOC analyst can perform a basic proactive hunt
+                        using simulated authentication logs.
+                    </p>
+
+                </div>
+
+                <div class="lab-info-grid">
+
+                    <div class="lab-info">
+
+                        <strong>ENVIRONMENT</strong>
+
+                        <span>
+                            Simulated SOC
+                        </span>
+
+                    </div>
+
+                    <div class="lab-info">
+
+                        <strong>DATA SOURCE</strong>
+
+                        <span>
+                            Authentication Logs
+                        </span>
+
+                    </div>
+
+                    <div class="lab-info">
+
+                        <strong>OBJECTIVE</strong>
+
+                        <span>
+                            Find Suspicious Login Patterns
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     STEP 01 — HYPOTHESIS
+====================================================== -->
+
+        <section class="lab-section">
+
+            <div class="lab-container">
+
+                <div class="lab-section-title">
+
+                    <h2>Step 01 — Create a Hunting Hypothesis</h2>
+
+                    <p>
+                        Choose the security behavior you want to investigate.
+                    </p>
+
+                </div>
+
+                <div class="hunt-panel">
+
+                    <span class="hunt-label">
+                        Select Hypothesis
+                    </span>
+
+                    <p>
+                        A threat hunt should begin with a clear question. Select one
+                        of the simulated hypotheses below.
+                    </p>
+
+                    <div class="hypothesis-options">
+
+                        <button class="hypothesis-btn active"
+                            onclick="selectHypothesis(this, 'Multiple failed logins may indicate an attempted account attack.')">
+                            Account Attack </button>
+
+                        <button class="hypothesis-btn"
+                            onclick="selectHypothesis(this, 'A successful login from an unusual source may indicate compromised credentials.')">
+                            Unusual Login </button>
+
+                        <button class="hypothesis-btn"
+                            onclick="selectHypothesis(this, 'Repeated activity from one source may require additional investigation.')">
+                            Suspicious Source </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     STEP 02 — QUERY
+====================================================== -->
+
+        <section class="lab-section">
+
+            <div class="lab-container">
+
+                <div class="lab-section-title">
+
+                    <h2>Step 02 — Build a Hunt Query</h2>
+
+                    <p>
+                        Write a simple investigation query based on your hypothesis.
+                    </p>
+
+                </div>
+
+                <div class="query-box">
+
+                    <label for="huntQuery">
+                        Hunt Query
+                    </label>
+
+                    <textarea id="huntQuery">failed_login >= 5 AND successful_login = true</textarea>
+
+                    <div class="query-actions">
+
+                        <button class="lab-btn" onclick="runHunt()">
+                            Run Hunt </button>
+
+                        <button class="lab-btn secondary" onclick="clearQuery()">
+                            Clear </button>
+
+                    </div>
+
+                </div>
+
+                <div id="huntResult" class="result-panel">
+
+                    <div class="result-header">
+
+                        <strong>
+                            Hunt Result
+                        </strong>
+
+                        <span class="result-status">
+                            READY
+                        </span>
+
+                    </div>
+
+                    <div class="result-content">
+
+                        Enter a query and click <strong>Run Hunt</strong> to analyze
+                        the simulated security data.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     STEP 03 — SIMULATED LOGS
+====================================================== -->
+
+        <section class="lab-section">
+
+            <div class="lab-container">
+
+                <div class="lab-section-title">
+
+                    <h2>Step 03 — Investigate Security Logs</h2>
+
+                    <p>
+                        Review the simulated authentication events and identify
+                        suspicious patterns.
+                    </p>
+
+                </div>
+
+                <div class="log-wrapper">
+
+                    <table class="log-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>TIME</th>
+                                <th>USER</th>
+                                <th>SOURCE IP</th>
+                                <th>EVENT</th>
+                                <th>RESULT</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr class="normal">
+
+                                <td>09:12:04</td>
+                                <td>alice</td>
+                                <td>10.10.1.25</td>
+                                <td>LOGIN</td>
+                                <td>Normal</td>
+
+                            </tr>
+
+                            <tr class="suspicious">
+
+                                <td>09:14:22</td>
+                                <td>admin</td>
+                                <td>185.22.41.90</td>
+                                <td>FAILED LOGIN</td>
+                                <td>Suspicious</td>
+
+                            </tr>
+
+                            <tr class="suspicious">
+
+                                <td>09:14:25</td>
+                                <td>admin</td>
+                                <td>185.22.41.90</td>
+                                <td>FAILED LOGIN</td>
+                                <td>Suspicious</td>
+
+                            </tr>
+
+                            <tr class="suspicious">
+
+                                <td>09:14:29</td>
+                                <td>admin</td>
+                                <td>185.22.41.90</td>
+                                <td>FAILED LOGIN</td>
+                                <td>Suspicious</td>
+
+                            </tr>
+
+                            <tr class="suspicious">
+
+                                <td>09:14:33</td>
+                                <td>admin</td>
+                                <td>185.22.41.90</td>
+                                <td>FAILED LOGIN</td>
+                                <td>Suspicious</td>
+
+                            </tr>
+
+                            <tr class="suspicious">
+
+                                <td>09:14:37</td>
+                                <td>admin</td>
+                                <td>185.22.41.90</td>
+                                <td>SUCCESSFUL LOGIN</td>
+                                <td>Suspicious</td>
+
+                            </tr>
+
+                            <tr class="normal">
+
+                                <td>09:18:10</td>
+                                <td>bob</td>
+                                <td>10.10.1.31</td>
+                                <td>LOGIN</td>
+                                <td>Normal</td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     STEP 04 — INVESTIGATION RESULT
+====================================================== -->
+
+        <section class="lab-section">
+
+            <div class="lab-container">
+
+                <div class="lab-section-title">
+
+                    <h2>Step 04 — Analyze the Finding</h2>
+
+                    <p>
+                        Determine whether the observed behavior requires further
+                        investigation.
+                    </p>
+
+                </div>
+
+                <div class="result-panel">
+
+                    <div class="result-header">
+
+                        <strong>
+                            Analyst Finding
+                        </strong>
+
+                        <span class="result-status">
+                            SUSPICIOUS
+                        </span>
+
+                    </div>
+
+                    <div class="result-content">
+
+                        The simulated logs show multiple failed authentication
+                        attempts from the same external source followed shortly
+                        by a successful login to the <strong>admin</strong> account.
+
+                        This pattern should be investigated because repeated failed
+                        attempts followed by a successful authentication may indicate
+                        a possible account compromise or password attack.
+
+                    </div>
+
+                    <div class="result-success">
+
+                        ✓ Potential hunting lead identified. Continue investigation
+                        and correlate additional security data.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     STEP 05 — CHECKLIST
+====================================================== -->
+
+        <section class="lab-section">
+
+            <div class="lab-container">
+
+                <div class="lab-section-title">
+
+                    <h2>Step 05 — Threat Hunting Checklist</h2>
+
+                    <p>
+                        Complete the checklist to finish the practical exercise.
+                    </p>
+
+                </div>
+
+                <div class="checklist">
+
+                    <div class="check-item">
+
+                        <input type="checkbox" id="c1">
+
+                        <label for="c1">
+                            I created a clear hunting hypothesis.
+                        </label>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input type="checkbox" id="c2">
+
+                        <label for="c2">
+                            I identified the relevant log source.
+                        </label>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input type="checkbox" id="c3">
+
+                        <label for="c3">
+                            I searched for suspicious activity.
+                        </label>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input type="checkbox" id="c4">
+
+                        <label for="c4">
+                            I identified a suspicious authentication pattern.
+                        </label>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input type="checkbox" id="c5">
+
+                        <label for="c5">
+                            I analyzed the evidence before reaching a conclusion.
+                        </label>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input type="checkbox" id="c6">
+
+                        <label for="c6">
+                            I understand that a hunting lead requires further validation.
+                        </label>
+
+                    </div>
+
+                </div>
+
+                <div class="completion">
+
+                    <h3>
+                        Lab Completed
+                    </h3>
+
+                    <p>
+                        You have practiced the basic threat hunting workflow:
+                        hypothesis → data → search → investigation → validation.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+        <div class="lab-container">
+
+            <div class="lab-navigation">
+
+                <a href="detection-rules-lab.html" class="lab-nav-btn">
+                    ← Lab: Detection Rules </a>
+
+                <a href="../theory/soc-blue-team.html" class="lab-nav-btn">
+                    Back to All → </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+
+    <script>
+
+        /* =========================================================
+           HYPOTHESIS SELECTION
+        ========================================================= */
+
+        function selectHypothesis(button, text) {
+
+            const buttons =
+                document.querySelectorAll(".hypothesis-btn");
+
+            buttons.forEach(function (btn) {
+                btn.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            const queryBox =
+                document.getElementById("huntQuery");
+
+            if (text.includes("failed logins")) {
+
+                queryBox.value =
+                    "failed_login >= 5 AND successful_login = true";
+
+            } else if (text.includes("unusual source")) {
+
+                queryBox.value =
+                    "successful_login = true AND source = unusual";
+
+            } else {
+
+                queryBox.value =
+                    "source_ip_frequency > normal_baseline";
+
+            }
+        }
+
+
+        /* =========================================================
+           RUN HUNT
+        ========================================================= */
+
+        function runHunt() {
+
+            const query =
+                document.getElementById("huntQuery").value.trim();
+
+            const result =
+                document.getElementById("huntResult");
+
+            if (query === "") {
+
+                result.innerHTML = `
+            <div class="result-header">
+                <strong>Hunt Result</strong>
+                <span class="result-status">
+                    ERROR
+                </span>
+            </div>
+
+            <div class="result-content">
+                Please enter a hunt query before running
+                the investigation.
+            </div>
+        `;
+
+                return;
+            }
+
+
+            result.innerHTML = `
+        <div class="result-header">
+            <strong>Hunt Result</strong>
+            <span class="result-status">
+                MATCH FOUND
+            </span>
+        </div>
+
+        <div class="result-content">
+
+            Query executed:
+
+            <br><br>
+
+            <strong>
+            ${escapeHTML(query)}
+            </strong>
+
+            <br><br>
+
+            Simulated investigation identified a suspicious
+            authentication pattern involving repeated failed
+            login attempts followed by a successful login.
+
+        </div>
+
+        <div class="result-success">
+
+            ✓ Hunting lead identified successfully.
+
+        </div>
+    `;
+        }
+
+
+        /* =========================================================
+           CLEAR QUERY
+        ========================================================= */
+
+        function clearQuery() {
+
+            document.getElementById("huntQuery").value = "";
+
+            document.getElementById("huntResult").innerHTML = `
+        <div class="result-header">
+            <strong>Hunt Result</strong>
+            <span class="result-status">
+                READY
+            </span>
+        </div>
+
+        <div class="result-content">
+            Enter a query and click <strong>Run Hunt</strong>
+            to analyze the simulated security data.
+        </div>
+    `;
+        }
+
+
+        /* =========================================================
+           BASIC HTML ESCAPING
+        ========================================================= */
+
+        function escapeHTML(value) {
+
+            return value
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+    </script>
+
+</body>
+
+</html>

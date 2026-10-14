@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IOC Investigation Lab | CyberNexa</title>
+
+<meta name="description"
+content="Practice identifying and investigating Indicators of Compromise in the CyberNexa SOC Blue Team practical lab.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+:root {
+    --soc-bg: #070d13;
+    --soc-panel: #0d151e;
+    --soc-panel-2: #111c27;
+
+    --soc-cyan: #39d5ff;
+    --soc-blue: #42a5ff;
+    --soc-purple: #9b7cff;
+    --soc-green: #43d19e;
+    --soc-yellow: #ffd166;
+    --soc-red: #ff5364;
+
+    --soc-text: #edf6fb;
+    --soc-muted: #91a6b8;
+    --soc-border: #20313f;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(57, 213, 255, 0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(155, 124, 255, 0.07),
+            transparent 30%
+        ),
+        var(--soc-bg);
+
+    color: var(--soc-text);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.soc-container {
+    width: min(1150px, 92%);
+    margin: auto;
+}
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+    width: 100%;
+    overflow: hidden;
+}
+
+.nav-container {
+    width: min(1150px, 92%);
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 70px;
+}
+
+.brand {
+    max-width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+}
+
+.brand-logo {
+    flex-shrink: 0;
+}
+
+.brand-text {
+    min-width: 0;
+}
+
+.brand-name,
+.brand-tagline {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.soc-hero {
+    position: relative;
+    overflow: hidden;
+
+    padding: 78px 0 60px;
+
+    border-bottom: 1px solid var(--soc-border);
+}
+
+.soc-breadcrumb {
+    margin-bottom: 20px;
+
+    color: var(--soc-cyan);
+
+    font-size: 13px;
+    letter-spacing: 0.4px;
+}
+
+.soc-hero h1 {
+    margin: 0 0 16px;
+
+    font-size: clamp(38px, 5vw, 58px);
+    line-height: 1.05;
+}
+
+.soc-hero h1 span {
+    color: var(--soc-cyan);
+}
+
+.soc-description {
+    max-width: 760px;
+
+    color: var(--soc-muted);
+
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   LAB HEADER
+========================================================= */
+
+.lab-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 8px 13px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid rgba(57, 213, 255, 0.3);
+    border-radius: 4px;
+
+    background: rgba(57, 213, 255, 0.05);
+
+    color: var(--soc-cyan);
+
+    font-size: 11px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+.lab-status-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--soc-cyan);
+
+    box-shadow:
+        0 0 12px rgba(57, 213, 255, 0.8);
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.lab-section {
+    padding: 65px 0;
+}
+
+.lab-title {
+    margin-bottom: 28px;
+}
+
+.lab-title h2 {
+    margin: 0 0 10px;
+
+    font-size: 30px;
+}
+
+.lab-title p {
+    color: var(--soc-muted);
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   OBJECTIVES
+========================================================= */
+
+.objective-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+.objective {
+    padding: 21px;
+
+    border: 1px solid var(--soc-border);
+    border-radius: 7px;
+
+    background: var(--soc-panel);
+}
+
+.objective-number {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: var(--soc-cyan);
+
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.objective h3 {
+    margin: 0 0 9px;
+
+    font-size: 16px;
+}
+
+.objective p {
+    margin: 0;
+
+    color: var(--soc-muted);
+
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+/* =========================================================
+   LAB CONSOLE
+========================================================= */
+
+.lab-console {
+    padding: 30px;
+
+    border: 1px solid var(--soc-border);
+    border-top: 2px solid var(--soc-cyan);
+
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 28, 39, 0.98),
+            rgba(8, 14, 21, 0.98)
+        );
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.28);
+}
+
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+.console-header strong {
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.console-state {
+    color: var(--soc-green);
+
+    font-size: 10px;
+}
+
+.console-line {
+    height: 1px;
+
+    background: var(--soc-border);
+
+    margin-bottom: 24px;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: 0.7fr 1.3fr;
+
+    gap: 18px;
+
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--soc-muted);
+
+    font-size: 12px;
+}
+
+.form-group select,
+.form-group input {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border: 1px solid var(--soc-border);
+    border-radius: 5px;
+
+    outline: none;
+
+    background: #09111a;
+
+    color: var(--soc-text);
+
+    font-size: 14px;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+    border-color: rgba(57, 213, 255, 0.55);
+
+    box-shadow:
+        0 0 0 2px rgba(57, 213, 255, 0.06);
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.lab-actions {
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+.lab-button {
+    padding: 12px 18px;
+
+    border-radius: 5px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.analyze-button {
+    border: 1px solid rgba(57, 213, 255, 0.45);
+
+    background: rgba(57, 213, 255, 0.08);
+
+    color: var(--soc-cyan);
+}
+
+.analyze-button:hover {
+    background: rgba(57, 213, 255, 0.14);
+}
+
+.clear-button {
+    border: 1px solid var(--soc-border);
+
+    background: transparent;
+
+    color: var(--soc-muted);
+}
+
+.clear-button:hover {
+    color: var(--soc-text);
+}
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.result-panel {
+    display: none;
+
+    margin-top: 25px;
+
+    padding: 24px;
+
+    border: 1px solid var(--soc-border);
+
+    border-radius: 7px;
+
+    background: #09111a;
+}
+
+.result-panel.show {
+    display: block;
+}
+
+.result-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.result-header strong {
+    font-size: 14px;
+}
+
+.result-badge {
+    padding: 5px 9px;
+
+    border-radius: 4px;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    letter-spacing: 0.5px;
+}
+
+.result-badge.review {
+    color: var(--soc-yellow);
+
+    background: rgba(255, 209, 102, 0.08);
+
+    border: 1px solid rgba(255, 209, 102, 0.25);
+}
+
+.result-badge.suspicious {
+    color: var(--soc-red);
+
+    background: rgba(255, 83, 100, 0.08);
+
+    border: 1px solid rgba(255, 83, 100, 0.25);
+}
+
+.result-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+.result-item {
+    padding: 15px;
+
+    border: 1px solid var(--soc-border);
+
+    border-radius: 5px;
+}
+
+.result-item span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--soc-muted);
+
+    font-size: 11px;
+}
+
+.result-item strong {
+    color: var(--soc-text);
+
+    font-size: 13px;
+
+    word-break: break-word;
+}
+
+.investigation-note {
+    margin-top: 15px;
+
+    padding: 15px;
+
+    border-left: 2px solid var(--soc-cyan);
+
+    background: rgba(57, 213, 255, 0.035);
+
+    color: var(--soc-muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   IOC REFERENCE
+========================================================= */
+
+.reference-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+.reference-card {
+    padding: 21px;
+
+    border: 1px solid var(--soc-border);
+    border-radius: 7px;
+
+    background: var(--soc-panel);
+}
+
+.reference-card h3 {
+    margin: 0 0 10px;
+
+    color: var(--soc-cyan);
+
+    font-size: 16px;
+}
+
+.reference-card p {
+    margin: 0;
+
+    color: var(--soc-muted);
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+.reference-code {
+    margin-top: 13px;
+
+    padding: 10px;
+
+    border-radius: 4px;
+
+    background: #050a0f;
+
+    color: var(--soc-green);
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    word-break: break-word;
+}
+
+/* =========================================================
+   TASK
+========================================================= */
+
+.task-box {
+    padding: 27px;
+
+    border: 1px solid rgba(155, 124, 255, 0.25);
+
+    border-radius: 7px;
+
+    background: rgba(155, 124, 255, 0.035);
+}
+
+.task-box h2 {
+    margin-top: 0;
+
+    color: var(--soc-purple);
+}
+
+.task-box ol {
+    margin: 0;
+
+    padding-left: 20px;
+
+    color: var(--soc-muted);
+
+    line-height: 1.9;
+}
+
+.task-box strong {
+    color: var(--soc-text);
+}
+
+/* =========================================================
+   COMPLETION
+========================================================= */
+
+.completion {
+    padding: 28px;
+
+    border: 1px solid rgba(67, 209, 158, 0.25);
+
+    border-radius: 7px;
+
+    background: rgba(67, 209, 158, 0.035);
+
+    text-align: center;
+}
+
+.completion h2 {
+    margin-top: 0;
+
+    color: var(--soc-green);
+}
+
+.completion p {
+    color: var(--soc-muted);
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.topic-nav {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+.topic-nav a {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 17px;
+
+    border: 1px solid var(--soc-border);
+
+    border-radius: 5px;
+
+    color: var(--soc-muted);
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+.topic-nav a:hover {
+    color: var(--soc-cyan);
+
+    border-color: rgba(57, 213, 255, 0.4);
+}
+
+.topic-nav .active-nav {
+    color: var(--soc-cyan);
+
+    border-color: rgba(57, 213, 255, 0.35);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .objective-grid,
+    .reference-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .nav-container {
+        width: 94%;
+        min-height: 64px;
+        padding: 8px 0;
+    }
+
+    .brand-logo svg {
+        width: 38px;
+        height: 46px;
+    }
+
+    .brand-name {
+        font-size: 19px;
+    }
+
+    .brand-tagline {
+        font-size: 9px;
+    }
+
+    .soc-hero {
+        padding: 65px 0 50px;
+    }
+
+    .lab-section {
+        padding: 55px 0;
+    }
+
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .nav-container {
+        width: 92%;
+    }
+
+    .brand-logo svg {
+        width: 34px;
+        height: 42px;
+    }
+
+    .brand-name {
+        font-size: 17px;
+    }
+
+    .brand-tagline {
+        font-size: 8px;
+    }
+
+    .soc-hero {
+        padding: 52px 0 42px;
+    }
+
+    .soc-breadcrumb {
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .soc-hero h1 {
+        font-size: clamp(34px, 10vw, 48px);
+    }
+
+    .soc-description {
+        font-size: 15px;
+    }
+
+    .lab-section {
+        padding: 48px 0;
+    }
+
+    .lab-title h2 {
+        font-size: 26px;
+    }
+
+    .objective-grid,
+    .reference-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lab-console {
+        padding: 21px;
+    }
+
+    .topic-nav {
+        flex-direction: column;
+    }
+
+    .topic-nav a {
+        width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .soc-container {
+        width: 94%;
+    }
+
+    .brand-logo svg {
+        width: 30px;
+        height: 38px;
+    }
+
+    .brand-name {
+        font-size: 15px;
+    }
+
+    .brand-tagline {
+        font-size: 7px;
+    }
+
+    .soc-hero h1 {
+        font-size: 32px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="../../../index.html" class="brand">
+
+<div class="brand-logo">
+
+<svg viewBox="0 0 50 60">
+
+<path
+d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+fill="none"
+stroke="currentColor"
+stroke-width="3"
+/>
+
+<rect
+x="18"
+y="25"
+width="14"
+height="14"
+rx="2"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<path
+d="M20 25 V20 C20 16 30 16 30 20 V25"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<circle
+cx="25"
+cy="31"
+r="2"
+fill="currentColor"
+/>
+
+<path
+d="M25 33 V36"
+stroke="currentColor"
+stroke-width="2"
+/>
+
+</svg>
+
+</div>
+
+<div class="brand-text">
+
+<div class="brand-name">
+Cyber<span>Nexa</span>
+</div>
+
+<div class="brand-tagline">
+Cybersecurity &amp; IT Learning
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="soc-hero">
+
+<div class="soc-container">
+
+<div class="soc-breadcrumb">
+CyberNexa / SOC / Blue Team / IOC / Practical Lab
+</div>
+
+<div class="lab-status">
+
+<span class="lab-status-dot"></span>
+
+IOC Investigation Lab
+
+</div>
+
+<h1>
+IOC <span>Investigation Lab</span>
+</h1>
+
+<p class="soc-description">
+Practice identifying Indicators of Compromise, classify
+their type and understand how SOC analysts begin an IOC
+investigation.
+</p>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     OBJECTIVES
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="soc-container">
+
+<div class="lab-title">
+
+<h2>Lab Objectives</h2>
+
+<p>
+By completing this practical exercise, you will practice
+basic IOC identification and investigation.
+</p>
+
+</div>
+
+
+<div class="objective-grid">
+
+<div class="objective">
+
+<span class="objective-number">
+OBJECTIVE 01
+</span>
+
+<h3>Identify IOC</h3>
+
+<p>
+Recognize a technical artifact that may represent an
+Indicator of Compromise.
+</p>
+
+</div>
+
+
+<div class="objective">
+
+<span class="objective-number">
+OBJECTIVE 02
+</span>
+
+<h3>Classify IOC</h3>
+
+<p>
+Determine whether the indicator is an IP, hash, domain,
+URL, file path or email indicator.
+</p>
+
+</div>
+
+
+<div class="objective">
+
+<span class="objective-number">
+OBJECTIVE 03
+</span>
+
+<h3>Investigate</h3>
+
+<p>
+Understand the next steps used by an analyst to validate
+and correlate the indicator.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     IOC CONSOLE
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="soc-container">
+
+<div class="lab-title">
+
+<h2>IOC Investigation Console</h2>
+
+<p>
+Enter an IOC and analyze its basic characteristics.
+</p>
+
+</div>
+
+
+<div class="lab-console">
+
+<div class="console-header">
+
+<strong>
+SOC / IOC ANALYZER
+</strong>
+
+<span class="console-state">
+● READY
+</span>
+
+</div>
+
+<div class="console-line"></div>
+
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label for="iocType">
+IOC Type
+</label>
+
+<select id="iocType">
+
+<option value="ip">
+IP Address
+</option>
+
+<option value="hash">
+File Hash
+</option>
+
+<option value="domain">
+Domain
+</option>
+
+<option value="url">
+URL
+</option>
+
+<option value="path">
+File Path
+</option>
+
+<option value="email">
+Email Indicator
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label for="iocValue">
+IOC Value
+</label>
+
+<input
+type="text"
+id="iocValue"
+placeholder="Example: 203.0.113.25"
+/>
+
+</div>
+
+</div>
+
+
+<div class="lab-actions">
+
+<button
+class="lab-button analyze-button"
+onclick="analyzeIOC()">
+
+Analyze IOC
+
+</button>
+
+<button
+class="lab-button clear-button"
+onclick="clearIOC()">
+
+Clear
+
+</button>
+
+</div>
+
+
+<div id="resultPanel" class="result-panel">
+
+<div class="result-header">
+
+<strong>
+Investigation Result
+</strong>
+
+<span
+id="resultBadge"
+class="result-badge review">
+
+REVIEW
+
+</span>
+
+</div>
+
+
+<div class="result-grid">
+
+<div class="result-item">
+
+<span>IOC Type</span>
+
+<strong id="resultType">
+-
+</strong>
+
+</div>
+
+
+<div class="result-item">
+
+<span>Indicator</span>
+
+<strong id="resultValue">
+-
+</strong>
+
+</div>
+
+
+<div class="result-item">
+
+<span>Initial Status</span>
+
+<strong id="resultStatus">
+-
+</strong>
+
+</div>
+
+
+<div class="result-item">
+
+<span>Investigation Priority</span>
+
+<strong id="resultPriority">
+-
+</strong>
+
+</div>
+
+</div>
+
+
+<div
+class="investigation-note"
+id="investigationNote">
+
+Investigation information will appear here.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     IOC REFERENCE
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="soc-container">
+
+<div class="lab-title">
+
+<h2>IOC Reference Examples</h2>
+
+<p>
+Use these examples to understand common IOC formats.
+</p>
+
+</div>
+
+
+<div class="reference-grid">
+
+<div class="reference-card">
+
+<h3>IP Address</h3>
+
+<p>
+Network address that may be associated with suspicious
+communication.
+</p>
+
+<div class="reference-code">
+203.0.113.25
+</div>
+
+</div>
+
+
+<div class="reference-card">
+
+<h3>File Hash</h3>
+
+<p>
+A hash value can be used to identify a specific file.
+</p>
+
+<div class="reference-code">
+44d88612fea8a8f36de82e1278abb02f
+</div>
+
+</div>
+
+
+<div class="reference-card">
+
+<h3>Domain</h3>
+
+<p>
+A domain may represent suspicious infrastructure.
+</p>
+
+<div class="reference-code">
+suspicious-example.com
+</div>
+
+</div>
+
+
+<div class="reference-card">
+
+<h3>URL</h3>
+
+<p>
+A URL can be investigated for suspicious or malicious activity.
+</p>
+
+<div class="reference-code">
+https://example.test/login
+</div>
+
+</div>
+
+
+<div class="reference-card">
+
+<h3>File Path</h3>
+
+<p>
+An unusual executable path may require endpoint investigation.
+</p>
+
+<div class="reference-code">
+C:\Temp\payload.exe
+</div>
+
+</div>
+
+
+<div class="reference-card">
+
+<h3>Email</h3>
+
+<p>
+Suspicious sender addresses may be useful during phishing investigations.
+</p>
+
+<div class="reference-code">
+security-alert@example.test
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     PRACTICAL TASK
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="soc-container">
+
+<div class="task-box">
+
+<h2>Practical Task</h2>
+
+<ol>
+
+<li>
+Select an <strong>IOC Type</strong>.
+</li>
+
+<li>
+Enter a valid IOC value.
+</li>
+
+<li>
+Click <strong>Analyze IOC</strong>.
+</li>
+
+<li>
+Review the initial investigation result.
+</li>
+
+<li>
+Think about which logs or security tools could provide
+additional evidence.
+</li>
+
+<li>
+Remember that an IOC requires context and correlation
+before it can be treated as confirmed evidence of compromise.
+</li>
+
+</ol>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     COMPLETION
+====================================================== -->
+
+<section class="lab-section">
+
+<div class="soc-container">
+
+<div class="completion">
+
+<h2>Lab Completed</h2>
+
+<p>
+You have practiced the basic process of identifying and
+classifying an Indicator of Compromise. In a real SOC,
+analysts would continue by validating the IOC, correlating
+it with logs and other evidence, and determining the
+appropriate response.
+</p>
+
+</div>
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<div class="topic-nav">
+
+<a href="alert-analysis-lab.html">
+← Lab: Alert Analysis
+</a>
+
+<a href="../theory/threat-intelligence.html">
+Next Theory: Threat Intelligence →
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div>
+
+<div class="footer-brand">
+Cyber<span>Nexa</span>
+</div>
+
+<p>
+Cybersecurity &amp; IT Learning
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="../../../index.html">
+Home
+</a>
+
+<a href="../../../footer/about.html">
+About
+</a>
+
+<a href="../../../footer/contact.html">
+Contact
+</a>
+
+<a href="../../../footer/privacy-policy.html">
+Privacy Policy
+</a>
+
+<a href="../../../footer/disclaimer.html">
+Disclaimer
+</a>
+
+</div>
+
+</div>
+
+
+<div class="copyright">
+© 2026 CyberNexa. All rights reserved.
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   IOC ANALYZER
+========================================================= */
+
+function analyzeIOC() {
+
+    const type =
+        document.getElementById("iocType").value;
+
+    const value =
+        document.getElementById("iocValue").value.trim();
+
+    const resultPanel =
+        document.getElementById("resultPanel");
+
+    const resultBadge =
+        document.getElementById("resultBadge");
+
+    const resultType =
+        document.getElementById("resultType");
+
+    const resultValue =
+        document.getElementById("resultValue");
+
+    const resultStatus =
+        document.getElementById("resultStatus");
+
+    const resultPriority =
+        document.getElementById("resultPriority");
+
+    const investigationNote =
+        document.getElementById("investigationNote");
+
+
+    if (value === "") {
+
+        alert("Please enter an IOC value.");
+
+        return;
+    }
+
+
+    const names = {
+
+        ip: "IP Address",
+
+        hash: "File Hash",
+
+        domain: "Domain",
+
+        url: "URL",
+
+        path: "File Path",
+
+        email: "Email Indicator"
+
+    };
+
+
+    const typeName = names[type];
+
+
+    resultType.textContent = typeName;
+
+    resultValue.textContent = value;
+
+    resultPanel.classList.add("show");
+
+
+    /*
+       Basic educational analysis.
+       This does NOT perform a real threat-intelligence lookup.
+    */
+
+    let suspicious = false;
+
+    let priority = "Medium";
+
+
+    if (type === "ip") {
+
+        suspicious =
+            /^(\d{1,3}\.){3}\d{1,3}$/.test(value);
+
+        priority = "High";
+
+    }
+
+
+    else if (type === "hash") {
+
+        suspicious =
+            /^[a-fA-F0-9]{32,128}$/.test(value);
+
+        priority = "High";
+
+    }
+
+
+    else if (type === "domain") {
+
+        suspicious =
+            value.includes(".");
+
+        priority = "Medium";
+
+    }
+
+
+    else if (type === "url") {
+
+        suspicious =
+            value.startsWith("http://") ||
+            value.startsWith("https://");
+
+        priority = "Medium";
+
+    }
+
+
+    else if (type === "path") {
+
+        suspicious =
+            value.toLowerCase().includes(".exe") ||
+            value.toLowerCase().includes("temp");
+
+        priority = "Medium";
+
+    }
+
+
+    else if (type === "email") {
+
+        suspicious =
+            value.includes("@");
+
+        priority = "Medium";
+
+    }
+
+
+    if (suspicious) {
+
+        resultBadge.textContent =
+            "REVIEW";
+
+        resultBadge.className =
+            "result-badge review";
+
+        resultStatus.textContent =
+            "Requires Investigation";
+
+        resultPriority.textContent =
+            priority;
+
+        investigationNote.textContent =
+            "The entered value matches the expected format " +
+            "of the selected IOC type. This does not prove that " +
+            "the indicator is malicious. A SOC analyst should " +
+            "validate the IOC and correlate it with logs, " +
+            "endpoint activity, network traffic and other evidence.";
+
+    }
+
+    else {
+
+        resultBadge.textContent =
+            "CHECK FORMAT";
+
+        resultBadge.className =
+            "result-badge suspicious";
+
+        resultStatus.textContent =
+            "Format Needs Review";
+
+        resultPriority.textContent =
+            "Low";
+
+        investigationNote.textContent =
+            "The entered value does not match the expected " +
+            "format for the selected IOC type. Check the value " +
+            "and try the analysis again.";
+
+    }
+
+}
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+function clearIOC() {
+
+    document.getElementById("iocValue").value = "";
+
+    document.getElementById("resultPanel")
+        .classList.remove("show");
+
+}
+
+</script>
+
+</body>
+</html>

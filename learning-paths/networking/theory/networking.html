@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Networking Learning Path - CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL PAGE CONTROL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+
+        /* =====================================================
+           NAVBAR SEARCH — NETWORKING PAGE ONLY
+        ====================================================== */
+
+        .networking-nav-search {
+            position: relative;
+            margin-left: auto;
+            width: 245px;
+            flex-shrink: 0;
+        }
+
+        .networking-nav-search input {
+            width: 100%;
+            height: 40px;
+            padding: 0 40px 0 15px;
+            border: 1px solid rgba(0, 191, 255, 0.20);
+            border-radius: 9px;
+            outline: none;
+            color: #dbeafe;
+            background: rgba(0, 191, 255, 0.045);
+            font-family: inherit;
+            font-size: 12px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .networking-nav-search input::placeholder {
+            color: #8193aa;
+        }
+
+        .networking-nav-search input:focus {
+            border-color: rgba(0, 191, 255, 0.55);
+            background: rgba(0, 191, 255, 0.065);
+            box-shadow: 0 0 18px rgba(0, 191, 255, 0.08);
+        }
+
+        .networking-search-icon {
+            position: absolute;
+            top: 50%;
+            right: 13px;
+            transform: translateY(-50%);
+            color: #00bfff;
+            font-size: 16px;
+            pointer-events: none;
+        }
+
+        .topic-card.search-hidden {
+            display: none;
+        }
+
+        .networking-no-results {
+            display: none;
+            margin-top: 18px;
+            padding: 18px;
+            border: 1px solid rgba(0, 191, 255, 0.12);
+            border-radius: 10px;
+            color: #91a4bd;
+            background: rgba(0, 191, 255, 0.035);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            .networking-nav-search {
+                width: 190px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .networking-nav-search {
+                width: 145px;
+            }
+
+            .networking-nav-search input {
+                height: 37px;
+                padding-left: 11px;
+                padding-right: 35px;
+                font-size: 11px;
+            }
+        }
+
+        /* =====================================================
+           NETWORKING PAGE
+        ====================================================== */
+
+        .networking-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%
+                ),
+                #020714;
+        }
+
+
+        .networking-container {
+
+            width: 100%;
+            max-width: 1100px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           PAGE HEADER
+        ====================================================== */
+
+        .networking-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+
+        .networking-label {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .networking-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .networking-header h1 span {
+
+            color: #00bfff;
+        }
+
+
+        .networking-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           PATH OVERVIEW
+        ====================================================== */
+
+        .path-overview {
+
+            width: 100%;
+
+            margin-bottom: 30px;
+
+            padding: 24px 26px;
+
+            border: 1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.24);
+        }
+
+
+        .path-overview h2 {
+
+            margin: 0 0 9px;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+
+        .path-overview p {
+
+            margin: 0;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           TOPIC GRID
+        ====================================================== */
+
+        .topics-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 16px;
+        }
+
+
+        /* =====================================================
+           TOPIC CARD
+        ====================================================== */
+
+        .topic-card {
+
+            position: relative;
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 0;
+
+            min-height: 210px;
+
+            padding: 22px;
+
+            overflow: hidden;
+
+            border: 1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.20);
+
+            text-decoration: none;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           LIGHT SWEEP
+        ====================================================== */
+
+        .topic-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 70%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(0, 191, 255, 0.13),
+                    transparent
+                );
+
+            transform: skewX(-20deg);
+
+            pointer-events: none;
+        }
+
+
+        .topic-card:hover::before {
+
+            animation: cardLightSweep 0.75s ease;
+        }
+
+
+        @keyframes cardLightSweep {
+
+            0% {
+                left: -120%;
+            }
+
+            100% {
+                left: 150%;
+            }
+        }
+
+
+        .topic-card:hover {
+
+            border-color: rgba(0, 191, 255, 0.40);
+
+            box-shadow:
+                0 17px 38px rgba(0, 0, 0, 0.28),
+                0 0 24px rgba(0, 191, 255, 0.05);
+
+            transform: translateY(-3px);
+        }
+
+
+        /* =====================================================
+           TOPIC NUMBER
+        ====================================================== */
+
+        .topic-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 32px;
+            height: 32px;
+
+            margin-bottom: 16px;
+
+            border: 1px solid rgba(0, 191, 255, 0.24);
+
+            border-radius: 8px;
+
+            color: #00bfff;
+
+            background: rgba(0, 191, 255, 0.06);
+
+            font-size: 11px;
+            font-weight: 800;
+
+            flex-shrink: 0;
+        }
+
+
+        /* =====================================================
+           TOPIC TITLE
+        ====================================================== */
+
+        .topic-card h2 {
+
+            margin: 0 0 9px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+
+            line-height: 1.4;
+
+            font-weight: 750;
+        }
+
+
+        /* =====================================================
+           TOPIC DESCRIPTION
+        ====================================================== */
+
+        .topic-card p {
+
+            margin: 0;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            flex: 1;
+        }
+
+
+        /* =====================================================
+           START LEARNING
+        ====================================================== */
+
+        .topic-link {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-top: 18px;
+
+            padding-top: 13px;
+
+            border-top:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            color: #bfeaff;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        .topic-link span {
+
+            color: #00bfff;
+
+            font-size: 16px;
+
+            transition:
+                transform 0.2s ease;
+        }
+
+
+        .topic-card:hover .topic-link span {
+
+            transform: translateX(4px);
+        }
+
+
+        /* =====================================================
+           PATH END NOTE
+        ====================================================== */
+
+        .path-end {
+
+            margin-top: 30px;
+
+            padding: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.13);
+
+            border-radius: 13px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-align: center;
+        }
+
+
+        .path-end strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+
+        .path-end p {
+
+            max-width: 700px;
+
+            margin: 0 auto;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 900px) {
+
+            .topics-grid {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .networking-page {
+
+                padding: 45px 12px 55px;
+            }
+
+
+            .networking-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .networking-label {
+
+                font-size: 10px;
+
+                letter-spacing: 1.7px;
+            }
+
+
+            .networking-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .networking-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .path-overview {
+
+                padding: 20px 18px;
+
+                margin-bottom: 20px;
+            }
+
+
+            .path-overview h2 {
+
+                font-size: 17px;
+            }
+
+
+            .path-overview p {
+
+                font-size: 12px;
+            }
+
+
+            .topics-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 11px;
+            }
+
+
+            .topic-card {
+
+                min-height: 0;
+
+                padding: 20px;
+
+                border-radius: 12px;
+            }
+
+
+            .topic-number {
+
+                width: 30px;
+                height: 30px;
+
+                margin-bottom: 13px;
+            }
+
+
+            .topic-card h2 {
+
+                font-size: 17px;
+            }
+
+
+            .topic-card p {
+
+                font-size: 12px;
+
+                line-height: 1.75;
+            }
+
+
+            .topic-link {
+
+                margin-top: 16px;
+            }
+
+
+            .path-end {
+
+                margin-top: 20px;
+
+                padding: 19px 16px;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .networking-page {
+
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+
+            .networking-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .topic-card {
+
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+    <!-- =====================================================
+         NETWORKING LEARNING PATH
+    ====================================================== -->
+
+    <main class="networking-page">
+
+        <div class="networking-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="networking-header">
+
+                <div class="networking-label">
+                    LEARNING PATH
+                </div>
+
+                <h1>
+                    <span>Networking</span> Fundamentals
+                </h1>
+
+                <p class="networking-intro">
+                    Build a strong networking foundation by learning
+                    networking concepts, protocols, devices, addressing,
+                    communication and troubleshooting step by step.
+                </p>
+
+            </header>
+
+
+            <!-- =================================================
+                 PATH OVERVIEW
+            ================================================== -->
+
+            <section class="path-overview">
+
+                <h2>
+                    Networking Learning Path
+                </h2>
+
+                <p>
+                    Follow the topics in order from basic networking
+                    concepts to network troubleshooting. Select any topic
+                    below to start learning.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 TOPICS
+            ================================================== -->
+
+            <div class="topics-grid">
+
+
+                <!-- 01 -->
+
+                <a
+                    href="what-is-networking.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        01
+                    </div>
+
+                    <h2>
+                        What is Networking?
+                    </h2>
+
+                    <p>
+                        Learn the basic concept of computer networking,
+                        communication, resource sharing and network
+                        components.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 02 -->
+
+                <a
+                    href="osi-model.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        02
+                    </div>
+
+                    <h2>
+                        OSI Model
+                    </h2>
+
+                    <p>
+                        Understand the seven layers of the OSI model
+                        and how data moves between networked systems.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 03 -->
+
+                <a
+                    href="tcp-ip-model.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        03
+                    </div>
+
+                    <h2>
+                        TCP/IP Model
+                    </h2>
+
+                    <p>
+                        Learn the TCP/IP networking model and understand
+                        how its layers support Internet communication.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 04 -->
+
+                <a
+                    href="ip-addresses.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        04
+                    </div>
+
+                    <h2>
+                        IP Addresses
+                    </h2>
+
+                    <p>
+                        Learn what an IP address is and how it identifies
+                        devices and networks during communication.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 05 -->
+
+                <a
+                    href="ipv4-ipv6.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        05
+                    </div>
+
+                    <h2>
+                        IPv4 &amp; IPv6
+                    </h2>
+
+                    <p>
+                        Understand IPv4 and IPv6 addressing and the
+                        differences between the two protocols.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 06 -->
+
+                <a
+                    href="mac-address.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        06
+                    </div>
+
+                    <h2>
+                        MAC Address
+                    </h2>
+
+                    <p>
+                        Learn how MAC addresses identify network interfaces
+                        and their role in local network communication.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 07 -->
+
+                <a
+                    href="subnetting.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        07
+                    </div>
+
+                    <h2>
+                        Subnetting
+                    </h2>
+
+                    <p>
+                        Learn how networks are divided into smaller
+                        logical networks using subnetting.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 08 -->
+
+                <a
+                    href="dns.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        08
+                    </div>
+
+                    <h2>
+                        DNS
+                    </h2>
+
+                    <p>
+                        Understand how DNS translates domain names into
+                        IP addresses and helps users access websites.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 09 -->
+
+                <a
+                    href="dhcp.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        09
+                    </div>
+
+                    <h2>
+                        DHCP
+                    </h2>
+
+                    <p>
+                        Learn how DHCP automatically provides IP addresses
+                        and other network configuration information.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 10 -->
+
+                <a
+                    href="nat.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        10
+                    </div>
+
+                    <h2>
+                        NAT
+                    </h2>
+
+                    <p>
+                        Understand Network Address Translation and how
+                        private devices communicate with public networks.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 11 -->
+
+                <a
+                    href="arp.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        11
+                    </div>
+
+                    <h2>
+                        ARP
+                    </h2>
+
+                    <p>
+                        Learn how ARP maps IP addresses to MAC addresses
+                        inside a local network.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 12 -->
+
+                <a
+                    href="icmp.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        12
+                    </div>
+
+                    <h2>
+                        ICMP
+                    </h2>
+
+                    <p>
+                        Understand ICMP messages and how tools such as
+                        ping help diagnose network connectivity.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 13 -->
+
+                <a
+                    href="tcp-vs-udp.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        13
+                    </div>
+
+                    <h2>
+                        TCP vs UDP
+                    </h2>
+
+                    <p>
+                        Compare TCP and UDP and learn when each transport
+                        protocol is used.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 14 -->
+
+                <a
+                    href="ports-protocols.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        14
+                    </div>
+
+                    <h2>
+                        Ports &amp; Protocols
+                    </h2>
+
+                    <p>
+                        Learn how ports identify network services and
+                        how common protocols provide communication rules.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 15 -->
+
+                <a
+                    href="router-switch.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        15
+                    </div>
+
+                    <h2>
+                        Router &amp; Switch
+                    </h2>
+
+                    <p>
+                        Understand the roles of routers and switches
+                        and how they connect devices and networks.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 16 -->
+
+                <a
+                    href="firewall.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        16
+                    </div>
+
+                    <h2>
+                        Firewall
+                    </h2>
+
+                    <p>
+                        Learn how firewalls inspect and control network
+                        traffic according to security rules.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 17 -->
+
+                <a
+                    href="vpn.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        17
+                    </div>
+
+                    <h2>
+                        VPN
+                    </h2>
+
+                    <p>
+                        Understand how Virtual Private Networks create
+                        protected communication over networks.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 18 -->
+
+                <a
+                    href="proxy.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        18
+                    </div>
+
+                    <h2>
+                        Proxy
+                    </h2>
+
+                    <p>
+                        Learn how proxy servers act as intermediaries
+                        between clients and destination services.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 19 -->
+
+                <a
+                    href="vlans.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        19
+                    </div>
+
+                    <h2>
+                        VLANs
+                    </h2>
+
+                    <p>
+                        Understand Virtual LANs and how they logically
+                        separate devices within a network.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 20 -->
+
+                <a
+                    href="routing.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        20
+                    </div>
+
+                    <h2>
+                        Routing
+                    </h2>
+
+                    <p>
+                        Learn how routers determine paths and forward
+                        packets between different networks.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 21 -->
+
+                <a
+                    href="network-troubleshooting.html"
+                    class="topic-card"
+                >
+
+                    <div class="topic-number">
+                        21
+                    </div>
+
+                    <h2>
+                        Network Troubleshooting
+                    </h2>
+
+                    <p>
+                        Learn common techniques and tools used to identify
+                        and resolve network connectivity problems.
+                    </p>
+
+                    <div class="topic-link">
+                        Start Learning
+                        <span>→</span>
+                    </div>
+
+                </a>
+
+
+            </div>
+
+
+            <div class="networking-no-results" id="networkingNoResults">
+                        No networking topic found. Try a different search.
+            </div>
+
+
+            <!-- =================================================
+                 END NOTE
+            ================================================== -->
+
+            <div class="path-end">
+
+                <strong>
+                    Complete the Networking Path
+                </strong>
+
+                <p>
+                    Start from the first topic and move through the
+                    learning path step by step. Each topic builds the
+                    foundation needed for the next concept.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+
+<!-- Shared Navbar -->
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+
+<!-- User Session and Profile -->
+<script src="../../../js/session.js"></script>
+    <script>
+        /* =====================================================
+           NETWORKING TOPIC SEARCH
+           Search is intentionally limited to networking.html.
+        ====================================================== */
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const searchInput = document.getElementById("networkingTopicSearch");
+            const topicCards = document.querySelectorAll(".topic-card");
+            const noResults = document.getElementById("networkingNoResults");
+
+            if (!searchInput || !topicCards.length) return;
+
+            searchInput.addEventListener("input", function () {
+
+                const query = this.value.trim().toLowerCase();
+                let visibleCount = 0;
+
+                topicCards.forEach(function (card) {
+
+                    const topicTitle = card.querySelector("h2");
+                    const topicText = card.querySelector("p");
+
+                    const searchableText = (
+                        (topicTitle ? topicTitle.textContent : "") + " " +
+                        (topicText ? topicText.textContent : "")
+                    ).toLowerCase();
+
+                    const matches = query === "" || searchableText.includes(query);
+
+                    card.classList.toggle("search-hidden", !matches);
+
+                    if (matches) visibleCount++;
+                });
+
+                noResults.style.display = visibleCount === 0 ? "block" : "none";
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

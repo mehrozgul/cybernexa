@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>What is Alert Analysis? | CyberNexa</title>
+
+    <meta name="description"
+        content="Learn what Alert Analysis is, how SOC analysts analyze security alerts, prioritize threats, investigate evidence and determine appropriate response actions.">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+    <style>
+        /* =========================================================
+   CYBERNEXA SOC / BLUE TEAM
+   TOPIC: ALERT ANALYSIS
+   ========================================================= */
+
+        :root {
+            --aa-bg: #070d13;
+            --aa-panel: #0c141d;
+            --aa-panel-2: #111c27;
+
+            --aa-blue: #42a5ff;
+            --aa-cyan: #35d6d0;
+            --aa-red: #ff5263;
+            --aa-orange: #ffad4d;
+            --aa-yellow: #ffd166;
+            --aa-green: #43d19e;
+
+            --aa-text: #edf5fb;
+            --aa-muted: #91a4b5;
+            --aa-border: #1e303f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 12% 10%,
+                    rgba(66, 165, 255, 0.10),
+                    transparent 30%),
+                radial-gradient(circle at 88% 20%,
+                    rgba(53, 214, 208, 0.07),
+                    transparent 28%),
+                var(--aa-bg);
+
+            color: var(--aa-text);
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .aa-container {
+            width: min(1150px, 92%);
+            margin: auto;
+        }
+
+
+        /* =========================================================
+   NAVBAR
+   ========================================================= */
+.navbar {
+    width: 100%;
+    overflow: visible;
+    position: relative;
+    z-index: 1000;
+}
+
+        .nav-container {
+            width: min(1150px, 92%);
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+
+            min-height: 70px;
+        }
+
+        .brand {
+            max-width: 100%;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+        }
+
+        .brand-logo {
+            flex-shrink: 0;
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-name,
+        .brand-tagline {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+
+        /* =========================================================
+   HERO
+   ========================================================= */
+
+        .aa-hero {
+            position: relative;
+            overflow: hidden;
+
+            padding: 82px 0 68px;
+
+            border-bottom: 1px solid var(--aa-border);
+        }
+
+        .aa-hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 430px;
+            height: 430px;
+
+            right: -210px;
+            top: -200px;
+
+            border: 1px solid rgba(66, 165, 255, 0.13);
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 45px rgba(66, 165, 255, 0.025),
+                0 0 0 90px rgba(66, 165, 255, 0.015);
+        }
+
+        .aa-breadcrumb {
+            color: var(--aa-cyan);
+
+            font-size: 13px;
+
+            margin-bottom: 22px;
+
+            letter-spacing: 0.4px;
+        }
+
+        .aa-hero-grid {
+            display: grid;
+
+            grid-template-columns: 1.35fr 0.65fr;
+
+            gap: 45px;
+
+            align-items: center;
+        }
+
+        .aa-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 13px;
+
+            margin-bottom: 18px;
+
+            border: 1px solid rgba(66, 165, 255, 0.35);
+
+            border-radius: 4px;
+
+            background: rgba(66, 165, 255, 0.06);
+
+            color: var(--aa-blue);
+
+            font-size: 12px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .aa-pulse {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--aa-blue);
+
+            box-shadow:
+                0 0 12px rgba(66, 165, 255, 0.85);
+        }
+
+        .aa-hero h1 {
+            margin: 0 0 18px;
+
+            font-size: clamp(38px, 5vw, 62px);
+
+            line-height: 1.05;
+
+            letter-spacing: -1px;
+        }
+
+        .aa-hero h1 span {
+            color: var(--aa-blue);
+        }
+
+        .aa-hero-description {
+            max-width: 720px;
+
+            color: var(--aa-muted);
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =========================================================
+   SOC ANALYSIS PANEL
+   ========================================================= */
+
+        .aa-command-panel {
+            padding: 24px;
+
+            border: 1px solid var(--aa-border);
+
+            border-top: 2px solid var(--aa-blue);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(145deg,
+                    rgba(17, 28, 39, 0.98),
+                    rgba(8, 14, 21, 0.98));
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .aa-command-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+        .aa-command-header strong {
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .aa-live {
+            color: var(--aa-green);
+
+            font-size: 11px;
+        }
+
+        .aa-divider {
+            height: 1px;
+
+            background: var(--aa-border);
+
+            margin: 15px 0;
+        }
+
+        .aa-status-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 8px 0;
+
+            color: var(--aa-muted);
+
+            font-size: 13px;
+        }
+
+        .aa-status-row strong {
+            color: var(--aa-text);
+
+            font-weight: normal;
+
+            text-align: right;
+        }
+
+        .aa-analysis {
+            color: var(--aa-blue) !important;
+        }
+
+
+        /* =========================================================
+   CONTENT
+   ========================================================= */
+
+        .aa-section {
+            padding: 70px 0;
+        }
+
+        .aa-section-title {
+            margin-bottom: 28px;
+        }
+
+        .aa-section-title h2 {
+            margin: 0 0 10px;
+
+            font-size: 32px;
+        }
+
+        .aa-section-title p {
+            color: var(--aa-muted);
+
+            line-height: 1.7;
+        }
+
+        .aa-card {
+            padding: 30px;
+
+            border: 1px solid var(--aa-border);
+
+            border-left: 3px solid var(--aa-blue);
+
+            border-radius: 7px;
+
+            background: var(--aa-panel);
+        }
+
+        .aa-card p {
+            margin: 0 0 16px;
+
+            color: var(--aa-muted);
+
+            line-height: 1.85;
+
+            font-size: 15px;
+        }
+
+        .aa-card p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================================================
+   DEFINITION
+   ========================================================= */
+
+        .aa-definition {
+            padding: 28px;
+
+            border: 1px solid rgba(66, 165, 255, 0.25);
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 208, 0.025));
+        }
+
+        .aa-definition-label {
+            margin-bottom: 12px;
+
+            color: var(--aa-cyan);
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .aa-definition p {
+            margin: 0;
+
+            color: var(--aa-text);
+
+            font-size: 18px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+   ANALYSIS PROCESS
+   ========================================================= */
+
+        .aa-process {
+            display: grid;
+
+            grid-template-columns: repeat(6, 1fr);
+
+            gap: 10px;
+
+            margin-top: 30px;
+        }
+
+        .aa-process-step {
+            position: relative;
+
+            min-height: 125px;
+
+            padding: 18px 12px;
+
+            border: 1px solid var(--aa-border);
+
+            border-radius: 6px;
+
+            background: var(--aa-panel);
+
+            text-align: center;
+        }
+
+        .aa-process-step::after {
+            content: "→";
+
+            position: absolute;
+
+            right: -15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--aa-blue);
+
+            z-index: 2;
+        }
+
+        .aa-process-step:last-child::after {
+            display: none;
+        }
+
+        .aa-process-number {
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: var(--aa-blue);
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .aa-process-step strong {
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+   WHY ANALYZE ALERTS
+   ========================================================= */
+
+        .aa-reason-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .aa-reason {
+            padding: 24px;
+
+            border: 1px solid var(--aa-border);
+
+            border-radius: 7px;
+
+            background: var(--aa-panel);
+        }
+
+        .aa-reason-number {
+            display: block;
+
+            margin-bottom: 15px;
+
+            color: var(--aa-cyan);
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .aa-reason h3 {
+            margin: 0 0 10px;
+
+            font-size: 17px;
+        }
+
+        .aa-reason p {
+            margin: 0;
+
+            color: var(--aa-muted);
+
+            line-height: 1.65;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+   ALERT EXAMPLE
+   ========================================================= */
+
+        .aa-alert-box {
+            padding: 25px;
+
+            border: 1px solid var(--aa-border);
+
+            border-top: 2px solid var(--aa-red);
+
+            border-radius: 7px;
+
+            background: var(--aa-panel);
+        }
+
+        .aa-alert-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
+        }
+
+        .aa-alert-header h3 {
+            margin: 0;
+
+            font-size: 18px;
+        }
+
+        .aa-severity {
+            padding: 6px 10px;
+
+            border: 1px solid rgba(255, 82, 99, 0.35);
+
+            border-radius: 4px;
+
+            color: var(--aa-red);
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 0.5px;
+        }
+
+        .aa-alert-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .aa-alert-item {
+            padding: 15px;
+
+            border: 1px solid var(--aa-border);
+
+            border-radius: 5px;
+
+            background: var(--aa-panel-2);
+        }
+
+        .aa-alert-item strong {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: var(--aa-text);
+
+            font-size: 13px;
+        }
+
+        .aa-alert-item span {
+            color: var(--aa-muted);
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================================================
+   KEY CONCEPTS
+   ========================================================= */
+
+        .aa-key-list {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .aa-key {
+            padding: 17px 20px;
+
+            border: 1px solid var(--aa-border);
+
+            border-radius: 6px;
+
+            background: var(--aa-panel);
+        }
+
+        .aa-key strong {
+            color: var(--aa-text);
+        }
+
+        .aa-key span {
+            color: var(--aa-muted);
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================================================
+   SUMMARY
+   ========================================================= */
+
+        .aa-summary {
+            padding: 30px;
+
+            border: 1px solid rgba(67, 209, 158, 0.25);
+
+            border-radius: 7px;
+
+            background: rgba(67, 209, 158, 0.035);
+        }
+
+        .aa-summary h2 {
+            margin-top: 0;
+
+            color: var(--aa-green);
+        }
+
+        .aa-summary p {
+            margin: 0;
+
+            color: var(--aa-muted);
+
+            line-height: 1.8;
+        }
+        
+        /* =========================================================
+   PRACTICAL LAB CTA
+   ========================================================= */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+
+            margin-top: 35px;
+            padding: 24px 26px;
+
+            border: 1px solid rgba(66, 165, 255, 0.22);
+            border-left: 3px solid var(--aa-blue);
+            border-radius: 7px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(66, 165, 255, 0.07),
+                    rgba(53, 214, 208, 0.025));
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.20);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        /* Top scanning line */
+
+        .lab-area::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 1px;
+
+            background:
+                linear-gradient(90deg,
+                    transparent,
+                    rgba(66, 165, 255, 0.7),
+                    rgba(53, 214, 208, 0.6),
+                    transparent);
+        }
+
+
+        /* Lab text */
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+
+            min-width: 0;
+        }
+
+
+        .lab-text strong {
+            color: var(--aa-text);
+
+            font-size: 16px;
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .lab-text span {
+            color: var(--aa-muted);
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* Lab button */
+
+        .lab-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            min-width: 155px;
+
+            padding: 12px 20px;
+
+            border: 1px solid rgba(66, 165, 255, 0.40);
+            border-radius: 5px;
+
+            color: var(--aa-blue);
+
+            background:
+                rgba(66, 165, 255, 0.07);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+            text-decoration: none;
+
+            transition:
+                color 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        /* Hover */
+
+        .lab-button:hover {
+            color: #ffffff;
+
+            border-color: rgba(66, 165, 255, 0.75);
+
+            background:
+                rgba(66, 165, 255, 0.14);
+
+            box-shadow:
+                0 0 18px rgba(66, 165, 255, 0.16);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* Active */
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* =========================================================
+   LAB CTA RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .lab-area {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 18px;
+
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+        }
+
+        /* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+        @media (max-width: 950px) {
+
+            .nav-container {
+                width: 92%;
+                min-height: 68px;
+            }
+
+            .brand-logo svg {
+                width: 42px;
+                height: 50px;
+            }
+
+            .aa-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .aa-reason-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .aa-process {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .aa-process-step::after {
+                display: none;
+            }
+        }
+
+
+        @media (max-width: 768px) {
+
+            .nav-container {
+                width: 94%;
+                min-height: 64px;
+                padding: 8px 0;
+            }
+
+            .brand {
+                gap: 8px;
+            }
+
+            .brand-logo svg {
+                width: 38px;
+                height: 46px;
+            }
+
+            .brand-name {
+                font-size: 19px;
+            }
+
+            .brand-tagline {
+                font-size: 9px;
+            }
+
+            .aa-hero {
+                padding: 70px 0 55px;
+            }
+
+            .aa-section {
+                padding: 60px 0;
+            }
+
+            .aa-process {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .aa-alert-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .nav-container {
+                width: 92%;
+                min-height: 62px;
+                padding: 7px 0;
+            }
+
+            .brand {
+                gap: 7px;
+            }
+
+            .brand-logo svg {
+                width: 34px;
+                height: 42px;
+            }
+
+            .brand-name {
+                font-size: 17px;
+            }
+
+            .brand-tagline {
+                font-size: 8px;
+            }
+
+            .aa-hero {
+                padding: 55px 0 45px;
+            }
+
+            .aa-breadcrumb {
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .aa-label {
+                font-size: 10px;
+                padding: 7px 10px;
+            }
+
+            .aa-hero h1 {
+                font-size: clamp(34px, 10vw, 48px);
+            }
+
+            .aa-hero-description {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+
+            .aa-command-panel {
+                padding: 20px;
+            }
+
+            .aa-section {
+                padding: 50px 0;
+            }
+
+            .aa-section-title h2 {
+                font-size: 26px;
+            }
+
+            .aa-section-title p {
+                font-size: 14px;
+            }
+
+            .aa-card {
+                padding: 22px;
+            }
+
+            .aa-card p {
+                font-size: 14px;
+            }
+
+            .aa-definition {
+                padding: 22px;
+            }
+
+            .aa-definition p {
+                font-size: 16px;
+            }
+
+            .aa-reason-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .aa-reason {
+                padding: 21px;
+            }
+
+            .aa-process {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .aa-process-step {
+                min-height: 95px;
+                padding: 15px 8px;
+            }
+
+            .aa-process-step strong {
+                font-size: 12px;
+            }
+
+            .aa-alert-box {
+                padding: 21px;
+            }
+
+            .aa-alert-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .aa-key-list {
+                grid-template-columns: 1fr;
+            }
+
+            .aa-key {
+                padding: 16px;
+            }
+
+            .aa-key span {
+                font-size: 13px;
+            }
+
+            .aa-summary {
+                padding: 22px;
+            }
+
+            .aa-summary p {
+                font-size: 14px;
+            }
+
+            .aa-topic-nav {
+                flex-direction: column;
+            }
+
+            .aa-nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+
+        @media (max-width: 380px) {
+
+            .nav-container {
+                width: 94%;
+            }
+
+            .brand-logo svg {
+                width: 30px;
+                height: 38px;
+            }
+
+            .brand-name {
+                font-size: 15px;
+            }
+
+            .brand-tagline {
+                font-size: 7px;
+            }
+
+            .aa-container {
+                width: 94%;
+            }
+
+            .aa-hero h1 {
+                font-size: 32px;
+            }
+
+            .aa-process {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body class="learning-path-page">
+    <!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+    <!-- =====================================================
+     HERO
+====================================================== -->
+
+    <header class="aa-hero">
+
+        <div class="aa-container">
+
+            <div class="aa-breadcrumb">
+                CyberNexa / SOC / Blue Team / Alert Analysis
+            </div>
+
+            <div class="aa-hero-grid">
+
+                <div>
+
+                    <div class="aa-label">
+
+                        <span class="aa-pulse"></span>
+
+                        SOC Alert Analysis
+
+                    </div>
+
+                    <h1>
+                        What is <span>Alert Analysis?</span>
+                    </h1>
+
+                    <p class="aa-hero-description">
+
+                        Alert Analysis is the process of examining security alerts,
+                        validating suspicious activity, determining its severity and
+                        deciding whether the alert represents a real security threat
+                        or a false positive.
+
+                    </p>
+
+                </div>
+
+
+                <div class="aa-command-panel">
+
+                    <div class="aa-command-header">
+
+                        <strong>
+                            SOC ANALYSIS CONSOLE
+                        </strong>
+
+                        <span class="aa-live">
+                            ● ANALYZING
+                        </span>
+
+                    </div>
+
+                    <div class="aa-divider"></div>
+
+                    <div class="aa-status-row">
+                        <span>Environment</span>
+                        <strong>SOC</strong>
+                    </div>
+
+                    <div class="aa-status-row">
+                        <span>Activity</span>
+                        <strong>Alert Investigation</strong>
+                    </div>
+
+                    <div class="aa-status-row">
+                        <span>Priority</span>
+                        <strong class="aa-analysis">
+                            Based on Risk
+                        </strong>
+                    </div>
+
+                    <div class="aa-status-row">
+                        <span>Decision</span>
+                        <strong>Validate &amp; Escalate</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- =====================================================
+     DEFINITION
+====================================================== -->
+
+        <section class="aa-section">
+
+            <div class="aa-container">
+
+                <div class="aa-section-title">
+
+                    <h2>Definition</h2>
+
+                    <p>
+                        Understand the basic meaning of Alert Analysis in a SOC.
+                    </p>
+
+                </div>
+
+
+                <div class="aa-definition">
+
+                    <div class="aa-definition-label">
+                        Core Definition
+                    </div>
+
+                    <p>
+
+                        Alert Analysis is the structured process of reviewing
+                        security alerts, examining their associated evidence,
+                        determining whether the activity is legitimate or malicious,
+                        assessing its severity and deciding what action should be
+                        taken.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     HOW IT WORKS
+====================================================== -->
+
+        <section class="aa-section">
+
+            <div class="aa-container">
+
+                <div class="aa-section-title">
+
+                    <h2>How Alert Analysis Works</h2>
+
+                    <p>
+                        A SOC analyst does not automatically treat every alert as a
+                        confirmed attack.
+                    </p>
+
+                </div>
+
+
+                <div class="aa-card">
+
+                    <p>
+
+                        Security tools such as SIEM platforms, endpoint security
+                        solutions, firewalls and network monitoring systems generate
+                        alerts when they detect activity that matches a security rule
+                        or suspicious behavior.
+
+                    </p>
+
+                    <p>
+
+                        The analyst examines the alert details and collects relevant
+                        evidence such as source IP address, destination IP, username,
+                        timestamp, event type and related log entries.
+
+                    </p>
+
+                    <p>
+
+                        The analyst then determines whether the alert is a true
+                        positive, meaning the activity represents a genuine security
+                        problem, or a false positive, meaning the activity is
+                        legitimate or does not represent a security incident.
+
+                    </p>
+
+                    <p>
+
+                        If the alert is considered malicious or high-risk, the analyst
+                        prioritizes it and may escalate it for further investigation
+                        or incident response.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     ANALYSIS PROCESS
+====================================================== -->
+
+        <section class="aa-section">
+
+            <div class="aa-container">
+
+                <div class="aa-section-title">
+
+                    <h2>Alert Analysis Process</h2>
+
+                    <p>
+                        A simplified SOC workflow for analyzing a security alert.
+                    </p>
+
+                </div>
+
+
+                <div class="aa-process">
+
+                    <div class="aa-process-step">
+
+                        <span class="aa-process-number">
+                            01
+                        </span>
+
+                        <strong>
+                            Receive Alert
+                        </strong>
+
+                    </div>
+
+
+                    <div class="aa-process-step">
+
+                        <span class="aa-process-number">
+                            02
+                        </span>
+
+                        <strong>
+                            Review Details
+                        </strong>
+
+                    </div>
+
+
+                    <div class="aa-process-step">
+
+                        <span class="aa-process-number">
+                            03
+                        </span>
+
+                        <strong>
+                            Collect Evidence
+                        </strong>
+
+                    </div>
+
+
+                    <div class="aa-process-step">
+
+                        <span class="aa-process-number">
+                            04
+                        </span>
+
+                        <strong>
+                            Validate Alert
+                        </strong>
+
+                    </div>
+
+
+                    <div class="aa-process-step">
+
+                        <span class="aa-process-number">
+                            05
+                        </span>
+
+                        <strong>
+                            Prioritize
+                        </strong>
+
+                    </div>
+
+
+                    <div class="aa-process-step">
+
+                        <span class="aa-process-number">
+                            06
+                        </span>
+
+                        <strong>
+                            Escalate / Close
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     WHY IMPORTANT
+====================================================== -->
+
+        <section class="aa-section">
+
+            <div class="aa-container">
+
+                <div class="aa-section-title">
+
+                    <h2>Why Alert Analysis Matters</h2>
+
+                    <p>
+                        SOC analysts may receive a large number of alerts. Analysis
+                        helps them focus on meaningful security events.
+                    </p>
+
+                </div>
+
+
+                <div class="aa-reason-grid">
+
+
+                    <div class="aa-reason">
+
+                        <span class="aa-reason-number">
+                            REASON 01
+                        </span>
+
+                        <h3>Reduce False Positives</h3>
+
+                        <p>
+                            Analysis helps distinguish legitimate activity from
+                            actual malicious behavior.
+                        </p>
+
+                    </div>
+
+
+                    <div class="aa-reason">
+
+                        <span class="aa-reason-number">
+                            REASON 02
+                        </span>
+
+                        <h3>Prioritize Threats</h3>
+
+                        <p>
+                            Important alerts can be prioritized according to severity,
+                            impact and available evidence.
+                        </p>
+
+                    </div>
+
+
+                    <div class="aa-reason">
+
+                        <span class="aa-reason-number">
+                            REASON 03
+                        </span>
+
+                        <h3>Support Investigation</h3>
+
+                        <p>
+                            Analyzed alerts provide useful evidence for deeper
+                            investigation and incident response.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     ALERT EXAMPLE
+====================================================== -->
+
+        <section class="aa-section">
+
+            <div class="aa-container">
+
+                <div class="aa-section-title">
+
+                    <h2>Example Security Alert</h2>
+
+                    <p>
+                        Consider an alert generated after suspicious login activity.
+                    </p>
+
+                </div>
+
+
+                <div class="aa-alert-box">
+
+                    <div class="aa-alert-header">
+
+                        <h3>
+                            🚨 Multiple Failed Login Attempts
+                        </h3>
+
+                        <span class="aa-severity">
+                            HIGH PRIORITY
+                        </span>
+
+                    </div>
+
+
+                    <div class="aa-alert-grid">
+
+                        <div class="aa-alert-item">
+
+                            <strong>Source IP</strong>
+
+                            <span>
+                                185.XX.XX.42
+                            </span>
+
+                        </div>
+
+
+                        <div class="aa-alert-item">
+
+                            <strong>Username</strong>
+
+                            <span>
+                                admin
+                            </span>
+
+                        </div>
+
+
+                        <div class="aa-alert-item">
+
+                            <strong>Event</strong>
+
+                            <span>
+                                Multiple failed authentication attempts
+                            </span>
+
+                        </div>
+
+
+                        <div class="aa-alert-item">
+
+                            <strong>Time</strong>
+
+                            <span>
+                                02:14:31 UTC
+                            </span>
+
+                        </div>
+
+
+                        <div class="aa-alert-item">
+
+                            <strong>Question</strong>
+
+                            <span>
+                                Is this legitimate administrative activity?
+                            </span>
+
+                        </div>
+
+
+                        <div class="aa-alert-item">
+
+                            <strong>Analyst Action</strong>
+
+                            <span>
+                                Investigate related authentication logs
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+        <section class="aa-section">
+
+            <div class="aa-container">
+
+                <div class="aa-section-title">
+
+                    <h2>Key Concepts</h2>
+
+                    <p>
+                        Important terms to remember when studying Alert Analysis.
+                    </p>
+
+                </div>
+
+
+                <div class="aa-key-list">
+
+
+                    <div class="aa-key">
+
+                        <strong>Alert:</strong>
+
+                        <span>
+                            A notification generated by a security monitoring system
+                            when suspicious or rule-matching activity is detected.
+                        </span>
+
+                    </div>
+
+
+                    <div class="aa-key">
+
+                        <strong>True Positive:</strong>
+
+                        <span>
+                            An alert that represents genuine suspicious or malicious
+                            activity.
+                        </span>
+
+                    </div>
+
+
+                    <div class="aa-key">
+
+                        <strong>False Positive:</strong>
+
+                        <span>
+                            An alert caused by legitimate activity or an inaccurate
+                            security detection.
+                        </span>
+
+                    </div>
+
+
+                    <div class="aa-key">
+
+                        <strong>Severity:</strong>
+
+                        <span>
+                            An assessment of how serious or potentially damaging
+                            the activity may be.
+                        </span>
+
+                    </div>
+
+
+                    <div class="aa-key">
+
+                        <strong>Evidence:</strong>
+
+                        <span>
+                            Logs, IP addresses, timestamps, usernames and other data
+                            used to validate the alert.
+                        </span>
+
+                    </div>
+
+
+                    <div class="aa-key">
+
+                        <strong>Escalation:</strong>
+
+                        <span>
+                            Forwarding a significant alert to the appropriate security
+                            team or incident response process.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+        <section class="aa-section">
+
+            <div class="aa-container">
+
+                <div class="aa-summary">
+
+                    <h2>Summary</h2>
+
+                    <p>
+
+                        Alert Analysis is an important SOC activity used to examine
+                        security alerts and determine their meaning and risk.
+                        A SOC analyst reviews the alert, collects evidence, validates
+                        the activity, identifies true or false positives, determines
+                        priority and decides whether the alert should be closed,
+                        investigated further or escalated. Effective alert analysis
+                        helps security teams focus their resources on meaningful
+                        threats.
+
+                    </p>
+
+                </div>
+                
+<!-- LESSON COMPLETION -->
+<section class="aa-section">
+    <div class="aa-container">
+
+        <div class="aa-card" id="lessonCompletion">
+            <div class="aa-section-title">
+                <h2>Lesson Completion</h2>
+                <p>
+                    You have completed the Alert Analysis lesson.
+                    Review the key concepts and mark this lesson as completed.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="alert-analysis"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/alert-analysis.html"
+                data-status-id="alertAnalysisCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="alertAnalysisCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+        </div>
+
+    </div>
+</section>
+
+                <div class="lab-area">
+
+                    <div class="lab-text">
+
+                        <strong>
+                            Ready for the Practical Lab?
+                        </strong>
+
+                        <span>
+                            Test your understanding of alert analysis through an authorized SOC security-training simulation.
+                        </span>
+
+                    </div>
+
+
+                    <a href="../lab/alert-analysis-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+     FOOTER
+====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+    <!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

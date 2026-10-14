@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Scanning Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 255, 170, 0.055),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* HERO */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 42px 35px;
+            margin-bottom: 25px;
+
+            border: 1px solid rgba(0, 255, 170, 0.15);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 23, 30, 0.98),
+                    rgba(2, 12, 23, 0.98)
+                );
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00ffb0,
+                    #00bfff,
+                    transparent
+                );
+        }
+
+        .lab-hero-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(260px, 0.75fr);
+
+            gap: 35px;
+
+            align-items: center;
+        }
+
+        .lab-kicker {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00ffb0;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-kicker::before {
+
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00ffb0;
+
+            box-shadow:
+                0 0 12px rgba(0, 255, 176, 0.65);
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 46px;
+
+            line-height: 1.12;
+
+            font-weight: 850;
+
+            letter-spacing: -1px;
+        }
+
+        .lab-hero h1 span {
+
+            color: #00ffb0;
+        }
+
+        .lab-description {
+
+            max-width: 700px;
+
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 14px;
+
+            line-height: 1.9;
+        }
+
+        /* TERMINAL */
+
+        .terminal-panel {
+
+            padding: 18px;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+
+            border-radius: 11px;
+
+            background: rgba(0, 0, 0, 0.34);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        .terminal-top {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding-bottom: 13px;
+
+            margin-bottom: 13px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.09);
+        }
+
+        .terminal-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #405263;
+        }
+
+        .terminal-title {
+
+            margin-left: auto;
+
+            color: #52687c;
+
+            font-size: 9px;
+
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+
+            margin-bottom: 9px;
+
+            color: #60788d;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+        .green {
+            color: #00ffb0;
+        }
+
+        .blue {
+            color: #00bfff;
+        }
+
+        /* META */
+
+        .lab-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+
+            padding: 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background: rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .meta-value.green {
+
+            color: #00ffb0;
+        }
+
+        /* NOTICE */
+
+        .authorization-box {
+
+            margin-bottom: 18px;
+
+            padding: 21px;
+
+            border: 1px solid rgba(255, 177, 0, 0.17);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .authorization-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 9px;
+
+            color: #ffc44d;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .authorization-box p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* QUESTION CARD */
+
+        .question-card {
+
+            margin-bottom: 15px;
+
+            padding: 23px;
+
+            border: 1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .question-number {
+
+            margin-bottom: 9px;
+
+            color: #00ffb0;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+        }
+
+        .question-card h2 {
+
+            margin: 0 0 17px;
+
+            color: #ffffff;
+
+            font-size: 16px;
+
+            line-height: 1.5;
+        }
+
+        .options {
+
+            display: grid;
+
+            gap: 9px;
+        }
+
+        .option {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 14px;
+
+            border: 1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 8px;
+
+            background: rgba(0, 191, 255, 0.018);
+
+            color: #8fa5bb;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 255, 176, 0.25);
+
+            background:
+                rgba(0, 255, 176, 0.025);
+
+            color: #ccefe5;
+        }
+
+        .option input {
+
+            accent-color: #00ffb0;
+        }
+
+        /* RESULT */
+
+        .result-box {
+
+            display: none;
+
+            margin-top: 22px;
+
+            padding: 24px;
+
+            text-align: center;
+
+            border: 1px solid rgba(0, 255, 176, 0.15);
+
+            border-radius: 12px;
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        .result-box.show {
+
+            display: block;
+        }
+
+        .result-title {
+
+            margin-bottom: 8px;
+
+            color: #00ffb0;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .score {
+
+            color: #ffffff;
+
+            font-size: 30px;
+
+            font-weight: 850;
+        }
+
+        .result-message {
+
+            margin-top: 8px;
+
+            color: #7e94a8;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+        /* BUTTON */
+
+        .lab-actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .lab-btn {
+
+            padding: 13px 24px;
+
+            border: 1px solid rgba(0, 255, 176, 0.30);
+
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .lab-btn:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(0, 255, 176, 0.55);
+
+            background:
+                rgba(0, 255, 176, 0.09);
+        }
+
+        /* NAVIGATION */
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.topic-navigation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 18px;
+
+    border: 1px solid rgba(0, 191, 255, 0.09);
+    border-radius: 9px;
+
+    color: #71879b;
+    background: rgba(0, 191, 255, 0.02);
+
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.topic-navigation a:hover {
+    color: #ccefe5;
+    border-color: rgba(0, 255, 176, 0.25);
+    background: rgba(0, 255, 176, 0.035);
+}
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .lab-hero-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .lab-meta {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+
+                font-size: 31px;
+            }
+
+            .lab-description {
+
+                font-size: 12px;
+            }
+
+            .question-card {
+
+                padding: 19px;
+            }
+
+            .lab-actions {
+
+                flex-direction: column;
+            }
+
+            .lab-btn {
+
+                width: 100%;
+            }
+
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.topic-navigation a {
+    flex: 0 1 auto;
+    max-width: 48%;
+    padding: 12px 10px;
+}
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN LAB -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- HERO -->
+
+            <section class="lab-hero">
+
+                <div class="lab-hero-grid">
+
+                    <div>
+
+                        <div class="lab-kicker">
+                            ETHICAL HACKING LAB / 04
+                        </div>
+
+                        <h1>
+                            <span>Scanning</span>
+                            Practical Lab
+                        </h1>
+
+                        <p class="lab-description">
+                            Test your understanding of host discovery,
+                            ports, services, scan results, authorization
+                            and professional scanning workflow.
+                        </p>
+
+                    </div>
+
+
+                    <div class="terminal-panel">
+
+                        <div class="terminal-top">
+
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+
+                            <span class="terminal-title">
+                                CYBERNEXA LAB
+                            </span>
+
+                        </div>
+
+                        <div class="terminal-line">
+
+                            <span class="green">
+                                student@cybernexa
+                            </span>:~$
+
+                            <span class="blue">
+                                lab --topic scanning
+                            </span>
+
+                        </div>
+
+                        <div class="terminal-line">
+
+                            Environment:
+                            <span class="green">
+                                AUTHORIZED
+                            </span>
+
+                        </div>
+
+                        <div class="terminal-line">
+
+                            Mode:
+                            <span class="blue">
+                                KNOWLEDGE CHECK
+                            </span>
+
+                        </div>
+
+                        <div class="terminal-line">
+
+                            Status:
+                            <span class="green">
+                                READY
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- META -->
+
+            <div class="lab-meta">
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Topic
+                    </span>
+
+                    <span class="meta-value">
+                        Scanning
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Questions
+                    </span>
+
+                    <span class="meta-value">
+                        10 MCQs
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Level
+                    </span>
+
+                    <span class="meta-value">
+                        Beginner
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Environment
+                    </span>
+
+                    <span class="meta-value green">
+                        Authorized Lab
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- AUTHORIZATION -->
+
+            <div class="authorization-box">
+
+                <div class="authorization-title">
+                    ⚠ AUTHORIZED LAB ENVIRONMENT
+                </div>
+
+                <p>
+                    This lab is a cybersecurity knowledge exercise.
+                    Real scanning should only be performed against systems
+                    you own or systems for which you have explicit permission.
+                    Use dedicated virtual machines, CTFs or training labs
+                    for practical experimentation.
+                </p>
+
+            </div>
+
+
+            <!-- QUESTIONS -->
+
+            <form id="scanningQuiz">
+
+
+                <!-- Q1 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 01
+                    </div>
+
+                    <h2>
+                        What is the primary purpose of scanning in ethical hacking?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="a">
+                            To permanently damage a target
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="b">
+                            To discover technical information about an authorized environment
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="c">
+                            To steal user passwords
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="d">
+                            To bypass every security control
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q2 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 02
+                    </div>
+
+                    <h2>
+                        What does host discovery help a security tester identify?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="a">
+                            Reachable systems within the approved scope
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="b">
+                            The owner's personal password
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="c">
+                            The physical location of every employee
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="d">
+                            The encryption key of every device
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q3 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 03
+                    </div>
+
+                    <h2>
+                        What is a port in networking?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="a">
+                            A physical keyboard connection
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="b">
+                            A logical communication endpoint
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="c">
+                            A type of malware
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="d">
+                            A password database
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q4 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 04
+                    </div>
+
+                    <h2>
+                        What can port scanning help reveal?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="a">
+                            Potentially accessible network services
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="b">
+                            A user's private photographs
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="c">
+                            The exact password of the administrator
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="d">
+                            The owner's identity card
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q5 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 05
+                    </div>
+
+                    <h2>
+                        Why is authorization important before scanning?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="a">
+                            Scanning always deletes files
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="b">
+                            Testing systems without permission may be unauthorized
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="c">
+                            Authorization makes the internet faster
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="d">
+                            Authorization changes an IP address
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q6 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 06
+                    </div>
+
+                    <h2>
+                        Which activity helps determine what service may be associated
+                        with an accessible communication point?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q6" value="a">
+                            Service detection
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q6" value="b">
+                            Password cracking
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q6" value="c">
+                            Social engineering
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q6" value="d">
+                            File deletion
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q7 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 07
+                    </div>
+
+                    <h2>
+                        Which stage normally uses information discovered during scanning?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q7" value="a">
+                            Vulnerability assessment
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q7" value="b">
+                            Operating system installation
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q7" value="c">
+                            Graphic design
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q7" value="d">
+                            Data entry
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q8 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 08
+                    </div>
+
+                    <h2>
+                        What should a professional security tester establish before scanning?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q8" value="a">
+                            Authorization and scope
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q8" value="b">
+                            A social media account
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q8" value="c">
+                            A new operating system
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q8" value="d">
+                            A cryptocurrency wallet
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q9 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 09
+                    </div>
+
+                    <h2>
+                        Which statement about scan results is correct?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q9" value="a">
+                            Every discovered service is automatically a vulnerability
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q9" value="b">
+                            Scan results provide technical observations that require analysis
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q9" value="c">
+                            Scan results are always incorrect
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q9" value="d">
+                            Scan results can only contain passwords
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q10 -->
+
+                <section class="question-card">
+
+                    <div class="question-number">
+                        QUESTION 10
+                    </div>
+
+                    <h2>
+                        Which environment is appropriate for learning practical scanning?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q10" value="a">
+                            A random public website
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q10" value="b">
+                            A stranger's computer
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q10" value="c">
+                            An authorized virtual machine or cybersecurity lab
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q10" value="d">
+                            Any system connected to the internet
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ACTION -->
+
+                <div class="lab-actions">
+
+                    <button
+                        type="button"
+                        class="lab-btn"
+                        onclick="checkQuiz()"
+                    >
+                        ✓ Check Lab
+                    </button>
+
+                    <button
+                        type="reset"
+                        class="lab-btn"
+                        onclick="resetResult()"
+                    >
+                        ↻ Reset
+                    </button>
+
+                </div>
+
+
+            </form>
+
+
+            <!-- RESULT -->
+
+            <div
+                class="result-box"
+                id="resultBox"
+            >
+
+                <div class="result-title">
+                    Lab Result
+                </div>
+
+                <div
+                    class="score"
+                    id="score"
+                >
+                    0 / 10
+                </div>
+
+                <div
+                    class="result-message"
+                    id="resultMessage"
+                >
+                    Complete the assessment to view your result.
+                </div>
+
+            </div>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="topic-navigation">
+
+                <a href="information-gathering-lab.html">
+                    ← Lab: Information gathering
+                </a>
+
+                <a href="../theory/enumeration.html">
+                    Next Theory: Enumeration →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <script>
+
+        function checkQuiz() {
+
+            const answers = {
+
+                q1: "b",
+                q2: "a",
+                q3: "b",
+                q4: "a",
+                q5: "b",
+                q6: "a",
+                q7: "a",
+                q8: "a",
+                q9: "b",
+                q10: "c"
+
+            };
+
+            let score = 0;
+
+            for (const question in answers) {
+
+                const selected =
+                    document.querySelector(
+                        `input[name="${question}"]:checked`
+                    );
+
+                if (selected && selected.value === answers[question]) {
+
+                    score++;
+
+                }
+
+            }
+
+            const resultBox =
+                document.getElementById("resultBox");
+
+            const scoreElement =
+                document.getElementById("score");
+
+            const messageElement =
+                document.getElementById("resultMessage");
+
+            scoreElement.textContent =
+                `${score} / 10`;
+
+            if (score === 10) {
+
+                messageElement.textContent =
+                    "Excellent. Your scanning fundamentals are strong.";
+
+            }
+            else if (score >= 8) {
+
+                messageElement.textContent =
+                    "Very good. Review a few concepts and continue to Enumeration.";
+
+            }
+            else if (score >= 5) {
+
+                messageElement.textContent =
+                    "Good attempt. Review host discovery, ports, services and authorization.";
+
+            }
+            else {
+
+                messageElement.textContent =
+                    "Review the Scanning theory page and attempt the lab again.";
+
+            }
+
+            resultBox.classList.add("show");
+
+            resultBox.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+
+        function resetResult() {
+
+            const resultBox =
+                document.getElementById("resultBox");
+
+            resultBox.classList.remove("show");
+
+            document.getElementById("score").textContent =
+                "0 / 10";
+
+            document.getElementById("resultMessage").textContent =
+                "Complete the assessment to view your result.";
+
+        }
+
+    </script>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

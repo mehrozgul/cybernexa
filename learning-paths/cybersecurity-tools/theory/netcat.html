@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+    <title>Netcat | CyberNexa</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 255, 170, 0.09),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 202, 255, 0.06),
+                    transparent 30%
+                ),
+                #020914;
+
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            width: 100%;
+            border-bottom: 1px solid rgba(0, 255, 170, 0.18);
+            background: #020a14;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 15px 22px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #00ffaa;
+            flex-shrink: 0;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00ffaa;
+        }
+
+        .brand-tagline {
+            margin-top: 2px;
+            color: #71869b;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .tool-page {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        .breadcrumb {
+            color: #71869b;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb span {
+            color: #00ffaa;
+            padding: 0 7px;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .tool-header {
+            position: relative;
+            overflow: hidden;
+
+            padding: 32px;
+
+            border: 1px solid rgba(0, 255, 170, 0.28);
+            border-left: 4px solid #00ffaa;
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 255, 170, 0.07),
+                    rgba(0, 202, 255, 0.03)
+                );
+        }
+
+        .tool-header::after {
+            content: "nc";
+            position: absolute;
+            right: 30px;
+            bottom: -25px;
+
+            color: rgba(0, 255, 170, 0.05);
+            font-size: 150px;
+            font-weight: 900;
+            pointer-events: none;
+        }
+
+        .tool-label {
+            color: #00ffaa;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .tool-header h1 {
+            position: relative;
+            z-index: 1;
+
+            margin: 9px 0;
+            color: white;
+            font-size: 38px;
+        }
+
+        .tool-header h1 span {
+            color: #00ffaa;
+        }
+
+        .tool-header p {
+            position: relative;
+            z-index: 1;
+
+            max-width: 760px;
+            margin: 0;
+
+            color: #9fb1c5;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           TERMINAL STRIP
+        ===================================================== */
+
+        .terminal-strip {
+            margin-top: 20px;
+            padding: 15px 18px;
+
+            border: 1px solid rgba(0, 255, 170, 0.2);
+            border-radius: 8px;
+
+            background: #01060b;
+
+            color: #00ffaa;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .terminal-user {
+            color: #00caff;
+        }
+
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
+
+        .tool-section {
+            width: 100%;
+            margin-top: 22px;
+            padding: 25px;
+
+            border: 1px solid rgba(0, 202, 255, 0.16);
+            border-radius: 9px;
+
+            background: #04111f;
+        }
+
+        .tool-section h2 {
+            margin-top: 0;
+            color: white;
+            font-size: 21px;
+        }
+
+        .tool-section h2::before {
+            content: "> ";
+            color: #00ffaa;
+            font-family: Consolas, monospace;
+        }
+
+        .tool-section p {
+            color: #aabbd0;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           INFO GRID
+        ===================================================== */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .info-card {
+            min-width: 0;
+
+            padding: 18px;
+
+            border: 1px solid rgba(0, 255, 170, 0.15);
+            border-radius: 8px;
+
+            background: #020b16;
+        }
+
+        .info-card h3 {
+            margin: 0 0 8px;
+            color: #00ffaa;
+            font-size: 14px;
+        }
+
+        .info-card p {
+            margin: 0;
+            color: #8fa5ba;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           CODE
+        ===================================================== */
+
+        .code-block {
+            width: 100%;
+            margin-top: 15px;
+
+            border: 1px solid rgba(0, 255, 170, 0.18);
+            border-radius: 8px;
+
+            background: #01060b;
+
+            overflow-x: auto;
+        }
+
+        pre {
+            margin: 0;
+            padding: 18px;
+
+            color: #78ffbd;
+
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 12px;
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        /* =====================================================
+           COMMAND TABLE
+        ===================================================== */
+
+        .command-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .command-table {
+            width: 100%;
+            min-width: 560px;
+            border-collapse: collapse;
+        }
+
+        .command-table th,
+        .command-table td {
+            padding: 12px;
+
+            border: 1px solid rgba(0, 202, 255, 0.12);
+
+            text-align: left;
+            font-size: 12px;
+        }
+
+        .command-table th {
+            color: #00ffaa;
+            background: #020b16;
+        }
+
+        .command-table td {
+            color: #9fb1c5;
+        }
+
+        .command-table code {
+            color: #78eaff;
+            font-family: Consolas, monospace;
+        }
+
+        /* =====================================================
+           WARNING
+        ===================================================== */
+
+        .warning-box {
+            margin-top: 18px;
+            padding: 18px;
+
+            border: 1px solid rgba(255, 189, 0, 0.25);
+            border-left: 4px solid #ffbd00;
+            border-radius: 8px;
+
+            background: rgba(255, 189, 0, 0.04);
+        }
+
+        .warning-box strong {
+            color: #ffbd00;
+        }
+
+        .warning-box p {
+            margin-bottom: 0;
+        }
+
+        /* =====================================================
+           LAB BUTTON
+        ===================================================== */
+
+        .lab-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+
+            margin-top: 25px;
+            padding: 24px;
+
+            border: 1px solid rgba(0, 255, 170, 0.3);
+            border-left: 4px solid #00ffaa;
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 255, 170, 0.07),
+                    rgba(0, 202, 255, 0.03)
+                );
+        }
+
+        .lab-card h2 {
+            margin: 5px 0;
+            color: white;
+        }
+
+        .lab-card p {
+            margin: 0;
+            color: #91a7bc;
+            font-size: 12px;
+        }
+
+        .lab-button {
+            flex-shrink: 0;
+
+            padding: 11px 20px;
+
+            border: 1px solid #00ffaa;
+            border-radius: 22px;
+
+            background: rgba(0, 255, 170, 0.07);
+            color: #00ffaa;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .lab-button:hover {
+            background: #00ffaa;
+            color: #02100a;
+        }
+        
+/* =====================================================
+   LESSON COMPLETION BUTTON
+===================================================== */
+
+.lesson-completion-button {
+    display: inline-block;
+    padding: 11px 20px;
+
+    border: 1px solid #00ffaa;
+    border-radius: 22px;
+
+    background: rgba(0, 255, 170, 0.07);
+    color: #00ffaa;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.lesson-completion-button:hover {
+    background: #00ffaa;
+    color: #02100a;
+}
+
+.lesson-completion-button:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+}
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            width: 100%;
+
+            padding: 35px 20px 20px;
+
+            border-top: 1px solid rgba(0, 202, 255, 0.15);
+            background: #020914;
+        }
+
+        .footer-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00ffaa;
+        }
+
+        .footer-container p {
+            color: #6f849a;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00ffaa;
+        }
+
+        .copyright {
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 25px auto 0;
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255,255,255,0.05);
+
+            text-align: center;
+
+            color: #52667b;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .tool-page {
+                padding: 28px 16px 55px;
+            }
+
+            .tool-header {
+                padding: 25px;
+            }
+
+            .tool-header h1 {
+                font-size: 31px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .lab-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .nav-container {
+                padding: 13px 15px;
+            }
+
+            .brand-name {
+                font-size: 19px;
+            }
+
+            .tool-page {
+                padding: 22px 12px 45px;
+            }
+
+            .tool-header {
+                padding: 21px;
+            }
+
+            .tool-header h1 {
+                font-size: 27px;
+            }
+
+            .tool-header p {
+                font-size: 12px;
+            }
+
+            .tool-section {
+                padding: 19px;
+            }
+
+            .tool-section h2 {
+                font-size: 18px;
+            }
+
+            .terminal-strip {
+                font-size: 11px;
+            }
+
+            pre {
+                font-size: 11px;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                gap: 12px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<main class="tool-page">
+
+    <div class="breadcrumb">
+        Cybersecurity Tools
+        <span>›</span>
+        Netcat
+    </div>
+
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <section class="tool-header">
+
+        <div class="tool-label">
+            CYBERSECURITY TOOL
+        </div>
+
+        <h1>
+            Net<span>cat</span>
+        </h1>
+
+        <p>
+            Learn how Netcat can be used as a simple network
+            communication and troubleshooting utility. Practice
+            TCP connections, local listeners and basic network
+            diagnostics inside a controlled lab environment.
+        </p>
+
+    </section>
+
+
+    <div class="terminal-strip">
+        <span class="terminal-user">student@cybernexa:~$</span>
+        nc -h
+    </div>
+
+
+    <!-- =====================================================
+         WHAT
+    ===================================================== -->
+
+    <section class="tool-section">
+
+        <h2>What is Netcat?</h2>
+
+        <p>
+            Netcat, commonly written as <strong>nc</strong>, is a
+            command-line networking utility that can establish
+            connections between systems using TCP or UDP.
+        </p>
+
+        <p>
+            It is often described as a networking utility rather
+            than a single-purpose security tool because it can be
+            useful for communication, troubleshooting, service
+            testing and controlled security labs.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         WHY
+    ===================================================== -->
+
+    <section class="tool-section">
+
+        <h2>Why is Netcat Important?</h2>
+
+        <div class="info-grid">
+
+            <div class="info-card">
+
+                <h3>Network Testing</h3>
+
+                <p>
+                    Test whether a particular TCP service is
+                    reachable from a controlled machine.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>TCP Communication</h3>
+
+                <p>
+                    Create a simple TCP connection between two
+                    authorized systems.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>Listening Services</h3>
+
+                <p>
+                    Start a temporary local listener for testing
+                    network connectivity.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>Troubleshooting</h3>
+
+                <p>
+                    Quickly investigate whether a network service
+                    accepts connections.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         BASIC USAGE
+    ===================================================== -->
+
+    <section class="tool-section">
+
+        <h2>Basic Netcat Usage</h2>
+
+        <p>
+            The general structure of a TCP connection is:
+        </p>
+
+        <div class="code-block">
+<pre><code>nc [options] host port</code></pre>
+        </div>
+
+        <p>
+            For example, when testing a service running on your
+            own machine:
+        </p>
+
+        <div class="code-block">
+<pre><code>nc 127.0.0.1 8080</code></pre>
+        </div>
+
+        <p>
+            Here, <strong>127.0.0.1</strong> represents the local
+            machine and <strong>8080</strong> represents the
+            test port.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         LISTENER
+    ===================================================== -->
+
+    <section class="tool-section">
+
+        <h2>Creating a Local Listener</h2>
+
+        <p>
+            Netcat can listen for an incoming TCP connection.
+            In a safe lab, use localhost or another machine that
+            you own and control.
+        </p>
+
+        <div class="code-block">
+<pre><code>nc -l 127.0.0.1 9000</code></pre>
+        </div>
+
+        <p>
+            The command creates a listener on the local machine
+            using TCP port 9000.
+        </p>
+
+        <div class="warning-box">
+
+            <strong>Important:</strong>
+
+            <p>
+                Only use listeners and network connections on
+                systems and ports that you are authorized to test.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         COMMANDS
+    ===================================================== -->
+
+    <section class="tool-section">
+
+        <h2>Useful Netcat Options</h2>
+
+        <div class="command-table-wrapper">
+
+            <table class="command-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Command</th>
+                        <th>Purpose</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td><code>nc host port</code></td>
+                        <td>Connect to a TCP service.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>nc -l port</code></td>
+                        <td>Listen for a connection.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>nc -z host port</code></td>
+                        <td>Check whether a TCP port accepts a connection.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>nc -v host port</code></td>
+                        <td>Show more connection information.</td>
+                    </tr>
+
+                    <tr>
+                        <td><code>nc -u host port</code></td>
+                        <td>Use UDP instead of the default TCP mode.</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECURITY APPLICATION
+    ===================================================== -->
+
+    <section class="tool-section">
+
+        <h2>Netcat in Cybersecurity</h2>
+
+        <p>
+            Security professionals can use Netcat in controlled
+            environments to understand how network connections
+            work and to troubleshoot services.
+        </p>
+
+        <div class="info-grid">
+
+            <div class="info-card">
+
+                <h3>Service Verification</h3>
+
+                <p>
+                    Check whether an authorized service is reachable.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>Network Troubleshooting</h3>
+
+                <p>
+                    Investigate basic TCP connectivity problems.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>Lab Communication</h3>
+
+                <p>
+                    Build simple client/server communication exercises.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>Security Learning</h3>
+
+                <p>
+                    Understand listeners, ports and network sessions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+    
+    <!-- =====================================================
+         LESSON COMPLETION
+    ===================================================== -->
+
+    <section class="tool-section" id="lessonCompletion">
+
+        <h2>Complete This Lesson</h2>
+
+        <p>
+            Mark this lesson as complete after learning Netcat basics,
+            TCP connections, local listeners, useful commands and
+            network troubleshooting in an authorized lab.
+        </p>
+
+        <div style="text-align: center; margin-top: 20px;">
+
+            <button
+                type="button"
+                class="lesson-completion-button"
+                data-lesson-progress
+                data-course-id="cybersecurity-tools"
+                data-lesson-id="netcat"
+                data-dashboard-url="../learning-paths/cybersecurity-tools/theory/netcat.html"
+                data-status-id="lessonCompletionStatus">
+
+                ✓ Mark Lesson Complete
+
+            </button>
+
+        </div>
+
+        <p
+            id="lessonCompletionStatus"
+            role="status"
+            aria-live="polite"
+            style="text-align: center; margin-top: 15px;">
+        </p>
+
+    </section>
+    <!-- =====================================================
+         LAB
+    ===================================================== -->
+
+    <section class="lab-card">
+
+        <div>
+
+            <div class="tool-label">
+                PRACTICAL LAB
+            </div>
+
+            <h2>
+                Netcat Local TCP Communication Lab
+            </h2>
+
+            <p>
+                Create a local Netcat listener and connect to it
+                from another terminal.
+            </p>
+
+        </div>
+
+        <a
+            class="lab-button"
+            href="../lab/netcat-lab.html"
+        >
+            Open Lab →
+        </a>
+
+    </section>
+</main>
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

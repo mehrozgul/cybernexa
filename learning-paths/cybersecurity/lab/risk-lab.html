@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Risk Assessment Lab - CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+
+            min-height: 100vh;
+
+            padding: 65px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%
+                ),
+                #020714;
+        }
+
+
+        .lab-container {
+
+            width: 100%;
+
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 38px;
+        }
+
+
+        .lab-label {
+
+            display: inline-block;
+
+            margin-bottom: 13px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 40px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .lab-header h1 span {
+
+            color: #00bfff;
+        }
+
+
+        .lab-header p {
+
+            max-width: 720px;
+
+            margin: 16px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB INFO GRID
+        ====================================================== */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 13px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .info-card {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(7, 26, 51, 0.75);
+        }
+
+
+        .info-card strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .info-card span {
+
+            color: #dbeafe;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.14);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 14px 35px rgba(0, 0, 0, 0.22);
+        }
+
+
+        .lab-card h2 {
+
+            margin: 0 0 11px;
+
+            color: #ffffff;
+
+            font-size: 20px;
+        }
+
+
+        .lab-card h2 span {
+
+            color: #00bfff;
+        }
+
+
+        .lab-card p {
+
+            margin: 0 0 15px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           PROGRESS
+        ====================================================== */
+
+        .progress-area {
+
+            margin-bottom: 20px;
+        }
+
+
+        .progress-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 7px;
+        }
+
+
+        .progress-top span {
+
+            color: #8193aa;
+
+            font-size: 11px;
+        }
+
+
+        .progress-bar {
+
+            width: 100%;
+
+            height: 6px;
+
+            overflow: hidden;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.06);
+        }
+
+
+        .progress-fill {
+
+            width: 0%;
+
+            height: 100%;
+
+            border-radius: 10px;
+
+            background: #00bfff;
+
+            transition: width 0.3s ease;
+        }
+
+
+        /* =====================================================
+           INPUT GRID
+        ====================================================== */
+
+        .assessment-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+
+        .assessment-box {
+
+            padding: 19px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+        }
+
+
+        .assessment-box label {
+
+            display: block;
+
+            margin-bottom: 10px;
+
+            color: #dbeafe;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .assessment-box select {
+
+            width: 100%;
+
+            height: 42px;
+
+            padding: 0 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 8px;
+
+            outline: none;
+
+            color: #dbeafe;
+
+            background: #071a33;
+
+            font-family: inherit;
+
+            font-size: 12px;
+        }
+
+
+        .assessment-box select:focus {
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+        }
+
+
+        /* =====================================================
+           BUTTON
+        ====================================================== */
+
+        .calculate-btn {
+
+            width: 100%;
+
+            margin-top: 17px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.40);
+
+            border-radius: 9px;
+
+            color: #ffffff;
+
+            background:
+                rgba(0, 191, 255, 0.10);
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .calculate-btn:hover {
+
+            background:
+                rgba(0, 191, 255, 0.17);
+
+            border-color:
+                rgba(0, 191, 255, 0.65);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           OUTPUT
+        ====================================================== */
+
+        .output-box {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 21px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.18);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+        }
+
+
+        .output-box.show {
+
+            display: block;
+        }
+
+
+        .output-title {
+
+            margin-bottom: 13px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        .output-row {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 10px 0;
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.05);
+        }
+
+
+        .output-row:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .output-row span:first-child {
+
+            color: #8193aa;
+
+            font-size: 12px;
+        }
+
+
+        .output-value {
+
+            color: #00bfff;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           HOW IT WORKS
+        ====================================================== */
+
+        .steps {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 13px;
+
+            margin-top: 17px;
+        }
+
+
+        .step {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.03);
+        }
+
+
+        .step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 27px;
+
+            height: 27px;
+
+            margin-bottom: 10px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        .step strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #ffffff;
+
+            font-size: 12px;
+        }
+
+
+        .step p {
+
+            margin: 0;
+
+            color: #8193aa;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            margin-top: 18px;
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+
+        .completion input {
+
+            width: 17px;
+
+            height: 17px;
+
+            accent-color: #00bfff;
+        }
+
+
+        .completion label {
+
+            color: #91a4bd;
+
+            font-size: 12px;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-top: 30px;
+        }
+
+
+        .lab-navigation a {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-width: 150px;
+
+            padding: 12px 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 9px;
+
+            color: #bfeaff;
+
+            background:
+                rgba(0, 191, 255, 0.035);
+
+            text-decoration: none;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .lab-navigation a:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.45);
+
+            background:
+                rgba(0, 191, 255, 0.07);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .lab-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 30px;
+            }
+
+
+            .lab-header p {
+
+                font-size: 13px;
+            }
+
+
+            .lab-info {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .lab-card {
+
+                padding: 20px;
+            }
+
+
+            .assessment-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .steps {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .lab-navigation {
+
+                flex-direction: column;
+            }
+
+
+            .lab-navigation a {
+
+                width: 100%;
+            }
+
+        }
+
+
+        @media (max-width: 380px) {
+
+            .lab-header h1 {
+
+                font-size: 27px;
+            }
+
+            .lab-card {
+
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- HEADER -->
+
+            <header class="lab-header">
+
+                <div class="lab-label">
+                    PRACTICAL CYBERSECURITY LAB
+                </div>
+
+                <h1>
+                    <span>Risk</span> Assessment Lab
+                </h1>
+
+                <p>
+                    Practice identifying and assessing cybersecurity risk
+                    by calculating risk from likelihood and impact values.
+                </p>
+
+            </header>
+
+
+            <!-- INFO -->
+
+            <div class="lab-info">
+
+                <div class="info-card">
+
+                    <strong>
+                        Lab
+                    </strong>
+
+                    <span>
+                        Risk Assessment
+                    </span>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <strong>
+                        Difficulty
+                    </strong>
+
+                    <span>
+                        Beginner
+                    </span>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <strong>
+                        Objective
+                    </strong>
+
+                    <span>
+                        Calculate Risk Level
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROGRESS -->
+
+            <div class="lab-card">
+
+                <div class="progress-area">
+
+                    <div class="progress-top">
+
+                        <span>
+                            Lab Progress
+                        </span>
+
+                        <span id="progressText">
+                            0%
+                        </span>
+
+                    </div>
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress-fill"
+                            id="progressFill"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <h2>
+                    <span>Task</span> 1 — Understand Risk
+                </h2>
+
+                <p>
+                    In cybersecurity, risk can be estimated using
+                    likelihood and impact. In this lab, you will select
+                    values for both and calculate the resulting risk score.
+                </p>
+
+            </div>
+
+
+            <!-- ASSESSMENT -->
+
+            <div class="lab-card">
+
+                <h2>
+                    <span>Risk</span> Assessment
+                </h2>
+
+                <p>
+                    Select a likelihood value and an impact value.
+                    The system will calculate the risk score using:
+                    Risk = Likelihood × Impact.
+                </p>
+
+
+                <div class="assessment-grid">
+
+
+                    <div class="assessment-box">
+
+                        <label for="likelihood">
+                            Likelihood
+                        </label>
+
+                        <select id="likelihood">
+
+                            <option value="1">
+                                1 — Very Low
+                            </option>
+
+                            <option value="2">
+                                2 — Low
+                            </option>
+
+                            <option value="3">
+                                3 — Medium
+                            </option>
+
+                            <option value="4">
+                                4 — High
+                            </option>
+
+                            <option value="5">
+                                5 — Very High
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="assessment-box">
+
+                        <label for="impact">
+                            Impact
+                        </label>
+
+                        <select id="impact">
+
+                            <option value="1">
+                                1 — Very Low
+                            </option>
+
+                            <option value="2">
+                                2 — Low
+                            </option>
+
+                            <option value="3">
+                                3 — Medium
+                            </option>
+
+                            <option value="4">
+                                4 — High
+                            </option>
+
+                            <option value="5">
+                                5 — Very High
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="calculate-btn"
+                    id="calculateBtn"
+                >
+                    Calculate Risk
+                </button>
+
+
+                <!-- OUTPUT -->
+
+                <div
+                    class="output-box"
+                    id="outputBox"
+                >
+
+                    <div class="output-title">
+                        Risk Assessment Result
+                    </div>
+
+
+                    <div class="output-row">
+
+                        <span>
+                            Likelihood
+                        </span>
+
+                        <span
+                            class="output-value"
+                            id="likelihoodResult"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="output-row">
+
+                        <span>
+                            Impact
+                        </span>
+
+                        <span
+                            class="output-value"
+                            id="impactResult"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="output-row">
+
+                        <span>
+                            Risk Score
+                        </span>
+
+                        <span
+                            class="output-value"
+                            id="riskScore"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <div class="output-row">
+
+                        <span>
+                            Risk Level
+                        </span>
+
+                        <span
+                            class="output-value"
+                            id="riskLevel"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HOW IT WORKS -->
+
+            <div class="lab-card">
+
+                <h2>
+                    <span>How</span> It Works
+                </h2>
+
+                <div class="steps">
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            01
+                        </div>
+
+                        <strong>
+                            Choose Likelihood
+                        </strong>
+
+                        <p>
+                            Estimate how likely the security event is
+                            to occur.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            02
+                        </div>
+
+                        <strong>
+                            Choose Impact
+                        </strong>
+
+                        <p>
+                            Estimate how much damage the event could
+                            cause.
+                        </p>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            03
+                        </div>
+
+                        <strong>
+                            Calculate Risk
+                        </strong>
+
+                        <p>
+                            Multiply likelihood by impact to obtain
+                            the risk score.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRACTICAL EXAMPLE -->
+
+            <div class="lab-card">
+
+                <h2>
+                    <span>Practical</span> Scenario
+                </h2>
+
+                <p>
+                    An organization has an internet-facing server with
+                    a known vulnerability. Security staff estimate the
+                    likelihood as 4 and the potential impact as 5.
+                </p>
+
+                <p>
+                    Therefore:
+                </p>
+
+                <div
+                    class="output-box"
+                    style="display:block;"
+                >
+
+                    <div class="output-row">
+
+                        <span>
+                            Likelihood
+                        </span>
+
+                        <span class="output-value">
+                            4
+                        </span>
+
+                    </div>
+
+
+                    <div class="output-row">
+
+                        <span>
+                            Impact
+                        </span>
+
+                        <span class="output-value">
+                            5
+                        </span>
+
+                    </div>
+
+
+                    <div class="output-row">
+
+                        <span>
+                            Risk Score
+                        </span>
+
+                        <span class="output-value">
+                            20
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <p style="margin-top:15px;">
+                    This demonstrates how a higher likelihood combined
+                    with a higher impact produces a higher risk score.
+                </p>
+
+            </div>
+
+
+            <!-- COMPLETION -->
+
+            <div class="lab-card">
+
+                <h2>
+                    <span>Lab</span> Completion
+                </h2>
+
+                <p>
+                    After completing the assessment, mark the lab as
+                    completed.
+                </p>
+
+                <div class="completion">
+
+                    <input
+                        type="checkbox"
+                        id="completeLab"
+                    >
+
+                    <label for="completeLab">
+                        I have completed the Risk Assessment Lab.
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="lab-navigation">
+
+                <a href="threats-vulnerabilities-lab.html">
+                    ← Previous: Threats & Vulnerabilities
+                </a>
+
+                <a href="cybersecurity-lab.html">
+                    All Labs
+                </a>
+
+                <a href="../theory/attack-surface.html">
+                    Next Theory: Attack Surface →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const likelihood =
+                    document.getElementById("likelihood");
+
+                const impact =
+                    document.getElementById("impact");
+
+                const calculateBtn =
+                    document.getElementById("calculateBtn");
+
+                const outputBox =
+                    document.getElementById("outputBox");
+
+                const likelihoodResult =
+                    document.getElementById("likelihoodResult");
+
+                const impactResult =
+                    document.getElementById("impactResult");
+
+                const riskScore =
+                    document.getElementById("riskScore");
+
+                const riskLevel =
+                    document.getElementById("riskLevel");
+
+                const completeLab =
+                    document.getElementById("completeLab");
+
+                const progressFill =
+                    document.getElementById("progressFill");
+
+                const progressText =
+                    document.getElementById("progressText");
+
+
+                function updateProgress() {
+
+                    let progress = 0;
+
+                    if (outputBox.classList.contains("show")) {
+
+                        progress = 75;
+
+                    }
+
+                    if (completeLab.checked) {
+
+                        progress = 100;
+
+                    }
+
+                    progressFill.style.width =
+                        progress + "%";
+
+                    progressText.textContent =
+                        progress + "%";
+                }
+
+
+                calculateBtn.addEventListener(
+                    "click",
+                    function () {
+
+                        const likelihoodValue =
+                            Number(likelihood.value);
+
+                        const impactValue =
+                            Number(impact.value);
+
+                        const score =
+                            likelihoodValue * impactValue;
+
+                        let level = "";
+
+                        if (score <= 4) {
+
+                            level = "Low";
+
+                        } else if (score <= 12) {
+
+                            level = "Medium";
+
+                        } else {
+
+                            level = "High";
+
+                        }
+
+
+                        likelihoodResult.textContent =
+                            likelihoodValue;
+
+                        impactResult.textContent =
+                            impactValue;
+
+                        riskScore.textContent =
+                            score;
+
+                        riskLevel.textContent =
+                            level;
+
+
+                        outputBox.classList.add("show");
+
+                        updateProgress();
+
+                    }
+                );
+
+
+                completeLab.addEventListener(
+                    "change",
+                    updateProgress
+                );
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,3623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Linux Logs Lab - CyberNexa</title>
+
+    <link
+        rel="stylesheet"
+        href="../../../css/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../../../css/navbar.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../../../css/footer.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1000px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           LAB HEADER
+        ====================================================== */
+
+        .lab-header {
+
+            text-align: center;
+
+            margin-bottom: 45px;
+        }
+
+
+        .lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 13px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 42px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .lab-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .lab-intro {
+
+            max-width: 750px;
+
+            margin: 17px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB INFO
+        ====================================================== */
+
+        .lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .lab-info-card {
+
+            padding: 16px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.14);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            text-align: center;
+        }
+
+
+        .lab-info-card strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .lab-info-card span {
+
+            color: #dbeafe;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 20px;
+
+            padding: 28px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px
+                rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .lab-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.40);
+
+                box-shadow:
+                    0 18px 45px
+                    rgba(0, 0, 0, 0.32),
+                    0 0 28px
+                    rgba(103, 232, 249, 0.08);
+
+                transform:
+                    translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           LIGHT SWEEP
+        ====================================================== */
+
+        .lab-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent
+                );
+
+            transform:
+                skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .lab-card:hover::after {
+
+                animation:
+                    labLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                labMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes labLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes labMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 17px;
+        }
+
+
+        .lab-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 17px;
+
+            font-weight: 700;
+        }
+
+
+        .lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 20px;
+
+            font-weight: 750;
+        }
+
+
+        .lab-card p {
+
+            margin: 0 0 13px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+
+
+        .lab-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           STEP NUMBER
+        ====================================================== */
+
+        .step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            margin-bottom: 13px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 8px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           INSTRUCTION BOX
+        ====================================================== */
+
+        .instruction-box {
+
+            margin-top: 15px;
+
+            padding: 17px 19px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .instruction-box strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #f8fafc;
+
+            font-size: 13px;
+        }
+
+
+        .instruction-box span {
+
+            color: #c3cdd5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           TERMINAL
+        ====================================================== */
+
+        .terminal-box {
+
+            position: relative;
+
+            margin-top: 17px;
+
+            padding: 17px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .terminal-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .terminal-title {
+
+            color: #71808c;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 11px;
+        }
+
+
+        .copy-button {
+
+            padding: 7px 11px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.22);
+
+            border-radius: 7px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .copy-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        .copy-button:disabled {
+
+            opacity: 0.75;
+
+            cursor: default;
+        }
+
+
+        .terminal-box pre {
+
+            margin: 0;
+
+            white-space: pre-wrap;
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        .terminal-box code {
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+
+        /* =====================================================
+           EXPECTED RESULT
+        ====================================================== */
+
+        .expected-box {
+
+            margin-top: 15px;
+
+            padding: 15px 17px;
+
+            border:
+                1px solid
+                rgba(34, 197, 94, 0.18);
+
+            border-left:
+                3px solid #4ade80;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(34, 197, 94, 0.045);
+        }
+
+
+        .expected-box strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #86efac;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .expected-box span {
+
+            color: #b9c7c0;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           SAFETY NOTE
+        ====================================================== */
+
+        .safety-box {
+
+            margin-top: 15px;
+
+            padding: 16px 18px;
+
+            border:
+                1px solid
+                rgba(250, 204, 21, 0.18);
+
+            border-left:
+                3px solid #facc15;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(250, 204, 21, 0.045);
+        }
+
+
+        .safety-box strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #fde68a;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .safety-box span {
+
+            color: #c7c5b5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           COMMAND GRID
+        ====================================================== */
+
+        .command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin-top: 18px;
+        }
+
+
+        .command-card {
+
+            padding: 16px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.13);
+
+            border-radius: 9px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .command-card code {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            word-break: break-word;
+        }
+
+
+        .command-card span {
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .lab-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-top: 20px;
+        }
+
+
+        .flow-item {
+
+            padding: 11px 14px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.18);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.045);
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 16px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY POINTS
+        ====================================================== */
+
+        .key-points {
+
+            margin: 17px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .key-points li {
+
+            position: relative;
+
+            padding:
+                8px 0 8px 22px;
+
+            color: #b6c2cc;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid
+                rgba(103, 232, 249, 0.06);
+        }
+
+
+        .key-points li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .key-points li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+
+            top: 8px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion-card {
+
+            text-align: center;
+
+            padding: 30px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.22);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(8, 31, 42, 0.98),
+                    rgba(3, 14, 21, 0.98)
+                );
+
+            margin-bottom: 25px;
+        }
+
+
+        .completion-icon {
+
+            width: 50px;
+            height: 50px;
+
+            margin: 0 auto 13px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.35);
+
+            border-radius: 50%;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 21px;
+        }
+
+
+        .completion-card h2 {
+
+            margin: 0 0 9px;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+        }
+
+
+        .completion-card p {
+
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        .complete-button {
+
+            margin-top: 18px;
+
+            padding: 11px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .complete-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.12);
+        }
+
+
+        .complete-button:disabled {
+
+            border-color:
+                rgba(34, 197, 94, 0.40);
+
+            color: #86efac;
+
+            background:
+                rgba(34, 197, 94, 0.08);
+
+            cursor: default;
+        }
+
+
+        .completion-status {
+
+            display: none;
+
+            margin-top: 12px;
+
+            color: #86efac;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 30px;
+        }
+
+
+        .lab-nav-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 12px 17px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.24);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .lab-nav-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.60);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .lab-nav-button span {
+
+            color: #67e8f9;
+
+            font-size: 16px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 35px;
+            }
+
+
+            .lab-info {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .lab-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .lab-header h1 {
+
+                font-size: 29px;
+
+                line-height: 1.25;
+            }
+
+
+            .lab-intro {
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .lab-info {
+
+                grid-template-columns: 1fr;
+
+                gap: 8px;
+            }
+
+
+            .lab-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 15px;
+
+                border-radius: 12px;
+            }
+
+
+            .lab-heading {
+
+                gap: 10px;
+            }
+
+
+            .lab-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 15px;
+            }
+
+
+            .lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .lab-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 9px;
+            }
+
+
+            .lab-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .flow-item {
+
+                width: 100%;
+            }
+
+
+            .flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 17px;
+            }
+
+
+            .terminal-box {
+
+                padding:
+                    15px;
+            }
+
+
+            .terminal-box pre {
+
+                font-size: 12px;
+            }
+
+
+            .terminal-header {
+
+                align-items: flex-start;
+            }
+
+
+            .lab-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .lab-nav-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+
+
+            .completion-card {
+
+                padding:
+                    25px 18px;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .lab-header h1 {
+
+                font-size: 26px;
+            }
+
+
+            .lab-page {
+
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+
+            .lab-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a
+                href="../../../index.html"
+                class="brand"
+            >
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="lab-header">
+
+                <div class="lab-category">
+                    LINUX PRACTICAL LAB
+                </div>
+
+                <h1>
+                    Lab 13 - <span>Linux Logs</span>
+                </h1>
+
+                <p class="lab-intro">
+
+                    In this practical lab, you will learn how to
+                    view Linux system logs, inspect journal entries,
+                    search log files, monitor new events, examine
+                    authentication activity and use logs for
+                    troubleshooting and basic cybersecurity analysis.
+
+                </p>
+
+            </header>
+
+
+            <!-- =================================================
+                 LAB INFORMATION
+            ================================================== -->
+
+            <section class="lab-info">
+
+                <div class="lab-info-card">
+
+                    <strong>Platform</strong>
+
+                    <span>
+                        Ubuntu / Debian Linux
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info-card">
+
+                    <strong>Tool</strong>
+
+                    <span>
+                        Linux Terminal
+                    </span>
+
+                </div>
+
+
+                <div class="lab-info-card">
+
+                    <strong>Level</strong>
+
+                    <span>
+                        Beginner
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 LAB OBJECTIVE
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        LOG
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The objective of this lab is to understand how
+                    Linux records system and security events in logs
+                    and how these records can be viewed, searched
+                    and monitored.
+
+                </p>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        What You Will Practice
+                    </strong>
+
+                    <span>
+
+                        Viewing system logs, using journalctl,
+                        checking authentication logs, searching
+                        logs with grep, monitoring logs with tail,
+                        checking boot events and identifying useful
+                        security information.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 01
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Open the Linux Terminal
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Open the Terminal application in your Ubuntu
+                    or Debian-based Linux system.
+
+                </p>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Instruction
+                    </strong>
+
+                    <span>
+
+                        Press
+                        <strong>Ctrl + Alt + T</strong>
+                        to open the terminal.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        A Linux terminal window should appear and
+                        you should be ready to inspect system logs.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 02
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        /
+                    </div>
+
+                    <h2>
+                        Explore the Linux Log Directory
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Many Linux systems store traditional log files
+                    inside the <strong>/var/log</strong> directory.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'ls -lah /var/log')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>ls -lah /var/log</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        The command lists files and directories
+                        stored under <strong>/var/log</strong>.
+                        These may include system, authentication
+                        and application-related logs.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        A list of log files and directories should
+                        be displayed. The exact files depend on
+                        your Linux distribution and configuration.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 03
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        J
+                    </div>
+
+                    <h2>
+                        View System Logs with journalctl
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    On Linux systems using systemd,
+                    <strong>journalctl</strong> is commonly used
+                    to view system journal entries.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'journalctl')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>journalctl</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        The command displays journal entries recorded
+                        by the system journal. Depending on system
+                        permissions, some entries may require
+                        elevated privileges.
+
+                        <br><br>
+
+                        If necessary, you can use:
+
+                        <strong>sudo journalctl</strong>
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        Log entries containing timestamps, services,
+                        processes and system messages should appear.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 04
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    04
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        B
+                    </div>
+
+                    <h2>
+                        View Logs from the Current Boot
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the <strong>-b</strong> option with
+                    journalctl to view messages from the current
+                    system boot.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'journalctl -b')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>journalctl -b</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Option Meaning
+                    </strong>
+
+                    <span>
+
+                        <strong>-b</strong> tells journalctl to
+                        display messages associated with the current
+                        boot session.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        You should see messages generated during
+                        the current Linux boot process.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 05
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    05
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        S
+                    </div>
+
+                    <h2>
+                        View Logs for a Service
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    journalctl can be used to inspect logs generated
+                    by a particular system service.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'journalctl -u ssh.service')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>journalctl -u ssh.service</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        The <strong>-u</strong> option filters
+                        journal entries for a specific systemd
+                        service.
+
+                        <br><br>
+
+                        On Ubuntu/Debian systems with OpenSSH
+                        installed, the service is commonly named
+                        <strong>ssh.service</strong>.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        If the SSH service is installed and has
+                        generated journal entries, related log
+                        messages should be displayed.
+
+                        If the service does not exist, journalctl
+                        will report that the unit could not be found.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 06
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    06
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        →
+                    </div>
+
+                    <h2>
+                        Monitor New Log Entries
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>journalctl -f</strong> to follow
+                    new journal entries as they are created.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'journalctl -f')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>journalctl -f</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        The command continuously displays new
+                        journal entries in real time.
+
+                        <br><br>
+
+                        Press <strong>Ctrl + C</strong> to stop
+                        monitoring.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        New journal messages appear as they are
+                        generated by the system.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 07
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    07
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        F
+                    </div>
+
+                    <h2>
+                        View the End of a Log File
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>tail</strong> command displays the
+                    last part of a file. It is useful when checking
+                    recent log entries.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo tail /var/log/syslog')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>sudo tail /var/log/syslog</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        This command displays the most recent part
+                        of the selected log file.
+
+                        <br><br>
+
+                        The file may not exist on every Linux
+                        installation. If it does not exist, use
+                        <strong>journalctl</strong> instead.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        Recent log messages from the selected file
+                        should be displayed when the file exists.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 08
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    08
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        T
+                    </div>
+
+                    <h2>
+                        Monitor a Log File in Real Time
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>-f</strong> option allows tail to
+                    continuously monitor a log file for new entries.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo tail -f /var/log/syslog')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>sudo tail -f /var/log/syslog</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Instruction
+                    </strong>
+
+                    <span>
+
+                        Leave the command running and observe
+                        new messages.
+
+                        <br><br>
+
+                        Press <strong>Ctrl + C</strong>
+                        when you want to stop.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        New lines added to the log file should
+                        appear automatically.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 09
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    09
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        G
+                    </div>
+
+                    <h2>
+                        Search Logs with grep
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>grep</strong> command can search
+                    log files for specific words or patterns.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo grep -i &quot;warning&quot; /var/log/syslog')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>sudo grep -i "warning" /var/log/syslog</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Option Meaning
+                    </strong>
+
+                    <span>
+
+                        <strong>-i</strong> makes the search
+                        case-insensitive, so uppercase and lowercase
+                        forms can both match.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        Lines containing the word
+                        <strong>warning</strong> should be displayed
+                        when matching entries exist.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 10
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    10
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        A
+                    </div>
+
+                    <h2>
+                        Inspect Authentication Logs
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Authentication logs can contain information
+                    about login attempts and other authentication
+                    events.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo tail /var/log/auth.log')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>sudo tail /var/log/auth.log</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Explanation
+                    </strong>
+
+                    <span>
+
+                        On many Ubuntu and Debian systems,
+                        <strong>/var/log/auth.log</strong> contains
+                        authentication-related events such as login
+                        activity and privilege-related messages.
+
+                        <br><br>
+
+                        The exact log location depends on the Linux
+                        distribution and logging configuration.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        Recent authentication-related log entries
+                        should be displayed if the file exists.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 11
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    11
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        !
+                    </div>
+
+                    <h2>
+                        Search for Failed Authentication Events
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Search authentication logs for entries containing
+                    the word <strong>failed</strong>.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo grep -i &quot;failed&quot; /var/log/auth.log')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>sudo grep -i "failed" /var/log/auth.log</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Security Connection
+                    </strong>
+
+                    <span>
+
+                        Failed authentication events can be useful
+                        during security investigations. Analysts
+                        should consider timestamps, usernames,
+                        source addresses and surrounding events
+                        before drawing conclusions.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        Matching authentication entries should
+                        be displayed when failed events exist.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STEP 12
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="step-number">
+                    12
+                </div>
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        S
+                    </div>
+
+                    <h2>
+                        View System Messages
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    On systems that maintain a traditional
+                    <strong>/var/log/syslog</strong> file, you can
+                    inspect recent system messages.
+
+                </p>
+
+
+                <div class="terminal-box">
+
+                    <div class="terminal-header">
+
+                        <span class="terminal-title">
+                            Linux Terminal
+                        </span>
+
+                        <button
+                            type="button"
+                            class="copy-button"
+                            onclick="copyCommand(this, 'sudo tail /var/log/syslog')"
+                        >
+                            Copy
+                        </button>
+
+                    </div>
+
+                    <pre><code>sudo tail /var/log/syslog</code></pre>
+
+                </div>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Alternative
+                    </strong>
+
+                    <span>
+
+                        If your system does not use
+                        <strong>/var/log/syslog</strong>, use
+                        <strong>journalctl</strong> to inspect the
+                        system journal.
+
+                    </span>
+
+                </div>
+
+
+                <div class="expected-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <span>
+
+                        Recent system messages should be displayed
+                        when the log file is available.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 IMPORTANT COMMANDS
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Important Linux Log Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="command-grid">
+
+                    <div class="command-card">
+
+                        <code>journalctl</code>
+
+                        <span>
+                            Displays system journal entries.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>journalctl -b</code>
+
+                        <span>
+                            Shows messages from the current boot.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>journalctl -u ssh.service</code>
+
+                        <span>
+                            Displays journal entries for the SSH service.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>journalctl -f</code>
+
+                        <span>
+                            Follows new journal entries in real time.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>ls -lah /var/log</code>
+
+                        <span>
+                            Lists files stored in the log directory.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>sudo tail /var/log/syslog</code>
+
+                        <span>
+                            Displays the end of a system log file.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>sudo tail -f /var/log/syslog</code>
+
+                        <span>
+                            Continuously monitors a log file.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>sudo grep -i "warning" /var/log/syslog</code>
+
+                        <span>
+                            Searches a log file for a specific pattern.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>sudo tail /var/log/auth.log</code>
+
+                        <span>
+                            Views recent authentication log entries.
+                        </span>
+
+                    </div>
+
+
+                    <div class="command-card">
+
+                        <code>sudo grep -i "failed" /var/log/auth.log</code>
+
+                        <span>
+                            Searches authentication logs for failed events.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 LOG ANALYSIS WORKFLOW
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        →
+                    </div>
+
+                    <h2>
+                        Linux Log Analysis Workflow
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A simple log-analysis workflow can be remembered
+                    as follows:
+
+                </p>
+
+
+                <div class="lab-flow">
+
+                    <div class="flow-item">
+                        Locate Logs
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        View Logs
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Search
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Analyze
+                    </div>
+
+                    <div class="flow-arrow">
+                        →
+                    </div>
+
+                    <div class="flow-item">
+                        Investigate
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CYBERSECURITY CONNECTION
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why Linux Logs Matter in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Logs provide technical records of system,
+                    authentication and application activity.
+                    Security professionals can use these records
+                    during monitoring, troubleshooting and incident
+                    investigation.
+
+                </p>
+
+
+                <ul class="key-points">
+
+                    <li>
+                        Logs can help identify authentication activity.
+                    </li>
+
+                    <li>
+                        Failed login events may be useful during security investigations.
+                    </li>
+
+                    <li>
+                        System logs can help troubleshoot unexpected behavior.
+                    </li>
+
+                    <li>
+                        journalctl can provide centralized system journal information.
+                    </li>
+
+                    <li>
+                        grep can help locate specific patterns inside large log files.
+                    </li>
+
+                    <li>
+                        tail can help monitor recent log activity.
+                    </li>
+
+                    <li>
+                        Log entries should be analyzed with timestamps and surrounding context.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+            <!-- =================================================
+                 PRACTICAL TASK
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        !
+                    </div>
+
+                    <h2>
+                        Practical Task
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Perform the following tasks in your Linux
+                    terminal:
+
+                </p>
+
+
+                <ul class="key-points">
+
+                    <li>
+                        List the contents of /var/log.
+                    </li>
+
+                    <li>
+                        View system logs using journalctl.
+                    </li>
+
+                    <li>
+                        View logs from the current boot.
+                    </li>
+
+                    <li>
+                        Check logs for the SSH service.
+                    </li>
+
+                    <li>
+                        Follow new journal entries in real time.
+                    </li>
+
+                    <li>
+                        View recent entries from /var/log/syslog when available.
+                    </li>
+
+                    <li>
+                        Search system logs for warning messages.
+                    </li>
+
+                    <li>
+                        Inspect authentication logs.
+                    </li>
+
+                    <li>
+                        Search authentication logs for failed events.
+                    </li>
+
+                    <li>
+                        Identify why logs are useful in cybersecurity investigations.
+                    </li>
+
+                </ul>
+
+
+                <div class="instruction-box">
+
+                    <strong>
+                        Practical Goal
+                    </strong>
+
+                    <span>
+
+                        Complete the basic Linux log-analysis workflow:
+
+                        <strong>
+                            Locate → View → Search → Monitor → Analyze
+                        </strong>
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SAFETY / ANALYSIS NOTE
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-icon">
+                        ⚠
+                    </div>
+
+                    <h2>
+                        Important Log Analysis Note
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A single log entry is a technical clue and does
+                    not automatically prove that an attack occurred.
+                    Security analysts normally examine timestamps,
+                    users, source addresses, services and related
+                    events before reaching a conclusion.
+
+                </p>
+
+
+                <div class="safety-box">
+
+                    <strong>
+                        Security Practice
+                    </strong>
+
+                    <span>
+
+                        Analyze logs only on systems and environments
+                        that you are authorized to access. Do not
+                        attempt to access, modify or delete another
+                        person's logs without permission.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 COMPLETION
+            ================================================== -->
+
+            <section class="completion-card">
+
+                <div class="completion-icon">
+                    ✓
+                </div>
+
+
+                <h2>
+                    Lab Completion
+                </h2>
+
+
+                <p>
+
+                    If you successfully completed the Linux Logs
+                    practical lab, mark this lab as completed.
+
+                    This lab covered Linux log locations,
+                    journalctl, tail, grep, authentication logs,
+                    system logs and basic cybersecurity log analysis.
+
+                </p>
+
+
+                <button
+                    type="button"
+                    class="complete-button"
+                    onclick="completeLab()"
+                >
+                    Mark Lab as Completed
+                </button>
+
+
+                <div
+                    id="completionStatus"
+                    class="completion-status"
+                >
+                    ✓ Lab completed successfully.
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="lab-navigation">
+
+
+                <a
+                    href="lab12.html"
+                    class="lab-nav-button"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Linux Security
+                    </strong>
+
+                </a>
+
+
+                <a
+                    href="../theory/linux.html"
+                    class="lab-nav-button"
+                >
+
+                    <strong>
+                        Back to Linux Learning Path
+                    </strong>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+    <!-- =====================================================
+         COPY COMMAND
+    ====================================================== -->
+
+    <script>
+
+        function copyCommand(button, command) {
+
+            const oldText =
+                button.textContent;
+
+
+            function showSuccess() {
+
+                button.textContent =
+                    "✓ Copied";
+
+                button.style.borderColor =
+                    "rgba(34, 197, 94, 0.55)";
+
+                button.style.color =
+                    "#86efac";
+
+                setTimeout(() => {
+
+                    button.textContent =
+                        oldText;
+
+                    button.style.borderColor =
+                        "";
+
+                    button.style.color =
+                        "";
+
+                }, 1500);
+
+            }
+
+
+            function showFailure() {
+
+                button.textContent =
+                    "Copy failed";
+
+                button.style.borderColor =
+                    "rgba(239, 68, 68, 0.55)";
+
+                button.style.color =
+                    "#fca5a5";
+
+                setTimeout(() => {
+
+                    button.textContent =
+                        oldText;
+
+                    button.style.borderColor =
+                        "";
+
+                    button.style.color =
+                        "";
+
+                }, 1500);
+
+            }
+
+
+            if (
+                navigator.clipboard &&
+                window.isSecureContext
+            ) {
+
+                navigator.clipboard
+                    .writeText(command)
+                    .then(showSuccess)
+                    .catch(() => {
+
+                        if (
+                            fallbackCopy(command)
+                        ) {
+
+                            showSuccess();
+
+                        } else {
+
+                            showFailure();
+
+                        }
+
+                    });
+
+            } else {
+
+                if (
+                    fallbackCopy(command)
+                ) {
+
+                    showSuccess();
+
+                } else {
+
+                    showFailure();
+
+                }
+
+            }
+
+        }
+
+
+        function fallbackCopy(text) {
+
+            const textarea =
+                document.createElement("textarea");
+
+
+            textarea.value =
+                text;
+
+
+            textarea.style.position =
+                "fixed";
+
+            textarea.style.left =
+                "-9999px";
+
+            textarea.style.top =
+                "0";
+
+
+            document.body.appendChild(
+                textarea
+            );
+
+
+            textarea.focus();
+
+            textarea.select();
+
+
+            let successful =
+                false;
+
+
+            try {
+
+                successful =
+                    document.execCommand(
+                        "copy"
+                    );
+
+            } catch (error) {
+
+                successful =
+                    false;
+
+            }
+
+
+            document.body.removeChild(
+                textarea
+            );
+
+
+            return successful;
+
+        }
+
+    </script>
+
+
+    <!-- =====================================================
+         LAB COMPLETION + LOCAL STORAGE
+    ====================================================== -->
+
+    <script>
+
+        const LAB_STORAGE_KEY =
+            "cybernexa_linux_logs_lab_completed";
+
+
+        function completeLab() {
+
+            localStorage.setItem(
+                LAB_STORAGE_KEY,
+                "true"
+            );
+
+
+            updateCompletionUI();
+
+        }
+
+
+        function updateCompletionUI() {
+
+            const status =
+                document.getElementById(
+                    "completionStatus"
+                );
+
+
+            const button =
+                document.querySelector(
+                    ".complete-button"
+                );
+
+
+            if (
+                !status ||
+                !button
+            ) {
+
+                return;
+
+            }
+
+
+            const completed =
+                localStorage.getItem(
+                    LAB_STORAGE_KEY
+                );
+
+
+            if (
+                completed === "true"
+            ) {
+
+                status.style.display =
+                    "block";
+
+
+                button.textContent =
+                    "✓ Lab Completed";
+
+
+                button.disabled =
+                    true;
+
+
+                button.style.cursor =
+                    "default";
+
+            }
+
+        }
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            updateCompletionUI
+        );
+
+    </script>
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+    ====================================================== -->
+
+    <script>
+
+        const labCards =
+            document.querySelectorAll(
+                ".lab-card"
+            );
+
+
+        let sweepTimeout;
+
+        let sweepFrame;
+
+
+        function triggerMobileSweep() {
+
+            if (
+                window.innerWidth > 600
+            ) {
+
+                return;
+
+            }
+
+
+            cancelAnimationFrame(
+                sweepFrame
+            );
+
+
+            sweepFrame =
+                requestAnimationFrame(
+                    () => {
+
+                        labCards.forEach(
+                            card => {
+
+                                card.classList.remove(
+                                    "mobile-sweep"
+                                );
+
+
+                                void card.offsetWidth;
+
+
+                                card.classList.add(
+                                    "mobile-sweep"
+                                );
+
+                            }
+                        );
+
+
+                        clearTimeout(
+                            sweepTimeout
+                        );
+
+
+                        sweepTimeout =
+                            setTimeout(
+                                () => {
+
+                                    labCards.forEach(
+                                        card => {
+
+                                            card.classList.remove(
+                                                "mobile-sweep"
+                                            );
+
+                                        }
+                                    );
+
+                                },
+                                800
+                            );
+
+                    }
+                );
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            triggerMobileSweep,
+            {
+                passive: true
+            }
+        );
+
+
+        let scrollTimeout;
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (
+                    window.innerWidth > 600
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    scrollTimeout
+                ) {
+
+                    return;
+
+                }
+
+
+                scrollTimeout =
+                    setTimeout(
+                        () => {
+
+                            triggerMobileSweep();
+
+                            scrollTimeout =
+                                null;
+
+                        },
+                        150
+                    );
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

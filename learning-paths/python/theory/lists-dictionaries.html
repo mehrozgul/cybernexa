@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+    <title>Python Lists & Dictionaries | CyberNexa</title>
+
+    <style>
+        /* =====================================================
+           CYBERNEXA PYTHON TOPIC
+           LISTS & DICTIONARIES
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #020b18;
+            color: #dce8f5;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        .navbar {
+            width: 100%;
+            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
+            background: #030d1c;
+        }
+
+        .nav-container {
+            max-width: 1480px;
+            margin: auto;
+            padding: 16px 32px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-logo svg {
+            width: 38px;
+            height: 46px;
+            color: #00caff;
+        }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            margin-top: 2px;
+            color: #8fa6bd;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           ARTICLE
+        ===================================================== */
+
+        .article-page {
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            padding: 35px 25px 70px;
+        }
+
+        .article-breadcrumb {
+            color: #7f9ab5;
+            font-size: 12px;
+            margin-bottom: 25px;
+        }
+
+        .article-breadcrumb span {
+            color: #00caff;
+            padding: 0 7px;
+        }
+
+        .article-header {
+            padding: 30px;
+            border: 1px solid rgba(0, 202, 255, 0.28);
+            border-left: 4px solid #00caff;
+            border-radius: 10px;
+            background: linear-gradient(
+                135deg,
+                rgba(7, 27, 52, 0.98),
+                rgba(3, 14, 29, 0.98)
+            );
+            box-shadow: 0 0 25px rgba(0, 202, 255, 0.06);
+        }
+
+        .article-label {
+            color: #00caff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .article-header h1 {
+            margin: 10px 0;
+            color: #ffffff;
+            font-size: 34px;
+        }
+
+        .article-header p {
+            margin: 0;
+            color: #aabbd0;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .article-section {
+            margin-top: 25px;
+            padding: 27px;
+            border: 1px solid rgba(0, 202, 255, 0.15);
+            border-radius: 10px;
+            background: #061426;
+        }
+
+        .article-section h2 {
+            margin-top: 0;
+            color: #ffffff;
+            font-size: 21px;
+        }
+
+        .article-section h2::before {
+            content: "> ";
+            color: #00caff;
+        }
+
+        .article-section p {
+            color: #aebed0;
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           CONCEPT CARDS
+        ===================================================== */
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .concept-card {
+            padding: 19px;
+            border: 1px solid rgba(0, 202, 255, 0.20);
+            border-radius: 8px;
+            background: rgba(3, 18, 36, 0.9);
+        }
+
+        .concept-card h3 {
+            margin: 0 0 8px;
+            color: #00caff;
+            font-size: 15px;
+        }
+
+        .concept-card p {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           CODE
+        ===================================================== */
+
+        .code-block {
+            margin: 18px 0;
+            padding: 18px;
+            overflow-x: auto;
+            border: 1px solid rgba(0, 202, 255, 0.18);
+            border-radius: 8px;
+            background: #010810;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .code-block code {
+            color: #8fffd8;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .output-box {
+            padding: 14px 17px;
+            border-left: 3px solid #00e68a;
+            background: rgba(0, 230, 138, 0.06);
+            color: #8fffd8;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           LIST
+        ===================================================== */
+
+        .article-list {
+            padding-left: 20px;
+        }
+
+        .article-list li {
+            margin: 9px 0;
+            color: #b4c4d5;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .article-list li::marker {
+            color: #00caff;
+        }
+
+        .summary-box {
+            border-color: rgba(0, 230, 138, 0.25);
+        }
+
+        /* =====================================================
+           LAB
+        ===================================================== */
+
+        .article-lab {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 28px;
+            padding: 25px;
+            border: 1px solid rgba(0, 230, 138, 0.30);
+            border-left: 4px solid #00e68a;
+            border-radius: 10px;
+            background: linear-gradient(
+                135deg,
+                rgba(0, 230, 138, 0.07),
+                rgba(3, 20, 32, 0.95)
+            );
+        }
+
+        .article-lab h2 {
+            margin: 8px 0;
+            color: white;
+            font-size: 20px;
+        }
+
+        .article-lab p {
+            margin: 0;
+            color: #aabbd0;
+            font-size: 12px;
+        }
+
+        .article-lab a {
+            flex-shrink: 0;
+            padding: 11px 18px;
+            border: 1px solid #00e68a;
+            border-radius: 6px;
+            color: #00e68a;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .article-lab a:hover {
+            background: #00e68a;
+            color: #02110c;
+        }
+                /* LESSON COMPLETION BUTTON */
+
+        #lesson-completion .lab-button {
+            padding: 10px 17px;
+            border: 1px solid #00caff;
+            border-radius: 6px;
+            background: transparent;
+            color: #00caff;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #lesson-completion .lab-button:hover {
+            background: #00caff;
+            color: #020b18;
+        }
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            margin-top: 30px;
+            padding: 35px 25px 20px;
+            border-top: 1px solid rgba(0, 202, 255, 0.15);
+            background: #020914;
+        }
+
+        .footer-container {
+            max-width: 1000px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+            color: #8298ad;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #8fa6bb;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+            max-width: 1000px;
+            margin: 25px auto 0;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            color: #64788c;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .nav-container {
+                padding: 14px 18px;
+            }
+
+            .article-page {
+                padding: 25px 15px 55px;
+            }
+
+            .article-header {
+                padding: 22px;
+            }
+
+            .article-header h1 {
+                font-size: 27px;
+            }
+
+            .article-section {
+                padding: 21px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-lab {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .article-lab a {
+                width: 100%;
+                text-align: center;
+            }
+
+            .article-navigation {
+                flex-direction: column;
+            }
+
+            .article-navigation a {
+                text-align: center;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+<!-- =====================================================
+     MAIN ARTICLE
+===================================================== -->
+
+<main class="article-page">
+
+    <div class="article-breadcrumb">
+        Python for Cybersecurity
+        <span>›</span>
+        Lists &amp; Dictionaries
+    </div>
+
+
+    <section class="article-header">
+
+        <div class="article-label">
+            PYTHON FOR CYBERSECURITY
+        </div>
+
+        <h1>
+            Python Lists &amp; Dictionaries
+        </h1>
+
+        <p>
+            Learn how Python lists and dictionaries store multiple
+            values and how they can be used in cybersecurity scripts.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         LISTS
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>What is a List?</h2>
+
+        <p>
+            A list is a Python data structure used to store multiple
+            values in a single variable. Lists are ordered, changeable,
+            and can contain different types of data.
+        </p>
+
+        <div class="code-block">
+<pre><code>ports = [22, 53, 80, 443]
+
+print(ports)</code></pre>
+        </div>
+
+        <p>
+            In this example, the variable <strong>ports</strong>
+            contains four network port numbers.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         LIST INDEX
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>Accessing List Items</h2>
+
+        <p>
+            Python lists use indexing. The first item has index
+            <strong>0</strong>.
+        </p>
+
+        <div class="code-block">
+<pre><code>ports = [22, 53, 80, 443]
+
+print(ports[0])
+print(ports[2])</code></pre>
+        </div>
+
+        <div class="output-box">
+            Output: 22<br>
+            Output: 80
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MODIFY LIST
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>Adding and Changing List Items</h2>
+
+        <p>
+            Lists are mutable, which means their values can be
+            changed after the list is created.
+        </p>
+
+        <div class="code-block">
+<pre><code>ports = [22, 80, 443]
+
+ports.append(8080)
+
+ports[1] = 8081
+
+print(ports)</code></pre>
+        </div>
+
+        <div class="output-box">
+            Output: [22, 8081, 443, 8080]
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         LIST METHODS
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>Useful List Methods</h2>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+                <h3>append()</h3>
+                <p>Adds an item to the end of a list.</p>
+            </div>
+
+            <div class="concept-card">
+                <h3>remove()</h3>
+                <p>Removes a specific item from a list.</p>
+            </div>
+
+            <div class="concept-card">
+                <h3>sort()</h3>
+                <p>Sorts the items in a list.</p>
+            </div>
+
+            <div class="concept-card">
+                <h3>len()</h3>
+                <p>Returns the number of items.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CYBERSECURITY LIST EXAMPLE
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>Cybersecurity Example Using a List</h2>
+
+        <p>
+            A list can store multiple IP addresses, ports,
+            usernames, URLs, or security findings.
+        </p>
+
+        <div class="code-block">
+<pre><code>target_ips = [
+    "192.168.1.10",
+    "192.168.1.20",
+    "192.168.1.30"
+]
+
+for ip in target_ips:
+    print("Scanning:", ip)</code></pre>
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DICTIONARIES
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>What is a Dictionary?</h2>
+
+        <p>
+            A dictionary stores data in
+            <strong>key-value pairs</strong>.
+            Each key is used to access its corresponding value.
+        </p>
+
+        <div class="code-block">
+<pre><code>target = {
+    "ip": "192.168.1.10",
+    "port": 443,
+    "protocol": "HTTPS"
+}
+
+print(target["ip"])</code></pre>
+        </div>
+
+        <div class="output-box">
+            Output: 192.168.1.10
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DICTIONARY STRUCTURE
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>Dictionary Structure</h2>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+                <h3>Key</h3>
+                <p>
+                    A unique name used to identify a value.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <h3>Value</h3>
+                <p>
+                    The actual information stored against a key.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <h3>IP</h3>
+                <p>
+                    Can store a target IP address.
+                </p>
+            </div>
+
+            <div class="concept-card">
+                <h3>Port</h3>
+                <p>
+                    Can store a target network port.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MODIFY DICTIONARY
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>Adding and Changing Dictionary Values</h2>
+
+        <div class="code-block">
+<pre><code>target = {
+    "ip": "192.168.1.10",
+    "port": 80
+}
+
+target["port"] = 443
+
+target["protocol"] = "HTTPS"
+
+print(target)</code></pre>
+        </div>
+
+        <div class="output-box">
+            Output: {'ip': '192.168.1.10', 'port': 443, 'protocol': 'HTTPS'}
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DICTIONARY METHODS
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>Useful Dictionary Methods</h2>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+                <h3>keys()</h3>
+                <p>Returns all dictionary keys.</p>
+            </div>
+
+            <div class="concept-card">
+                <h3>values()</h3>
+                <p>Returns all dictionary values.</p>
+            </div>
+
+            <div class="concept-card">
+                <h3>items()</h3>
+                <p>Returns key-value pairs.</p>
+            </div>
+
+            <div class="concept-card">
+                <h3>get()</h3>
+                <p>Safely retrieves a value using a key.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         LIST VS DICTIONARY
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>List vs Dictionary</h2>
+
+        <div class="concept-grid">
+
+            <div class="concept-card">
+                <h3>List</h3>
+                <p>
+                    Stores multiple values in an ordered sequence
+                    and uses indexes to access items.
+                </p>
+
+<pre><code>ports = [22, 80, 443]</code></pre>
+
+            </div>
+
+            <div class="concept-card">
+                <h3>Dictionary</h3>
+                <p>
+                    Stores information using meaningful key-value
+                    pairs.
+                </p>
+
+<pre><code>target = {
+    "port": 443
+}</code></pre>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECURITY EXAMPLE
+    ===================================================== -->
+
+    <section class="article-section">
+
+        <h2>Practical Cybersecurity Example</h2>
+
+        <p>
+            Lists and dictionaries can work together to represent
+            information about multiple systems.
+        </p>
+
+        <div class="code-block">
+<pre><code>targets = [
+    {
+        "ip": "192.168.1.10",
+        "port": 443,
+        "service": "HTTPS"
+    },
+    {
+        "ip": "192.168.1.20",
+        "port": 22,
+        "service": "SSH"
+    }
+]
+
+for target in targets:
+    print("IP:", target["ip"])
+    print("Port:", target["port"])
+    print("Service:", target["service"])
+    print()</code></pre>
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUMMARY
+    ===================================================== -->
+
+    <section class="article-section summary-box">
+
+        <h2>Summary</h2>
+
+        <ul class="article-list">
+
+            <li>
+                A list stores multiple values in an ordered collection.
+            </li>
+
+            <li>
+                List items are accessed using indexes.
+            </li>
+
+            <li>
+                Lists can be modified using methods such as append().
+            </li>
+
+            <li>
+                A dictionary stores data using key-value pairs.
+            </li>
+
+            <li>
+                Dictionary values are accessed using their keys.
+            </li>
+
+            <li>
+                Cybersecurity scripts commonly use lists for multiple
+                targets and dictionaries for structured information.
+            </li>
+
+        </ul>
+
+    </section>
+        <!-- =====================================================
+         LESSON COMPLETION
+    ===================================================== -->
+
+    <section class="article-section" id="lesson-completion">
+
+        <h2>Lesson Completion</h2>
+
+        <p>
+            You have completed the Python Lists &amp; Dictionaries lesson.
+            Review the key concepts and mark this lesson as completed
+            to track your learning progress.
+        </p>
+
+        <button
+            type="button"
+            class="lab-button"
+            data-lesson-progress
+            data-course-id="python"
+            data-lesson-id="lists-dictionaries"
+            data-dashboard-url="../learning-paths/python/theory/lists-dictionaries.html"
+            data-status-id="listsDictionariesCompletionStatus">
+            Mark Lesson as Completed
+        </button>
+
+        <p
+            id="listsDictionariesCompletionStatus"
+            role="status"
+            aria-live="polite"
+            style="margin-top: 12px;">
+        </p>
+
+    </section>
+    <!-- =====================================================
+         PRACTICAL LAB
+    ===================================================== -->
+
+    <section class="article-lab">
+
+        <div>
+
+            <span class="article-label">
+                PRACTICAL LAB
+            </span>
+
+            <h2>
+                Practice Lists &amp; Dictionaries
+            </h2>
+
+            <p>
+                Create a small cybersecurity data structure using
+                Python lists and dictionaries.
+            </p>
+
+        </div>
+
+        <a href="../lab/lists-dictionaries-lab.html">
+            Open Lab →
+        </a>
+
+    </section>
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const codeBlocks =
+            document.querySelectorAll(".code-block");
+
+        codeBlocks.forEach(function (block) {
+
+            block.addEventListener("mouseenter", function () {
+                block.style.borderColor =
+                    "rgba(0, 202, 255, 0.40)";
+            });
+
+            block.addEventListener("mouseleave", function () {
+                block.style.borderColor =
+                    "rgba(0, 202, 255, 0.18)";
+            });
+
+        });
+
+    });
+</script>
+
+</body>
+</html>

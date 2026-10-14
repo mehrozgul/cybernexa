@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reconnaissance Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 255, 170, 0.055),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 42px 35px;
+
+            margin-bottom: 25px;
+
+            border:
+                1px solid rgba(0, 255, 170, 0.15);
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 23, 30, 0.98),
+                    rgba(2, 12, 23, 0.98)
+                );
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.28);
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00ffb0,
+                    #00bfff,
+                    transparent
+                );
+        }
+
+        .lab-hero-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(260px, 0.75fr);
+
+            gap: 35px;
+
+            align-items: center;
+        }
+
+        .lab-kicker {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00ffb0;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-kicker::before {
+
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00ffb0;
+
+            box-shadow:
+                0 0 12px rgba(0, 255, 176, 0.65);
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 43px;
+
+            line-height: 1.12;
+
+            font-weight: 850;
+
+            letter-spacing: -1px;
+        }
+
+        .lab-hero h1 span {
+            color: #00ffb0;
+        }
+
+        .lab-description {
+
+            max-width: 700px;
+
+            margin: 17px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 14px;
+
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           TERMINAL
+        ====================================================== */
+
+        .terminal-panel {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.15);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 0, 0, 0.34);
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+        .terminal-top {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding-bottom: 13px;
+
+            margin-bottom: 13px;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.09);
+        }
+
+        .terminal-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #405263;
+        }
+
+        .terminal-title {
+
+            margin-left: auto;
+
+            color: #52687c;
+
+            font-size: 9px;
+
+            letter-spacing: 1px;
+        }
+
+        .terminal-line {
+
+            margin-bottom: 9px;
+
+            color: #60788d;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+        .terminal-line .green {
+            color: #00ffb0;
+        }
+
+        .terminal-line .blue {
+            color: #00bfff;
+        }
+
+        /* =====================================================
+           META
+        ====================================================== */
+
+        .lab-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .meta-value.green {
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 27px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+
+        .card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .card-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.22);
+
+            border-radius: 7px;
+
+            color: #00ffb0;
+
+            background:
+                rgba(0, 255, 176, 0.045);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .card-heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 20px;
+
+            font-weight: 800;
+        }
+
+        .lab-card > p {
+
+            margin: 0 0 16px;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           AUTHORIZATION
+        ====================================================== */
+
+        .authorization-box {
+
+            padding: 20px;
+
+            margin-bottom: 20px;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.17);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .authorization-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 8px;
+
+            color: #ffc44d;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .authorization-box p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ====================================================== */
+
+        .progress-box {
+
+            padding: 18px;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 9px;
+        }
+
+        .progress-label {
+
+            color: #71879b;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        #progressText {
+
+            color: #00ffb0;
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+        .progress-track {
+
+            width: 100%;
+
+            height: 6px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background:
+                rgba(0, 191, 255, 0.08);
+        }
+
+        #progressBar {
+
+            width: 0%;
+
+            height: 100%;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00ffb0,
+                    #00bfff
+                );
+
+            transition: width 0.3s ease;
+        }
+
+        /* =====================================================
+           QUESTIONS
+        ====================================================== */
+
+        .question {
+
+            padding: 20px;
+
+            margin-bottom: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 0, 0, 0.18);
+        }
+
+        .question:last-child {
+            margin-bottom: 0;
+        }
+
+        .question-number {
+
+            margin-bottom: 8px;
+
+            color: #00ffb0;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .question h3 {
+
+            margin: 0 0 14px;
+
+            color: #dce9f4;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+        .options {
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .option {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            padding: 11px 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 8px;
+
+            color: #8298ab;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .option:hover {
+
+            color: #ccefe5;
+
+            border-color:
+                rgba(0, 255, 176, 0.22);
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        .option input {
+
+            margin-top: 3px;
+
+            accent-color: #00ffb0;
+        }
+
+        .option.correct {
+
+            border-color:
+                rgba(0, 255, 176, 0.45);
+
+            background:
+                rgba(0, 255, 176, 0.07);
+
+            color: #c8fff0;
+        }
+
+        .option.wrong {
+
+            border-color:
+                rgba(255, 80, 80, 0.40);
+
+            background:
+                rgba(255, 80, 80, 0.06);
+
+            color: #ffb1b1;
+        }
+
+        /* =====================================================
+           CHECK BUTTON
+        ====================================================== */
+
+        .check-area {
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-top: 22px;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid rgba(0, 191, 255, 0.08);
+        }
+
+        .check-button {
+
+            padding: 12px 20px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.30);
+
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .check-button:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(0, 255, 176, 0.55);
+
+            background:
+                rgba(0, 255, 176, 0.09);
+        }
+
+        .result-text {
+
+            color: #71879b;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        #resultBox {
+
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 23px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.16);
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 255, 176, 0.035),
+                    rgba(0, 191, 255, 0.025)
+                );
+        }
+
+        #resultBox h2 {
+
+            margin: 0 0 8px;
+
+            color: #00ffb0;
+
+            font-size: 20px;
+        }
+
+        #scoreText {
+
+            color: #ffffff;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+        #messageText {
+
+            margin: 9px 0 0;
+
+            color: #7e94a8;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           LAB NAVIGATION
+        ====================================================== */
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.topic-navigation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 18px;
+
+    border: 1px solid rgba(0, 191, 255, 0.09);
+    border-radius: 9px;
+
+    color: #71879b;
+    background: rgba(0, 191, 255, 0.02);
+
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.topic-navigation a:hover {
+    color: #ccefe5;
+    border-color: rgba(0, 255, 176, 0.25);
+    background: rgba(0, 255, 176, 0.035);
+}
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-meta {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+                font-size: 31px;
+            }
+
+            .lab-description {
+                font-size: 12px;
+            }
+
+            .lab-card {
+                padding: 20px;
+            }
+
+            .check-area {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .check-button {
+                width: 100%;
+            }
+
+           .topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.topic-navigation a {
+    flex: 0 1 auto;
+    max-width: 48%;
+    padding: 12px 10px;
+}
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="lab-hero">
+
+                <div class="lab-hero-grid">
+
+
+                    <div>
+
+                        <div class="lab-kicker">
+                            ETHICAL HACKING / LAB 02
+                        </div>
+
+                        <h1>
+                            <span>Reconnaissance</span>
+                            Lab
+                        </h1>
+
+                        <p class="lab-description">
+                            Test your understanding of reconnaissance,
+                            passive information collection, active
+                            reconnaissance, scope, OSINT and responsible
+                            information gathering.
+                        </p>
+
+                    </div>
+
+
+                    <div class="terminal-panel">
+
+                        <div class="terminal-top">
+
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+                            <span class="terminal-dot"></span>
+
+                            <span class="terminal-title">
+                                TRAINING LAB
+                            </span>
+
+                        </div>
+
+                        <div class="terminal-line">
+                            <span class="green">student@cybernexa</span>:~$
+                            <span class="blue">recon-lab --safe</span>
+                        </div>
+
+                        <div class="terminal-line">
+                            Environment:
+                            <span class="green">AUTHORIZED</span>
+                        </div>
+
+                        <div class="terminal-line">
+                            Mode:
+                            <span class="blue">KNOWLEDGE CHECK</span>
+                        </div>
+
+                        <div class="terminal-line">
+                            Status:
+                            <span class="green">READY</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 META
+            ================================================== -->
+
+            <div class="lab-meta">
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Module
+                    </span>
+
+                    <span class="meta-value">
+                        Reconnaissance
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Questions
+                    </span>
+
+                    <span class="meta-value">
+                        10 MCQs
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Environment
+                    </span>
+
+                    <span class="meta-value green">
+                        Safe Lab
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Level
+                    </span>
+
+                    <span class="meta-value">
+                        Beginner
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 LAB CARD
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="card-heading">
+
+                    <div class="card-number">
+                        01
+                    </div>
+
+                    <h2>
+                        Reconnaissance Knowledge Check
+                    </h2>
+
+                </div>
+
+                <p>
+                    Select the best answer for each question. This lab
+                    focuses on safe and authorized reconnaissance concepts.
+                </p>
+
+
+                <!-- =================================================
+                     AUTHORIZATION
+                ================================================== -->
+
+                <div class="authorization-box">
+
+                    <div class="authorization-title">
+                        ⚠ AUTHORIZED TRAINING ENVIRONMENT
+                    </div>
+
+                    <p>
+                        Reconnaissance should only be performed against
+                        systems, domains and environments for which you
+                        have explicit permission. This lab uses knowledge
+                        questions rather than real-world target discovery.
+                    </p>
+
+                </div>
+
+
+                <!-- =================================================
+                     PROGRESS
+                ================================================== -->
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+
+                        <span class="progress-label">
+                            Lab Progress
+                        </span>
+
+                        <span id="progressText">
+                            0 / 10
+                        </span>
+
+                    </div>
+
+                    <div class="progress-track">
+
+                        <div id="progressBar"></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUESTION 01
+                ================================================== -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 01
+                    </div>
+
+                    <h3>
+                        What is the primary purpose of reconnaissance in
+                        ethical hacking?
+                    </h3>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="a"
+                            >
+                            To immediately exploit a target
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="b"
+                            >
+                            To collect information about an authorized target
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="c"
+                            >
+                            To permanently disable a server
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q1"
+                                value="d"
+                            >
+                            To delete security logs
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUESTION 02
+                ================================================== -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 02
+                    </div>
+
+                    <h3>
+                        Which type of reconnaissance normally avoids direct
+                        interaction with the target?
+                    </h3>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="a"
+                            >
+                            Active reconnaissance
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="b"
+                            >
+                            Passive reconnaissance
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="c"
+                            >
+                            Exploitation
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q2"
+                                value="d"
+                            >
+                            Privilege escalation
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUESTION 03
+                ================================================== -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 03
+                    </div>
+
+                    <h3>
+                        What does OSINT generally refer to?
+                    </h3>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="a"
+                            >
+                            Open-source intelligence
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="b"
+                            >
+                            Operating system installation
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="c"
+                            >
+                            Online system encryption
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q3"
+                                value="d"
+                            >
+                            Operating security interface
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUESTION 04
+                ================================================== -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 04
+                    </div>
+
+                    <h3>
+                        Why is scope important during reconnaissance?
+                    </h3>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="a"
+                            >
+                            It defines what is authorized for testing
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="b"
+                            >
+                            It removes the need for authorization
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="c"
+                            >
+                            It allows testing every system on the Internet
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q4"
+                                value="d"
+                            >
+                            It automatically fixes vulnerabilities
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUESTION 05
+                ================================================== -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 05
+                    </div>
+
+                    <h3>
+                        Which activity is most closely associated with
+                        collecting publicly available information?
+                    </h3>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="a"
+                            >
+                            OSINT research
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="b"
+                            >
+                            Data destruction
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="c"
+                            >
+                            Malware deployment
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q5"
+                                value="d"
+                            >
+                            Password deletion
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUESTION 06
+                ================================================== -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 06
+                    </div>
+
+                    <h3>
+                        Which of the following is an example of a useful
+                        reconnaissance information source?
+                    </h3>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="a"
+                            >
+                            Approved public documentation
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="b"
+                            >
+                            Destroyed hard drives
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="c"
+                            >
+                            Deleted operating systems
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q6"
+                                value="d"
+                            >
+                            Random password guessing
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUESTION 07
+                ================================================== -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 07
+                    </div>
+
+                    <h3>
+                        What should an ethical hacker do before collecting
+                        information about a target?
+                    </h3>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="a"
+                            >
+                            Confirm authorization and scope
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="b"
+                            >
+                            Launch an attack immediately
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="c"
+                            >
+                            Delete the target's logs
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q7"
+                                value="d"
+                            >
+                            Guess administrator passwords
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUESTION 08
+                ================================================== -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 08
+                    </div>
+
+                    <h3>
+                        What is one major benefit of organizing reconnaissance
+                        findings?
+                    </h3>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="a"
+                            >
+                            It provides a useful baseline for later assessment
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="b"
+                            >
+                            It guarantees that a system can be hacked
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="c"
+                            >
+                            It automatically grants administrator access
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q8"
+                                value="d"
+                            >
+                            It removes all vulnerabilities
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUESTION 09
+                ================================================== -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 09
+                    </div>
+
+                    <h3>
+                        Which statement correctly describes active
+                        reconnaissance?
+                    </h3>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="a"
+                            >
+                            It always means passive research
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="b"
+                            >
+                            It involves direct interaction with an
+                            authorized target
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="c"
+                            >
+                            It means deleting target information
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q9"
+                                value="d"
+                            >
+                            It is the same as malware installation
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUESTION 10
+                ================================================== -->
+
+                <div class="question">
+
+                    <div class="question-number">
+                        QUESTION 10
+                    </div>
+
+                    <h3>
+                        Which principle should guide reconnaissance during
+                        an ethical hacking engagement?
+                    </h3>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="a"
+                            >
+                            Test anything without permission
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="b"
+                            >
+                            Stay within the approved scope
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="c"
+                            >
+                            Hide all findings from the organization
+                        </label>
+
+                        <label class="option">
+                            <input
+                                type="radio"
+                                name="q10"
+                                value="d"
+                            >
+                            Collect private information without restrictions
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     CHECK
+                ================================================== -->
+
+                <div class="check-area">
+
+                    <span class="result-text">
+                        Complete all questions and submit your answers.
+                    </span>
+
+                    <button
+                        class="check-button"
+                        onclick="checkAnswers()"
+                    >
+                        ✓ Check Answers
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     RESULT
+                ================================================== -->
+
+                <div id="resultBox">
+
+                    <h2>
+                        Lab Complete
+                    </h2>
+
+                    <div id="scoreText">
+                        Score: 0 / 10
+                    </div>
+
+                    <p id="messageText">
+                        Review the reconnaissance theory and try again.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="topic-navigation">
+
+                <a href="introduction-lab.html">
+                    ← Lab: Introduction
+                </a>
+                <a href="../theory/information-gathering.html">
+                    Next Theory: Information Gathering →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        function updateProgress() {
+
+            let answered = 0;
+
+            for (let i = 1; i <= 10; i++) {
+
+                const selected =
+                    document.querySelector(
+                        'input[name="q' + i + '"]:checked'
+                    );
+
+                if (selected) {
+                    answered++;
+                }
+            }
+
+            const percentage =
+                (answered / 10) * 100;
+
+            document.getElementById("progressBar")
+                .style.width = percentage + "%";
+
+            document.getElementById("progressText")
+                .textContent = answered + " / 10";
+        }
+
+
+        document.querySelectorAll(
+            'input[type="radio"]'
+        ).forEach(function(input) {
+
+            input.addEventListener(
+                "change",
+                updateProgress
+            );
+
+        });
+
+
+        function checkAnswers() {
+
+            const answers = {
+
+                q1: "b",
+                q2: "b",
+                q3: "a",
+                q4: "a",
+                q5: "a",
+                q6: "a",
+                q7: "a",
+                q8: "a",
+                q9: "b",
+                q10: "b"
+
+            };
+
+
+            let score = 0;
+
+            let answered = 0;
+
+
+            for (let i = 1; i <= 10; i++) {
+
+                const question =
+                    document.querySelectorAll(
+                        'input[name="q' + i + '"]'
+                    );
+
+                const selected =
+                    document.querySelector(
+                        'input[name="q' + i + '"]:checked'
+                    );
+
+
+                if (selected) {
+
+                    answered++;
+
+                    if (
+                        selected.value ===
+                        answers["q" + i]
+                    ) {
+
+                        score++;
+
+                    }
+
+                }
+
+
+                question.forEach(function(input) {
+
+                    const option =
+                        input.closest(".option");
+
+                    option.classList.remove(
+                        "correct",
+                        "wrong"
+                    );
+
+
+                    if (
+                        input.checked &&
+                        input.value ===
+                        answers["q" + i]
+                    ) {
+
+                        option.classList.add(
+                            "correct"
+                        );
+
+                    }
+
+
+                    if (
+                        input.checked &&
+                        input.value !==
+                        answers["q" + i]
+                    ) {
+
+                        option.classList.add(
+                            "wrong"
+                        );
+
+                    }
+
+                });
+
+            }
+
+
+            const resultBox =
+                document.getElementById(
+                    "resultBox"
+                );
+
+            const scoreText =
+                document.getElementById(
+                    "scoreText"
+                );
+
+            const messageText =
+                document.getElementById(
+                    "messageText"
+                );
+
+
+            resultBox.style.display = "block";
+
+
+            scoreText.textContent =
+                "Score: " +
+                score +
+                " / 10";
+
+
+            if (answered < 10) {
+
+                messageText.textContent =
+                    "You answered " +
+                    answered +
+                    " out of 10 questions. Review the unanswered questions and try again.";
+
+            }
+
+            else if (score === 10) {
+
+                messageText.textContent =
+                    "Excellent! You have a strong understanding of reconnaissance fundamentals.";
+
+            }
+
+            else if (score >= 8) {
+
+                messageText.textContent =
+                    "Very good! Your reconnaissance fundamentals are well understood.";
+
+            }
+
+            else if (score >= 6) {
+
+                messageText.textContent =
+                    "Good progress. Review passive vs active reconnaissance, scope and OSINT.";
+
+            }
+
+            else {
+
+                messageText.textContent =
+                    "Review the Reconnaissance theory carefully and attempt the lab again.";
+
+            }
+
+
+            resultBox.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    </script>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

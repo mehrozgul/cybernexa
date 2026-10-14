@@ -1,0 +1,1391 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>What is Endpoint Security? | CyberNexa</title>
+    <meta name="description" content="Learn what Endpoint Security is, why it matters, common endpoint threats, security controls, endpoint protection and its role in SOC operations.">
+
+    <!-- CyberNexa Shared CSS -->
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        :root {
+            --ep-bg: #071019;
+            --ep-panel: #0c151f;
+            --ep-panel-2: #101c27;
+            --ep-blue: #42a5ff;
+            --ep-cyan: #39d9ff;
+            --ep-green: #43d19e;
+            --ep-yellow: #ffd166;
+            --ep-red: #ff5b67;
+            --ep-text: #edf7fc;
+            --ep-muted: #91a6b7;
+            --ep-border: #1e3241;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: clip;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 12% 15%, rgba(66,165,255,.10), transparent 30%),
+                radial-gradient(circle at 88% 22%, rgba(67,209,158,.07), transparent 28%),
+                var(--ep-bg);
+            color: var(--ep-text);
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x: clip;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =========================================
+           SHARED NAVBAR — PAGE-ONLY FIX
+           Do not modify shared navbar files.
+           ========================================= */
+
+        #navbar-placeholder {
+            position: relative;
+            z-index: 1000;
+            width: 100%;
+            max-width: 100%;
+            overflow: visible !important;
+        }
+
+        #navbar-placeholder .navbar {
+            width: 100%;
+            max-width: 100%;
+            overflow: visible !important;
+        }
+
+        /*
+          Do not redefine .nav-container, .brand,
+          .menu-button, .menu-toggle or .navigation
+          layout globally. Shared navbar CSS controls
+          the actual hamburger structure and behavior.
+        */
+
+        #navbar-placeholder .navigation {
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        #navbar-placeholder .navigation a {
+            text-indent: 0;
+            overflow-wrap: normal;
+        }
+
+        #navbar-placeholder .navigation .nav-icon {
+            flex-shrink: 0;
+        }
+
+        /*
+          Keep the mobile menu above the page content
+          without changing its shared display behavior.
+        */
+        @media (max-width: 1000px) {
+            #navbar-placeholder {
+                z-index: 9999;
+            }
+
+            #navbar-placeholder .navbar {
+                overflow: visible !important;
+            }
+
+            #navbar-placeholder .navigation {
+                max-height: calc(100dvh - 64px);
+                overflow-y: auto;
+                overscroll-behavior: contain;
+            }
+        }
+
+        /* =========================================
+           GENERAL CONTAINER
+           ========================================= */
+
+        .ep-container {
+            width: min(1150px, 92%);
+            margin-inline: auto;
+        }
+
+        /* =========================================
+           HERO
+           ========================================= */
+
+        .ep-hero {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            padding: 85px 0 70px;
+            border-bottom: 1px solid var(--ep-border);
+        }
+
+        .ep-hero::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            width: 430px;
+            height: 430px;
+            right: -190px;
+            top: -190px;
+            border: 1px solid rgba(66,165,255,.13);
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 45px rgba(66,165,255,.025),
+                0 0 0 90px rgba(66,165,255,.015);
+            pointer-events: none;
+        }
+
+        .ep-breadcrumb {
+            color: var(--ep-cyan);
+            font-size: 13px;
+            margin-bottom: 22px;
+            letter-spacing: .4px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .ep-hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+            gap: 45px;
+            align-items: center;
+        }
+
+        .ep-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            max-width: 100%;
+            padding: 8px 13px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(66,165,255,.35);
+            border-radius: 4px;
+            background: rgba(66,165,255,.06);
+            color: var(--ep-blue);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .ep-dot {
+            width: 7px;
+            height: 7px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--ep-blue);
+            box-shadow: 0 0 12px rgba(66,165,255,.8);
+        }
+
+        .ep-hero h1 {
+            margin: 0 0 18px;
+            font-size: clamp(38px, 5vw, 62px);
+            line-height: 1.08;
+            letter-spacing: -1px;
+            overflow-wrap: anywhere;
+        }
+
+        .ep-hero h1 span {
+            color: var(--ep-blue);
+        }
+
+        .ep-hero-description {
+            max-width: 720px;
+            color: var(--ep-muted);
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        /* =========================================
+           ENDPOINT STATUS PANEL
+           ========================================= */
+
+        .ep-status-panel {
+            min-width: 0;
+            padding: 24px;
+            border: 1px solid var(--ep-border);
+            border-top: 2px solid var(--ep-blue);
+            border-radius: 7px;
+            background: linear-gradient(145deg, rgba(16,28,39,.98), rgba(7,13,20,.98));
+            box-shadow: 0 20px 50px rgba(0,0,0,.28);
+        }
+
+        .ep-status-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .ep-status-header strong {
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .ep-protected {
+            color: var(--ep-green);
+            font-size: 11px;
+        }
+
+        .ep-divider {
+            height: 1px;
+            background: var(--ep-border);
+            margin: 15px 0;
+        }
+
+        .ep-status-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 8px 0;
+            color: var(--ep-muted);
+            font-size: 13px;
+        }
+
+        .ep-status-row strong {
+            color: var(--ep-text);
+            font-weight: normal;
+            text-align: right;
+        }
+
+        .ep-status-good {
+            color: var(--ep-green) !important;
+        }
+
+        /* =========================================
+           GENERAL CONTENT
+           ========================================= */
+
+        .ep-section {
+            padding: 70px 0;
+        }
+
+        .ep-section-title {
+            margin-bottom: 28px;
+        }
+
+        .ep-section-title h2 {
+            margin: 0 0 10px;
+            font-size: 32px;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+
+        .ep-section-title p {
+            color: var(--ep-muted);
+            line-height: 1.7;
+        }
+
+        .ep-content-card {
+            padding: 30px;
+            border: 1px solid var(--ep-border);
+            border-left: 3px solid var(--ep-blue);
+            border-radius: 7px;
+            background: var(--ep-panel);
+        }
+
+        .ep-content-card p {
+            margin: 0 0 16px;
+            color: var(--ep-muted);
+            line-height: 1.85;
+            font-size: 15px;
+        }
+
+        .ep-content-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* =========================================
+           DEFINITION
+           ========================================= */
+
+        .ep-definition {
+            padding: 28px;
+            border: 1px solid rgba(66,165,255,.25);
+            border-radius: 7px;
+            background: linear-gradient(135deg, rgba(66,165,255,.07), rgba(57,217,255,.025));
+        }
+
+        .ep-definition-label {
+            margin-bottom: 12px;
+            color: var(--ep-cyan);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .ep-definition p {
+            margin: 0;
+            color: var(--ep-text);
+            font-size: 18px;
+            line-height: 1.75;
+        }
+
+        /* =========================================
+           REASONS
+           ========================================= */
+
+        .ep-reason-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .ep-reason {
+            min-width: 0;
+            padding: 24px;
+            border: 1px solid var(--ep-border);
+            border-radius: 7px;
+            background: var(--ep-panel);
+        }
+
+        .ep-reason-number {
+            display: block;
+            margin-bottom: 15px;
+            color: var(--ep-blue);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .ep-reason h3 {
+            margin: 0 0 10px;
+            font-size: 17px;
+        }
+
+        .ep-reason p {
+            margin: 0;
+            color: var(--ep-muted);
+            line-height: 1.65;
+            font-size: 14px;
+        }
+
+        /* =========================================
+           SECURITY CONTROLS
+           ========================================= */
+
+        .ep-layer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .ep-layer {
+            min-width: 0;
+            padding: 22px 18px;
+            border: 1px solid var(--ep-border);
+            border-radius: 7px;
+            background: var(--ep-panel);
+        }
+
+        .ep-layer-number {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--ep-cyan);
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .ep-layer h3 {
+            margin: 0 0 9px;
+            font-size: 15px;
+            overflow-wrap: anywhere;
+        }
+
+        .ep-layer p {
+            margin: 0;
+            color: var(--ep-muted);
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        /* =========================================
+           COMMON THREATS
+           ========================================= */
+
+        .ep-threat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .ep-threat {
+            min-width: 0;
+            padding: 20px;
+            border: 1px solid var(--ep-border);
+            border-radius: 6px;
+            background: var(--ep-panel);
+        }
+
+        .ep-threat strong {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--ep-text);
+        }
+
+        .ep-threat span {
+            color: var(--ep-muted);
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        /* =========================================
+           SOC ROLE
+           ========================================= */
+
+        .ep-soc-box {
+            padding: 28px;
+            border: 1px solid rgba(67,209,158,.25);
+            border-radius: 7px;
+            background: rgba(67,209,158,.035);
+        }
+
+        .ep-soc-box h3 {
+            margin-top: 0;
+            color: var(--ep-green);
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .ep-soc-box p {
+            margin: 0;
+            color: var(--ep-muted);
+            line-height: 1.8;
+        }
+
+        /* =========================================
+           EXAMPLE
+           ========================================= */
+
+        .ep-example {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .ep-example-box {
+            min-width: 0;
+            padding: 25px;
+            border: 1px solid var(--ep-border);
+            border-radius: 7px;
+            background: var(--ep-panel);
+        }
+
+        .ep-example-box h3 {
+            margin: 0 0 15px;
+            font-size: 17px;
+        }
+
+        .ep-example-box p {
+            margin: 0;
+            color: var(--ep-muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .ep-example-box.threat-box {
+            border-top: 2px solid var(--ep-red);
+        }
+
+        .ep-example-box.control-box {
+            border-top: 2px solid var(--ep-green);
+        }
+
+        /* =========================================
+           KEY CONCEPTS
+           ========================================= */
+
+        .ep-key-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .ep-key {
+            min-width: 0;
+            padding: 17px 20px;
+            border: 1px solid var(--ep-border);
+            border-radius: 6px;
+            background: var(--ep-panel);
+            line-height: 1.7;
+        }
+
+        .ep-key strong {
+            color: var(--ep-text);
+        }
+
+        .ep-key span {
+            color: var(--ep-muted);
+            font-size: 14px;
+        }
+
+        /* =========================================
+           SUMMARY
+           ========================================= */
+
+        .ep-summary {
+            padding: 30px;
+            border: 1px solid rgba(67,209,158,.25);
+            border-radius: 7px;
+            background: rgba(67,209,158,.035);
+        }
+
+        .ep-summary h2 {
+            margin-top: 0;
+            color: var(--ep-green);
+        }
+
+        .ep-summary p {
+            margin: 0;
+            color: var(--ep-muted);
+            line-height: 1.8;
+        }
+
+        /* =========================================
+           PRACTICAL LAB CTA
+           ========================================= */
+
+        .lab-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            margin-top: 35px;
+            padding: 24px 26px;
+            border: 1px solid rgba(66,165,255,.22);
+            border-left: 3px solid var(--ep-blue);
+            border-radius: 7px;
+            background: linear-gradient(135deg, rgba(66,165,255,.07), rgba(53,214,208,.025));
+            box-shadow: 0 12px 35px rgba(0,0,0,.20);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lab-area::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(66,165,255,.7), rgba(53,214,208,.6), transparent);
+        }
+
+        .lab-text {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .lab-text strong {
+            color: var(--ep-text);
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: .2px;
+        }
+
+        .lab-text span {
+            color: var(--ep-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .lab-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            min-width: 155px;
+            padding: 12px 20px;
+            border: 1px solid rgba(66,165,255,.40);
+            border-radius: 5px;
+            color: var(--ep-blue);
+            background: rgba(66,165,255,.07);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            text-align: center;
+            transition: color .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+        }
+
+        .lab-button:hover {
+            color: #fff;
+            border-color: rgba(66,165,255,.75);
+            background: rgba(66,165,255,.14);
+            box-shadow: 0 0 18px rgba(66,165,255,.16);
+            transform: translateY(-1px);
+        }
+
+        .lab-button:active {
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+
+        .footer {
+            width: 100%;
+        }
+
+        .footer-container {
+            width: min(1150px, 92%);
+            margin-inline: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+        }
+
+        .copyright {
+            line-height: 1.6;
+        }
+
+        /* =========================================
+           TABLET
+           ========================================= */
+
+        @media (max-width: 950px) {
+            .ep-hero-grid {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 30px;
+            }
+
+            .ep-status-panel {
+                width: 100%;
+            }
+
+            .ep-reason-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .ep-layer-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .ep-example {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        /* =========================================
+           MOBILE
+           ========================================= */
+
+        @media (max-width: 768px) {
+            .ep-hero {
+                padding: 70px 0 55px;
+            }
+
+            .ep-section {
+                padding: 60px 0;
+            }
+
+            .footer-container {
+                display: flex;
+                flex-direction: column;
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .ep-container {
+                width: 92%;
+            }
+
+            .ep-hero {
+                padding: 48px 0 42px;
+            }
+
+            .ep-breadcrumb {
+                font-size: 11px;
+                line-height: 1.6;
+                margin-bottom: 18px;
+            }
+
+            .ep-badge {
+                font-size: 10px;
+                padding: 7px 10px;
+                letter-spacing: .6px;
+            }
+
+            .ep-hero h1 {
+                font-size: clamp(32px, 9vw, 46px);
+                letter-spacing: -.5px;
+            }
+
+            .ep-hero-description {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+
+            .ep-status-panel {
+                padding: 20px;
+            }
+
+            .ep-status-header strong {
+                font-size: 11px;
+            }
+
+            .ep-protected {
+                font-size: 9px;
+            }
+
+            .ep-status-row {
+                font-size: 12px;
+            }
+
+            .ep-section {
+                padding: 45px 0;
+            }
+
+            .ep-section-title {
+                margin-bottom: 22px;
+            }
+
+            .ep-section-title h2 {
+                font-size: 26px;
+            }
+
+            .ep-section-title p {
+                font-size: 14px;
+            }
+
+            .ep-content-card {
+                padding: 22px;
+            }
+
+            .ep-content-card p {
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .ep-definition {
+                padding: 22px;
+            }
+
+            .ep-definition p {
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .ep-reason-grid,
+            .ep-layer-grid,
+            .ep-threat-grid,
+            .ep-example,
+            .ep-key-list {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .ep-reason,
+            .ep-example-box {
+                padding: 21px;
+            }
+
+            .ep-key {
+                padding: 16px;
+            }
+
+            .ep-key span {
+                font-size: 13px;
+                line-height: 1.6;
+            }
+
+            .ep-summary {
+                padding: 22px;
+            }
+
+            .ep-summary p {
+                font-size: 14px;
+                line-height: 1.75;
+            }
+
+            .lab-area {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 18px;
+                padding: 22px;
+            }
+
+            .lab-text strong {
+                font-size: 15px;
+            }
+
+            .lab-text span {
+                font-size: 12px;
+            }
+
+            .lab-button {
+                width: 100%;
+            }
+
+            .footer-container {
+                width: 92%;
+                gap: 22px;
+            }
+
+            .footer-brand {
+                font-size: 22px;
+            }
+
+            .footer-container p {
+                font-size: 13px;
+                line-height: 1.6;
+            }
+
+            .footer-links {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px 18px;
+            }
+
+            .footer-links a {
+                font-size: 13px;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }
+
+            .copyright {
+                width: 92%;
+                margin-inline: auto;
+                padding: 18px 0;
+                font-size: 11px;
+                line-height: 1.6;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .ep-container {
+                width: 94%;
+            }
+
+            .ep-hero h1 {
+                font-size: 31px;
+            }
+
+            .ep-status-header {
+                align-items: flex-start;
+            }
+
+            .ep-status-row {
+                gap: 8px;
+            }
+
+            .footer-links {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                transition-duration: .01ms !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Shared Navbar: keep the shared component unchanged -->
+    <div
+        id="navbar-placeholder"
+        data-navbar-path="../../../components/navbar.html"
+        data-root-path="../../../">
+    </div>
+
+    <!-- HERO -->
+    <header class="ep-hero">
+        <div class="ep-container">
+            <div class="ep-breadcrumb">
+                CyberNexa / SOC / Blue Team / Endpoint Security
+            </div>
+
+            <div class="ep-hero-grid">
+                <div>
+                    <div class="ep-badge">
+                        <span class="ep-dot"></span>
+                        Endpoint Protection Training
+                    </div>
+
+                    <h1>What is <span>Endpoint Security?</span></h1>
+
+                    <p class="ep-hero-description">
+                        Endpoint Security is the practice of protecting
+                        endpoint devices such as computers, laptops and
+                        servers from unauthorized access, malware,
+                        suspicious activity and other security threats.
+                    </p>
+                </div>
+
+                <div class="ep-status-panel">
+                    <div class="ep-status-header">
+                        <strong>ENDPOINT SECURITY</strong>
+                        <span class="ep-protected">● PROTECTED</span>
+                    </div>
+
+                    <div class="ep-divider"></div>
+
+                    <div class="ep-status-row">
+                        <span>Device</span>
+                        <strong>Endpoint</strong>
+                    </div>
+
+                    <div class="ep-status-row">
+                        <span>Protection</span>
+                        <strong class="ep-status-good">Active</strong>
+                    </div>
+
+                    <div class="ep-status-row">
+                        <span>Monitoring</span>
+                        <strong>Enabled</strong>
+                    </div>
+
+                    <div class="ep-status-row">
+                        <span>Threat Status</span>
+                        <strong class="ep-status-good">Normal</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- DEFINITION -->
+        <section class="ep-section">
+            <div class="ep-container">
+                <div class="ep-section-title">
+                    <h2>Definition</h2>
+                    <p>First, understand the core meaning of Endpoint Security.</p>
+                </div>
+
+                <div class="ep-definition">
+                    <div class="ep-definition-label">Core Definition</div>
+                    <p>
+                        Endpoint Security is a cybersecurity approach used
+                        to protect endpoint devices from threats by applying
+                        security controls, monitoring activity, detecting
+                        suspicious behavior and preventing unauthorized access.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CORE EXPLANATION -->
+        <section class="ep-section">
+            <div class="ep-container">
+                <div class="ep-section-title">
+                    <h2>How Endpoint Security Works</h2>
+                    <p>
+                        Endpoint Security protects devices throughout their
+                        normal operation and helps security teams identify
+                        suspicious activity.
+                    </p>
+                </div>
+
+                <div class="ep-content-card">
+                    <p>
+                        An endpoint is a device that connects to an organization's
+                        network or systems. Examples include laptops, desktop
+                        computers, servers and other managed devices.
+                    </p>
+                    <p>
+                        Endpoint Security applies multiple security controls
+                        to these devices. These controls can include antivirus
+                        or endpoint protection software, host firewalls,
+                        access controls, patch management and security monitoring.
+                    </p>
+                    <p>
+                        Security teams can also monitor endpoint activity such
+                        as unusual processes, suspicious files, unauthorized
+                        software, abnormal network connections and login activity.
+                    </p>
+                    <p>
+                        When suspicious activity is identified, the endpoint
+                        may be investigated, isolated or otherwise protected
+                        according to the organization's incident response process.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY IMPORTANT -->
+        <section class="ep-section">
+            <div class="ep-container">
+                <div class="ep-section-title">
+                    <h2>Why Endpoint Security Matters</h2>
+                    <p>
+                        Endpoints are common targets because they directly
+                        interact with users, applications and organizational data.
+                    </p>
+                </div>
+
+                <div class="ep-reason-grid">
+                    <div class="ep-reason">
+                        <span class="ep-reason-number">REASON 01</span>
+                        <h3>Prevent Malware</h3>
+                        <p>
+                            Endpoint protection can help detect and prevent
+                            malicious files and software from affecting devices.
+                        </p>
+                    </div>
+
+                    <div class="ep-reason">
+                        <span class="ep-reason-number">REASON 02</span>
+                        <h3>Protect Data</h3>
+                        <p>
+                            Security controls help reduce unauthorized access
+                            to sensitive files and organizational information.
+                        </p>
+                    </div>
+
+                    <div class="ep-reason">
+                        <span class="ep-reason-number">REASON 03</span>
+                        <h3>Support Detection</h3>
+                        <p>
+                            Endpoint activity provides valuable security
+                            information that can help SOC analysts investigate threats.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECURITY CONTROLS -->
+        <section class="ep-section">
+            <div class="ep-container">
+                <div class="ep-section-title">
+                    <h2>Endpoint Security Controls</h2>
+                    <p>
+                        Endpoint protection normally uses multiple controls
+                        instead of relying on a single security mechanism.
+                    </p>
+                </div>
+
+                <div class="ep-layer-grid">
+                    <div class="ep-layer">
+                        <span class="ep-layer-number">CONTROL 01</span>
+                        <h3>Endpoint Protection</h3>
+                        <p>
+                            Detects and helps prevent malware and other
+                            suspicious software activity.
+                        </p>
+                    </div>
+
+                    <div class="ep-layer">
+                        <span class="ep-layer-number">CONTROL 02</span>
+                        <h3>Host Firewall</h3>
+                        <p>
+                            Controls network connections entering or leaving
+                            an endpoint.
+                        </p>
+                    </div>
+
+                    <div class="ep-layer">
+                        <span class="ep-layer-number">CONTROL 03</span>
+                        <h3>Patch Management</h3>
+                        <p>
+                            Keeps operating systems and applications updated
+                            to reduce known vulnerabilities.
+                        </p>
+                    </div>
+
+                    <div class="ep-layer">
+                        <span class="ep-layer-number">CONTROL 04</span>
+                        <h3>Access Control</h3>
+                        <p>
+                            Limits unauthorized access and helps enforce
+                            appropriate user privileges.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMMON THREATS -->
+        <section class="ep-section">
+            <div class="ep-container">
+                <div class="ep-section-title">
+                    <h2>Common Endpoint Threats</h2>
+                    <p>
+                        Understanding common endpoint threats helps SOC
+                        analysts identify suspicious behavior.
+                    </p>
+                </div>
+
+                <div class="ep-threat-grid">
+                    <div class="ep-threat">
+                        <strong>Malware</strong>
+                        <span>
+                            Malicious software designed to damage systems,
+                            steal information or perform unauthorized actions.
+                        </span>
+                    </div>
+
+                    <div class="ep-threat">
+                        <strong>Ransomware</strong>
+                        <span>
+                            Malware that can encrypt or otherwise make data
+                            unavailable and demand payment from victims.
+                        </span>
+                    </div>
+
+                    <div class="ep-threat">
+                        <strong>Unauthorized Software</strong>
+                        <span>
+                            Applications installed or executed without
+                            appropriate authorization or security review.
+                        </span>
+                    </div>
+
+                    <div class="ep-threat">
+                        <strong>Credential Theft</strong>
+                        <span>
+                            Attempts to obtain usernames, passwords or other
+                            authentication information.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOC ROLE -->
+        <section class="ep-section">
+            <div class="ep-container">
+                <div class="ep-section-title">
+                    <h2>Endpoint Security in a SOC</h2>
+                    <p>
+                        Endpoint information can become an important source
+                        of evidence for Security Operations Center analysts.
+                    </p>
+                </div>
+
+                <div class="ep-soc-box">
+                    <h3>Endpoint → Monitoring → Alert → Investigation</h3>
+                    <p>
+                        Endpoint security tools can generate information about
+                        processes, files, connections, authentication activity
+                        and other events. SOC analysts can review these events,
+                        correlate them with other security data and investigate
+                        suspicious activity. If an incident is confirmed,
+                        the endpoint may become part of the organization's
+                        incident response process.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMPLE EXAMPLE -->
+        <section class="ep-section">
+            <div class="ep-container">
+                <div class="ep-section-title">
+                    <h2>Simple Example</h2>
+                    <p>Consider an endpoint running suspicious software.</p>
+                </div>
+
+                <div class="ep-example">
+                    <div class="ep-example-box threat-box">
+                        <h3>⚠ Suspicious Activity</h3>
+                        <p>
+                            A laptop starts an unknown executable from a
+                            temporary directory and immediately creates an
+                            unusual outbound network connection.
+                        </p>
+                    </div>
+
+                    <div class="ep-example-box control-box">
+                        <h3>✓ Security Response</h3>
+                        <p>
+                            Endpoint security detects the activity. The SOC
+                            analyst investigates the process, checks related
+                            events and determines whether the endpoint requires
+                            isolation or further incident response.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KEY CONCEPTS -->
+        <section class="ep-section">
+            <div class="ep-container">
+                <div class="ep-section-title">
+                    <h2>Key Concepts</h2>
+                    <p>Important terms to remember for Endpoint Security.</p>
+                </div>
+
+                <div class="ep-key-list">
+                    <div class="ep-key">
+                        <strong>Endpoint:</strong>
+                        <span>
+                            A device such as a laptop, desktop or server
+                            connected to an organization's environment.
+                        </span>
+                    </div>
+
+                    <div class="ep-key">
+                        <strong>Endpoint Protection:</strong>
+                        <span>
+                            Security mechanisms designed to protect endpoint devices.
+                        </span>
+                    </div>
+
+                    <div class="ep-key">
+                        <strong>Patch Management:</strong>
+                        <span>
+                            Process of keeping software and operating systems updated.
+                        </span>
+                    </div>
+
+                    <div class="ep-key">
+                        <strong>Host Firewall:</strong>
+                        <span>
+                            A firewall operating directly on an endpoint.
+                        </span>
+                    </div>
+
+                    <div class="ep-key">
+                        <strong>Endpoint Monitoring:</strong>
+                        <span>
+                            Observing endpoint activity to identify suspicious behavior.
+                        </span>
+                    </div>
+
+                    <div class="ep-key">
+                        <strong>EDR:</strong>
+                        <span>
+                            Endpoint Detection and Response technology used
+                            to monitor, detect and investigate endpoint activity.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUMMARY AND LAB -->
+        <section class="ep-section">
+            <div class="ep-container">
+                <div class="ep-summary">
+                    <h2>Summary</h2>
+                    <p>
+                        Endpoint Security protects devices from malware,
+                        unauthorized access and suspicious activity. It uses
+                        multiple controls such as endpoint protection,
+                        host firewalls, patch management and access control.
+                        In a SOC environment, endpoint telemetry can help
+                        analysts detect, investigate and respond to security
+                        incidents. Strong endpoint security therefore forms
+                        an important part of a broader Blue Team defense strategy.
+                    </p>
+                </div>
+                <!-- LESSON COMPLETION -->
+<section class="ep-section" id="lesson-completion">
+    <div class="ep-container">
+        <div class="ep-content-card">
+            <div class="ep-section-title">
+                <h2>Lesson Completion</h2>
+                <p>
+                    You have completed the Endpoint Security lesson.
+                    Review the key concepts and mark this lesson as completed.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="lab-button"
+                data-lesson-progress
+                data-course-id="soc-blue-team"
+                data-lesson-id="endpoint-security"
+                data-dashboard-url="../learning-paths/soc-blue-team/theory/endpoint-security.html"
+                data-status-id="endpointsecurityCompletionStatus">
+                Mark Lesson as Completed
+            </button>
+
+            <p
+                id="endpointsecurityCompletionStatus"
+                role="status"
+                aria-live="polite"
+                style="margin-top: 12px;">
+            </p>
+        </div>
+    </div>
+</section>
+                <div class="lab-area">
+                    <div class="lab-text">
+                        <strong>Ready for the Practical Lab?</strong>
+                        <span>
+                            Test your understanding through an authorized
+                            SOC security-training simulation.
+                        </span>
+                    </div>
+
+                    <a href="../lab/endpoint-security-lab.html" class="lab-button">
+                        🧪 Launch Lab →
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div>
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+                <p>Cybersecurity &amp; IT Learning</p>
+            </div>
+
+            <div class="footer-links">
+                <a href="../../../index.html">Home</a>
+                <a href="../../../footer/about.html">About</a>
+                <a href="../../../footer/contact.html">Contact</a>
+                <a href="../../../footer/privacy-policy.html">Privacy Policy</a>
+                <a href="../../../footer/disclaimer.html">Disclaimer</a>
+            </div>
+        </div>
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../js/lesson-progress.js"></script>
+    <script src="../../../js/supabase-client.js"></script>
+    <script src="../../../js/navbar-loader.js"></script>
+    <script src="../../../js/navbar.js"></script>
+    <script src="../../../js/session.js"></script>
+</body>
+</html>

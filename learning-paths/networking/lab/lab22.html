@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Network Troubleshooting Practical Lab | CyberNexa</title>
+
+    <!-- =====================================================
+         CYBERNEXA COMMON CSS
+    ====================================================== -->
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ====================================================== */
+
+        .network-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 55px 15px 65px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(14, 165, 233, 0.13),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .network-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .network-lab-header {
+
+            text-align: center;
+
+            margin-bottom: 28px;
+        }
+
+
+        .network-lab-category {
+
+            display: inline-block;
+
+            margin-bottom: 12px;
+
+            color: #22d3ee;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        .network-lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 42px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .network-lab-header h1 span {
+
+            color: #38bdf8;
+        }
+
+
+        .network-lab-intro {
+
+            max-width: 720px;
+
+            margin: 14px auto 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           LAB INFO
+        ====================================================== */
+
+        .network-lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 8px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .network-info-card {
+
+            padding: 14px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.15);
+
+            border-radius: 9px;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+        }
+
+
+        .network-info-icon {
+
+            margin-bottom: 7px;
+
+            color: #22d3ee;
+
+            font-size: 17px;
+        }
+
+
+        .network-info-label {
+
+            margin-bottom: 3px;
+
+            color: #71808c;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .network-info-value {
+
+            color: #dbeafe;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           PROGRESS
+        ====================================================== */
+
+        .network-lab-progress {
+
+            margin-bottom: 22px;
+
+            padding: 14px 16px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.14);
+
+            border-radius: 9px;
+
+            background:
+                rgba(34, 211, 238, 0.03);
+        }
+
+
+        .network-progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 9px;
+        }
+
+
+        .network-progress-title {
+
+            color: #aebbc5;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+
+        .network-progress-count {
+
+            color: #22d3ee;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+
+        .network-progress-track {
+
+            width: 100%;
+
+            height: 5px;
+
+            overflow: hidden;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 255, 255, 0.06);
+        }
+
+
+        .network-progress-bar {
+
+            height: 100%;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #0891b2,
+                    #22d3ee
+                );
+        }
+
+
+        /* =====================================================
+           SECTION
+        ====================================================== */
+
+        .network-section {
+
+            margin-bottom: 14px;
+
+            padding: 18px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.12);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 22, 30, 0.96),
+                    rgba(3, 12, 18, 0.96)
+                );
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.18);
+        }
+
+
+        .network-section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 13px;
+
+            color: #f8fafc;
+
+            font-size: 15px;
+
+            font-weight: 800;
+        }
+
+
+        .network-section-icon,
+        .network-step-number {
+
+            width: 31px;
+            height: 31px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.24);
+
+            border-radius: 8px;
+
+            color: #22d3ee;
+
+            background:
+                rgba(34, 211, 238, 0.05);
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        .network-section p {
+
+            margin: 0 0 11px;
+
+            color: #91a4b2;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        .network-section p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           TASK / UNDERSTAND
+        ====================================================== */
+
+        .network-task {
+
+            margin-top: 14px;
+
+            padding: 13px 15px;
+
+            border-left: 3px solid #22d3ee;
+
+            border-radius: 0 8px 8px 0;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+        }
+
+
+        .network-task-title {
+
+            margin-bottom: 6px;
+
+            color: #dbeafe;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+
+        .network-task p {
+
+            margin: 0;
+
+            color: #8193a0;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .network-command {
+
+            position: relative;
+
+            margin-top: 14px;
+
+            padding: 13px 75px 13px 15px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.13);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 0, 0, 0.30);
+
+            overflow-x: auto;
+        }
+
+
+        .network-command-label {
+
+            margin-bottom: 8px;
+
+            color: #22d3ee;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .network-command code {
+
+            color: #dbeafe;
+
+            font-family:
+                Consolas,
+                Monaco,
+                monospace;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+
+            white-space: pre;
+        }
+
+
+        .network-copy {
+
+            position: absolute;
+
+            top: 11px;
+
+            right: 10px;
+
+            padding: 6px 9px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.20);
+
+            border-radius: 6px;
+
+            color: #22d3ee;
+
+            background:
+                rgba(34, 211, 238, 0.05);
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+
+        .network-copy:hover {
+
+            border-color:
+                rgba(34, 211, 238, 0.55);
+
+            background:
+                rgba(34, 211, 238, 0.09);
+        }
+
+
+        /* =====================================================
+           OUTPUT
+        ====================================================== */
+
+        .network-output {
+
+            margin-top: 10px;
+
+            padding: 13px 15px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.10);
+
+            border-radius: 8px;
+
+            background:
+                rgba(2, 8, 13, 0.75);
+
+            overflow-x: auto;
+        }
+
+
+        .network-output-title {
+
+            margin-bottom: 8px;
+
+            color: #8ee9f7;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .network-output pre {
+
+            margin: 0;
+
+            color: #9fb5c5;
+
+            font-family:
+                Consolas,
+                Monaco,
+                monospace;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+        }
+
+
+        /* =====================================================
+           CONCEPT GRID
+        ====================================================== */
+
+        .network-concepts {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 8px;
+        }
+
+
+        .network-concept {
+
+            padding: 13px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.10);
+
+            border-radius: 8px;
+
+            background:
+                rgba(34, 211, 238, 0.025);
+        }
+
+
+        .network-concept strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #dbeafe;
+
+            font-size: 11px;
+        }
+
+
+        .network-concept span {
+
+            color: #718696;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           CHECKLIST
+        ====================================================== */
+
+        .network-checklist {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+
+        .network-check {
+
+            padding: 11px 12px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.10);
+
+            border-radius: 7px;
+
+            color: #91a4b2;
+
+            background:
+                rgba(34, 211, 238, 0.025);
+
+            font-size: 10px;
+
+            line-height: 1.5;
+        }
+
+
+        .network-check input {
+
+            accent-color: #22d3ee;
+
+            margin-right: 7px;
+
+            vertical-align: middle;
+        }
+
+
+        /* =====================================================
+           SAFETY
+        ====================================================== */
+
+        .network-safety {
+
+            margin-bottom: 14px;
+
+            padding: 17px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(34, 211, 238, 0.025);
+        }
+
+
+        .network-safety h2 {
+
+            margin: 0 0 9px;
+
+            color: #dbeafe;
+
+            font-size: 14px;
+        }
+
+
+        .network-safety p {
+
+            margin: 0;
+
+            color: #8193a0;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .network-navigation {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 18px;
+        }
+
+
+        .network-button {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid
+                rgba(34, 211, 238, 0.16);
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(34, 211, 238, 0.035);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: 0.2s ease;
+        }
+
+
+        .network-button:hover {
+
+            border-color:
+                rgba(34, 211, 238, 0.55);
+
+            background:
+                rgba(34, 211, 238, 0.08);
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .network-lab-page {
+
+                padding: 45px 10px 55px;
+            }
+
+
+            .network-lab-header h1 {
+
+                font-size: 30px;
+            }
+
+
+            .network-lab-intro {
+
+                font-size: 11px;
+            }
+
+
+            .network-lab-info {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .network-concepts {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .network-checklist {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .network-navigation {
+
+                flex-direction: column;
+            }
+
+
+            .network-button {
+
+                width: 100%;
+            }
+        }
+
+
+        @media (max-width: 450px) {
+
+            .network-lab-info {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .network-section {
+
+                padding: 15px;
+            }
+
+
+            .network-lab-header h1 {
+
+                font-size: 27px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="../../../index.html" class="brand">
+
+            <div class="brand-logo">
+
+                <svg viewBox="0 0 50 60">
+
+                    <path
+                        d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="3"
+                    />
+
+                    <rect
+                        x="18"
+                        y="25"
+                        width="14"
+                        height="14"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <path
+                        d="M20 25 V20 C20 16 30 16 30 20 V25"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    />
+
+                    <circle
+                        cx="25"
+                        cy="31"
+                        r="2"
+                        fill="currentColor"
+                    />
+
+                    <path
+                        d="M25 33 V36"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Cybersecurity &amp; IT Learning
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+====================================================== -->
+
+<main class="network-lab-page">
+
+<div class="network-lab-container">
+
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<header class="network-lab-header">
+
+    <div class="network-lab-category">
+        🌐 NETWORKING PRACTICAL LAB
+    </div>
+
+    <h1>
+        <span>Network Troubleshooting</span> Lab
+    </h1>
+
+    <p class="network-lab-intro">
+        Practice diagnosing common network connectivity problems
+        using Windows networking commands such as ipconfig,
+        ping, tracert, nslookup and arp.
+    </p>
+
+</header>
+
+
+
+<!-- =====================================================
+     INFO
+====================================================== -->
+
+<div class="network-lab-info">
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            🌐
+        </div>
+
+        <div class="network-info-label">
+            Category
+        </div>
+
+        <div class="network-info-value">
+            Networking
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            🛠️
+        </div>
+
+        <div class="network-info-label">
+            Topic
+        </div>
+
+        <div class="network-info-value">
+            Troubleshooting
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            💻
+        </div>
+
+        <div class="network-info-label">
+            Environment
+        </div>
+
+        <div class="network-info-value">
+            Windows
+        </div>
+
+    </div>
+
+
+    <div class="network-info-card">
+
+        <div class="network-info-icon">
+            📊
+        </div>
+
+        <div class="network-info-label">
+            Level
+        </div>
+
+        <div class="network-info-value">
+            Beginner
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     PROGRESS
+====================================================== -->
+
+<div class="network-lab-progress">
+
+    <div class="network-progress-top">
+
+        <div class="network-progress-title">
+            Networking Practical Path
+        </div>
+
+        <div class="network-progress-count">
+            Troubleshooting Lab
+        </div>
+
+    </div>
+
+
+    <div class="network-progress-track">
+
+        <div
+            class="network-progress-bar"
+            style="width: 100%;"
+        ></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     OBJECTIVE
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🎯
+        </span>
+
+        Lab Objective
+
+    </div>
+
+
+    <p>
+        In this practical lab, you will learn how to identify
+        and diagnose common network connectivity problems using
+        a systematic troubleshooting process.
+    </p>
+
+
+    <p>
+        You will check your IP configuration, test the local
+        gateway, test Internet connectivity, investigate the
+        route to a destination and verify DNS resolution.
+    </p>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            💡 What You Will Practice
+        </div>
+
+        <p>
+            ipconfig → check configuration →
+            ping gateway → test local connectivity →
+            ping public IP → test Internet →
+            nslookup → test DNS →
+            tracert → inspect network path.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     STEP 01
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-step-number">
+            01
+        </span>
+
+        Check IP Configuration
+
+    </div>
+
+
+    <p>
+        Open Command Prompt and run the following command.
+        It displays the IPv4 address, subnet mask, default
+        gateway and other network configuration information.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Windows Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('ipconfig /all', this)"
+        >
+            Copy
+        </button>
+
+        <code>ipconfig /all</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>IPv4 Address. . . . . . . : 192.168.1.20
+Subnet Mask . . . . . . . : 255.255.255.0
+Default Gateway . . . . . : 192.168.1.1
+DNS Servers . . . . . . . : 192.168.1.1</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 What to Observe
+        </div>
+
+        <p>
+            Find your active network adapter and identify the
+            IPv4 address, subnet mask, default gateway and DNS
+            server. Your actual values may be different.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     STEP 02
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-step-number">
+            02
+        </span>
+
+        Test the Default Gateway
+
+    </div>
+
+
+    <p>
+        The default gateway is normally the router that provides
+        access from the local network to other networks.
+        First identify your gateway from Step 01.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('ping 192.168.1.1', this)"
+        >
+            Copy
+        </button>
+
+        <code>ping 192.168.1.1</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Expected Result
+        </div>
+
+        <pre>Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64
+Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64
+Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64
+Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 Understand the Result
+        </div>
+
+        <p>
+            Successful replies indicate that the device can
+            communicate with the gateway. If the gateway cannot
+            be reached, investigate the local connection,
+            IP configuration or Wi-Fi/Ethernet connection.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     STEP 03
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-step-number">
+            03
+        </span>
+
+        Test Internet Connectivity
+
+    </div>
+
+
+    <p>
+        After testing the local gateway, test a public IP address.
+        This helps determine whether communication can leave the
+        local network.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('ping 8.8.8.8', this)"
+        >
+            Copy
+        </button>
+
+        <code>ping 8.8.8.8</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Result
+        </div>
+
+        <pre>Reply from 8.8.8.8: bytes=32 time=25ms TTL=117
+Reply from 8.8.8.8: bytes=32 time=24ms TTL=117
+Reply from 8.8.8.8: bytes=32 time=26ms TTL=117
+Reply from 8.8.8.8: bytes=32 time=25ms TTL=117</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 What to Observe
+        </div>
+
+        <p>
+            If the gateway responds but the public IP does not,
+            the problem may be beyond the local network, such as
+            routing, firewall filtering or Internet connectivity.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     STEP 04
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-step-number">
+            04
+        </span>
+
+        Test DNS Resolution
+
+    </div>
+
+
+    <p>
+        A device may have Internet connectivity but still be
+        unable to open websites if DNS name resolution is not
+        working correctly.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('nslookup google.com', this)"
+        >
+            Copy
+        </button>
+
+        <code>nslookup google.com</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>Server:  router.local
+Address:  192.168.1.1
+
+Non-authoritative answer:
+Name:    google.com
+Addresses:  142.250.72.14</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 Understand the Result
+        </div>
+
+        <p>
+            If the domain name resolves to an IP address, DNS
+            resolution is working for this test. If DNS fails
+            while pinging a public IP works, investigate DNS
+            configuration or DNS server availability.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     STEP 05
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-step-number">
+            05
+        </span>
+
+        Trace the Network Path
+
+    </div>
+
+
+    <p>
+        Use tracert to observe the path packets take toward
+        a destination. This can help identify where communication
+        may be failing.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('tracert 8.8.8.8', this)"
+        >
+            Copy
+        </button>
+
+        <code>tracert 8.8.8.8</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>Tracing route to 8.8.8.8
+
+  1    &lt;1 ms    &lt;1 ms    &lt;1 ms    192.168.1.1
+  2     8 ms     7 ms     8 ms    10.20.0.1
+  3    18 ms    17 ms    19 ms    203.0.113.1
+  4    25 ms    24 ms    25 ms    8.8.8.8
+
+Trace complete.</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🔎 What to Observe
+        </div>
+
+        <p>
+            The first hop is commonly the local gateway. Later
+            hops represent routers along the path. Some routers
+            may not respond to traceroute probes, so a timeout
+            does not automatically mean the entire path is broken.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     STEP 06
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-step-number">
+            06
+        </span>
+
+        Check the ARP Table
+
+    </div>
+
+
+    <p>
+        ARP maps IPv4 addresses to MAC addresses on the local
+        network. The ARP table can help when investigating
+        local network communication.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand('arp -a', this)"
+        >
+            Copy
+        </button>
+
+        <code>arp -a</code>
+
+    </div>
+
+
+    <div class="network-output">
+
+        <div class="network-output-title">
+            Example Output
+        </div>
+
+        <pre>Interface: 192.168.1.20
+
+Internet Address      Physical Address      Type
+192.168.1.1           aa-bb-cc-dd-ee-ff     dynamic
+192.168.1.10          11-22-33-44-55-66     dynamic</pre>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧠 Understand the Result
+        </div>
+
+        <p>
+            The table shows IP-to-MAC mappings known to the
+            local system. A gateway entry can help confirm that
+            the device has learned the gateway's Layer 2 address.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     STEP 07
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-step-number">
+            07
+        </span>
+
+        Complete the Troubleshooting Test
+
+    </div>
+
+
+    <p>
+        Now combine the previous commands and follow a systematic
+        troubleshooting order instead of changing settings randomly.
+    </p>
+
+
+    <div class="network-command">
+
+        <div class="network-command-label">
+            Windows Command Prompt
+        </div>
+
+        <button
+            class="network-copy"
+            onclick="copyCommand(`ipconfig /all
+ping 192.168.1.1
+ping 8.8.8.8
+nslookup google.com
+tracert 8.8.8.8
+arp -a`, this)"
+        >
+            Copy
+        </button>
+
+        <code>ipconfig /all
+ping 192.168.1.1
+ping 8.8.8.8
+nslookup google.com
+tracert 8.8.8.8
+arp -a</code>
+
+    </div>
+
+
+    <div class="network-task">
+
+        <div class="network-task-title">
+            🧩 Troubleshooting Logic
+        </div>
+
+        <p>
+            Check configuration first → test the gateway →
+            test Internet reachability → test DNS →
+            inspect the route → inspect local ARP information.
+        </p>
+
+    </div>
+
+
+    <div class="network-checklist">
+
+        <label class="network-check">
+
+            <input type="checkbox">
+
+            IPv4 configuration checked
+
+        </label>
+
+
+        <label class="network-check">
+
+            <input type="checkbox">
+
+            Default gateway tested
+
+        </label>
+
+
+        <label class="network-check">
+
+            <input type="checkbox">
+
+            Internet connectivity tested
+
+        </label>
+
+
+        <label class="network-check">
+
+            <input type="checkbox">
+
+            DNS resolution tested
+
+        </label>
+
+
+        <label class="network-check">
+
+            <input type="checkbox">
+
+            Network path inspected
+
+        </label>
+
+
+        <label class="network-check">
+
+            <input type="checkbox">
+
+            ARP table inspected
+
+        </label>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     TROUBLESHOOTING SCENARIOS
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            🛠️
+        </span>
+
+        Common Troubleshooting Scenarios
+
+    </div>
+
+
+    <div class="network-concepts">
+
+
+        <div class="network-concept">
+
+            <strong>
+                Gateway Unreachable
+            </strong>
+
+            <span>
+                Check Wi-Fi/Ethernet, IP configuration,
+                subnet mask and local gateway settings.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                Internet IP Fails
+            </strong>
+
+            <span>
+                Check the gateway first, then investigate
+                routing, firewall or Internet connectivity.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                DNS Fails
+            </strong>
+
+            <span>
+                If a public IP responds but domain lookup
+                fails, investigate DNS configuration.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                Wrong IP Configuration
+            </strong>
+
+            <span>
+                Verify IPv4 address, subnet mask and
+                default gateway using ipconfig.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                Path Problem
+            </strong>
+
+            <span>
+                Use tracert to inspect the route toward
+                the destination.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                Local ARP Issue
+            </strong>
+
+            <span>
+                Use arp -a to inspect local IP-to-MAC
+                address mappings.
+            </span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     KEY CONCEPTS
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            #
+        </span>
+
+        Key Concepts
+
+    </div>
+
+
+    <div class="network-concepts">
+
+
+        <div class="network-concept">
+
+            <strong>
+                IP Address
+            </strong>
+
+            <span>
+                Identifies a device at the network layer.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                Subnet Mask
+            </strong>
+
+            <span>
+                Determines the network and host portions
+                of an IPv4 address.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                Default Gateway
+            </strong>
+
+            <span>
+                Provides a path from the local network
+                toward other networks.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                DNS
+            </strong>
+
+            <span>
+                Resolves domain names into IP addresses.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                Ping
+            </strong>
+
+            <span>
+                Tests reachability using ICMP echo
+                request and reply messages.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                Traceroute
+            </strong>
+
+            <span>
+                Helps display the path toward a destination.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                ARP
+            </strong>
+
+            <span>
+                Helps map IPv4 addresses to MAC addresses
+                on the local network.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                Connectivity
+            </strong>
+
+            <span>
+                Describes whether network communication
+                between endpoints is working.
+            </span>
+
+        </div>
+
+
+        <div class="network-concept">
+
+            <strong>
+                Systematic Troubleshooting
+            </strong>
+
+            <span>
+                A structured process used to locate the
+                actual cause of a network problem.
+            </span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SUMMARY
+====================================================== -->
+
+<section class="network-section">
+
+    <div class="network-section-title">
+
+        <span class="network-section-icon">
+            📘
+        </span>
+
+        Practical Lab Summary
+
+    </div>
+
+
+    <p>
+        In this lab, you practiced a systematic approach to
+        network troubleshooting using common Windows networking
+        commands.
+    </p>
+
+
+    <p>
+        You checked IP configuration, tested the default gateway,
+        tested Internet connectivity, verified DNS resolution,
+        inspected the network path and viewed the ARP table.
+    </p>
+
+
+    <p>
+        These skills provide a basic foundation for network
+        administration, troubleshooting and defensive
+        cybersecurity analysis.
+    </p>
+
+</section>
+
+
+
+<!-- =====================================================
+     SAFETY
+====================================================== -->
+
+<section class="network-safety">
+
+    <h2>
+        🧪 Learning Safety
+    </h2>
+
+
+    <p>
+        Use networking commands only on systems and networks
+        that you own or are explicitly authorized to inspect.
+        These commands are intended for legitimate learning,
+        administration and cybersecurity work.
+    </p>
+
+</section>
+
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<div class="network-navigation">
+
+
+    <a
+        href="lab21.html"
+        class="network-button"
+    >
+         Previous: Lab 
+    </a>
+
+
+    <a
+        href="../theory/networking.html"
+        class="network-button"
+    >
+        ☰ Networking Topics
+    </a>
+
+<!-- 
+    <a
+        href="../networking/networking.html"
+        class="network-button"
+    >
+        Networking Complete →
+    </a> -->
+
+
+</div>
+
+
+</div>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">
+                Home
+            </a>
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 CyberNexa. All rights reserved.
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script src="../../../js/navbar.js"></script>
+
+
+<script>
+
+function copyCommand(command, button) {
+
+    navigator.clipboard.writeText(command)
+
+        .then(() => {
+
+            const originalText =
+                button.innerText;
+
+            button.innerText = "Copied";
+
+            setTimeout(() => {
+
+                button.innerText =
+                    originalText;
+
+            }, 1200);
+
+        })
+
+        .catch(() => {
+
+            button.innerText = "Failed";
+
+            setTimeout(() => {
+
+                button.innerText = "Copy";
+
+            }, 1200);
+
+        });
+
+}
+
+</script>
+
+
+</body>
+
+</html>

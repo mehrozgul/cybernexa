@@ -1,0 +1,2281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Services - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .linux-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-topic-header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .linux-topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-topic-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LINUX SEARCH
+        ====================================================== */
+
+        .linux-search-box {
+
+            max-width: 700px;
+
+            margin: 0 auto 35px;
+
+            display: flex;
+
+            gap: 10px;
+        }
+
+
+        .linux-search-input {
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 13px 16px;
+
+            border: 1px solid rgba(103, 232, 249, 0.18);
+
+            border-radius: 9px;
+
+            outline: none;
+
+            color: #dbeafe;
+
+            background: #01060a;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .linux-search-input::placeholder {
+
+            color: #71808c;
+        }
+
+
+        .linux-search-input:focus {
+
+            border-color: rgba(103, 232, 249, 0.55);
+
+            box-shadow:
+                0 0 18px rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-search-button {
+
+            padding: 13px 20px;
+
+            border: 1px solid rgba(103, 232, 249, 0.28);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background: rgba(103, 232, 249, 0.06);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-search-button:hover {
+
+            border-color: rgba(103, 232, 249, 0.65);
+
+            background: rgba(103, 232, 249, 0.11);
+
+            transform: translateY(-1px);
+        }
+
+
+        .linux-search-result {
+
+            display: none;
+
+            margin: -20px auto 25px;
+
+            max-width: 700px;
+
+            padding: 12px 15px;
+
+            border-left: 3px solid #67e8f9;
+
+            border-radius: 0 8px 8px 0;
+
+            color: #b6c2cc;
+
+            background: rgba(103, 232, 249, 0.045);
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           DESKTOP HOVER
+        ====================================================== */
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-card::after,
+        .linux-service-card::after,
+        .linux-command-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent
+                );
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover::after,
+            .linux-service-card:hover::after,
+            .linux-command-card:hover::after {
+
+                animation:
+                    linuxLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .linux-definition-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid
+                #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-definition-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-definition-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           SERVICE GRID
+        ====================================================== */
+
+        .linux-service-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-service-card {
+
+            position: relative;
+
+            padding: 20px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-service-card:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.35);
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .linux-service-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+
+        .linux-service-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .linux-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+
+        /* =====================================================
+           COMMAND CARDS
+        ====================================================== */
+
+        .linux-command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-command-card {
+
+            position: relative;
+
+            padding: 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+        }
+
+
+        .linux-command-card code {
+
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .linux-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-flow-item {
+
+            padding: 12px 16px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .linux-summary-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-summary-list li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 23px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid
+                rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-summary-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .linux-summary-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-learning-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-topic-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-learning-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-topic-header {
+
+                margin-bottom: 30px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-topic-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-search-box {
+
+                flex-direction: column;
+
+                margin-bottom: 28px;
+            }
+
+
+            .linux-search-button {
+
+                width: 100%;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-definition-box {
+
+                padding: 16px;
+            }
+
+
+            .linux-definition-box span {
+
+                font-size: 13px;
+            }
+
+
+            .linux-service-grid,
+            .linux-command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-key-item {
+
+                font-size: 11px;
+
+                padding: 9px 11px;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-learning-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+        #navbar-placeholder a[href*="linux"] svg,
+#navbar-placeholder a[href*="linux"] i {
+    width: 18px;
+    height: 18px;
+    font-size: 16px;
+}
+/* Page-specific fix: Linux navbar icon */
+#navbar-placeholder a[href*="linux"] svg,
+#navbar-placeholder a[href*="linux"] i,
+#navbar-placeholder a[href*="linux"] .nav-icon,
+#navbar-placeholder a[href*="linux"] .nav-icon-wrapper {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    font-size: 16px !important;
+}
+
+/* Keep the Linux navigation item compact */
+#navbar-placeholder a[href*="linux"] {
+    gap: 8px;
+}
+    </style>
+</head>
+<body>
+
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-learning-page">
+
+        <div class="linux-learning-container">
+
+
+            <!-- HEADER -->
+
+            <header class="linux-topic-header">
+
+                <div class="linux-topic-category">
+                    LINUX
+                </div>
+
+                <h1>
+                    Linux <span>Services</span>
+                </h1>
+
+                <p class="linux-topic-intro">
+
+                    Linux services are background processes that provide
+                    important functions such as networking, remote access,
+                    logging and system management. Understanding services
+                    is essential for Linux administration and cybersecurity.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 SEARCH
+            ================================================== -->
+
+            <div class="linux-search-box">
+
+                <input
+                    type="text"
+                    id="linuxSearch"
+                    class="linux-search-input"
+                    placeholder="Search Linux topics..."
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    id="linuxSearchButton"
+                    class="linux-search-button"
+                >
+                    🔎 Search
+                </button>
+
+            </div>
+
+
+            <div
+                id="linuxSearchResult"
+                class="linux-search-result"
+            ></div>
+
+
+
+            <!-- =================================================
+                 DEFINITION
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ⚙
+                    </div>
+
+                    <h2>
+                        What is a Linux Service?
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-definition-box">
+
+                    <strong>
+                        Simple Definition
+                    </strong>
+
+                    <span>
+
+                        A <strong>Linux service</strong> is a program or
+                        background process that performs a specific function
+                        for the system or its users, often without requiring
+                        direct interaction.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 BACKGROUND SERVICES
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        B
+                    </div>
+
+                    <h2>
+                        Background Services
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Many Linux services run in the background and continue
+                    working while users perform other tasks. These services
+                    are commonly managed by the system's service manager.
+
+                </p>
+
+
+                <div class="linux-service-grid">
+
+
+                    <div class="linux-service-card">
+
+                        <h3>
+                            Web Service
+                        </h3>
+
+                        <p>
+
+                            Provides web content to clients through
+                            protocols such as HTTP or HTTPS.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-service-card">
+
+                        <h3>
+                            SSH Service
+                        </h3>
+
+                        <p>
+
+                            Provides secure remote access to a Linux
+                            system through SSH.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-service-card">
+
+                        <h3>
+                            DNS Service
+                        </h3>
+
+                        <p>
+
+                            Can provide domain-name resolution for
+                            systems and networks.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-service-card">
+
+                        <h3>
+                            Logging Service
+                        </h3>
+
+                        <p>
+
+                            Collects and manages system or application
+                            log information.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SYSTEMD
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        S
+                    </div>
+
+                    <h2>
+                        systemd
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Many modern Linux distributions use
+                    <strong>systemd</strong> as the system and service
+                    manager. It can start, stop, restart and monitor
+                    services.
+
+                </p>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        Linux System
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        systemd
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Services
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SERVICE STATUS
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ?
+                    </div>
+
+                    <h2>
+                        Checking Service Status
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>systemctl status</strong> command can be
+                    used to view the current status of a service.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        systemctl status ssh
+                    </code>
+
+                </div>
+
+
+                <p>
+
+                    The output can show whether the service is running,
+                    stopped, failed or enabled.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 START STOP RESTART
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ▶
+                    </div>
+
+                    <h2>
+                        Start, Stop and Restart Services
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            sudo systemctl start ssh
+                        </code>
+
+                        <p>
+                            Starts the SSH service.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            sudo systemctl stop ssh
+                        </code>
+
+                        <p>
+                            Stops the SSH service.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            sudo systemctl restart ssh
+                        </code>
+
+                        <p>
+                            Restarts the SSH service.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            sudo systemctl reload ssh
+                        </code>
+
+                        <p>
+                            Reloads service configuration when supported.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ENABLE DISABLE
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ⚡
+                    </div>
+
+                    <h2>
+                        Enable and Disable Services
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A service can be configured to start automatically
+                    when the system boots.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            sudo systemctl enable ssh
+                        </code>
+
+                        <p>
+                            Enables the service to start automatically
+                            during boot.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            sudo systemctl disable ssh
+                        </code>
+
+                        <p>
+                            Disables automatic startup during boot.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LIST SERVICES
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ≡
+                    </div>
+
+                    <h2>
+                        Viewing Services
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Administrators can inspect active services to understand
+                    what is currently running on a Linux system.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        systemctl list-units --type=service
+                    </code>
+
+                    <br>
+
+                    <code>
+                        systemctl --type=service
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SERVICE STATES
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        Common Service States
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-service-grid">
+
+
+                    <div class="linux-service-card">
+
+                        <h3>
+                            Active
+                        </h3>
+
+                        <p>
+
+                            The service is currently running.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-service-card">
+
+                        <h3>
+                            Inactive
+                        </h3>
+
+                        <p>
+
+                            The service is currently not running.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-service-card">
+
+                        <h3>
+                            Failed
+                        </h3>
+
+                        <p>
+
+                            The service attempted to run but encountered
+                            an error.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-service-card">
+
+                        <h3>
+                            Enabled
+                        </h3>
+
+                        <p>
+
+                            The service is configured to start automatically
+                            according to its system configuration.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECURITY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why Linux Services Matter in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Running services can expose network functionality
+                    and increase the attack surface of a Linux system.
+                    Security professionals therefore need to understand
+                    which services are running and whether they are required.
+
+                </p>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Attack Surface
+                    </div>
+
+                    <div class="linux-key-item">
+                        Service Enumeration
+                    </div>
+
+                    <div class="linux-key-item">
+                        Remote Access
+                    </div>
+
+                    <div class="linux-key-item">
+                        Hardening
+                    </div>
+
+                    <div class="linux-key-item">
+                        Least Privilege
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECURITY CHECK
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Basic Security Check
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    A basic service review can help identify unnecessary
+                    services and understand the system's current state.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        systemctl --type=service
+                    </code>
+
+                    <br>
+
+                    <code>
+                        systemctl status service-name
+                    </code>
+
+                    <br>
+
+                    <code>
+                        ss -tuln
+                    </code>
+
+                </div>
+
+
+                <p>
+
+                    In cybersecurity, service information can be combined
+                    with network information to understand which services
+                    may be listening for connections.
+
+                </p>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SUMMARY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Quick Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-summary-list">
+
+                    <li>
+                        A Linux service is a background program or process
+                        that performs a specific function.
+                    </li>
+
+                    <li>
+                        Many modern Linux systems use systemd to manage services.
+                    </li>
+
+                    <li>
+                        systemctl can be used to manage system services.
+                    </li>
+
+                    <li>
+                        systemctl status checks the current service status.
+                    </li>
+
+                    <li>
+                        systemctl start starts a service.
+                    </li>
+
+                    <li>
+                        systemctl stop stops a service.
+                    </li>
+
+                    <li>
+                        systemctl restart restarts a service.
+                    </li>
+
+                    <li>
+                        systemctl enable configures a service for automatic startup.
+                    </li>
+
+                    <li>
+                        systemctl disable prevents automatic startup.
+                    </li>
+
+                    <li>
+                        Security professionals should understand running services
+                        because they can affect the system's attack surface.
+                    </li>
+
+                </ul>
+
+            </section>
+            
+<!-- Lesson Completion -->
+<section class="linux-card" id="lessonCompletion">
+    <div class="linux-card-heading">
+        <div class="linux-icon" aria-hidden="true">✓</div>
+        <h2>Complete This Lesson</h2>
+    </div>
+
+    <p>
+        Mark this lesson as complete after studying all the topics.
+        Your progress will be saved to your CyberNexa account.
+    </p>
+
+    <button
+        type="button"
+        class="linux-topic-button"
+        data-lesson-progress
+        data-course-id="linux"
+        data-lesson-id="linux-services"
+        data-dashboard-url="../learning-paths/linux/theory/linux-services.html"
+        data-status-id="lessonCompletionStatus">
+
+        Mark Lesson Complete
+    </button>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite">
+    </p>
+</section>
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-topic-navigation">
+
+
+                <a
+                    href="linux-processes.html"
+                    class="linux-topic-button previous"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Processes
+                    </strong>
+
+                </a>
+                
+                <a href="../lab/lab07.html" class="linux-topic-button practical-lab">
+                    <span>🧪</span>
+ <strong>Perform Lab</strong>                </a>
+            </div>
+        </div>
+    </main>
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+<script>
+
+    const linuxSearch =
+        document.getElementById("linuxSearch");
+
+    const linuxSearchButton =
+        document.getElementById("linuxSearchButton");
+
+    const linuxSearchResult =
+        document.getElementById("linuxSearchResult");
+
+
+    function searchPageHeadings() {
+
+        const query =
+            linuxSearch.value.trim().toLowerCase();
+
+
+        if (!query) {
+
+            linuxSearchResult.style.display = "block";
+
+            linuxSearchResult.textContent =
+                "Please enter a topic or heading to search.";
+
+            return;
+        }
+
+
+        /* Get all headings from this page */
+
+        const headings =
+            document.querySelectorAll(
+                "h1, h2, h3"
+            );
+
+
+        let foundHeading = null;
+
+
+        headings.forEach(heading => {
+
+            const headingText =
+                heading.textContent
+                    .trim()
+                    .toLowerCase();
+
+
+            if (
+                !foundHeading &&
+                headingText.includes(query)
+            ) {
+
+                foundHeading = heading;
+
+            }
+
+        });
+
+
+        /* If heading is found */
+
+        if (foundHeading) {
+
+            linuxSearchResult.style.display = "none";
+
+
+            foundHeading.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+
+            /* Highlight heading */
+
+            foundHeading.style.transition =
+                "color 0.3s ease, text-shadow 0.3s ease";
+
+            foundHeading.style.color =
+                "#67e8f9";
+
+            foundHeading.style.textShadow =
+                "0 0 15px rgba(103, 232, 249, 0.45)";
+
+
+            setTimeout(() => {
+
+                foundHeading.style.color = "";
+                foundHeading.style.textShadow = "";
+
+            }, 2000);
+
+
+            return;
+        }
+
+
+        /* No heading found */
+
+        linuxSearchResult.style.display = "block";
+
+        linuxSearchResult.textContent =
+            "No matching heading found on this page.";
+
+    }
+
+
+    linuxSearchButton.addEventListener(
+        "click",
+        searchPageHeadings
+    );
+
+
+    linuxSearch.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                searchPageHeadings();
+
+            }
+
+        }
+    );
+
+</script>
+    <!-- =====================================================
+         MOBILE SWEEP
+         Sweep only when user scrolls/touches.
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards = document.querySelectorAll(
+            ".linux-card, .linux-service-card, .linux-command-card"
+        );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+
+                return;
+
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove("mobile-sweep");
+
+                void card.offsetWidth;
+
+                card.classList.add("mobile-sweep");
+
+            });
+
+
+            clearTimeout(sweepTimeout);
+
+
+            sweepTimeout = setTimeout(() => {
+
+                sweepCards.forEach(card => {
+
+                    card.classList.remove("mobile-sweep");
+
+                });
+
+            }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+    </script>
+</body>
+</html>

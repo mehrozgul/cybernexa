@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Security Headers Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 10% 8%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 12%,
+                    rgba(0, 255, 176, 0.055),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b,
+                    #020914,
+                    #01050b
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 40px 35px;
+
+            margin-bottom: 24px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 35, 0.98),
+                    rgba(2, 10, 20, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            margin-bottom: 12px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 40px;
+            line-height: 1.15;
+        }
+
+        .lab-hero h1 span {
+            color: #00bfff;
+        }
+
+        .lab-description {
+
+            max-width: 780px;
+
+            margin: 14px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           LAB META
+        ====================================================== */
+
+        .lab-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 24px;
+        }
+
+        .lab-meta-item {
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .lab-meta-label {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.3px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-meta-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .green {
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           LAB CARD
+        ====================================================== */
+
+        .lab-card {
+
+            margin-bottom: 18px;
+
+            padding: 26px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .lab-number {
+
+            width: 29px;
+            height: 29px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 7px;
+
+            color: #00bfff;
+
+            background:
+                rgba(0, 191, 255, 0.045);
+
+            font-family: Consolas, monospace;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .lab-heading h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+        .lab-card p {
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           AUTHORIZATION
+        ====================================================== */
+
+        .notice {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.18);
+
+            border-radius: 9px;
+
+            background:
+                rgba(255, 177, 0, 0.035);
+        }
+
+        .notice strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffc44d;
+
+            font-size: 12px;
+        }
+
+        .notice p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 11px;
+
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           PRACTICAL CHECKER
+        ====================================================== */
+
+        .checker {
+
+            margin-top: 17px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background: rgba(0, 0, 0, 0.22);
+        }
+
+        .checker-title {
+
+            margin-bottom: 13px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .header-check {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 120px;
+
+            gap: 10px;
+
+            align-items: center;
+
+            padding: 11px 0;
+
+            border-bottom:
+                1px solid rgba(0, 191, 255, 0.07);
+        }
+
+        .header-check:last-child {
+            border-bottom: none;
+        }
+
+        .header-name {
+
+            color: #c8d8e5;
+
+            font-family: Consolas, monospace;
+
+            font-size: 11px;
+        }
+
+        .header-status {
+
+            padding: 7px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.15);
+
+            border-radius: 6px;
+
+            color: #00ffb0;
+
+            background:
+                rgba(0, 255, 176, 0.035);
+
+            text-align: center;
+
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           MCQ
+        ====================================================== */
+
+        .question {
+
+            margin-top: 18px;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+        }
+
+        .question-title {
+
+            margin-bottom: 13px;
+
+            color: #ffffff;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            line-height: 1.7;
+        }
+
+        .option {
+
+            display: block;
+
+            padding: 10px 12px;
+
+            margin-top: 7px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 7px;
+
+            color: #7f95a8;
+
+            background:
+                rgba(0, 0, 0, 0.14);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            transition:
+                border-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .option:hover {
+
+            color: #d7edf7;
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+        }
+
+        .option input {
+            margin-right: 8px;
+        }
+
+        .check-button {
+
+            width: 100%;
+
+            margin-top: 18px;
+
+            padding: 12px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 8px;
+
+            color: #d7f6ff;
+
+            background:
+                rgba(0, 191, 255, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .check-button:hover {
+
+            background:
+                rgba(0, 191, 255, 0.09);
+        }
+
+        .result {
+
+            margin-top: 12px;
+
+            padding: 12px;
+
+            border-radius: 7px;
+
+            color: #8fa5bb;
+
+            background:
+                rgba(0, 0, 0, 0.22);
+
+            font-size: 11px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           COMPLETION
+        ====================================================== */
+
+        .completion {
+
+            padding: 25px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.14);
+
+            border-radius: 13px;
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        .completion h2 {
+
+            margin: 0 0 8px;
+
+            color: #00ffb0;
+
+            font-size: 18px;
+        }
+
+        .completion p {
+
+            max-width: 700px;
+
+            margin: 0 auto;
+
+            color: #71879b;
+
+            font-size: 11px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .lab-navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .lab-navigation a {
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 8px;
+
+            color: #71879b;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            text-align: center;
+
+            text-decoration: none;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .lab-navigation a:hover {
+
+            color: #d7f6ff;
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .lab-page {
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+                font-size: 31px;
+            }
+
+            .lab-meta {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .lab-card {
+                padding: 20px;
+            }
+
+            .header-check {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-navigation {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="lab-hero">
+
+                <div class="lab-kicker">
+                    WEB SECURITY LAB / 13
+                </div>
+
+                <h1>
+                    <span>Security Headers</span>
+                    Practical Lab
+                </h1>
+
+                <p class="lab-description">
+                    Practice identifying common HTTP security headers,
+                    understand their defensive purpose and evaluate a
+                    simulated hardened response in a safe learning
+                    environment.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 META
+            ================================================== -->
+
+            <div class="lab-meta">
+
+                <div class="lab-meta-item">
+
+                    <span class="lab-meta-label">
+                        Lab Type
+                    </span>
+
+                    <span class="lab-meta-value">
+                        MCQ + Practical
+                    </span>
+
+                </div>
+
+
+                <div class="lab-meta-item">
+
+                    <span class="lab-meta-label">
+                        Level
+                    </span>
+
+                    <span class="lab-meta-value">
+                        Beginner
+                    </span>
+
+                </div>
+
+
+                <div class="lab-meta-item">
+
+                    <span class="lab-meta-label">
+                        Environment
+                    </span>
+
+                    <span class="lab-meta-value green">
+                        Safe / Simulated
+                    </span>
+
+                </div>
+
+
+                <div class="lab-meta-item">
+
+                    <span class="lab-meta-label">
+                        Focus
+                    </span>
+
+                    <span class="lab-meta-value">
+                        HTTP Hardening
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 01 — AUTHORIZATION
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-number">
+                        01
+                    </div>
+
+                    <h2>
+                        Authorized Lab Environment
+                    </h2>
+
+                </div>
+
+                <div class="notice">
+
+                    <strong>
+                        ⚠ DEFENSIVE WEB SECURITY PRACTICE
+                    </strong>
+
+                    <p>
+                        This exercise uses simulated HTTP response data.
+                        Use security-header testing only on websites,
+                        applications or laboratory systems that you own
+                        or have explicit permission to assess.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 02 — HEADER CHECK
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-number">
+                        02
+                    </div>
+
+                    <h2>
+                        Practical Header Analysis
+                    </h2>
+
+                </div>
+
+                <p>
+                    Examine the simulated response below. A green
+                    <strong>EXPECTED</strong> status means that the
+                    corresponding defensive header is present in the
+                    example configuration.
+                </p>
+
+
+                <div class="checker">
+
+                    <div class="checker-title">
+                        Simulated Response Header Check
+                    </div>
+
+
+                    <div class="header-check">
+
+                        <span class="header-name">
+                            Content-Security-Policy
+                        </span>
+
+                        <span class="header-status">
+                            EXPECTED
+                        </span>
+
+                    </div>
+
+
+                    <div class="header-check">
+
+                        <span class="header-name">
+                            Strict-Transport-Security
+                        </span>
+
+                        <span class="header-status">
+                            EXPECTED
+                        </span>
+
+                    </div>
+
+
+                    <div class="header-check">
+
+                        <span class="header-name">
+                            X-Content-Type-Options
+                        </span>
+
+                        <span class="header-status">
+                            EXPECTED
+                        </span>
+
+                    </div>
+
+
+                    <div class="header-check">
+
+                        <span class="header-name">
+                            Referrer-Policy
+                        </span>
+
+                        <span class="header-status">
+                            EXPECTED
+                        </span>
+
+                    </div>
+
+
+                    <div class="header-check">
+
+                        <span class="header-name">
+                            Permissions-Policy
+                        </span>
+
+                        <span class="header-status">
+                            EXPECTED
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 03 — MCQ
+            ================================================== -->
+
+            <section class="lab-card">
+
+                <div class="lab-heading">
+
+                    <div class="lab-number">
+                        03
+                    </div>
+
+                    <h2>
+                        Knowledge Check
+                    </h2>
+
+                </div>
+
+
+                <!-- Q1 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        Q1. What is the primary purpose of a security
+                        header?
+                    </div>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="a"
+                        >
+                        A. Increase website storage
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="b"
+                        >
+                        B. Provide browser-enforced security policies
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="c"
+                        >
+                        C. Replace the database
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="d"
+                        >
+                        D. Increase image quality
+                    </label>
+
+                </div>
+
+
+                <!-- Q2 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        Q2. Which header is primarily associated with
+                        controlling allowed resource sources?
+                    </div>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="a"
+                        >
+                        A. Content-Security-Policy
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="b"
+                        >
+                        B. Referrer-Policy
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="c"
+                        >
+                        C. Permissions-Policy
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="d"
+                        >
+                        D. Content-Length
+                    </label>
+
+                </div>
+
+
+                <!-- Q3 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        Q3. What does HSTS encourage the browser to use?
+                    </div>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="a"
+                        >
+                        A. FTP
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="b"
+                        >
+                        B. HTTP only
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="c"
+                        >
+                        C. HTTPS
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="d"
+                        >
+                        D. Telnet
+                    </label>
+
+                </div>
+
+
+                <!-- Q4 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        Q4. What does X-Content-Type-Options: nosniff
+                        help address?
+                    </div>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="a"
+                        >
+                        A. MIME type sniffing
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="b"
+                        >
+                        B. Password storage
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="c"
+                        >
+                        C. Database backups
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="d"
+                        >
+                        D. DNS registration
+                    </label>
+
+                </div>
+
+
+                <!-- Q5 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+                        Q5. Which header controls how much referrer
+                        information is sent?
+                    </div>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="a"
+                        >
+                        A. Referrer-Policy
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="b"
+                        >
+                        B. HSTS
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="c"
+                        >
+                        C. CSP
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="d"
+                        >
+                        D. Cache-Control
+                    </label>
+
+                </div>
+
+
+                <button
+                    class="check-button"
+                    onclick="checkAnswers()"
+                >
+                    Check Answers
+                </button>
+
+
+                <div
+                    class="result"
+                    id="result"
+                >
+                    Select an answer for each question and then
+                    click "Check Answers".
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 04 — COMPLETION
+            ================================================== -->
+
+            <section class="completion">
+
+                <h2>
+                    Lab Objective
+                </h2>
+
+                <p>
+                    After completing this lab, you should be able to
+                    recognize important HTTP security headers, explain
+                    their purpose and understand how they contribute to
+                    browser-side defense.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="lab-navigation">
+
+                <a href="path-traversal-lab.html">
+                    ← Lab: Path Traversal
+                </a>
+
+                <a href="web-security-lab.html">
+                    All Labs
+                </a>
+
+                <a href="../theory/owasp-top-10.html">
+                    Next Theory: OWASP →
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+
+
+    <script>
+
+        function checkAnswers() {
+
+            const answers = {
+
+                q1: "b",
+                q2: "a",
+                q3: "c",
+                q4: "a",
+                q5: "a"
+
+            };
+
+            let score = 0;
+
+            let answered = 0;
+
+            for (const question in answers) {
+
+                const selected =
+                    document.querySelector(
+                        'input[name="' + question + '"]:checked'
+                    );
+
+                if (selected) {
+
+                    answered++;
+
+                    if (selected.value === answers[question]) {
+                        score++;
+                    }
+
+                }
+
+            }
+
+            const result =
+                document.getElementById("result");
+
+            if (answered < 5) {
+
+                result.innerHTML =
+                    "Please answer all 5 questions before submitting the lab.";
+
+                return;
+            }
+
+            const percentage =
+                Math.round((score / 5) * 100);
+
+            if (score === 5) {
+
+                result.innerHTML =
+                    "✓ Excellent! You scored " +
+                    score +
+                    "/5 (" +
+                    percentage +
+                    "%). You understand the core security-header concepts.";
+
+            } else if (score >= 3) {
+
+                result.innerHTML =
+                    "✓ Good work! You scored " +
+                    score +
+                    "/5 (" +
+                    percentage +
+                    "%). Review the headers you missed and try again.";
+
+            } else {
+
+                result.innerHTML =
+                    "Keep learning. You scored " +
+                    score +
+                    "/5 (" +
+                    percentage +
+                    "%). Review the Security Headers theory page and retry.";
+
+            }
+
+        }
+
+    </script>
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

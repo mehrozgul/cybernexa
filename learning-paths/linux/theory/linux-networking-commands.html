@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Networking Commands - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+    <style>
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%),
+                radial-gradient(circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%),
+                #02080d;
+        }
+
+
+        .linux-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-topic-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+
+        .linux-topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-topic-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ====================================================== */
+
+        .linux-search-box {
+
+            display: flex;
+
+            max-width: 650px;
+
+            margin: 0 auto 35px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.18);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow: hidden;
+        }
+
+
+        .linux-search-box input {
+
+            width: 100%;
+
+            padding: 14px 16px;
+
+            border: none;
+            outline: none;
+
+            color: #dbeafe;
+
+            background: transparent;
+
+            font-size: 13px;
+        }
+
+
+        .linux-search-box input::placeholder {
+
+            color: #71808c;
+        }
+
+
+        .linux-search-box button {
+
+            padding: 0 20px;
+
+            border: none;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease;
+        }
+
+
+        .linux-search-box button:hover {
+
+            background:
+                rgba(103, 232, 249, 0.14);
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98));
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           DESKTOP HOVER
+        ====================================================== */
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-card::after,
+        .linux-command-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent);
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover::after,
+            .linux-command-card:hover::after {
+
+                animation:
+                    linuxLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .linux-definition-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-definition-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-definition-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           COMMAND GRID
+        ====================================================== */
+
+        .linux-command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-command-card {
+
+            position: relative;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-command-card:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.35);
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .linux-command-card code {
+
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .linux-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .linux-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-flow-item {
+
+            padding: 12px 16px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .linux-summary-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-summary-list li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 23px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-summary-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .linux-summary-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-learning-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-topic-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-learning-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-topic-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-topic-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-definition-box {
+
+                padding: 16px;
+            }
+
+
+            .linux-definition-box span {
+
+                font-size: 13px;
+            }
+
+
+            .linux-command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-key-item {
+
+                font-size: 11px;
+
+                padding: 9px 11px;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+
+
+            .linux-search-box {
+
+                margin-bottom: 25px;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-learning-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+        #navbar-placeholder a[href*="linux"] svg,
+#navbar-placeholder a[href*="linux"] i {
+    width: 18px;
+    height: 18px;
+    font-size: 16px;
+}
+/* Page-specific fix: Linux navbar icon */
+#navbar-placeholder a[href*="linux"] svg,
+#navbar-placeholder a[href*="linux"] i,
+#navbar-placeholder a[href*="linux"] .nav-icon,
+#navbar-placeholder a[href*="linux"] .nav-icon-wrapper {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    font-size: 16px !important;
+}
+
+/* Keep the Linux navigation item compact */
+#navbar-placeholder a[href*="linux"] {
+    gap: 8px;
+}
+    </style>
+</head>
+<body>
+
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-learning-page">
+
+        <div class="linux-learning-container">
+
+
+            <!-- HEADER -->
+
+            <header class="linux-topic-header">
+
+                <div class="linux-topic-category">
+                    LINUX
+                </div>
+
+                <h1>
+                    Linux <span>Networking Commands</span>
+                </h1>
+
+                <p class="linux-topic-intro">
+
+                    Linux provides powerful networking commands for
+                    checking network configuration, connectivity,
+                    interfaces, routes and active connections.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 SEARCH
+            ================================================== -->
+
+            <div class="linux-search-box">
+
+                <input type="text" id="linuxSearch" placeholder="Search Linux networking commands...">
+
+                <button type="button" onclick="searchLinux()">
+                    Search
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DEFINITION
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🌐
+                    </div>
+
+                    <h2>
+                        What are Linux Networking Commands?
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-definition-box">
+
+                    <strong>
+                        Simple Definition
+                    </strong>
+
+                    <span>
+
+                        Linux networking commands are command-line
+                        tools used to view, configure, test and
+                        troubleshoot network connections and settings.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 IP COMMAND
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        IP
+                    </div>
+
+                    <h2>
+                        ip Command
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>ip</strong> command is commonly used
+                    to view and manage network interfaces, IP
+                    addresses and routing information.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        ip addr
+                    </code>
+
+                    <br>
+
+                    <code>
+                        ip link
+                    </code>
+
+                    <br>
+
+                    <code>
+                        ip route
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PING
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        P
+                    </div>
+
+                    <h2>
+                        ping Command
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>ping</strong> command tests whether
+                    another host is reachable over a network using
+                    ICMP echo requests and replies.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        ping 8.8.8.8
+                    </code>
+
+                </div>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        Linux System
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        ICMP Request
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Destination
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        ICMP Reply
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SS
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        SS
+                    </div>
+
+                    <h2>
+                        ss Command
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>ss</strong> command displays
+                    information about network sockets and active
+                    connections.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        ss
+                    </code>
+
+                    <br>
+
+                    <code>
+                        ss -tuln
+                    </code>
+
+                </div>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        TCP
+                    </div>
+
+                    <div class="linux-key-item">
+                        UDP
+                    </div>
+
+                    <div class="linux-key-item">
+                        Listening Ports
+                    </div>
+
+                    <div class="linux-key-item">
+                        Network Sockets
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 HOSTNAME
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        H
+                    </div>
+
+                    <h2>
+                        hostname Command
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>hostname</strong> command displays
+                    the system's hostname.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        hostname
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NSLOOKUP
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        DNS
+                    </div>
+
+                    <h2>
+                        nslookup Command
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>nslookup</strong> command can be used
+                    to query DNS information and resolve domain names
+                    to IP addresses.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        nslookup example.com
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 DIG
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        D
+                    </div>
+
+                    <h2>
+                        dig Command
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>dig</strong> command is a detailed
+                    DNS lookup tool commonly used for DNS
+                    troubleshooting and analysis.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        dig example.com
+                    </code>
+
+                    <br>
+
+                    <code>
+                        dig example.com A
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CURL
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        C
+                    </div>
+
+                    <h2>
+                        curl Command
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>curl</strong> command is used to
+                    transfer data between a system and a server.
+                    It is frequently used for testing HTTP and
+                    HTTPS services.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        curl https://example.com
+                    </code>
+
+                    <br>
+
+                    <code>
+                        curl -I https://example.com
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ROUTE
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        R
+                    </div>
+
+                    <h2>
+                        Routing Information
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux routing information determines how network
+                    traffic is forwarded to different destinations.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        ip route
+                    </code>
+
+                </div>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        Source
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Routing Table
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Gateway
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Destination
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NETWORKING COMMAND TABLE
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        Important Networking Commands
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ip addr
+                        </code>
+
+                        <p>
+                            Displays network interfaces and IP addresses.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ip route
+                        </code>
+
+                        <p>
+                            Displays the routing table.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ping
+                        </code>
+
+                        <p>
+                            Tests network reachability.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ss
+                        </code>
+
+                        <p>
+                            Displays sockets and network connections.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            hostname
+                        </code>
+
+                        <p>
+                            Displays the system hostname.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            nslookup
+                        </code>
+
+                        <p>
+                            Queries DNS information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            dig
+                        </code>
+
+                        <p>
+                            Performs detailed DNS queries.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            curl
+                        </code>
+
+                        <p>
+                            Transfers data and tests web services.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Why Networking Commands Matter in Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Networking commands are important for cybersecurity
+                    because security professionals need to understand
+                    network configuration, connectivity, DNS,
+                    listening ports and active connections.
+
+                </p>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Network Discovery
+                    </div>
+
+                    <div class="linux-key-item">
+                        Troubleshooting
+                    </div>
+
+                    <div class="linux-key-item">
+                        DNS Analysis
+                    </div>
+
+                    <div class="linux-key-item">
+                        Port Analysis
+                    </div>
+
+                    <div class="linux-key-item">
+                        Connectivity Testing
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 QUICK SUMMARY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Quick Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-summary-list">
+
+                    <li>
+                        ip is used to view and manage network configuration.
+                    </li>
+
+                    <li>
+                        ip addr displays IP addresses and interfaces.
+                    </li>
+
+                    <li>
+                        ip route displays routing information.
+                    </li>
+
+                    <li>
+                        ping tests network reachability.
+                    </li>
+
+                    <li>
+                        ss displays network sockets and active connections.
+                    </li>
+
+                    <li>
+                        hostname displays the system hostname.
+                    </li>
+
+                    <li>
+                        nslookup performs DNS queries.
+                    </li>
+
+                    <li>
+                        dig provides detailed DNS information.
+                    </li>
+
+                    <li>
+                        curl can be used to test HTTP and HTTPS services.
+                    </li>
+
+                    <li>
+                        Networking commands are important for Linux administration
+                        and cybersecurity.
+                    </li>
+
+                </ul>
+
+            </section>
+            
+<!-- Lesson Completion -->
+<section class="linux-card" id="lessonCompletion">
+    <div class="linux-card-heading">
+        <div class="linux-icon" aria-hidden="true">✓</div>
+        <h2>Complete This Lesson</h2>
+    </div>
+
+    <p>
+        Mark this lesson as complete after studying all the topics.
+        Your progress will be saved to your CyberNexa account.
+    </p>
+
+    <button
+        type="button"
+        class="linux-topic-button"
+        data-lesson-progress
+        data-course-id="linux"
+        data-lesson-id="linux-networking-commands"
+        data-dashboard-url="../learning-paths/linux/theory/linux-networking-commands.html"
+        data-status-id="lessonCompletionStatus">
+
+        Mark Lesson Complete
+    </button>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite">
+    </p>
+</section>
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-topic-navigation">
+
+
+                <a href="linux-package-management.html" class="linux-topic-button previous">
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Package Management
+                    </strong>
+
+                </a>
+                
+                <a href="../lab/lab10.html" class="linux-topic-button practical-lab">
+                    <span>🧪</span>
+ <strong>Perform Lab</strong>                </a>
+
+                <!-- <a href="linux-bash-basics.html" class="linux-topic-button next">
+
+                    <strong>
+                        Next: Bash Basics
+                    </strong>
+
+                    <span>
+                        →
+                    </span>
+
+                </a> -->
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+    <script>
+
+        function searchLinux() {
+
+            const input =
+                document
+                    .getElementById("linuxSearch")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+            const cards =
+                document.querySelectorAll(".linux-card");
+
+            if (input === "") {
+
+                cards.forEach(card => {
+                    card.style.display = "";
+                });
+
+                return;
+            }
+
+            cards.forEach(card => {
+
+                const text =
+                    card.innerText.toLowerCase();
+
+                if (text.includes(input)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+
+            });
+
+        }
+
+
+        document
+            .getElementById("linuxSearch")
+            .addEventListener("keydown", function (event) {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    searchLinux();
+
+                }
+
+            });
+
+
+        document
+            .getElementById("linuxSearch")
+            .addEventListener("input", function () {
+
+                searchLinux();
+
+            });
+
+    </script>
+
+    <!-- =====================================================
+         MOBILE SWEEP
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards = document.querySelectorAll(
+            ".linux-card, .linux-command-card"
+        );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+
+                return;
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove("mobile-sweep");
+
+                void card.offsetWidth;
+
+                card.classList.add("mobile-sweep");
+
+            });
+
+
+            clearTimeout(sweepTimeout);
+
+
+            sweepTimeout = setTimeout(() => {
+
+                sweepCards.forEach(card => {
+
+                    card.classList.remove("mobile-sweep");
+
+                });
+
+            }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            { passive: true }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            { passive: true }
+        );
+    </script>
+</body>
+</html>

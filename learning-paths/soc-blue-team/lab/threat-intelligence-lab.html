@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Threat Intelligence Lab | CyberNexa</title>
+
+<meta name="description"
+content="Practice Threat Intelligence by analyzing suspicious IP addresses, domains, hashes and URLs.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+/* =========================================================
+   CYBERNEXA SOC / BLUE TEAM
+   PRACTICAL LAB: THREAT INTELLIGENCE
+   ========================================================= */
+
+:root {
+
+    --tl-bg: #071019;
+    --tl-panel: #0c1721;
+    --tl-panel-2: #101e2b;
+
+    --tl-cyan: #38d9ff;
+    --tl-blue: #4da3ff;
+    --tl-purple: #9b7bff;
+    --tl-green: #43d19e;
+    --tl-orange: #ffb454;
+    --tl-red: #ff5c69;
+
+    --tl-text: #edf7fc;
+    --tl-muted: #91a8b8;
+    --tl-border: #203544;
+
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(56, 217, 255, 0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(155, 123, 255, 0.07),
+            transparent 30%
+        ),
+        var(--tl-bg);
+
+    color: var(--tl-text);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.tl-container {
+    width: min(1150px, 92%);
+    margin: auto;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.tl-hero {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 75px 0 55px;
+
+    border-bottom: 1px solid var(--tl-border);
+
+}
+
+.tl-breadcrumb {
+
+    margin-bottom: 20px;
+
+    color: var(--tl-cyan);
+
+    font-size: 13px;
+
+    letter-spacing: 0.5px;
+
+}
+
+.tl-hero-grid {
+
+    display: grid;
+
+    grid-template-columns: 1.2fr 0.8fr;
+
+    gap: 35px;
+
+    align-items: center;
+
+}
+
+.tl-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 13px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid rgba(56, 217, 255, 0.3);
+
+    border-radius: 4px;
+
+    background: rgba(56, 217, 255, 0.05);
+
+    color: var(--tl-cyan);
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+}
+
+.tl-dot {
+
+    width: 7px;
+
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--tl-cyan);
+
+    box-shadow:
+        0 0 12px rgba(56, 217, 255, 0.8);
+
+}
+
+.tl-hero h1 {
+
+    margin: 0 0 16px;
+
+    font-size: clamp(38px, 5vw, 58px);
+
+    line-height: 1.05;
+
+}
+
+.tl-hero h1 span {
+    color: var(--tl-cyan);
+}
+
+.tl-hero p {
+
+    max-width: 700px;
+
+    margin: 0;
+
+    color: var(--tl-muted);
+
+    font-size: 16px;
+
+    line-height: 1.8;
+
+}
+
+
+/* =========================================================
+   LAB STATUS
+   ========================================================= */
+
+.tl-status {
+
+    padding: 23px;
+
+    border: 1px solid var(--tl-border);
+
+    border-top: 2px solid var(--tl-cyan);
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16, 30, 43, 0.98),
+            rgba(7, 14, 21, 0.98)
+        );
+
+}
+
+.tl-status-head {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 15px;
+
+}
+
+.tl-status-head strong {
+
+    font-size: 12px;
+
+    letter-spacing: 1px;
+
+}
+
+.tl-status-live {
+
+    color: var(--tl-green);
+
+    font-size: 10px;
+
+}
+
+.tl-divider {
+
+    height: 1px;
+
+    background: var(--tl-border);
+
+    margin: 14px 0;
+
+}
+
+.tl-status-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 8px 0;
+
+    color: var(--tl-muted);
+
+    font-size: 13px;
+
+}
+
+.tl-status-row strong {
+
+    color: var(--tl-text);
+
+    font-weight: normal;
+
+}
+
+.tl-status-row .active {
+
+    color: var(--tl-cyan);
+
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.tl-section {
+
+    padding: 65px 0;
+
+}
+
+.tl-title {
+
+    margin-bottom: 25px;
+
+}
+
+.tl-title h2 {
+
+    margin: 0 0 9px;
+
+    font-size: 30px;
+
+}
+
+.tl-title p {
+
+    margin: 0;
+
+    color: var(--tl-muted);
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   INSTRUCTIONS
+   ========================================================= */
+
+.tl-instructions {
+
+    padding: 25px 28px;
+
+    border: 1px solid var(--tl-border);
+
+    border-left: 3px solid var(--tl-blue);
+
+    border-radius: 7px;
+
+    background: var(--tl-panel);
+
+}
+
+.tl-instructions p {
+
+    margin: 0 0 13px;
+
+    color: var(--tl-muted);
+
+    line-height: 1.75;
+
+    font-size: 14px;
+
+}
+
+.tl-instructions p:last-child {
+    margin-bottom: 0;
+}
+
+.tl-instructions strong {
+    color: var(--tl-text);
+}
+
+
+/* =========================================================
+   INVESTIGATION TERMINAL
+   ========================================================= */
+
+.tl-terminal {
+
+    overflow: hidden;
+
+    border: 1px solid var(--tl-border);
+
+    border-radius: 7px;
+
+    background: #050b10;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25);
+
+}
+
+.tl-terminal-head {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 12px 15px;
+
+    border-bottom: 1px solid var(--tl-border);
+
+    background: #09131c;
+
+}
+
+.tl-terminal-dot {
+
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+}
+
+.tl-terminal-dot.red {
+    background: var(--tl-red);
+}
+
+.tl-terminal-dot.yellow {
+    background: var(--tl-orange);
+}
+
+.tl-terminal-dot.green {
+    background: var(--tl-green);
+}
+
+.tl-terminal-title {
+
+    margin-left: 7px;
+
+    color: var(--tl-muted);
+
+    font-size: 11px;
+
+}
+
+.tl-terminal-body {
+
+    padding: 20px;
+
+    color: #b9d8e7;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+}
+
+.tl-command {
+    color: var(--tl-cyan);
+}
+
+.tl-comment {
+    color: #607887;
+}
+
+
+/* =========================================================
+   IOC DATA TABLE
+   ========================================================= */
+
+.tl-table-wrap {
+
+    overflow-x: auto;
+
+    border: 1px solid var(--tl-border);
+
+    border-radius: 7px;
+
+}
+
+.tl-table {
+
+    width: 100%;
+
+    min-width: 700px;
+
+    border-collapse: collapse;
+
+    background: var(--tl-panel);
+
+}
+
+.tl-table th {
+
+    padding: 15px;
+
+    border-bottom: 1px solid var(--tl-border);
+
+    background: var(--tl-panel-2);
+
+    color: var(--tl-cyan);
+
+    font-size: 12px;
+
+    text-align: left;
+
+    letter-spacing: 0.5px;
+
+}
+
+.tl-table td {
+
+    padding: 14px 15px;
+
+    border-bottom: 1px solid rgba(32, 53, 68, 0.7);
+
+    color: var(--tl-muted);
+
+    font-size: 13px;
+
+}
+
+.tl-table tr:last-child td {
+    border-bottom: none;
+}
+
+.tl-table code {
+
+    color: var(--tl-text);
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+}
+
+.tl-indicator {
+
+    color: var(--tl-orange) !important;
+
+}
+
+.tl-status {
+
+    color: var(--tl-red) !important;
+
+}
+
+.tl-action {
+
+    color: var(--tl-green) !important;
+
+}
+
+
+/* =========================================================
+   ANALYSIS CARDS
+   ========================================================= */
+
+.tl-analysis-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 16px;
+
+}
+
+.tl-analysis {
+
+    padding: 23px;
+
+    border: 1px solid var(--tl-border);
+
+    border-radius: 7px;
+
+    background: var(--tl-panel);
+
+}
+
+.tl-analysis span {
+
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: var(--tl-cyan);
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+}
+
+.tl-analysis h3 {
+
+    margin: 0 0 9px;
+
+    font-size: 16px;
+
+}
+
+.tl-analysis p {
+
+    margin: 0;
+
+    color: var(--tl-muted);
+
+    font-size: 13px;
+
+    line-height: 1.65;
+
+}
+
+
+/* =========================================================
+   RESULT
+   ========================================================= */
+
+.tl-result {
+
+    padding: 28px;
+
+    border: 1px solid rgba(67, 209, 158, 0.25);
+
+    border-left: 3px solid var(--tl-green);
+
+    border-radius: 7px;
+
+    background: rgba(67, 209, 158, 0.035);
+
+}
+
+.tl-result h2 {
+
+    margin: 0 0 13px;
+
+    color: var(--tl-green);
+
+    font-size: 23px;
+
+}
+
+.tl-result p {
+
+    margin: 0;
+
+    color: var(--tl-muted);
+
+    line-height: 1.8;
+
+    font-size: 14px;
+
+}
+
+
+/* =========================================================
+   CHECKLIST
+   ========================================================= */
+
+.tl-checklist {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+
+}
+
+.tl-check {
+
+    padding: 16px 18px;
+
+    border: 1px solid var(--tl-border);
+
+    border-radius: 6px;
+
+    background: var(--tl-panel);
+
+    color: var(--tl-muted);
+
+    font-size: 13px;
+
+}
+
+.tl-check strong {
+    color: var(--tl-text);
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.tl-nav {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 35px;
+
+}
+
+.tl-nav a {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 12px 17px;
+
+    border: 1px solid var(--tl-border);
+
+    border-radius: 5px;
+
+    color: var(--tl-muted);
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+
+}
+
+.tl-nav a:hover {
+
+    color: var(--tl-cyan);
+
+    border-color: rgba(56, 217, 255, 0.4);
+
+}
+
+.tl-theory {
+
+    border-color: rgba(56, 217, 255, 0.35) !important;
+
+    color: var(--tl-cyan) !important;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .tl-hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tl-analysis-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .tl-analysis-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tl-checklist {
+        grid-template-columns: 1fr;
+    }
+
+    .tl-nav {
+        flex-direction: column;
+    }
+
+    .tl-nav a {
+        width: 100%;
+        justify-content: center;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .tl-container {
+        width: 92%;
+    }
+
+    .tl-hero {
+        padding: 55px 0 45px;
+    }
+
+    .tl-hero h1 {
+        font-size: clamp(34px, 10vw, 48px);
+    }
+
+    .tl-hero p {
+        font-size: 15px;
+    }
+
+    .tl-section {
+        padding: 50px 0;
+    }
+
+    .tl-title h2 {
+        font-size: 26px;
+    }
+
+    .tl-instructions {
+        padding: 21px;
+    }
+
+    .tl-terminal-body {
+        padding: 16px;
+
+        font-size: 12px;
+    }
+
+    .tl-result {
+        padding: 22px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="../../../index.html" class="brand">
+
+<div class="brand-logo">
+
+<svg viewBox="0 0 50 60">
+
+<path
+d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+fill="none"
+stroke="currentColor"
+stroke-width="3"
+/>
+
+<rect
+x="18"
+y="25"
+width="14"
+height="14"
+rx="2"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<path
+d="M20 25 V20 C20 16 30 16 30 20 V25"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<circle
+cx="25"
+cy="31"
+r="2"
+fill="currentColor"
+/>
+
+<path
+d="M25 33 V36"
+stroke="currentColor"
+stroke-width="2"
+/>
+
+</svg>
+
+</div>
+
+
+<div class="brand-text">
+
+<div class="brand-name">
+Cyber<span>Nexa</span>
+</div>
+
+<div class="brand-tagline">
+Cybersecurity &amp; IT Learning
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="tl-hero">
+
+<div class="tl-container">
+
+<div class="tl-breadcrumb">
+
+CyberNexa / SOC / Blue Team / Threat Intelligence / Practical Lab
+
+</div>
+
+
+<div class="tl-hero-grid">
+
+
+<div>
+
+<div class="tl-badge">
+
+<span class="tl-dot"></span>
+
+Threat Intelligence Lab
+
+</div>
+
+
+<h1>
+
+Threat <span>Intelligence</span> Investigation
+
+</h1>
+
+
+<p>
+
+Practice the basic Threat Intelligence workflow by
+examining security indicators, identifying their type,
+adding context and deciding how the information can
+support SOC investigation.
+
+</p>
+
+</div>
+
+
+<div class="tl-status">
+
+<div class="tl-status-head">
+
+<strong>
+INTELLIGENCE LAB
+</strong>
+
+<span class="tl-status-live">
+● ACTIVE
+</span>
+
+</div>
+
+
+<div class="tl-divider"></div>
+
+
+<div class="tl-status-row">
+
+<span>Mode</span>
+
+<strong class="active">
+Investigation
+</strong>
+
+</div>
+
+
+<div class="tl-status-row">
+
+<span>Focus</span>
+
+<strong>
+Indicators
+</strong>
+
+</div>
+
+
+<div class="tl-status-row">
+
+<span>Environment</span>
+
+<strong>
+SOC Training
+</strong>
+
+</div>
+
+
+<div class="tl-status-row">
+
+<span>Difficulty</span>
+
+<strong>
+Beginner
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     OBJECTIVE
+====================================================== -->
+
+<section class="tl-section">
+
+<div class="tl-container">
+
+<div class="tl-title">
+
+<h2>Lab Objective</h2>
+
+<p>
+Learn how a SOC analyst can use threat intelligence
+information during an investigation.
+</p>
+
+</div>
+
+
+<div class="tl-instructions">
+
+<p>
+
+<strong>Scenario:</strong>
+Your SOC has detected several suspicious events.
+You have received a small set of indicators and must
+analyze them before deciding what action should be taken.
+
+</p>
+
+<p>
+
+The exercise uses fictional training indicators.
+They are provided only for learning and investigation
+practice.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     TERMINAL
+====================================================== -->
+
+<section class="tl-section">
+
+<div class="tl-container">
+
+<div class="tl-title">
+
+<h2>Investigation Console</h2>
+
+<p>
+Review the sample indicators using a simple SOC-style
+investigation workflow.
+</p>
+
+</div>
+
+
+<div class="tl-terminal">
+
+<div class="tl-terminal-head">
+
+<span class="tl-terminal-dot red"></span>
+<span class="tl-terminal-dot yellow"></span>
+<span class="tl-terminal-dot green"></span>
+
+<span class="tl-terminal-title">
+threat-intelligence-console
+</span>
+
+</div>
+
+
+<div class="tl-terminal-body">
+
+<div>
+<span class="tl-comment">
+# Load the training intelligence dataset
+</span>
+</div>
+
+<div>
+<span class="tl-command">
+$ load threat_indicators.json
+</span>
+</div>
+
+<div>
+[+] Dataset loaded successfully
+</div>
+
+<div>
+[+] Indicators available: 6
+</div>
+
+<br>
+
+<div>
+<span class="tl-comment">
+# Start intelligence analysis
+</span>
+</div>
+
+<div>
+<span class="tl-command">
+$ analyze indicators
+</span>
+</div>
+
+<div>
+[+] Classifying indicator types...
+</div>
+
+<div>
+[+] Adding investigation context...
+</div>
+
+<div>
+[+] Generating analyst observations...
+</div>
+
+<br>
+
+<div>
+<span class="tl-comment">
+# Generate intelligence report
+</span>
+</div>
+
+<div>
+<span class="tl-command">
+$ generate-report
+</span>
+</div>
+
+<div>
+[+] Report ready for SOC review
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     DATASET
+====================================================== -->
+
+<section class="tl-section">
+
+<div class="tl-container">
+
+<div class="tl-title">
+
+<h2>Indicator Dataset</h2>
+
+<p>
+Analyze the following fictional indicators.
+</p>
+
+</div>
+
+
+<div class="tl-table-wrap">
+
+<table class="tl-table">
+
+<thead>
+
+<tr>
+
+<th>Indicator</th>
+<th>Type</th>
+<th>Context</th>
+<th>Initial Status</th>
+<th>Suggested Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+
+<tr>
+
+<td>
+<code>203.0.113.45</code>
+</td>
+
+<td>
+IP Address
+</td>
+
+<td>
+Unusual outbound connection
+</td>
+
+<td class="tl-status">
+Suspicious
+</td>
+
+<td class="tl-action">
+Investigate
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+<code>login-check.example</code>
+</td>
+
+<td>
+Domain
+</td>
+
+<td>
+Observed in suspicious email
+</td>
+
+<td class="tl-status">
+Suspicious
+</td>
+
+<td class="tl-action">
+Analyze
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+<code>https://example.test/update</code>
+</td>
+
+<td>
+URL
+</td>
+
+<td>
+Unexpected endpoint
+</td>
+
+<td class="tl-status">
+Review
+</td>
+
+<td class="tl-action">
+Investigate
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+<code>5f4dcc3b5aa765d61d8327deb882cf99</code>
+</td>
+
+<td>
+File Hash
+</td>
+
+<td>
+Unknown executable
+</td>
+
+<td class="tl-status">
+Unknown
+</td>
+
+<td class="tl-action">
+Analyze
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+<code>198.51.100.27</code>
+</td>
+
+<td>
+IP Address
+</td>
+
+<td>
+Repeated connection attempts
+</td>
+
+<td class="tl-status">
+Suspicious
+</td>
+
+<td class="tl-action">
+Correlate
+</td>
+
+</tr>
+
+
+<tr>
+
+<td>
+<code>malware-sample.example</code>
+</td>
+
+<td>
+Domain
+</td>
+
+<td>
+Found in endpoint alert
+</td>
+
+<td class="tl-status">
+Review
+</td>
+
+<td class="tl-action">
+Investigate
+</td>
+
+</tr>
+
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ANALYSIS
+====================================================== -->
+
+<section class="tl-section">
+
+<div class="tl-container">
+
+<div class="tl-title">
+
+<h2>Analyst Analysis</h2>
+
+<p>
+Use context instead of treating every indicator as
+automatically malicious.
+</p>
+
+</div>
+
+
+<div class="tl-analysis-grid">
+
+
+<div class="tl-analysis">
+
+<span>STEP 01</span>
+
+<h3>Identify</h3>
+
+<p>
+
+Determine whether the artifact is an IP address,
+domain, URL, hash or another indicator.
+
+</p>
+
+</div>
+
+
+<div class="tl-analysis">
+
+<span>STEP 02</span>
+
+<h3>Correlate</h3>
+
+<p>
+
+Compare the indicator with available logs, alerts,
+security reports and other relevant information.
+
+</p>
+
+</div>
+
+
+<div class="tl-analysis">
+
+<span>STEP 03</span>
+
+<h3>Prioritize</h3>
+
+<p>
+
+Use the available context to determine whether the
+indicator requires further investigation or response.
+
+</p>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     RESULT
+====================================================== -->
+
+<section class="tl-section">
+
+<div class="tl-container">
+
+<div class="tl-result">
+
+<h2>Investigation Result</h2>
+
+<p>
+
+The indicators should not be treated as malicious solely
+because they appear in a dataset. A SOC analyst should
+correlate indicators with additional evidence such as
+logs, endpoint activity, network connections and threat
+reports. The purpose of Threat Intelligence is to add
+context that helps analysts make better security decisions.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CHECKLIST
+====================================================== -->
+
+<section class="tl-section">
+
+<div class="tl-container">
+
+<div class="tl-title">
+
+<h2>Analyst Checklist</h2>
+
+<p>
+Use this checklist during a basic intelligence investigation.
+</p>
+
+</div>
+
+
+<div class="tl-checklist">
+
+
+<div class="tl-check">
+
+<strong>✓ Identify Indicator</strong><br>
+Determine the indicator type.
+
+</div>
+
+
+<div class="tl-check">
+
+<strong>✓ Collect Context</strong><br>
+Find where and when it appeared.
+
+</div>
+
+
+<div class="tl-check">
+
+<strong>✓ Correlate Events</strong><br>
+Compare it with security logs and alerts.
+
+</div>
+
+
+<div class="tl-check">
+
+<strong>✓ Assess Risk</strong><br>
+Consider the available evidence.
+
+</div>
+
+
+<div class="tl-check">
+
+<strong>✓ Document Findings</strong><br>
+Record observations and evidence.
+
+</div>
+
+
+<div class="tl-check">
+
+<strong>✓ Escalate When Required</strong><br>
+Send significant findings for further investigation.
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<section class="tl-section">
+
+<div class="tl-container">
+
+<div class="tl-nav">
+
+<a href="ioc-lab.html">
+← Lab: IOC
+</a>
+
+<a href="../theory/incident-detection.html">
+Next Theory: Incident Detection →
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div>
+
+<div class="footer-brand">
+Cyber<span>Nexa</span>
+</div>
+
+<p>
+Cybersecurity &amp; IT Learning
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="../../../index.html">
+Home
+</a>
+
+<a href="../../../footer/about.html">
+About
+</a>
+
+<a href="../../../footer/contact.html">
+Contact
+</a>
+
+<a href="../../../footer/privacy-policy.html">
+Privacy Policy
+</a>
+
+<a href="../../../footer/disclaimer.html">
+Disclaimer
+</a>
+
+</div>
+
+</div>
+
+
+<div class="copyright">
+
+© 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+
+
+</body>
+</html>

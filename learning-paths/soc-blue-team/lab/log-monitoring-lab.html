@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Log Monitoring Lab | CyberNexa</title>
+
+<meta name="description"
+      content="Interactive CyberNexa SOC lab for practicing security log monitoring, filtering and investigation.">
+
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+
+<style>
+
+/* =========================================================
+   CYBERNEXA SOC / BLUE TEAM
+   PRACTICAL LAB: LOG MONITORING
+========================================================= */
+
+:root {
+
+    --lm-bg: #070d16;
+    --lm-panel: #0c1420;
+    --lm-panel-2: #101b29;
+
+    --lm-blue: #42a5ff;
+    --lm-cyan: #35d7ff;
+    --lm-green: #43d19e;
+    --lm-purple: #9b7cff;
+    --lm-orange: #ffad42;
+    --lm-red: #ff5364;
+
+    --lm-text: #edf6ff;
+    --lm-muted: #91a6b9;
+    --lm-border: #1d3042;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+
+    margin: 0;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(66,165,255,0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(53,215,255,0.06),
+            transparent 28%
+        ),
+        var(--lm-bg);
+
+    color: var(--lm-text);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.lm-container {
+    width: min(1150px, 92%);
+    margin: auto;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.lm-hero {
+
+    padding: 78px 0 55px;
+
+    border-bottom: 1px solid var(--lm-border);
+}
+
+.lm-breadcrumb {
+
+    margin-bottom: 18px;
+
+    color: var(--lm-cyan);
+
+    font-size: 13px;
+
+    letter-spacing: 0.4px;
+}
+
+.lm-kicker {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 13px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid rgba(53,215,255,0.28);
+
+    border-radius: 4px;
+
+    background: rgba(53,215,255,0.05);
+
+    color: var(--lm-cyan);
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.lm-dot {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--lm-green);
+
+    box-shadow:
+        0 0 12px rgba(67,209,158,0.8);
+}
+
+.lm-hero h1 {
+
+    margin: 0 0 15px;
+
+    font-size: clamp(36px, 5vw, 58px);
+
+    line-height: 1.05;
+
+    letter-spacing: -1px;
+}
+
+.lm-hero h1 span {
+    color: var(--lm-cyan);
+}
+
+.lm-description {
+
+    max-width: 750px;
+
+    color: var(--lm-muted);
+
+    font-size: 16px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   OBJECTIVE
+========================================================= */
+
+.lm-objective {
+
+    margin-top: 28px;
+
+    padding: 22px;
+
+    border: 1px solid var(--lm-border);
+
+    border-left: 3px solid var(--lm-green);
+
+    border-radius: 7px;
+
+    background: var(--lm-panel);
+}
+
+.lm-objective strong {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--lm-green);
+
+    font-size: 12px;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.lm-objective p {
+
+    margin: 0;
+
+    color: var(--lm-muted);
+
+    line-height: 1.7;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   METRICS
+========================================================= */
+
+.lm-metrics {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 12px;
+
+    margin: 35px 0 20px;
+}
+
+.lm-metric {
+
+    padding: 20px;
+
+    border: 1px solid var(--lm-border);
+
+    border-radius: 6px;
+
+    background: var(--lm-panel);
+}
+
+.lm-metric span {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--lm-muted);
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+}
+
+.lm-metric strong {
+
+    font-size: 24px;
+
+    color: var(--lm-cyan);
+}
+
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+.lm-controls {
+
+    display: grid;
+
+    grid-template-columns: 1.6fr 1fr 1fr auto;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.lm-control {
+
+    width: 100%;
+
+    padding: 12px 13px;
+
+    border: 1px solid var(--lm-border);
+
+    border-radius: 5px;
+
+    outline: none;
+
+    background: var(--lm-panel);
+
+    color: var(--lm-text);
+
+    font-size: 13px;
+}
+
+.lm-control:focus {
+
+    border-color: rgba(53,215,255,0.55);
+
+    box-shadow:
+        0 0 0 2px rgba(53,215,255,0.06);
+}
+
+.lm-button {
+
+    padding: 12px 17px;
+
+    border: 1px solid rgba(53,215,255,0.35);
+
+    border-radius: 5px;
+
+    background: rgba(53,215,255,0.06);
+
+    color: var(--lm-cyan);
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition: 0.2s ease;
+}
+
+.lm-button:hover {
+
+    background: rgba(53,215,255,0.12);
+}
+
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.lm-main-grid {
+
+    display: grid;
+
+    grid-template-columns: 1.35fr 0.65fr;
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   LOG CONSOLE
+========================================================= */
+
+.lm-console {
+
+    border: 1px solid var(--lm-border);
+
+    border-radius: 7px;
+
+    overflow: hidden;
+
+    background: var(--lm-panel);
+}
+
+.lm-console-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 15px 18px;
+
+    border-bottom: 1px solid var(--lm-border);
+
+    background: var(--lm-panel-2);
+}
+
+.lm-console-header strong {
+
+    font-size: 12px;
+
+    letter-spacing: 1px;
+}
+
+.lm-live {
+
+    color: var(--lm-green);
+
+    font-size: 10px;
+}
+
+.lm-log-list {
+
+    max-height: 520px;
+
+    overflow-y: auto;
+}
+
+.lm-log {
+
+    padding: 17px;
+
+    border-bottom: 1px solid rgba(29,48,66,0.7);
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.lm-log:hover {
+
+    background: rgba(53,215,255,0.035);
+}
+
+.lm-log.selected {
+
+    background: rgba(53,215,255,0.06);
+
+    border-left: 3px solid var(--lm-cyan);
+}
+
+.lm-log-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 9px;
+}
+
+.lm-time {
+
+    color: var(--lm-muted);
+
+    font-size: 11px;
+}
+
+.lm-severity {
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.7px;
+}
+
+.severity-low {
+    color: var(--lm-green);
+}
+
+.severity-medium {
+    color: var(--lm-orange);
+}
+
+.severity-high {
+    color: var(--lm-red);
+}
+
+.lm-log-message {
+
+    margin-bottom: 8px;
+
+    color: var(--lm-text);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.lm-log-meta {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.lm-tag {
+
+    padding: 4px 7px;
+
+    border: 1px solid var(--lm-border);
+
+    border-radius: 3px;
+
+    color: var(--lm-muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   INVESTIGATION PANEL
+========================================================= */
+
+.lm-investigation {
+
+    padding: 20px;
+
+    border: 1px solid var(--lm-border);
+
+    border-radius: 7px;
+
+    background: var(--lm-panel);
+}
+
+.lm-investigation h2 {
+
+    margin: 0 0 7px;
+
+    font-size: 20px;
+}
+
+.lm-investigation-intro {
+
+    margin: 0 0 20px;
+
+    color: var(--lm-muted);
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+.lm-detail {
+
+    margin-bottom: 15px;
+
+    padding: 13px;
+
+    border: 1px solid var(--lm-border);
+
+    border-radius: 5px;
+
+    background: rgba(16,27,41,0.7);
+}
+
+.lm-detail span {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--lm-muted);
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+}
+
+.lm-detail strong {
+
+    color: var(--lm-text);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   INVESTIGATION RESULT
+========================================================= */
+
+.lm-result {
+
+    margin-top: 18px;
+
+    padding: 18px;
+
+    border: 1px solid rgba(155,124,255,0.3);
+
+    border-radius: 6px;
+
+    background: rgba(155,124,255,0.045);
+}
+
+.lm-result h3 {
+
+    margin: 0 0 10px;
+
+    color: var(--lm-purple);
+
+    font-size: 13px;
+
+    letter-spacing: 0.7px;
+
+    text-transform: uppercase;
+}
+
+.lm-result p {
+
+    margin: 0;
+
+    color: var(--lm-muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.lm-investigate-button {
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    padding: 12px;
+
+    border: 1px solid rgba(67,209,158,0.35);
+
+    border-radius: 5px;
+
+    background: rgba(67,209,158,0.05);
+
+    color: var(--lm-green);
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.lm-investigate-button:hover {
+
+    background: rgba(67,209,158,0.1);
+}
+
+
+/* =========================================================
+   TASK AREA
+========================================================= */
+
+.lm-task {
+
+    margin-top: 22px;
+
+    padding: 22px;
+
+    border: 1px solid var(--lm-border);
+
+    border-top: 2px solid var(--lm-purple);
+
+    border-radius: 7px;
+
+    background: var(--lm-panel);
+}
+
+.lm-task h2 {
+
+    margin: 0 0 10px;
+
+    font-size: 20px;
+}
+
+.lm-task p {
+
+    margin: 0 0 15px;
+
+    color: var(--lm-muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.lm-task-list {
+
+    display: grid;
+
+    gap: 9px;
+}
+
+.lm-task-item {
+
+    padding: 12px;
+
+    border: 1px solid var(--lm-border);
+
+    border-radius: 5px;
+
+    color: var(--lm-muted);
+
+    font-size: 13px;
+}
+
+.lm-task-item strong {
+
+    color: var(--lm-text);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .lm-main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lm-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .lm-controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .lm-button {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .lm-container {
+        width: 92%;
+    }
+
+    .lm-hero {
+        padding: 60px 0 45px;
+    }
+
+    .lm-hero h1 {
+        font-size: 40px;
+    }
+
+    .lm-metrics {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .lm-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .lm-log-list {
+        max-height: 460px;
+    }
+}
+
+
+@media (max-width: 430px) {
+
+    .lm-container {
+        width: 94%;
+    }
+
+    .lm-hero h1 {
+        font-size: 33px;
+    }
+
+    .lm-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .lm-metric {
+        padding: 17px;
+    }
+
+    .lm-log-top {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="../../../index.html" class="brand">
+
+<div class="brand-logo">
+
+<svg viewBox="0 0 50 60">
+
+<path
+d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+fill="none"
+stroke="currentColor"
+stroke-width="3"
+/>
+
+<rect
+x="18"
+y="25"
+width="14"
+height="14"
+rx="2"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<path
+d="M20 25 V20 C20 16 30 16 30 20 V25"
+fill="none"
+stroke="currentColor"
+stroke-width="2.5"
+/>
+
+<circle
+cx="25"
+cy="31"
+r="2"
+fill="currentColor"
+/>
+
+<path
+d="M25 33 V36"
+stroke="currentColor"
+stroke-width="2"
+/>
+
+</svg>
+
+</div>
+
+<div class="brand-text">
+
+<div class="brand-name">
+Cyber<span>Nexa</span>
+</div>
+
+<div class="brand-tagline">
+Cybersecurity &amp; IT Learning
+</div>
+
+</div>
+
+</a>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<header class="lm-hero">
+
+<div class="lm-container">
+
+<div class="lm-breadcrumb">
+CyberNexa / SOC / Blue Team / Log Monitoring / Practical Lab
+</div>
+
+<div class="lm-kicker">
+
+<span class="lm-dot"></span>
+
+SOC PRACTICAL LAB
+
+</div>
+
+<h1>
+Log <span>Monitoring Lab</span>
+</h1>
+
+<p class="lm-description">
+
+Practice how a SOC analyst monitors security logs,
+filters relevant events and investigates suspicious
+activity.
+
+</p>
+
+
+<div class="lm-objective">
+
+<strong>
+Lab Objective
+</strong>
+
+<p>
+
+Review the available security logs, identify suspicious
+events, filter the log data and investigate the event
+that requires the most attention.
+
+</p>
+
+</div>
+
+</div>
+
+</header>
+
+
+<main>
+
+<div class="lm-container">
+
+
+<!-- =====================================================
+     METRICS
+====================================================== -->
+
+<section>
+
+<div class="lm-metrics">
+
+<div class="lm-metric">
+
+<span>Total Logs</span>
+
+<strong id="totalLogs">
+0
+</strong>
+
+</div>
+
+<div class="lm-metric">
+
+<span>High Severity</span>
+
+<strong id="highLogs">
+0
+</strong>
+
+</div>
+
+<div class="lm-metric">
+
+<span>Sources</span>
+
+<strong id="sourceCount">
+0
+</strong>
+
+</div>
+
+<div class="lm-metric">
+
+<span>Visible</span>
+
+<strong id="visibleLogs">
+0
+</strong>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     CONTROLS
+====================================================== -->
+
+<div class="lm-controls">
+
+<input
+type="text"
+id="searchInput"
+class="lm-control"
+placeholder="Search IP, user, event or message..."
+>
+
+<select id="severityFilter" class="lm-control">
+
+<option value="all">
+All Severities
+</option>
+
+<option value="high">
+High
+</option>
+
+<option value="medium">
+Medium
+</option>
+
+<option value="low">
+Low
+</option>
+
+</select>
+
+
+<select id="sourceFilter" class="lm-control">
+
+<option value="all">
+All Sources
+</option>
+
+<option value="Windows">
+Windows
+</option>
+
+<option value="Linux">
+Linux
+</option>
+
+<option value="Firewall">
+Firewall
+</option>
+
+<option value="Web Server">
+Web Server
+</option>
+
+</select>
+
+
+<button
+id="resetBtn"
+class="lm-button">
+
+Reset
+
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN GRID
+====================================================== -->
+
+<div class="lm-main-grid">
+
+
+<!-- =====================================================
+     LOG CONSOLE
+====================================================== -->
+
+<div class="lm-console">
+
+<div class="lm-console-header">
+
+<strong>
+SECURITY LOG STREAM
+</strong>
+
+<span class="lm-live">
+● MONITORING
+</span>
+
+</div>
+
+
+<div id="logList" class="lm-log-list">
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     INVESTIGATION
+====================================================== -->
+
+<div class="lm-investigation">
+
+<h2>
+Log Investigation
+</h2>
+
+<p class="lm-investigation-intro">
+
+Select a log from the monitoring stream and investigate
+its security relevance.
+
+</p>
+
+
+<div class="lm-detail">
+
+<span>Selected Event</span>
+
+<strong id="selectedEvent">
+No log selected
+</strong>
+
+</div>
+
+
+<div class="lm-detail">
+
+<span>Source</span>
+
+<strong id="selectedSource">
+—
+</strong>
+
+</div>
+
+
+<div class="lm-detail">
+
+<span>Severity</span>
+
+<strong id="selectedSeverity">
+—
+</strong>
+
+</div>
+
+
+<div class="lm-detail">
+
+<span>Source IP</span>
+
+<strong id="selectedIP">
+—
+</strong>
+
+</div>
+
+
+<button
+id="investigateBtn"
+class="lm-investigate-button">
+
+Investigate Selected Log
+
+</button>
+
+
+<div
+id="resultBox"
+class="lm-result"
+style="display:none;">
+
+<h3>
+Investigation Result
+</h3>
+
+<p id="resultText">
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     TASK
+====================================================== -->
+
+<div class="lm-task">
+
+<h2>
+SOC Analyst Task
+</h2>
+
+<p>
+
+Use the monitoring console above and complete these
+basic investigation steps.
+
+</p>
+
+<div class="lm-task-list">
+
+<div class="lm-task-item">
+
+<strong>01.</strong>
+Find a high-severity authentication event.
+
+</div>
+
+<div class="lm-task-item">
+
+<strong>02.</strong>
+Check the source IP address.
+
+</div>
+
+<div class="lm-task-item">
+
+<strong>03.</strong>
+Determine which system generated the event.
+
+</div>
+
+<div class="lm-task-item">
+
+<strong>04.</strong>
+Decide whether the event requires further investigation.
+
+</div>
+
+</div>
+
+</div>
+
+
+</section>
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<div style="
+display:flex;
+justify-content:space-between;
+gap:12px;
+margin:35px 0 60px;
+flex-wrap:wrap;
+">
+
+<a
+href="siem-lab.html"
+class="lm-button">
+← Lab: SIEM
+</a>
+
+<a
+href="../theory/alert-analysis.html"
+class="lm-button">
+Next Theory: Alert Analysis →
+</a>
+
+</div>
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+<div class="footer-container">
+
+<div>
+
+<div class="footer-brand">
+Cyber<span>Nexa</span>
+</div>
+
+<p>
+Cybersecurity &amp; IT Learning
+</p>
+
+</div>
+
+
+<div class="footer-links">
+
+<a href="../../../index.html">
+Home
+</a>
+
+<a href="../../../footer/about.html">
+About
+</a>
+
+<a href="../../../footer/contact.html">
+Contact
+</a>
+
+<a href="../../../footer/privacy-policy.html">
+Privacy Policy
+</a>
+
+<a href="../../../footer/disclaimer.html">
+Disclaimer
+</a>
+
+</div>
+
+</div>
+
+
+<div class="copyright">
+
+© 2026 CyberNexa. All rights reserved.
+
+</div>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+const logs = [
+
+{
+id: 1,
+time: "09:14:21",
+severity: "high",
+source: "Windows",
+event: "Multiple failed login attempts",
+user: "administrator",
+ip: "185.73.21.44",
+message: "12 failed authentication attempts followed by successful login."
+},
+
+{
+id: 2,
+time: "09:18:43",
+severity: "medium",
+source: "Linux",
+event: "SSH authentication failure",
+user: "root",
+ip: "103.44.91.18",
+message: "Repeated SSH authentication failures detected."
+},
+
+{
+id: 3,
+time: "09:21:17",
+severity: "low",
+source: "Web Server",
+event: "HTTP 404 activity",
+user: "unknown",
+ip: "192.168.1.45",
+message: "Several requests returned HTTP 404 responses."
+},
+
+{
+id: 4,
+time: "09:25:32",
+severity: "high",
+source: "Firewall",
+event: "Blocked outbound connection",
+user: "workstation-07",
+ip: "91.212.45.77",
+message: "Outbound connection to a suspicious external address was blocked."
+},
+
+{
+id: 5,
+time: "09:29:06",
+severity: "medium",
+source: "Windows",
+event: "Privilege change",
+user: "user01",
+ip: "192.168.1.23",
+message: "User account received a new administrative privilege."
+},
+
+{
+id: 6,
+time: "09:33:44",
+severity: "low",
+source: "Linux",
+event: "Service restart",
+user: "system",
+ip: "192.168.1.20",
+message: "Web service restarted successfully."
+},
+
+{
+id: 7,
+time: "09:37:12",
+severity: "high",
+source: "Web Server",
+event: "Suspicious request pattern",
+user: "unknown",
+ip: "45.77.21.90",
+message: "Multiple unusual requests detected against administrative endpoints."
+},
+
+{
+id: 8,
+time: "09:42:58",
+severity: "medium",
+source: "Firewall",
+event: "Port scan detected",
+user: "unknown",
+ip: "77.91.44.31",
+message: "Multiple destination ports were contacted in a short period."
+}
+
+];
+
+
+const logList = document.getElementById("logList");
+
+const searchInput =
+document.getElementById("searchInput");
+
+const severityFilter =
+document.getElementById("severityFilter");
+
+const sourceFilter =
+document.getElementById("sourceFilter");
+
+const resetBtn =
+document.getElementById("resetBtn");
+
+const totalLogs =
+document.getElementById("totalLogs");
+
+const highLogs =
+document.getElementById("highLogs");
+
+const sourceCount =
+document.getElementById("sourceCount");
+
+const visibleLogs =
+document.getElementById("visibleLogs");
+
+const selectedEvent =
+document.getElementById("selectedEvent");
+
+const selectedSource =
+document.getElementById("selectedSource");
+
+const selectedSeverity =
+document.getElementById("selectedSeverity");
+
+const selectedIP =
+document.getElementById("selectedIP");
+
+const investigateBtn =
+document.getElementById("investigateBtn");
+
+const resultBox =
+document.getElementById("resultBox");
+
+const resultText =
+document.getElementById("resultText");
+
+
+let selectedLog = null;
+
+
+/* =========================================================
+   METRICS
+========================================================= */
+
+function updateMetrics(data) {
+
+    totalLogs.textContent = logs.length;
+
+    highLogs.textContent =
+        logs.filter(log =>
+            log.severity === "high"
+        ).length;
+
+    sourceCount.textContent =
+        new Set(
+            logs.map(log => log.source)
+        ).size;
+
+    visibleLogs.textContent =
+        data.length;
+}
+
+
+/* =========================================================
+   DISPLAY LOGS
+========================================================= */
+
+function renderLogs() {
+
+    const search =
+        searchInput.value
+        .toLowerCase()
+        .trim();
+
+    const severity =
+        severityFilter.value;
+
+    const source =
+        sourceFilter.value;
+
+
+    const filtered =
+        logs.filter(log => {
+
+            const searchable =
+                (
+                    log.event +
+                    " " +
+                    log.user +
+                    " " +
+                    log.ip +
+                    " " +
+                    log.message
+                ).toLowerCase();
+
+
+            const matchesSearch =
+                searchable.includes(search);
+
+
+            const matchesSeverity =
+                severity === "all" ||
+                log.severity === severity;
+
+
+            const matchesSource =
+                source === "all" ||
+                log.source === source;
+
+
+            return (
+                matchesSearch &&
+                matchesSeverity &&
+                matchesSource
+            );
+
+        });
+
+
+    logList.innerHTML = "";
+
+
+    if (filtered.length === 0) {
+
+        logList.innerHTML = `
+
+        <div style="
+            padding:30px;
+            text-align:center;
+            color:#91a6b9;
+            font-size:13px;
+        ">
+
+            No matching security logs found.
+
+        </div>
+
+        `;
+
+        updateMetrics(filtered);
+
+        return;
+    }
+
+
+    filtered.forEach(log => {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "lm-log";
+
+
+        if (
+            selectedLog &&
+            selectedLog.id === log.id
+        ) {
+
+            item.classList.add("selected");
+
+        }
+
+
+        item.innerHTML = `
+
+        <div class="lm-log-top">
+
+            <span class="lm-time">
+                ${log.time}
+            </span>
+
+            <span class="
+                lm-severity
+                severity-${log.severity}
+            ">
+
+                ${log.severity.toUpperCase()}
+
+            </span>
+
+        </div>
+
+
+        <div class="lm-log-message">
+
+            ${log.message}
+
+        </div>
+
+
+        <div class="lm-log-meta">
+
+            <span class="lm-tag">
+                ${log.source}
+            </span>
+
+            <span class="lm-tag">
+                ${log.event}
+            </span>
+
+            <span class="lm-tag">
+                ${log.ip}
+            </span>
+
+        </div>
+
+        `;
+
+
+        item.addEventListener(
+            "click",
+            () => selectLog(log)
+        );
+
+
+        logList.appendChild(item);
+
+    });
+
+
+    updateMetrics(filtered);
+}
+
+
+/* =========================================================
+   SELECT LOG
+========================================================= */
+
+function selectLog(log) {
+
+    selectedLog = log;
+
+    selectedEvent.textContent =
+        log.event;
+
+    selectedSource.textContent =
+        log.source;
+
+    selectedSeverity.textContent =
+        log.severity.toUpperCase();
+
+    selectedIP.textContent =
+        log.ip;
+
+    resultBox.style.display = "none";
+
+    renderLogs();
+}
+
+
+/* =========================================================
+   INVESTIGATE
+========================================================= */
+
+investigateBtn.addEventListener(
+    "click",
+    () => {
+
+        if (!selectedLog) {
+
+            resultBox.style.display = "block";
+
+            resultText.textContent =
+                "Select a security log first, then start the investigation.";
+
+            return;
+        }
+
+
+        let result = "";
+
+
+        if (
+            selectedLog.severity === "high"
+        ) {
+
+            result =
+                "This event requires priority investigation. Review the source IP, authentication history, affected account and related events. Determine whether the activity represents unauthorized access or another security incident.";
+
+        }
+
+        else if (
+            selectedLog.severity === "medium"
+        ) {
+
+            result =
+                "This event requires analyst review. Correlate it with other logs, check whether the activity is expected and determine whether additional suspicious behavior exists.";
+
+        }
+
+        else {
+
+            result =
+                "This event currently has lower severity. It should still be monitored and correlated with other activity if additional indicators appear.";
+
+        }
+
+
+        resultBox.style.display = "block";
+
+        resultText.textContent = result;
+
+    }
+);
+
+
+/* =========================================================
+   FILTER EVENTS
+========================================================= */
+
+searchInput.addEventListener(
+    "input",
+    renderLogs
+);
+
+severityFilter.addEventListener(
+    "change",
+    renderLogs
+);
+
+sourceFilter.addEventListener(
+    "change",
+    renderLogs
+);
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+resetBtn.addEventListener(
+    "click",
+    () => {
+
+        searchInput.value = "";
+
+        severityFilter.value = "all";
+
+        sourceFilter.value = "all";
+
+        selectedLog = null;
+
+        selectedEvent.textContent =
+            "No log selected";
+
+        selectedSource.textContent =
+            "—";
+
+        selectedSeverity.textContent =
+            "—";
+
+        selectedIP.textContent =
+            "—";
+
+        resultBox.style.display =
+            "none";
+
+        renderLogs();
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+renderLogs();
+
+</script>
+
+</body>
+</html>

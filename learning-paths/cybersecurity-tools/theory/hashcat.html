@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+    <title>Hashcat | CyberNexa</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top right,
+                    rgba(255, 120, 0, 0.10),
+                    transparent 32%),
+                radial-gradient(circle at bottom left,
+                    rgba(255, 60, 0, 0.06),
+                    transparent 30%),
+                #05080d;
+
+            color: #e5edf5;
+            font-family: Arial, sans-serif;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            background: #070b11;
+            border-bottom: 1px solid rgba(255, 120, 0, 0.20);
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 15px 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #ff7900;
+            flex-shrink: 0;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #ff7900;
+        }
+
+        .brand-tagline {
+            color: #718196;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        /* ================= PAGE ================= */
+
+        .tool-page {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        .breadcrumb {
+            color: #718196;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb span {
+            color: #ff7900;
+            padding: 0 7px;
+        }
+
+        /* ================= HEADER ================= */
+
+        .tool-header {
+            position: relative;
+            overflow: hidden;
+
+            padding: 35px;
+
+            border: 1px solid rgba(255, 121, 0, 0.30);
+            border-left: 5px solid #ff7900;
+            border-radius: 10px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(255, 121, 0, 0.08),
+                    rgba(255, 50, 0, 0.025));
+        }
+
+        .tool-header::after {
+            content: "HASHCAT";
+
+            position: absolute;
+            right: -10px;
+            bottom: -25px;
+
+            font-size: 85px;
+            font-weight: 900;
+
+            color: rgba(255, 121, 0, 0.035);
+
+            pointer-events: none;
+        }
+
+        .tool-label {
+            color: #ff7900;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .tool-header h1 {
+            color: white;
+            font-size: clamp(30px, 5vw, 48px);
+            margin: 10px 0;
+        }
+
+        .tool-header p {
+            max-width: 760px;
+            color: #a9b8c8;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .tool-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 7px 12px;
+
+            border: 1px solid rgba(255, 121, 0, 0.35);
+            border-radius: 20px;
+
+            color: #ff9a42;
+            background: rgba(255, 121, 0, 0.06);
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* ================= SECTIONS ================= */
+
+        .tool-section {
+            margin-top: 22px;
+            padding: 25px;
+
+            background: #080e16;
+
+            border: 1px solid rgba(255, 121, 0, 0.13);
+            border-radius: 9px;
+        }
+
+        .tool-section h2 {
+            margin-top: 0;
+            color: white;
+            font-size: 21px;
+        }
+
+        .tool-section h2::before {
+            content: "> ";
+            color: #ff7900;
+        }
+
+        .tool-section p {
+            color: #a9b8c8;
+            line-height: 1.75;
+            font-size: 13px;
+        }
+
+        /* ================= CODE ================= */
+
+        .code-block {
+            margin-top: 15px;
+            padding: 17px;
+
+            overflow-x: auto;
+
+            background: #02050a;
+            border: 1px solid rgba(255, 121, 0, 0.18);
+            border-radius: 7px;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #ffad66;
+
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        /* ================= CONCEPT GRID ================= */
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .concept-card {
+            min-width: 0;
+            padding: 18px;
+
+            background: #060b12;
+
+            border: 1px solid rgba(255, 121, 0, 0.15);
+            border-radius: 8px;
+        }
+
+        .concept-card h3 {
+            margin: 0 0 8px;
+            color: #ff9a42;
+            font-size: 15px;
+        }
+
+        .concept-card p {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        /* ================= FLOW ================= */
+
+        .hash-flow {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .flow-item {
+            padding: 16px 10px;
+            text-align: center;
+
+            background: #060b12;
+            border: 1px solid rgba(255, 121, 0, 0.18);
+            border-radius: 7px;
+
+            color: #c9d5e0;
+            font-size: 12px;
+        }
+
+        .flow-item strong {
+            display: block;
+            color: #ff7900;
+            margin-bottom: 5px;
+        }
+
+        /* ================= LIST ================= */
+
+        .tool-list {
+            padding-left: 20px;
+        }
+
+        .tool-list li {
+            color: #a9b8c8;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 7px;
+        }
+
+        /* ================= WARNING ================= */
+
+        .warning-box {
+            margin-top: 22px;
+            padding: 20px;
+
+            border-left: 4px solid #ffb000;
+            border-radius: 7px;
+
+            background: rgba(255, 176, 0, 0.045);
+        }
+
+        .warning-box h3 {
+            margin-top: 0;
+            color: #ffb000;
+            font-size: 15px;
+        }
+
+        .warning-box p {
+            margin-bottom: 0;
+        }
+
+        /* ================= LAB BUTTON ================= */
+
+        .practical-lab {
+            margin-top: 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+
+            padding: 25px;
+
+            border: 1px solid rgba(255, 121, 0, 0.28);
+            border-left: 4px solid #ff7900;
+            border-radius: 9px;
+
+            background: rgba(255, 121, 0, 0.045);
+        }
+
+        .practical-lab h2 {
+            margin: 5px 0;
+            color: white;
+        }
+
+        .practical-lab p {
+            margin: 0;
+            color: #91a2b5;
+            font-size: 12px;
+        }
+
+        .lab-button {
+            flex-shrink: 0;
+
+            padding: 11px 20px;
+
+            border: 1px solid #ff7900;
+            border-radius: 22px;
+
+            color: #ff9a42;
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            background: rgba(255, 121, 0, 0.07);
+        }
+
+        .lab-button:hover {
+            background: #ff7900;
+            color: #090d12;
+        }
+
+        /* ================= LESSON COMPLETION ================= */
+
+        .lesson-completion-button {
+            display: inline-block;
+            padding: 11px 20px;
+            border: 1px solid #ff7900;
+            border-radius: 22px;
+            background: rgba(255, 121, 0, 0.07);
+            color: #ff9a42;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .lesson-completion-button:hover {
+            background: #ff7900;
+            color: #090d12;
+        }
+
+        .lesson-completion-button:focus-visible {
+            outline: 2px solid white;
+            outline-offset: 4px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            border-top: 1px solid rgba(255, 121, 0, 0.15);
+            background: #03070c;
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #ff7900;
+        }
+
+        .footer-container p {
+            color: #65778b;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 17px;
+        }
+
+        .footer-links a {
+            color: #8293a6;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #ff7900;
+        }
+
+        .copyright {
+            width: 100%;
+            max-width: 1050px;
+            margin: 25px auto 0;
+
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+            text-align: center;
+            color: #4d5d6e;
+            font-size: 10px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 800px) {
+
+            .tool-page {
+                padding: 25px 15px 55px;
+            }
+
+            .tool-header {
+                padding: 25px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hash-flow {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .practical-lab {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .lab-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .topic-navigation {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .nav-container {
+                padding: 13px 15px;
+            }
+
+            .brand-name {
+                font-size: 18px;
+            }
+
+            .brand-tagline {
+                font-size: 9px;
+            }
+
+            .tool-header {
+                padding: 20px;
+            }
+
+            .tool-section {
+                padding: 18px;
+            }
+
+            .tool-header h1 {
+                font-size: 29px;
+            }
+
+            .hash-flow {
+                grid-template-columns: 1fr;
+            }
+
+            .code-block {
+                padding: 13px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- SHARED CYBERNEXA NAVBAR -->
+    <div id="navbar-placeholder" data-navbar-path="../../../components/navbar.html" data-root-path="../../../">
+    </div>
+
+    <main class="tool-page">
+
+        <div class="breadcrumb">
+            Cybersecurity Tools
+            <span>›</span>
+            Hashcat
+            <span>›</span>
+            Theory
+        </div>
+
+
+        <!-- HEADER -->
+
+        <section class="tool-header">
+
+            <div class="tool-label">
+                CYBERSECURITY TOOL
+            </div>
+
+            <h1>
+                Hashcat
+            </h1>
+
+            <p>
+                Hashcat is a high-performance password recovery and
+                security auditing tool. It is commonly used by security
+                professionals to evaluate the strength of password
+                hashes in authorized environments.
+            </p>
+
+            <div class="tool-badge">
+                PASSWORD SECURITY • HASH ANALYSIS • AUDITING
+            </div>
+
+        </section>
+
+
+        <!-- WHAT -->
+
+        <section class="tool-section">
+
+            <h2>What is Hashcat?</h2>
+
+            <p>
+                Hashcat is a command-line security tool designed to
+                perform password recovery from password hashes.
+                Instead of storing a password directly, systems commonly
+                store a one-way representation called a hash.
+            </p>
+
+            <p>
+                During an authorized security assessment, Hashcat can
+                test candidate passwords against a known test hash and
+                help determine whether weak passwords are being used.
+            </p>
+
+        </section>
+
+
+        <!-- WHY -->
+
+        <section class="tool-section">
+
+            <h2>Why is Hashcat Important?</h2>
+
+            <div class="concept-grid">
+
+                <div class="concept-card">
+                    <h3>Password Auditing</h3>
+                    <p>
+                        Helps security teams evaluate the strength
+                        of password policies.
+                    </p>
+                </div>
+
+                <div class="concept-card">
+                    <h3>Hash Analysis</h3>
+                    <p>
+                        Allows authorized testers to work with
+                        known password hashes.
+                    </p>
+                </div>
+
+                <div class="concept-card">
+                    <h3>Security Testing</h3>
+                    <p>
+                        Helps identify weak passwords in controlled
+                        security assessments.
+                    </p>
+                </div>
+
+                <div class="concept-card">
+                    <h3>Defensive Security</h3>
+                    <p>
+                        Results can be used to improve password
+                        policies and authentication controls.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- HASH CONCEPT -->
+
+        <section class="tool-section">
+
+            <h2>Password vs Hash</h2>
+
+            <p>
+                A password is the original secret. A hash is a
+                one-way representation generated from that secret.
+            </p>
+
+            <div class="hash-flow">
+
+                <div class="flow-item">
+                    <strong>01</strong>
+                    Password
+                </div>
+
+                <div class="flow-item">
+                    <strong>02</strong>
+                    Hash Function
+                </div>
+
+                <div class="flow-item">
+                    <strong>03</strong>
+                    Hash
+                </div>
+
+                <div class="flow-item">
+                    <strong>04</strong>
+                    Verification
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- COMMON HASHES -->
+
+        <section class="tool-section">
+
+            <h2>Common Hash Algorithms</h2>
+
+            <div class="concept-grid">
+
+                <div class="concept-card">
+                    <h3>MD5</h3>
+                    <p>
+                        An old hashing algorithm that is considered
+                        unsuitable for secure password storage.
+                    </p>
+                </div>
+
+                <div class="concept-card">
+                    <h3>SHA-1</h3>
+                    <p>
+                        A legacy algorithm that should not be used
+                        for modern password storage.
+                    </p>
+                </div>
+
+                <div class="concept-card">
+                    <h3>SHA-256</h3>
+                    <p>
+                        A widely used cryptographic hash function,
+                        although password storage normally requires
+                        password-specific hashing schemes.
+                    </p>
+                </div>
+
+                <div class="concept-card">
+                    <h3>bcrypt / Argon2</h3>
+                    <p>
+                        Password-focused algorithms designed to make
+                        password guessing substantially more expensive.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BASIC USAGE -->
+
+        <section class="tool-section">
+
+            <h2>Basic Hashcat Usage</h2>
+
+            <p>
+                Hashcat uses a hash-mode identifier to determine how
+                the supplied hash should be interpreted. The exact mode
+                depends on the hashing algorithm.
+            </p>
+
+            <div class="code-block">
+
+                <pre><code>hashcat --help
+
+hashcat -m &lt;hash-mode&gt; &lt;hash-file&gt; &lt;wordlist&gt;</code></pre>
+
+            </div>
+
+            <p>
+                The general structure is:
+                <strong>hashcat</strong>,
+                followed by the hash mode, hash file and candidate
+                wordlist.
+            </p>
+
+        </section>
+
+
+        <!-- DEFENSIVE PRACTICE -->
+
+        <section class="tool-section">
+
+            <h2>How Hashcat Helps Defenders</h2>
+
+            <ul class="tool-list">
+
+                <li>Test the strength of organization-approved passwords.</li>
+
+                <li>Identify weak password choices in controlled assessments.</li>
+
+                <li>Improve password policies.</li>
+
+                <li>Evaluate the effectiveness of password hashing strategies.</li>
+
+                <li>Encourage stronger authentication practices.</li>
+
+            </ul>
+
+        </section>
+
+
+        <!-- WARNING -->
+
+        <div class="warning-box">
+
+            <h3>Authorized Lab Only</h3>
+
+            <p>
+                Password-recovery tools must only be used against hashes
+                that you own or have explicit permission to test. This
+                CyberNexa lab uses a locally generated test hash and a
+                small demonstration wordlist.
+            </p>
+
+        </div>
+
+        <!-- LESSON COMPLETION -->
+
+        <section class="tool-section" id="lessonCompletion">
+
+            <h2>Complete This Lesson</h2>
+
+            <p>
+                Mark this lesson as complete after studying Hashcat,
+                password hashes, common hash algorithms and authorized
+                password auditing.
+            </p>
+
+            <div style="text-align: center; margin-top: 20px;">
+
+                <button type="button" class="lesson-completion-button" data-lesson-progress
+                    data-course-id="cybersecurity-tools" data-lesson-id="hashcat"
+                    data-dashboard-url="../learning-paths/cybersecurity-tools/theory/hashcat.html"
+                    data-status-id="lessonCompletionStatus">
+
+                    ✓ Mark Lesson Complete
+
+                </button>
+
+            </div>
+
+            <p id="lessonCompletionStatus" role="status" aria-live="polite"
+                style="text-align: center; margin-top: 15px;">
+            </p>
+
+        </section>
+        <!-- LAB -->
+
+        <section class="practical-lab">
+
+            <div>
+
+                <div class="tool-label">
+                    PRACTICAL LAB
+                </div>
+
+                <h2>
+                    Hashcat Password Audit Lab
+                </h2>
+
+                <p>
+                    Practice Hashcat against your own controlled
+                    demonstration hash.
+                </p>
+
+            </div>
+
+            <a href="../lab/hashcat-lab.html" class="lab-button">
+                Open Hashcat Lab →
+            </a>
+        </section>
+    </main>
+
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+            <div class="footer-links">
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../js/supabase-client.js"></script>
+    <script src="../../../js/lesson-progress.js"></script>
+    <script src="../../../js/navbar-loader.js"></script>
+    <script src="../../../js/navbar.js"></script>
+    <script src="../../../js/session.js"></script>
+</body>
+
+</html>

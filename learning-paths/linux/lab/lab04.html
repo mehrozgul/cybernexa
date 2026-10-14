@@ -1,0 +1,2528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Users & Groups Practical Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .linux-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-topic-header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .linux-topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-topic-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+
+        .linux-topic-badge {
+
+            display: inline-block;
+
+            margin-top: 20px;
+
+            padding: 8px 14px;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 20px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           LIGHT SWEEP
+        ====================================================== */
+
+        .linux-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent
+                );
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover::after {
+
+                animation:
+                    linuxLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+
+        .linux-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-card h3 {
+
+            margin: 0 0 9px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+
+        .linux-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           OBJECTIVE
+        ====================================================== */
+
+        .linux-objective {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left: 3px solid #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-objective strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-objective span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           REQUIREMENTS GRID
+        ====================================================== */
+
+        .linux-user-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-user-card {
+
+            padding: 20px;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .linux-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            margin-bottom: 12px;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 50%;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-user-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .linux-command-box {
+
+            position: relative;
+
+            margin-top: 18px;
+
+            padding: 18px 20px;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+
+            white-space: pre;
+        }
+
+
+        /* =====================================================
+           COPY BUTTON
+        ====================================================== */
+
+        .linux-copy-button {
+
+            position: absolute;
+
+            top: 10px;
+            right: 10px;
+
+            padding: 6px 10px;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.20);
+
+            border-radius: 6px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 10px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .linux-copy-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.55);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        /* =====================================================
+           OUTPUT BOX
+        ====================================================== */
+
+        .linux-output-box {
+
+            margin-top: 15px;
+
+            padding: 18px 20px;
+
+            border: 1px solid
+                rgba(74, 222, 128, 0.16);
+
+            border-radius: 10px;
+
+            background:
+                rgba(74, 222, 128, 0.025);
+
+            overflow-x: auto;
+        }
+
+
+        .linux-output-label {
+
+            margin-bottom: 9px;
+
+            color: #86efac;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-output-box pre {
+
+            margin: 0;
+
+            color: #b8e8c7;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           WARNING
+        ====================================================== */
+
+        .linux-warning-box {
+
+            margin-top: 18px;
+
+            padding: 17px 20px;
+
+            border: 1px solid
+                rgba(251, 191, 36, 0.18);
+
+            border-left: 3px solid #fbbf24;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(251, 191, 36, 0.035);
+        }
+
+
+        .linux-warning-box strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #fbbf24;
+
+            font-size: 13px;
+        }
+
+
+        .linux-warning-box p {
+
+            margin: 0;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           PRACTICAL TASK
+        ====================================================== */
+
+        .linux-task-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-task-list li {
+
+            position: relative;
+
+            padding:
+                10px 0 10px 25px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom: 1px solid
+                rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-task-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .linux-task-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 10px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .linux-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-flow-item {
+
+            padding: 12px 16px;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .linux-result-box {
+
+            padding: 20px;
+
+            margin-top: 18px;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.18);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .linux-result-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-size: 14px;
+        }
+
+
+        .linux-result-box p {
+
+            margin: 0;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-key-item {
+
+            padding: 10px 14px;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border: 1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform: translateY(-1px);
+        }
+
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-learning-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-topic-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-learning-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-topic-header {
+
+                margin-bottom: 30px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-topic-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 14px;
+            }
+
+
+            .linux-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-user-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-key-item {
+
+                font-size: 11px;
+
+                padding: 9px 11px;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-learning-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-learning-page">
+
+        <div class="linux-learning-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="linux-topic-header">
+
+                <div class="linux-topic-category">
+                    LINUX PRACTICAL LAB
+                </div>
+
+                <h1>
+                    Lab 04 - <span>Users &amp; Groups</span>
+                </h1>
+
+                <p class="linux-topic-intro">
+
+                    In this practical lab, you will create Linux users
+                    and groups, assign group membership, inspect UID/GID
+                    information and verify access using basic Linux commands.
+
+                </p>
+
+                <div class="linux-topic-badge">
+                    Hands-On Lab • Beginner
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 OBJECTIVE
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🎯
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-objective">
+
+                    <strong>
+                        What You Will Practice
+                    </strong>
+
+                    <span>
+
+                        By completing this lab, you will learn how to
+                        create users and groups, set a password, add a
+                        user to a secondary group, check UID/GID details,
+                        and verify the configuration.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 REQUIREMENTS
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ⚙
+                    </div>
+
+                    <h2>
+                        Lab Requirements
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-user-grid">
+
+
+                    <div class="linux-user-card">
+
+                        <div class="linux-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Linux System
+                        </h3>
+
+                        <p>
+                            Ubuntu, Kali Linux, Debian or another
+                            Linux distribution.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <div class="linux-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Terminal
+                        </h3>
+
+                        <p>
+                            Open the Linux Terminal to execute
+                            the commands.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <div class="linux-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Sudo Access
+                        </h3>
+
+                        <p>
+                            Your account should have permission to
+                            execute administrative commands.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-user-card">
+
+                        <div class="linux-number">
+                            04
+                        </div>
+
+                        <h3>
+                            Basic Linux Knowledge
+                        </h3>
+
+                        <p>
+                            You should know how to open a terminal
+                            and execute basic commands.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 1
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        01
+                    </div>
+
+                    <h2>
+                        Step 1 — Check Current User
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    First, check which user is currently logged
+                    into the Linux system.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>whoami</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>student</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 2
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        02
+                    </div>
+
+                    <h2>
+                        Step 2 — Check User Information
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>id</strong> command displays the
+                    current user's UID, primary GID and groups.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>id</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>uid=1000(student) gid=1000(student) groups=1000(student),27(sudo)</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 3
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        03
+                    </div>
+
+                    <h2>
+                        Step 3 — Create a New User
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Create a new Linux user named
+                    <strong>labuser</strong>.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>sudo useradd labuser</code>
+
+                </div>
+
+
+                <div class="linux-warning-box">
+
+                    <strong>
+                        Important
+                    </strong>
+
+                    <p>
+
+                        The command creates the account. A password
+                        should be assigned separately in the next step.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 4
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        04
+                    </div>
+
+                    <h2>
+                        Step 4 — Set User Password
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Assign a password to the newly created
+                    <strong>labuser</strong> account.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>sudo passwd labuser</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Expected Result
+                    </div>
+
+                    <pre>New password:
+Retype new password:
+passwd: password updated successfully</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 5
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        05
+                    </div>
+
+                    <h2>
+                        Step 5 — Create a Group
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Create a new group named
+                    <strong>developers</strong>.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>sudo groupadd developers</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Verification
+                    </div>
+
+                    <pre>getent group developers</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 6
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        06
+                    </div>
+
+                    <h2>
+                        Step 6 — Add User to Group
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Add <strong>labuser</strong> to the
+                    <strong>developers</strong> group.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>sudo usermod -aG developers labuser</code>
+
+                </div>
+
+
+                <div class="linux-warning-box">
+
+                    <strong>
+                        Why use -aG?
+                    </strong>
+
+                    <p>
+
+                        The <strong>-aG</strong> option adds the user
+                        to the supplementary group without removing
+                        the user's existing supplementary memberships.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 7
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        07
+                    </div>
+
+                    <h2>
+                        Step 7 — Verify Group Membership
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Check whether <strong>labuser</strong> is now
+                    a member of the <strong>developers</strong> group.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>groups labuser</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>labuser : labuser developers</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 8
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        08
+                    </div>
+
+                    <h2>
+                        Step 8 — Check UID and GID
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the <strong>id</strong> command to inspect
+                    the UID, primary GID and supplementary groups
+                    of the new user.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>id labuser</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>uid=1001(labuser) gid=1001(labuser) groups=1001(labuser),1002(developers)</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 9
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        09
+                    </div>
+
+                    <h2>
+                        Step 9 — View User Database
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux stores user account information in
+                    <strong>/etc/passwd</strong>.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>grep '^labuser:' /etc/passwd</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>labuser:x:1001:1001::/home/labuser:/bin/sh</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 10
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        10
+                    </div>
+
+                    <h2>
+                        Step 10 — View Group Database
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Check the entry for the
+                    <strong>developers</strong> group.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>getent group developers</code>
+
+                </div>
+
+
+                <div class="linux-output-box">
+
+                    <div class="linux-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>developers:x:1002:labuser</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL FLOW
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ↔
+                    </div>
+
+                    <h2>
+                        Practical Workflow
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        Create User
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Set Password
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Create Group
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Add User
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Verify UID/GID
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL TASK
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🧪
+                    </div>
+
+                    <h2>
+                        Your Practical Task
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Now perform the following tasks yourself in
+                    your Linux terminal.
+
+                </p>
+
+
+                <ul class="linux-task-list">
+
+                    <li>
+                        Create a user named <strong>student01</strong>.
+                    </li>
+
+                    <li>
+                        Set a password for <strong>student01</strong>.
+                    </li>
+
+                    <li>
+                        Create a group named <strong>cyberlab</strong>.
+                    </li>
+
+                    <li>
+                        Add <strong>student01</strong> to the
+                        <strong>cyberlab</strong> group.
+                    </li>
+
+                    <li>
+                        Verify the group membership.
+                    </li>
+
+                    <li>
+                        Display the UID and GID of the user.
+                    </li>
+
+                    <li>
+                        Verify the group using <strong>getent</strong>.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FINAL VERIFICATION
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Final Verification
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Run the following commands to verify that
+                    your practical lab configuration is correct.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <button
+                        class="linux-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>id student01
+groups student01
+getent group cyberlab
+grep '^student01:' /etc/passwd</code>
+
+                </div>
+
+
+                <div class="linux-result-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <p>
+
+                        The output should show the user's UID,
+                        primary GID, the <strong>cyberlab</strong>
+                        group membership and the user's entry in
+                        <strong>/etc/passwd</strong>.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY CONNECTION
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Cybersecurity Connection
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    User and group management is directly related
+                    to Linux security. Properly configured accounts
+                    help enforce authentication, authorization and
+                    least-privilege access.
+
+                </p>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Authentication
+                    </div>
+
+                    <div class="linux-key-item">
+                        Authorization
+                    </div>
+
+                    <div class="linux-key-item">
+                        Least Privilege
+                    </div>
+
+                    <div class="linux-key-item">
+                        Access Control
+                    </div>
+
+                    <div class="linux-key-item">
+                        Account Management
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SUMMARY
+            ================================================== -->
+
+            <section class="linux-card">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lab Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-task-list">
+
+                    <li>
+                        <strong>whoami</strong> identifies the current user.
+                    </li>
+
+                    <li>
+                        <strong>id</strong> displays UID, GID and group information.
+                    </li>
+
+                    <li>
+                        <strong>useradd</strong> creates a user account.
+                    </li>
+
+                    <li>
+                        <strong>passwd</strong> sets or changes a password.
+                    </li>
+
+                    <li>
+                        <strong>groupadd</strong> creates a new group.
+                    </li>
+
+                    <li>
+                        <strong>usermod -aG</strong> adds a user to a secondary group.
+                    </li>
+
+                    <li>
+                        <strong>groups</strong> displays group membership.
+                    </li>
+
+                    <li>
+                        <strong>/etc/passwd</strong> contains user account information.
+                    </li>
+
+                    <li>
+                        <strong>getent group</strong> can be used to verify group information.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-topic-navigation">
+
+                <a
+                    href="lab03.html"
+                    class="linux-topic-button previous"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Linux Commands
+                    </strong>
+
+                </a>
+
+
+                <a
+                    href="../theory/linux-permissions.html"
+                    class="linux-topic-button next"
+                >
+
+                    <strong>
+                        Next Topic: File Permissions
+                    </strong>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+
+    <!-- =====================================================
+         COPY COMMAND
+    ====================================================== -->
+
+    <script>
+
+        function copyCommand(button) {
+
+            const code =
+                button.parentElement
+                    .querySelector("code")
+                    .innerText
+                    .trim();
+
+            navigator.clipboard.writeText(code);
+
+            const originalText =
+                button.innerText;
+
+            button.innerText =
+                "Copied!";
+
+            setTimeout(() => {
+
+                button.innerText =
+                    originalText;
+
+            }, 1200);
+
+        }
+
+    </script>
+
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards =
+            document.querySelectorAll(
+                ".linux-card"
+            );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+                void card.offsetWidth;
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(sweepTimeout);
+
+
+            sweepTimeout =
+                setTimeout(() => {
+
+                    sweepCards.forEach(card => {
+
+                        card.classList.remove(
+                            "mobile-sweep"
+                        );
+
+                    });
+
+                }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

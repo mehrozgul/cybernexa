@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+    <title>Essential Linux Commands | CyberNexa </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 230, 138, 0.08),
+                    transparent 32%
+                ),
+                #020914;
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: #030c19;
+            border-bottom: 1px solid rgba(0,230,138,.18);
+        }
+
+        .nav-container {
+            width: min(1200px,100%);
+            margin: auto;
+            padding: 15px 24px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 48px;
+            color: #00e68a;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            color: white;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00e68a;
+        }
+
+        .brand-tagline {
+            color: #7890a8;
+            font-size: 10px;
+        }
+
+        .page {
+            width: min(1050px,calc(100% - 32px));
+            margin: auto;
+            padding: 42px 0 70px;
+        }
+
+        .breadcrumb {
+            color: #72879c;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .breadcrumb span {
+            color: #00e68a;
+            margin: 0 7px;
+        }
+
+        .article-header {
+            padding: 34px;
+            border: 1px solid rgba(0,230,138,.24);
+            border-left: 4px solid #00e68a;
+            border-radius: 12px;
+            background: rgba(0,230,138,.035);
+            margin-bottom: 25px;
+        }
+
+        .label {
+            color: #00e68a;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        h1 {
+            color: white;
+            font-size: clamp(30px,5vw,48px);
+            line-height: 1.15;
+            margin: 10px 0 15px;
+        }
+
+        .intro {
+            color: #a9bdd1;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .section {
+            margin-top: 22px;
+            padding: 28px;
+            background: #041221;
+            border: 1px solid rgba(0,230,138,.13);
+            border-radius: 11px;
+        }
+
+        .section h2 {
+            color: white;
+            font-size: clamp(21px,3vw,27px);
+            line-height: 1.3;
+            margin: 0 0 13px;
+        }
+
+        .section h3 {
+            color: #00e68a;
+            font-size: 18px;
+            margin: 22px 0 8px;
+        }
+
+        .section p {
+            color: #aebfd0;
+            font-size: 15px;
+            margin: 9px 0;
+        }
+
+        .command-card {
+            padding: 18px;
+            margin-top: 15px;
+            background: #020b15;
+            border: 1px solid rgba(0,230,138,.14);
+            border-radius: 9px;
+        }
+
+        .command-card h3 {
+            margin-top: 0;
+        }
+
+        .command-card p {
+            font-size: 14px;
+        }
+
+        .command {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            padding: 15px;
+            background: #01060c;
+            border-radius: 7px;
+            border-left: 3px solid #00e68a;
+            color: #7fffc0;
+            font-family: Consolas,monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .terminal {
+            margin-top: 18px;
+            border: 1px solid rgba(0,230,138,.22);
+            border-radius: 9px;
+            overflow: hidden;
+        }
+
+        .terminal-bar {
+            padding: 9px 14px;
+            background: #071a16;
+            color: #00e68a;
+            font-family: Consolas,monospace;
+            font-size: 12px;
+        }
+
+        .terminal-body {
+            padding: 18px;
+            background: #01060c;
+            color: #b8ffd9;
+            font-family: Consolas,monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .list {
+            padding-left: 20px;
+        }
+
+        .list li {
+            color: #aebfd0;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .tip {
+            margin-top: 18px;
+            padding: 18px;
+            border-left: 4px solid #00e68a;
+            border-radius: 7px;
+            background: rgba(0,230,138,.04);
+        }
+
+        .tip strong {
+            color: #00e68a;
+        }
+
+        .warning {
+            margin-top: 18px;
+            padding: 18px;
+            border-left: 4px solid #ffbd00;
+            border-radius: 7px;
+            background: rgba(255,189,0,.04);
+        }
+
+        .warning strong {
+            color: #ffbd00;
+        }
+
+        .lab-box {
+            margin-top: 25px;
+            padding: 27px;
+            border: 1px solid rgba(0,230,138,.25);
+            border-left: 4px solid #00e68a;
+            border-radius: 11px;
+            background: rgba(0,230,138,.035);
+        }
+
+        .lab-box h2 {
+            color: #00e68a;
+            margin-top: 0;
+        }
+
+        .lab-button {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 20px;
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+            color: #00e68a;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .lab-button:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+
+        .article-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .article-navigation a {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border: 1px solid rgba(0,230,138,.2);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #9eb2c7;
+            font-size: 13px;
+        }
+
+        .article-navigation a:hover {
+            color: #00e68a;
+            border-color: #00e68a;
+        }
+
+        .footer {
+            border-top: 1px solid rgba(0,230,138,.15);
+            background: #020914;
+            padding: 38px 20px 20px;
+        }
+
+        .footer-container {
+            width: min(1050px,100%);
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00e68a;
+        }
+
+        .footer-container p {
+            color: #71869c;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .footer-links a {
+            color: #8da2b8;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .footer-links a:hover {
+            color: #00e68a;
+        }
+
+        .copyright {
+            width: min(1050px,100%);
+            margin: 25px auto 0;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,.05);
+            text-align: center;
+            color: #52667b;
+            font-size: 10px;
+        }
+
+        @media (max-width:700px) {
+
+            .page {
+                width: calc(100% - 24px);
+                padding-top: 28px;
+            }
+
+            .article-header,
+            .section,
+            .lab-box {
+                padding: 20px;
+            }
+
+            .article-navigation {
+                flex-direction: column;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+            .command,
+            .terminal-body {
+                font-size: 12px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../components/navbar.html"
+    data-root-path="../../">
+</div>
+<main class="page">
+
+    <div class="breadcrumb">
+        Tutorials
+        <span>›</span>
+        Linux
+        <span>›</span>
+        Essential Linux Commands
+    </div>
+
+
+    <section class="article-header">
+
+        <div class="label">
+            LINUX TUTORIAL
+        </div>
+
+        <h1>
+            Essential Linux Commands
+        </h1>
+
+        <p class="intro">
+            Build a strong Linux command-line foundation for
+            cybersecurity, system administration, troubleshooting,
+            file analysis, process monitoring and network security.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Why Linux Matters in Cybersecurity</h2>
+
+        <p>
+            Linux is widely used in servers, security tools,
+            network infrastructure, cloud systems and cybersecurity
+            laboratories.
+        </p>
+
+        <p>
+            Security professionals frequently use the command line
+            to inspect files, investigate processes, examine network
+            connections, analyze logs and automate repetitive tasks.
+        </p>
+
+        <div class="tip">
+            <strong>Important:</strong>
+            Do not try to memorize every Linux command. Learn what
+            a command does, understand its options and practice it
+            repeatedly in a safe Linux environment.
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>1. pwd — Print Working Directory</h2>
+
+        <p>
+            The <strong>pwd</strong> command displays the directory
+            in which you are currently working.
+        </p>
+
+        <div class="command">
+pwd
+        </div>
+
+        <div class="terminal">
+
+            <div class="terminal-bar">
+                Linux Terminal
+            </div>
+
+            <div class="terminal-body">
+$ pwd
+/home/gul
+            </div>
+
+        </div>
+
+        <p>
+            This is useful because many commands operate relative
+            to your current directory.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>2. ls — List Files and Directories</h2>
+
+        <p>
+            <strong>ls</strong> displays files and directories
+            in the current location.
+        </p>
+
+        <div class="command">
+ls
+        </div>
+
+        <h3>Detailed listing</h3>
+
+        <div class="command">
+ls -l
+        </div>
+
+        <h3>Show hidden files</h3>
+
+        <div class="command">
+ls -la
+        </div>
+
+        <p>
+            Security analysts often inspect directories for
+            configuration files, logs and unexpected files.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>3. cd — Change Directory</h2>
+
+        <p>
+            The <strong>cd</strong> command changes the current
+            working directory.
+        </p>
+
+        <div class="command">
+cd /var/log
+        </div>
+
+        <p>
+            Return to the parent directory:
+        </p>
+
+        <div class="command">
+cd ..
+        </div>
+
+        <p>
+            Return to the home directory:
+        </p>
+
+        <div class="command">
+cd ~
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>4. cat — Display File Contents</h2>
+
+        <p>
+            The <strong>cat</strong> command can display the contents
+            of a text file.
+        </p>
+
+        <div class="command">
+cat security.log
+        </div>
+
+        <p>
+            This can be useful for quickly examining small
+            configuration files or logs.
+        </p>
+
+        <div class="warning">
+            <strong>Security note:</strong>
+            Do not blindly execute commands or scripts copied
+            from untrusted sources just because you found them
+            in a terminal example.
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>5. grep — Search Text</h2>
+
+        <p>
+            <strong>grep</strong> searches text for matching patterns.
+            It is one of the most useful commands for log analysis.
+        </p>
+
+        <div class="command">
+grep "failed" security.log
+        </div>
+
+        <p>
+            Case-insensitive search:
+        </p>
+
+        <div class="command">
+grep -i "failed" security.log
+        </div>
+
+        <p>
+            Count matching lines:
+        </p>
+
+        <div class="command">
+grep -c "failed" security.log
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>6. find — Search for Files</h2>
+
+        <p>
+            The <strong>find</strong> command searches directories
+            according to conditions such as filename, type or
+            modification time.
+        </p>
+
+        <div class="command">
+find . -name "*.log"
+        </div>
+
+        <p>
+            Search for a specific configuration file:
+        </p>
+
+        <div class="command">
+find /etc -name "hosts"
+        </div>
+
+        <p>
+            In security work, file discovery can help locate
+            logs, configuration files and other artifacts during
+            authorized investigations.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>7. whoami — Current User</h2>
+
+        <p>
+            <strong>whoami</strong> displays the username of the
+            current user.
+        </p>
+
+        <div class="command">
+whoami
+        </div>
+
+        <div class="terminal">
+
+            <div class="terminal-bar">
+                Example
+            </div>
+
+            <div class="terminal-body">
+$ whoami
+gul
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>8. id — User and Group Information</h2>
+
+        <p>
+            The <strong>id</strong> command displays user identity
+            and group information.
+        </p>
+
+        <div class="command">
+id
+        </div>
+
+        <p>
+            This is important when understanding Linux permissions
+            and access control.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>9. chmod — File Permissions</h2>
+
+        <p>
+            Linux uses permissions to control who can read, write
+            or execute files.
+        </p>
+
+        <div class="command">
+ls -l script.sh
+        </div>
+
+        <p>
+            A permission string may look like:
+        </p>
+
+        <div class="command">
+-rwxr-xr--
+        </div>
+
+        <p>
+            The permission categories are commonly represented
+            for the owner, group and others.
+        </p>
+
+        <h3>Example</h3>
+
+        <div class="command">
+chmod u+x script.sh
+        </div>
+
+        <p>
+            This adds execute permission for the file owner.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>10. ps — Process Information</h2>
+
+        <p>
+            <strong>ps</strong> displays information about running
+            processes.
+        </p>
+
+        <div class="command">
+ps
+        </div>
+
+        <p>
+            A commonly used view is:
+        </p>
+
+        <div class="command">
+ps aux
+        </div>
+
+        <p>
+            Process information is useful during system
+            troubleshooting and security investigations.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>11. top — Live Process Monitoring</h2>
+
+        <p>
+            The <strong>top</strong> command provides a live view
+            of running processes and resource usage.
+        </p>
+
+        <div class="command">
+top
+        </div>
+
+        <p>
+            It can help identify processes consuming unusually
+            high CPU or memory resources.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>12. ss — Network Connections</h2>
+
+        <p>
+            The <strong>ss</strong> command displays socket and
+            network connection information.
+        </p>
+
+        <div class="command">
+ss -tuln
+        </div>
+
+        <p>
+            This can help identify listening TCP and UDP services
+            on a Linux system.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>13. ip — Network Configuration</h2>
+
+        <p>
+            The <strong>ip</strong> command is a modern Linux
+            networking utility.
+        </p>
+
+        <div class="command">
+ip addr
+        </div>
+
+        <p>
+            Show a concise address view:
+        </p>
+
+        <div class="command">
+ip -br addr
+        </div>
+
+        <p>
+            View routing information:
+        </p>
+
+        <div class="command">
+ip route
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>14. curl — Network Requests</h2>
+
+        <p>
+            <strong>curl</strong> is commonly used to communicate
+            with network services and HTTP endpoints.
+        </p>
+
+        <div class="command">
+curl https://example.com
+        </div>
+
+        <p>
+            Display only HTTP headers:
+        </p>
+
+        <div class="command">
+curl -I https://example.com
+        </div>
+
+        <p>
+            In authorized testing environments, curl is useful
+            for understanding how web servers respond to requests.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>15. wget — Retrieve Files</h2>
+
+        <p>
+            <strong>wget</strong> is commonly used to retrieve
+            resources over supported network protocols.
+        </p>
+
+        <div class="command">
+wget https://example.com/file.txt
+        </div>
+
+        <p>
+            Always verify that downloaded files come from trusted
+            sources before opening or executing them.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Linux Commands for Security Work</h2>
+
+        <div class="command">
+# Current user
+whoami
+
+# Network interfaces
+ip -br addr
+
+# Routing table
+ip route
+
+# Listening services
+ss -tuln
+
+# Running processes
+ps aux
+
+# Search a security log
+grep -i "failed" security.log
+
+# Find log files
+find . -name "*.log"
+        </div>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Practical Security Investigation Example</h2>
+
+        <p>
+            Imagine an analyst receives a Linux server and needs
+            to perform a basic local inspection.
+        </p>
+
+        <div class="command">
+whoami
+pwd
+ip -br addr
+ip route
+ss -tuln
+ps aux
+        </div>
+
+        <p>
+            These commands provide information about the current
+            user, working location, network interfaces, routes,
+            listening services and running processes.
+        </p>
+
+        <p>
+            The analyst can then investigate relevant logs or
+            configuration files using commands such as
+            <strong>cat</strong>, <strong>grep</strong> and
+            <strong>find</strong>.
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <h2>Key Points to Remember</h2>
+
+        <ul class="list">
+
+            <li><strong>pwd</strong> → current directory</li>
+            <li><strong>ls</strong> → list files</li>
+            <li><strong>cd</strong> → change directory</li>
+            <li><strong>cat</strong> → display file contents</li>
+            <li><strong>grep</strong> → search text</li>
+            <li><strong>find</strong> → find files</li>
+            <li><strong>whoami</strong> → current user</li>
+            <li><strong>id</strong> → user/group information</li>
+            <li><strong>chmod</strong> → change permissions</li>
+            <li><strong>ps</strong> → process information</li>
+            <li><strong>top</strong> → live process monitoring</li>
+            <li><strong>ss</strong> → network sockets/connections</li>
+            <li><strong>ip</strong> → network configuration</li>
+            <li><strong>curl</strong> → network/HTTP requests</li>
+            <li><strong>wget</strong> → retrieve resources</li>
+
+        </ul>
+
+    </section>
+<!-- =================================================
+     LESSON COMPLETION
+================================================== -->
+
+<section class="section" id="lesson-completion">
+
+    <h2>Lesson Completion</h2>
+
+    <p>
+        You have reached the end of the Essential Linux Commands
+        lesson. Mark this lesson as completed to track your
+        learning progress.
+    </p>
+
+    <button
+        type="button"
+        class="lab-button"
+        data-lesson-progress
+        data-course-id="linux"
+        data-lesson-id="linux-command"
+        data-dashboard-url="../Tutorials/linux-command/linux-commands.html"
+        data-status-id="linuxCommandsCompletionStatus">
+
+        Mark Lesson as Completed
+
+    </button>
+
+    <p
+        id="linuxCommandsCompletionStatus"
+        role="status"
+        aria-live="polite">
+    </p>
+
+</section>
+    <section class="lab-box">
+
+        <h2>Practical Lab</h2>
+
+        <p>
+            Practice Linux commands in a controlled Linux
+            environment and perform a basic system and network
+            inspection.
+        </p>
+
+        <a href="linux-commands-lab.html"
+           class="lab-button">
+            Open Linux Commands Lab →
+        </a>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <a href="../../footer/about.html">About</a>
+            <a href="../../footer/contact.html">Contact</a>
+            <a href="../../footer/privacy-policy.html">Privacy Policy</a>
+            <a href="../../footer/disclaimer.html">Disclaimer</a>
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../js/supabase-client.js"></script>
+<script src="../../js/lesson-progress.js"></script>
+<script src="../../js/navbar-loader.js"></script>
+<script src="../../js/navbar.js"></script>
+<script src="../../js/session.js"></script>
+</body>
+</html>

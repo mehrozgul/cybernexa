@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberNexa | Active Directory Basics</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .windows-learning-page {
+            width: 100%;
+            min-height: calc(100vh - 80px);
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(circle at top right,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 32%),
+                radial-gradient(circle at bottom left,
+                    rgba(14, 165, 233, 0.08),
+                    transparent 30%),
+                #02080d;
+        }
+
+        .windows-learning-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        .windows-topic-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .windows-topic-category {
+            display: inline-block;
+            margin-bottom: 14px;
+            color: #60a5fa;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .windows-topic-header h1 {
+            margin: 0;
+            color: #f8fafc;
+            font-size: 44px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        .windows-topic-header h1 span {
+            color: #60a5fa;
+        }
+
+        .windows-topic-intro {
+            max-width: 760px;
+            margin: 18px auto 0;
+            color: #b6c2cc;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .windows-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 22px;
+        }
+
+        .windows-badge {
+            padding: 8px 13px;
+            border: 1px solid rgba(96, 165, 250, 0.20);
+            border-radius: 20px;
+            color: #bfdbfe;
+            background: rgba(96, 165, 250, 0.055);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .windows-topic-search {
+            display: flex;
+            align-items: center;
+            max-width: 650px;
+            margin: 25px auto 0;
+            gap: 10px;
+        }
+
+        .windows-topic-search input {
+            flex: 1;
+            min-width: 0;
+            padding: 13px 16px;
+            border: 1px solid rgba(96, 165, 250, 0.20);
+            border-radius: 9px;
+            outline: none;
+            color: #f8fafc;
+            background: rgba(96, 165, 250, 0.045);
+            font-size: 13px;
+        }
+
+        .windows-topic-search input::placeholder {
+            color: #7f909c;
+        }
+
+        .windows-topic-search input:focus {
+            border-color: rgba(96, 165, 250, 0.65);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.10);
+        }
+
+        .windows-topic-search button {
+            padding: 13px 18px;
+            border: 1px solid rgba(96, 165, 250, 0.30);
+            border-radius: 9px;
+            color: #dbeafe;
+            background: rgba(96, 165, 250, 0.07);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .windows-topic-search button:hover {
+            border-color: rgba(96, 165, 250, 0.70);
+            background: rgba(96, 165, 250, 0.13);
+        }
+
+        .windows-search-message {
+            min-height: 20px;
+            margin-top: 10px;
+            color: #60a5fa;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .windows-card {
+            position: relative;
+            width: 100%;
+            margin-bottom: 22px;
+            padding: 30px;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 15px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(7, 22, 38, 0.98),
+                    rgba(3, 13, 20, 0.98));
+
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.28);
+            overflow: hidden;
+            transition: 0.25s ease;
+        }
+
+        .windows-card:hover {
+            border-color: rgba(96, 165, 250, 0.40);
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, 0.32),
+                0 0 30px rgba(37, 99, 235, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .windows-card-heading {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 18px;
+        }
+
+        .windows-icon {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(96, 165, 250, 0.30);
+            border-radius: 10px;
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.07);
+
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .windows-card h2 {
+            margin: 0;
+            color: #f8fafc;
+            font-size: 21px;
+            font-weight: 750;
+        }
+
+        .windows-card h3 {
+            margin: 0 0 8px;
+            color: #f8fafc;
+            font-size: 16px;
+        }
+
+        .windows-card p {
+            margin: 0 0 14px;
+            color: #b6c2cc;
+            font-size: 14px;
+            line-height: 1.85;
+        }
+
+        .windows-definition-box {
+            padding: 20px;
+            margin-top: 5px;
+            border-left: 3px solid #60a5fa;
+            border-radius: 0 10px 10px 0;
+            background: rgba(96, 165, 250, 0.055);
+        }
+
+        .windows-definition-box strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #f8fafc;
+            font-size: 14px;
+        }
+
+        .windows-definition-box span {
+            color: #c3cdd5;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .windows-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .windows-info-card {
+            padding: 20px;
+            border: 1px solid rgba(96, 165, 250, 0.14);
+            border-radius: 11px;
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .windows-info-card:hover {
+            border-color: rgba(96, 165, 250, 0.35);
+            background: rgba(96, 165, 250, 0.06);
+        }
+
+        .windows-info-card p {
+            margin: 0;
+            color: #aebbc5;
+            font-size: 13px;
+            line-height: 1.75;
+        }
+
+        .windows-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .windows-flow-item {
+            padding: 12px 16px;
+            border: 1px solid rgba(96, 165, 250, 0.20);
+            border-radius: 9px;
+            color: #dbeafe;
+            background: rgba(96, 165, 250, 0.05);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .windows-flow-arrow {
+            color: #60a5fa;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .windows-command-box {
+            margin-top: 20px;
+            padding: 18px 20px;
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            border-radius: 10px;
+            background: #01060a;
+            overflow-x: auto;
+        }
+
+        .windows-terminal-label {
+            display: block;
+            margin-bottom: 12px;
+            color: #64748b;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .windows-command-box code {
+            color: #93c5fd;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .windows-key-concepts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .windows-key-item {
+            padding: 10px 14px;
+            border: 1px solid rgba(96, 165, 250, 0.16);
+            border-radius: 8px;
+            color: #d7e4eb;
+            background: rgba(96, 165, 250, 0.04);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .windows-comparison {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .windows-comparison-box {
+            padding: 20px;
+            border: 1px solid rgba(96, 165, 250, 0.14);
+            border-radius: 11px;
+            background: rgba(96, 165, 250, 0.035);
+        }
+
+        .windows-comparison-box h3 {
+            color: #60a5fa;
+            margin-bottom: 12px;
+        }
+
+        .windows-comparison-box ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .windows-comparison-box li {
+            margin-bottom: 7px;
+            color: #aebbc5;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .windows-summary-list {
+            margin: 18px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .windows-summary-list li {
+            position: relative;
+            padding: 9px 0 9px 23px;
+            color: #b6c2cc;
+            font-size: 13px;
+            line-height: 1.7;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.07);
+        }
+
+        .windows-summary-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .windows-topic-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .windows-topic-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 18px;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            border-radius: 9px;
+            color: #dbeafe;
+            background: rgba(96, 165, 250, 0.05);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .windows-topic-button:hover {
+            border-color: rgba(96, 165, 250, 0.65);
+            background: rgba(96, 165, 250, 0.10);
+            transform: translateY(-1px);
+        }
+
+        .windows-topic-button.practical-lab {
+            border-color: rgba(37, 99, 235, 0.40);
+            background: rgba(37, 99, 235, 0.09);
+        }
+
+        .windows-topic-button span {
+            color: #60a5fa;
+            font-size: 17px;
+        }
+
+        .windows-search-highlight {
+            border-color: rgba(96, 165, 250, 0.75) !important;
+            box-shadow: 0 0 25px rgba(37, 99, 235, 0.13) !important;
+        }
+
+        @media (max-width: 600px) {
+
+            .windows-learning-page {
+                padding: 45px 12px 55px;
+            }
+
+            .windows-topic-header h1 {
+                font-size: 30px;
+            }
+
+            .windows-card {
+                padding: 21px 18px;
+            }
+
+            .windows-card h2 {
+                font-size: 18px;
+            }
+
+            .windows-info-grid,
+            .windows-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .windows-flow {
+                flex-direction: column;
+            }
+
+            .windows-flow-item {
+                width: 100%;
+                text-align: center;
+            }
+
+            .windows-flow-arrow {
+                font-size: 0;
+            }
+
+            .windows-flow-arrow::after {
+                content: "↓";
+                font-size: 18px;
+            }
+
+            .windows-topic-search {
+                flex-direction: column;
+            }
+
+            .windows-topic-search input,
+            .windows-topic-search button {
+                width: 100%;
+            }
+
+            .windows-topic-navigation {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .windows-topic-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<main class="windows-learning-page">
+
+<div class="windows-learning-container">
+
+<header class="windows-topic-header">
+
+    <div class="windows-topic-category">WINDOWS &amp; SYSTEM SECURITY</div>
+
+    <h1>Active Directory <span>Basics</span></h1>
+
+    <p class="windows-topic-intro">
+        Learn the fundamentals of Microsoft Active Directory,
+        understand domains, domain controllers, users, groups,
+        organizational units and basic centralized identity
+        management in Windows enterprise environments.
+    </p>
+
+    <div class="windows-badges">
+        <div class="windows-badge">Beginner</div>
+        <div class="windows-badge">Theory</div>
+        <div class="windows-badge">Active Directory</div>
+        <div class="windows-badge">Practical Lab</div>
+    </div>
+
+    <div class="windows-topic-search">
+        <input
+            type="text"
+            id="windowsSearchInput"
+            placeholder="Search Active Directory topics..."
+            autocomplete="off">
+
+        <button type="button" id="windowsSearchButton">
+            🔍 Search
+        </button>
+    </div>
+
+    <div id="windowsSearchMessage"
+         class="windows-search-message"></div>
+
+</header>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">AD</div>
+        <h2>What is Active Directory?</h2>
+    </div>
+
+    <div class="windows-definition-box">
+
+        <strong>Simple Definition</strong>
+
+        <span>
+            Active Directory Domain Services (AD DS) is a Microsoft
+            directory service used to centrally manage identities,
+            computers, groups and access within a Windows domain.
+        </span>
+
+    </div>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">DC</div>
+        <h2>What is a Domain Controller?</h2>
+    </div>
+
+    <p>
+        A Domain Controller (DC) is a Windows Server system that
+        runs Active Directory Domain Services and authenticates
+        users and computers in a domain.
+    </p>
+
+    <div class="windows-key-concepts">
+        <div class="windows-key-item">Authentication</div>
+        <div class="windows-key-item">User Management</div>
+        <div class="windows-key-item">Computer Management</div>
+        <div class="windows-key-item">Group Management</div>
+        <div class="windows-key-item">Domain Services</div>
+    </div>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">D</div>
+        <h2>Active Directory Domain</h2>
+    </div>
+
+    <p>
+        A domain is a logical environment in which users,
+        computers and other resources can be centrally managed.
+        Domain members can use centralized authentication and
+        security policies.
+    </p>
+
+    <div class="windows-flow">
+
+        <div class="windows-flow-item">
+            User / Computer
+        </div>
+
+        <div class="windows-flow-arrow">→</div>
+
+        <div class="windows-flow-item">
+            Domain
+        </div>
+
+        <div class="windows-flow-arrow">→</div>
+
+        <div class="windows-flow-item">
+            Domain Controller
+        </div>
+
+        <div class="windows-flow-arrow">→</div>
+
+        <div class="windows-flow-item">
+            Authentication
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">OU</div>
+        <h2>Organizational Units (OUs)</h2>
+    </div>
+
+    <p>
+        An Organizational Unit is a container inside Active Directory
+        that can be used to organize users, computers and other
+        directory objects.
+    </p>
+
+    <div class="windows-info-grid">
+
+        <div class="windows-info-card">
+            <h3>Users OU</h3>
+            <p>
+                Can be used to organize user accounts according
+                to departments or organizational structure.
+            </p>
+        </div>
+
+        <div class="windows-info-card">
+            <h3>Computers OU</h3>
+            <p>
+                Can be used to organize domain computers and
+                apply appropriate management policies.
+            </p>
+        </div>
+
+        <div class="windows-info-card">
+            <h3>IT OU</h3>
+            <p>
+                Can contain accounts and computers associated
+                with an IT department.
+            </p>
+        </div>
+
+        <div class="windows-info-card">
+            <h3>HR OU</h3>
+            <p>
+                Can contain accounts and computers associated
+                with an HR department.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">U</div>
+        <h2>Active Directory Users</h2>
+    </div>
+
+    <p>
+        User accounts represent individual identities in an Active
+        Directory environment. They can be used for authentication
+        and access to domain resources.
+    </p>
+
+    <div class="windows-command-box">
+
+        <span class="windows-terminal-label">
+            PowerShell Example
+        </span>
+
+        <code>
+            Get-ADUser -Filter *
+        </code>
+
+    </div>
+
+    <p>
+        The command is available when the Active Directory
+        PowerShell module is installed.
+    </p>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">G</div>
+        <h2>Active Directory Groups</h2>
+    </div>
+
+    <p>
+        Groups allow administrators to organize users and assign
+        permissions more efficiently. Instead of assigning access
+        individually to every user, permissions can often be
+        assigned to groups.
+    </p>
+
+    <div class="windows-comparison">
+
+        <div class="windows-comparison-box">
+
+            <h3>Security Group</h3>
+
+            <ul>
+                <li>Used for access control.</li>
+                <li>Can contain users and other objects.</li>
+                <li>Can be assigned permissions to resources.</li>
+            </ul>
+
+        </div>
+
+        <div class="windows-comparison-box">
+
+            <h3>Distribution Group</h3>
+
+            <ul>
+                <li>Primarily used for email distribution.</li>
+                <li>Not normally used for assigning permissions.</li>
+                <li>Useful for communication purposes.</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">PC</div>
+        <h2>Domain Computers</h2>
+    </div>
+
+    <p>
+        Computers can be joined to an Active Directory domain.
+        Once joined, the computer can participate in centralized
+        authentication, management and security policies.
+    </p>
+
+    <div class="windows-key-concepts">
+
+        <div class="windows-key-item">Domain Joined</div>
+        <div class="windows-key-item">Computer Account</div>
+        <div class="windows-key-item">Authentication</div>
+        <div class="windows-key-item">Group Policy</div>
+
+    </div>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">🔑</div>
+        <h2>Authentication in Active Directory</h2>
+    </div>
+
+    <p>
+        Authentication is the process of verifying the identity
+        of a user or computer. In a domain environment, the
+        Domain Controller participates in centralized authentication.
+    </p>
+
+    <div class="windows-flow">
+
+        <div class="windows-flow-item">Username</div>
+        <div class="windows-flow-arrow">→</div>
+        <div class="windows-flow-item">Password / Credentials</div>
+        <div class="windows-flow-arrow">→</div>
+        <div class="windows-flow-item">Domain Controller</div>
+        <div class="windows-flow-arrow">→</div>
+        <div class="windows-flow-item">Authentication Result</div>
+
+    </div>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">GP</div>
+        <h2>Group Policy Basics</h2>
+    </div>
+
+    <p>
+        Group Policy provides centralized configuration and
+        management of Windows users and computers in a domain.
+    </p>
+
+    <div class="windows-info-grid">
+
+        <div class="windows-info-card">
+            <h3>Password Policies</h3>
+            <p>
+                Organizations can configure requirements related
+                to passwords.
+            </p>
+        </div>
+
+        <div class="windows-info-card">
+            <h3>Security Settings</h3>
+            <p>
+                Administrators can centrally configure selected
+                Windows security settings.
+            </p>
+        </div>
+
+        <div class="windows-info-card">
+            <h3>User Configuration</h3>
+            <p>
+                Policies can control selected user environment
+                settings.
+            </p>
+        </div>
+
+        <div class="windows-info-card">
+            <h3>Computer Configuration</h3>
+            <p>
+                Policies can apply configuration to domain
+                computers.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">DNS</div>
+        <h2>Why DNS Matters to Active Directory</h2>
+    </div>
+
+    <p>
+        DNS is an important dependency for Active Directory.
+        Domain clients use DNS to locate domain services and
+        communicate with domain controllers.
+    </p>
+
+    <div class="windows-definition-box">
+
+        <strong>Important Concept</strong>
+
+        <span>
+            In an Active Directory environment, correct DNS
+            configuration is essential for reliable domain
+            operation and service discovery.
+        </span>
+
+    </div>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">🛡</div>
+        <h2>Active Directory and Cybersecurity</h2>
+    </div>
+
+    <p>
+        Active Directory is an important cybersecurity topic because
+        enterprise Windows environments commonly rely on centralized
+        identity and access management. Security teams need to
+        understand accounts, groups, permissions, authentication,
+        policies and domain infrastructure.
+    </p>
+
+    <div class="windows-key-concepts">
+
+        <div class="windows-key-item">Identity</div>
+        <div class="windows-key-item">Authentication</div>
+        <div class="windows-key-item">Authorization</div>
+        <div class="windows-key-item">Groups</div>
+        <div class="windows-key-item">Permissions</div>
+        <div class="windows-key-item">Group Policy</div>
+        <div class="windows-key-item">Domain Controllers</div>
+        <div class="windows-key-item">Security Monitoring</div>
+
+    </div>
+
+</section>
+
+
+<section class="windows-card">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">✓</div>
+        <h2>Quick Summary</h2>
+    </div>
+
+    <ul class="windows-summary-list">
+
+        <li>
+            Active Directory is Microsoft's directory service
+            for centralized identity and resource management.
+        </li>
+
+        <li>
+            Active Directory Domain Services is commonly abbreviated
+            as AD DS.
+        </li>
+
+        <li>
+            A Domain Controller provides important domain services
+            including authentication.
+        </li>
+
+        <li>
+            A domain provides a logical environment for centrally
+            managed users and computers.
+        </li>
+
+        <li>
+            Organizational Units help organize directory objects.
+        </li>
+
+        <li>
+            User accounts represent identities in the domain.
+        </li>
+
+        <li>
+            Groups simplify centralized access management.
+        </li>
+
+        <li>
+            Group Policy provides centralized configuration and
+            management.
+        </li>
+
+        <li>
+            DNS is an important dependency for Active Directory.
+        </li>
+
+        <li>
+            Understanding Active Directory is important for
+            Windows administration and cybersecurity.
+        </li>
+
+    </ul>
+
+</section>
+<!-- =====================================================
+     LESSON COMPLETION
+====================================================== -->
+
+<section class="windows-card" id="lessonCompletion">
+
+    <div class="windows-card-heading">
+        <div class="windows-icon">✓</div>
+        <h2>Lesson Completion</h2>
+    </div>
+
+    <p>
+        You have completed the Active Directory Basics lesson.
+        Mark this lesson as complete to save your learning
+        progress to your CyberNexa account.
+    </p>
+
+    <div style="margin-top: 22px; text-align: center;">
+
+        <button
+            type="button"
+            class="windows-topic-button"
+            data-lesson-progress
+            data-course-id="windows"
+            data-lesson-id="active-directory-basics"
+            data-dashboard-url="../learning-paths/windows/theory/active-directory-basics.html"
+            data-status-id="activeDirectoryBasicsCompletionStatus">
+
+            ✓ Mark Lesson Complete
+
+        </button>
+
+        <p
+            id="activeDirectoryBasicsCompletionStatus"
+            role="status"
+            aria-live="polite"
+            style="margin-top: 15px; font-size: 13px;">
+        </p>
+
+    </div>
+
+</section>
+<div class="windows-topic-navigation">
+
+                <a
+                    href="windows-security.html"
+                    class="windows-topic-button previous"
+                >
+                    <span>←</span>
+                    <strong>Previous: Windows Security</strong>
+                </a>
+
+                <a
+                    href="../labs/lab11.html"
+                    class="windows-topic-button practical-lab"
+                >
+                    <span>🧪</span>
+                    <strong>Perform Lab</strong>
+                </a>
+            </div>
+
+</div>
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+        </div>
+
+        <div class="footer-links">
+
+            <a href="../../../index.html">Home</a>
+            <a href="../../../footer/about.html">About</a>
+            <a href="../../../footer/contact.html">Contact</a>
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+
+<script>
+
+const searchInput =
+    document.getElementById("windowsSearchInput");
+
+const searchButton =
+    document.getElementById("windowsSearchButton");
+
+const searchMessage =
+    document.getElementById("windowsSearchMessage");
+
+
+function searchWindowsTopic() {
+
+    const searchText =
+        searchInput.value.trim().toLowerCase();
+
+    const cards =
+        document.querySelectorAll(".windows-card");
+
+    let found = false;
+
+    cards.forEach(card => {
+        card.classList.remove(
+            "windows-search-highlight"
+        );
+    });
+
+    if (searchText === "") {
+
+        searchMessage.textContent =
+            "Please enter an Active Directory topic.";
+
+        return;
+    }
+
+    cards.forEach(card => {
+
+        const cardText =
+            card.innerText.toLowerCase();
+
+        if (
+            cardText.includes(searchText) &&
+            !found
+        ) {
+
+            found = true;
+
+            card.classList.add(
+                "windows-search-highlight"
+            );
+
+            card.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    });
+
+    searchMessage.textContent =
+        found
+            ? "Topic found."
+            : "No matching Active Directory topic found.";
+}
+
+
+searchButton.addEventListener(
+    "click",
+    searchWindowsTopic
+);
+
+
+searchInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+            searchWindowsTopic();
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/navbar.css">
+<link rel="stylesheet" href="../../../css/footer.css">
+    <title>Wireshark | CyberNexa Cybersecurity Tools</title>
+
+    <style>
+
+        /* =====================================================
+           CYBERNEXA WIRESHARK THEORY
+           Professional Tool Page
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(
+                    circle at 90% 5%,
+                    rgba(0, 202, 255, 0.10),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 5% 35%,
+                    rgba(96, 92, 255, 0.07),
+                    transparent 30%
+                ),
+                #020914;
+
+            color: #dce8f5;
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            background: rgba(2, 9, 20, 0.94);
+            backdrop-filter: blur(14px);
+
+            border-bottom:
+                1px solid rgba(0, 202, 255, 0.16);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+
+            padding: 14px 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #00caff;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .brand-name span {
+            color: #00caff;
+        }
+
+        .brand-tagline {
+            margin-top: 5px;
+
+            color: #71869c;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .tool-page {
+            max-width: 1100px;
+            margin: auto;
+
+            padding:
+                40px 22px 80px;
+        }
+
+        /* =====================================================
+           BREADCRUMB
+        ===================================================== */
+
+        .breadcrumb {
+            color: #667c92;
+            font-size: 12px;
+
+            margin-bottom: 22px;
+        }
+
+        .breadcrumb span {
+            color: #00caff;
+            padding: 0 8px;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .tool-hero {
+
+            position: relative;
+
+            padding: 38px;
+
+            border:
+                1px solid rgba(0, 202, 255, 0.25);
+
+            border-left:
+                4px solid #00caff;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 202, 255, 0.07),
+                    rgba(80, 70, 255, 0.035)
+                );
+
+            overflow: hidden;
+        }
+
+        .tool-hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            right: -70px;
+            top: -70px;
+
+            border-radius: 50%;
+
+            border:
+                1px solid rgba(0, 202, 255, 0.20);
+
+            box-shadow:
+                0 0 50px rgba(0, 202, 255, 0.08);
+        }
+
+        .tool-label {
+
+            display: inline-block;
+
+            color: #00caff;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 8px;
+        }
+
+        .tool-hero h1 {
+
+            margin: 0;
+
+            color: white;
+
+            font-size: 43px;
+            line-height: 1.15;
+        }
+
+        .tool-hero h1 span {
+            color: #00caff;
+        }
+
+        .tool-subtitle {
+
+            max-width: 760px;
+
+            margin-top: 15px;
+
+            color: #9db1c6;
+
+            font-size: 15px;
+        }
+
+        /* =====================================================
+           TOOL META
+        ===================================================== */
+
+        .tool-meta {
+
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+        .meta-item {
+
+            padding:
+                7px 13px;
+
+            border:
+                1px solid rgba(0, 202, 255, 0.20);
+
+            border-radius: 20px;
+
+            background:
+                rgba(0, 202, 255, 0.045);
+
+            color: #8fb4ca;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           CONTENT SECTIONS
+        ===================================================== */
+
+        .section {
+
+            margin-top: 25px;
+
+            padding: 28px;
+
+            border:
+                1px solid rgba(255, 255, 255, 0.07);
+
+            border-radius: 12px;
+
+            background:
+                rgba(4, 18, 33, 0.80);
+        }
+
+        .section h2 {
+
+            margin-top: 0;
+
+            color: white;
+
+            font-size: 23px;
+        }
+
+        .section h2::before {
+
+            content: "";
+
+            display: inline-block;
+
+            width: 4px;
+            height: 22px;
+
+            margin-right: 10px;
+
+            vertical-align: -3px;
+
+            background: #00caff;
+
+            border-radius: 5px;
+        }
+
+        .section h3 {
+
+            color: #00caff;
+
+            font-size: 16px;
+
+            margin-top: 25px;
+        }
+
+        .section p {
+
+            color: #9db0c3;
+
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           CONCEPT GRID
+        ===================================================== */
+
+        .concept-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+        .concept {
+
+            padding: 19px;
+
+            border:
+                1px solid rgba(0, 202, 255, 0.13);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 202, 255, 0.025);
+        }
+
+        .concept strong {
+
+            display: block;
+
+            color: white;
+
+            font-size: 14px;
+
+            margin-bottom: 6px;
+        }
+
+        .concept span {
+
+            color: #8196aa;
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           CODE
+        ===================================================== */
+
+        .code-box {
+
+            margin-top: 16px;
+
+            padding: 18px;
+
+            overflow-x: auto;
+
+            border:
+                1px solid rgba(0, 202, 255, 0.16);
+
+            border-radius: 8px;
+
+            background: #01060d;
+        }
+
+        .code-box code {
+
+            color: #79e8ff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           FILTER CARDS
+        ===================================================== */
+
+        .filter-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 18px;
+        }
+
+        .filter {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 230, 138, 0.14);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 230, 138, 0.025);
+        }
+
+        .filter code {
+
+            color: #00e68a;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 13px;
+        }
+
+        .filter p {
+
+            margin:
+                7px 0 0;
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           WORKFLOW
+        ===================================================== */
+
+        .workflow {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+
+            margin-top: 20px;
+        }
+
+        .step {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(96, 92, 255, 0.18);
+
+            border-radius: 9px;
+
+            background:
+                rgba(96, 92, 255, 0.035);
+        }
+
+        .step-number {
+
+            color: #7470ff;
+
+            font-size: 11px;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+        }
+
+        .step h3 {
+
+            margin:
+                7px 0;
+
+            color: white;
+
+            font-size: 14px;
+        }
+
+        .step p {
+
+            margin: 0;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           WARNING
+        ===================================================== */
+
+        .warning {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(255, 189, 0, 0.25);
+
+            border-left:
+                4px solid #ffbd00;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255, 189, 0, 0.035);
+        }
+
+        .warning strong {
+
+            color: #ffbd00;
+        }
+
+        .warning p {
+
+            margin-bottom: 0;
+        }
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .summary {
+
+            border:
+                1px solid rgba(0, 230, 138, 0.18);
+
+            background:
+                rgba(0, 230, 138, 0.025);
+        }
+
+        .summary li {
+
+            margin-bottom: 7px;
+
+            color: #9db0c3;
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           LAB CTA
+        ===================================================== */
+
+        .lab-cta {
+
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 25px;
+
+            margin-top: 25px;
+
+            padding: 26px 28px;
+
+            border:
+                1px solid rgba(0, 230, 138, 0.25);
+
+            border-left:
+                4px solid #00e68a;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 230, 138, 0.055),
+                    rgba(0, 202, 255, 0.025)
+                );
+        }
+
+        .lab-cta h2 {
+
+            margin: 0 0 5px;
+
+            color: white;
+
+            font-size: 20px;
+        }
+
+        .lab-cta p {
+
+            margin: 0;
+
+            color: #899db1;
+
+            font-size: 12px;
+        }
+
+        .lab-button {
+
+            flex-shrink: 0;
+
+            padding:
+                11px 20px;
+
+            border:
+                1px solid #00e68a;
+
+            border-radius: 25px;
+
+            background:
+                rgba(0, 230, 138, 0.08);
+
+            color: #00e68a;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 900;
+        }
+
+        .lab-button:hover {
+
+            background: #00e68a;
+
+            color: #02100a;
+        }
+        
+/* =====================================================
+   LESSON COMPLETION
+===================================================== */
+
+.lesson-completion-button {
+    display: inline-block;
+    padding: 11px 20px;
+
+    border: 1px solid #00caff;
+    border-radius: 22px;
+
+    background: rgba(0, 202, 255, 0.06);
+    color: #00caff;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.lesson-completion-button:hover {
+    background: #00caff;
+    color: #020811;
+}
+
+.lesson-completion-button:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+}
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            margin-top: 30px;
+
+            padding:
+                38px 20px 20px;
+
+            border-top:
+                1px solid rgba(0, 202, 255, 0.13);
+
+            background: #020711;
+        }
+
+        .footer-container {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            gap: 25px;
+        }
+
+        .footer-brand {
+
+            color: white;
+
+            font-size: 21px;
+
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00caff;
+        }
+
+        .footer-container p {
+
+            color: #64798e;
+
+            font-size: 11px;
+        }
+
+        .footer-links {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 18px;
+        }
+
+        .footer-links a {
+
+            color: #8296aa;
+
+            text-decoration: none;
+
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00caff;
+        }
+
+        .copyright {
+
+            max-width: 1100px;
+
+            margin: 25px auto 0;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.05);
+
+            text-align: center;
+
+            color: #506477;
+
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            .concept-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .workflow {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .tool-page {
+                padding:
+                    25px 15px 55px;
+            }
+
+            .tool-hero {
+                padding: 25px;
+            }
+
+            .tool-hero h1 {
+                font-size: 32px;
+            }
+
+            .section {
+                padding: 22px;
+            }
+
+            .concept-grid,
+            .filter-grid,
+            .workflow {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-cta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .lab-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .tool-navigation {
+                flex-direction: column;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- SHARED CYBERNEXA NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+
+<!-- =====================================================
+     MAIN TOOL PAGE
+===================================================== -->
+
+<main class="tool-page">
+
+
+    <!-- BREADCRUMB -->
+
+    <div class="breadcrumb">
+
+        Cybersecurity Tools
+
+        <span>›</span>
+
+        Wireshark
+
+        <span>›</span>
+
+        Theory
+
+    </div>
+
+
+
+    <!-- TOOL HERO -->
+
+    <section class="tool-hero">
+
+        <div class="tool-label">
+            CYBERSECURITY TOOL 01
+        </div>
+
+        <h1>
+            <span>Wireshark</span>
+            Packet Analysis
+        </h1>
+
+        <p class="tool-subtitle">
+
+            Learn how Wireshark captures, displays and analyzes
+            network packets so you can understand network
+            communication and investigate security events.
+
+        </p>
+
+
+        <div class="tool-meta">
+
+            <div class="meta-item">
+                Network Analysis
+            </div>
+
+            <div class="meta-item">
+                Packet Capture
+            </div>
+
+            <div class="meta-item">
+                Traffic Analysis
+            </div>
+
+            <div class="meta-item">
+                Blue Team
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         WHAT
+    ================================================= -->
+
+    <section class="section">
+
+        <h2>
+            What is Wireshark?
+        </h2>
+
+        <p>
+
+            Wireshark is an open-source network protocol analyzer
+            used to capture and inspect network traffic.
+
+            It allows security professionals to examine individual
+            packets and understand how devices communicate across
+            a network.
+
+        </p>
+
+        <p>
+
+            Instead of looking at network communication as one
+            large stream of data, Wireshark breaks the communication
+            into packets and provides detailed information about
+            protocols, addresses, ports and packet contents.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         WHY
+    ================================================= -->
+
+    <section class="section">
+
+        <h2>
+            Why is Wireshark Important?
+        </h2>
+
+        <p>
+
+            Network traffic contains valuable information about
+            what systems are communicating, which protocols are
+            being used and whether unusual traffic is present.
+
+        </p>
+
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <strong>
+                    Network Troubleshooting
+                </strong>
+
+                <span>
+                    Identify communication and protocol problems.
+                </span>
+
+            </div>
+
+
+            <div class="concept">
+
+                <strong>
+                    Security Monitoring
+                </strong>
+
+                <span>
+                    Investigate suspicious network activity.
+                </span>
+
+            </div>
+
+
+            <div class="concept">
+
+                <strong>
+                    Protocol Analysis
+                </strong>
+
+                <span>
+                    Understand TCP, UDP, DNS, HTTP and other protocols.
+                </span>
+
+            </div>
+
+
+            <div class="concept">
+
+                <strong>
+                    Incident Investigation
+                </strong>
+
+                <span>
+                    Examine captured traffic during security investigations.
+                </span>
+
+            </div>
+
+
+            <div class="concept">
+
+                <strong>
+                    Learning
+                </strong>
+
+                <span>
+                    Visualize how real network protocols work.
+                </span>
+
+            </div>
+
+
+            <div class="concept">
+
+                <strong>
+                    Traffic Analysis
+                </strong>
+
+                <span>
+                    Find patterns inside network communications.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         HOW IT WORKS
+    ================================================= -->
+
+    <section class="section">
+
+        <h2>
+            How Wireshark Works
+        </h2>
+
+        <p>
+
+            Wireshark works by receiving captured network traffic
+            from a supported network interface or capture file.
+            It then decodes the packets and presents protocol
+            information to the analyst.
+
+        </p>
+
+
+        <div class="workflow">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    STEP 01
+                </div>
+
+                <h3>
+                    Capture
+                </h3>
+
+                <p>
+                    Network packets are captured from an interface
+                    or opened from a capture file.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    STEP 02
+                </div>
+
+                <h3>
+                    Decode
+                </h3>
+
+                <p>
+                    Wireshark identifies protocols and packet fields.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    STEP 03
+                </div>
+
+                <h3>
+                    Filter
+                </h3>
+
+                <p>
+                    Display filters help isolate relevant traffic.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    STEP 04
+                </div>
+
+                <h3>
+                    Analyze
+                </h3>
+
+                <p>
+                    The analyst investigates communication patterns
+                    and security indicators.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         IMPORTANT CONCEPTS
+    ================================================= -->
+
+    <section class="section">
+
+        <h2>
+            Important Wireshark Concepts
+        </h2>
+
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <strong>
+                    Packet
+                </strong>
+
+                <span>
+                    A unit of network communication.
+                </span>
+
+            </div>
+
+
+            <div class="concept">
+
+                <strong>
+                    Protocol
+                </strong>
+
+                <span>
+                    Rules used for communication between systems.
+                </span>
+
+            </div>
+
+
+            <div class="concept">
+
+                <strong>
+                    Source IP
+                </strong>
+
+                <span>
+                    Address of the system sending traffic.
+                </span>
+
+            </div>
+
+
+            <div class="concept">
+
+                <strong>
+                    Destination IP
+                </strong>
+
+                <span>
+                    Address of the receiving system.
+                </span>
+
+            </div>
+
+
+            <div class="concept">
+
+                <strong>
+                    Source Port
+                </strong>
+
+                <span>
+                    Port associated with the sender's application.
+                </span>
+
+            </div>
+
+
+            <div class="concept">
+
+                <strong>
+                    Destination Port
+                </strong>
+
+                <span>
+                    Port associated with the receiving service.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         DISPLAY FILTERS
+    ================================================= -->
+
+    <section class="section">
+
+        <h2>
+            Basic Wireshark Display Filters
+        </h2>
+
+        <p>
+
+            Display filters allow an analyst to focus on specific
+            traffic instead of manually examining every packet.
+
+        </p>
+
+
+        <div class="filter-grid">
+
+
+            <div class="filter">
+
+                <code>
+                    ip.addr == 192.168.1.10
+                </code>
+
+                <p>
+                    Display traffic involving a specific IP address.
+                </p>
+
+            </div>
+
+
+            <div class="filter">
+
+                <code>
+                    dns
+                </code>
+
+                <p>
+                    Display DNS traffic.
+                </p>
+
+            </div>
+
+
+            <div class="filter">
+
+                <code>
+                    tcp
+                </code>
+
+                <p>
+                    Display TCP packets.
+                </p>
+
+            </div>
+
+
+            <div class="filter">
+
+                <code>
+                    udp
+                </code>
+
+                <p>
+                    Display UDP packets.
+                </p>
+
+            </div>
+
+
+            <div class="filter">
+
+                <code>
+                    tcp.port == 443
+                </code>
+
+                <p>
+                    Display TCP traffic associated with port 443.
+                </p>
+
+            </div>
+
+
+            <div class="filter">
+
+                <code>
+                    http
+                </code>
+
+                <p>
+                    Display traffic identified as HTTP.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SECURITY USE CASE
+    ================================================= -->
+
+    <section class="section">
+
+        <h2>
+            Wireshark in Cybersecurity
+        </h2>
+
+        <p>
+
+            Security analysts can use Wireshark to investigate
+            suspicious network behavior.
+
+            For example, during an authorized investigation,
+            an analyst may examine DNS requests, unusual connections,
+            unexpected protocols or repeated communication patterns.
+
+        </p>
+
+
+        <div class="code-box">
+
+<code>
+Example investigation:
+
+1. Identify suspicious traffic
+2. Find source and destination IPs
+3. Identify the protocol
+4. Examine source and destination ports
+5. Apply display filters
+6. Follow the relevant communication
+7. Document the finding
+</code>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         BASIC TO ADVANCED
+    ================================================= -->
+
+    <section class="section">
+
+        <h2>
+            Wireshark Learning Path
+        </h2>
+
+
+        <div class="workflow">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    LEVEL 01
+                </div>
+
+                <h3>
+                    Beginner
+                </h3>
+
+                <p>
+                    Learn packets, interfaces, IP addresses,
+                    ports and basic filters.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    LEVEL 02
+                </div>
+
+                <h3>
+                    Intermediate
+                </h3>
+
+                <p>
+                    Analyze TCP, DNS, HTTP and communication flows.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    LEVEL 03
+                </div>
+
+                <h3>
+                    Advanced
+                </h3>
+
+                <p>
+                    Investigate suspicious traffic and packet patterns.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    LEVEL 04
+                </div>
+
+                <h3>
+                    Analyst
+                </h3>
+
+                <p>
+                    Apply packet analysis to security investigations
+                    and incident response.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SAFETY / AUTHORIZATION
+    ================================================= -->
+
+    <div class="warning">
+
+        <strong>
+            Authorized Use
+        </strong>
+
+        <p>
+
+            Capture and analyze traffic only on networks,
+            devices and systems that you own or are explicitly
+            authorized to test.
+
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================================
+         SUMMARY
+    ================================================= -->
+
+    <section class="section summary">
+
+        <h2>
+            Key Takeaways
+        </h2>
+
+        <ul>
+
+            <li>
+                Wireshark is a network protocol analyzer.
+            </li>
+
+            <li>
+                It allows analysts to inspect captured packets.
+            </li>
+
+            <li>
+                IP addresses, ports and protocols are important
+                parts of packet analysis.
+            </li>
+
+            <li>
+                Display filters make traffic analysis faster.
+            </li>
+
+            <li>
+                Wireshark is useful for troubleshooting,
+                monitoring and authorized security investigations.
+            </li>
+
+        </ul>
+
+    </section>
+    
+    <!-- LESSON COMPLETION -->
+
+    <section class="section" id="lessonCompletion">
+
+        <h2>Complete This Lesson</h2>
+
+        <p>
+            Mark this lesson as complete after learning Wireshark
+            basics, packet capture, network protocols, IP addresses,
+            ports, display filters and authorized traffic analysis.
+        </p>
+
+        <div style="text-align: center; margin-top: 20px;">
+
+            <button
+                type="button"
+                class="lesson-completion-button"
+                data-lesson-progress
+                data-course-id="cybersecurity-tools"
+                data-lesson-id="wireshark"
+                data-dashboard-url="../learning-paths/cybersecurity-tools/theory/wireshark.html"
+                data-status-id="lessonCompletionStatus">
+
+                ✓ Mark Lesson Complete
+
+            </button>
+
+        </div>
+
+        <p
+            id="lessonCompletionStatus"
+            role="status"
+            aria-live="polite"
+            style="text-align: center; margin-top: 15px;">
+        </p>
+
+    </section>
+    <!-- =================================================
+         LAB CTA
+    ================================================= -->
+
+    <section class="lab-cta">
+
+        <div>
+
+            <h2>
+                Ready for the Practical Lab?
+            </h2>
+
+            <p>
+                Analyze sample network traffic and practice
+                Wireshark filtering step-by-step.
+            </p>
+
+        </div>
+
+
+        <a
+            href="../lab/wireshark-lab.html"
+            class="lab-button"
+        >
+            Open Wireshark Lab →
+        </a>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div>
+
+            <div class="footer-brand">
+                Cyber<span>Nexa</span>
+            </div>
+
+            <p>
+                Cybersecurity &amp; IT Learning
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="../../../footer/about.html">
+                About
+            </a>
+
+            <a href="../../../footer/contact.html">
+                Contact
+            </a>
+
+            <a href="../../../footer/privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="../../../footer/disclaimer.html">
+                Disclaimer
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 CyberNexa. All rights reserved.
+    </div>
+</footer>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>
+</body>
+</html>

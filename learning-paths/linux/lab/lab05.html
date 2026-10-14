@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lab 04 - Linux File Permissions | CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN LAB PAGE
+        ====================================================== */
+
+        .linux-lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .linux-lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           LAB HEADER
+        ====================================================== */
+
+        .linux-lab-header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .linux-lab-badge {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            padding: 7px 12px;
+
+            border: 1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 20px;
+
+            color: #67e8f9;
+
+            background: rgba(103, 232, 249, 0.06);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-lab-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-lab-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-lab-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB INFO
+        ====================================================== */
+
+        .linux-lab-info {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .linux-info-card {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.14);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            text-align: center;
+        }
+
+
+        .linux-info-card strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #67e8f9;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .linux-info-card span {
+
+            color: #dbeafe;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-lab-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-lab-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.40);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.07);
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-lab-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-lab-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-lab-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-lab-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        /* =====================================================
+           OBJECTIVES
+        ====================================================== */
+
+        .linux-objectives {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-objectives li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 24px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-objectives li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           TERMINAL
+        ====================================================== */
+
+        .linux-terminal {
+
+            margin-top: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow: hidden;
+        }
+
+
+        .linux-terminal-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 10px 14px;
+
+            border-bottom:
+                1px solid rgba(103, 232, 249, 0.10);
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            color: #71808c;
+
+            font-size: 11px;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+
+        .terminal-dot {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #67e8f9;
+        }
+
+
+        .linux-terminal pre {
+
+            margin: 0;
+
+            padding: 20px;
+
+            overflow-x: auto;
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           EXPECTED OUTPUT
+        ====================================================== */
+
+        .linux-output {
+
+            margin-top: 14px;
+
+            padding: 16px 18px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(103, 232, 249, 0.045);
+        }
+
+
+        .linux-output-title {
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+
+        .linux-output code {
+
+            color: #a5f3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           STEP NUMBER
+        ====================================================== */
+
+        .linux-step {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .linux-step-number {
+
+            width: 30px;
+            height: 30px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 8px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-step-content {
+
+            flex: 1;
+        }
+
+
+        .linux-step-content strong {
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-step-content p {
+
+            margin-top: 5px;
+        }
+
+
+        /* =====================================================
+           COMMAND GRID
+        ====================================================== */
+
+        .linux-command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-command-card {
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .linux-command-card code {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           PERMISSION TABLE
+        ====================================================== */
+
+        .linux-table-wrapper {
+
+            width: 100%;
+
+            margin-top: 20px;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-permission-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 500px;
+        }
+
+
+        .linux-permission-table th,
+        .linux-permission-table td {
+
+            padding: 13px 14px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.12);
+
+            text-align: left;
+        }
+
+
+        .linux-permission-table th {
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            font-size: 12px;
+        }
+
+
+        .linux-permission-table td {
+
+            color: #b6c2cc;
+
+            font-size: 12px;
+        }
+
+
+        .linux-permission-table code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+        }
+
+
+        /* =====================================================
+           TASK BOX
+        ====================================================== */
+
+        .linux-task-box {
+
+            padding: 18px;
+
+            margin-top: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.18);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+        }
+
+
+        .linux-task-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-size: 13px;
+        }
+
+
+        .linux-task-box ol {
+
+            margin: 0;
+
+            padding-left: 22px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+
+        /* =====================================================
+           WARNING
+        ====================================================== */
+
+        .linux-warning {
+
+            margin-top: 18px;
+
+            padding: 17px;
+
+            border-left:
+                3px solid #facc15;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(250, 204, 21, 0.045);
+        }
+
+
+        .linux-warning strong {
+
+            color: #fde68a;
+
+            font-size: 13px;
+        }
+
+
+        .linux-warning p {
+
+            margin: 7px 0 0;
+
+            color: #c3cdd5;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           SUCCESS
+        ====================================================== */
+
+        .linux-success {
+
+            margin-top: 18px;
+
+            padding: 17px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 9px 9px 0;
+
+            background:
+                rgba(103, 232, 249, 0.045);
+        }
+
+
+        .linux-success strong {
+
+            color: #67e8f9;
+
+            font-size: 13px;
+        }
+
+
+        .linux-success p {
+
+            margin: 7px 0 0;
+
+            color: #b6c2cc;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-lab-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-lab-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-lab-info {
+
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-lab-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-lab-header h1 {
+
+                font-size: 30px;
+            }
+
+
+            .linux-lab-intro {
+
+                font-size: 13px;
+            }
+
+
+            .linux-lab-card {
+
+                padding:
+                    21px 18px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-lab-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-lab-card p {
+
+                font-size: 13px;
+            }
+
+
+            .linux-command-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-lab-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-lab-page {
+
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+
+            .linux-lab-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="linux-lab-page">
+
+        <div class="linux-lab-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="linux-lab-header">
+
+                <div class="linux-lab-badge">
+                    LINUX LAB 05
+                </div>
+
+                <h1>
+                    Lab 05 - <span>File Permissions</span>
+                </h1>
+
+                <p class="linux-lab-intro">
+
+                    In this practical lab, you will create files,
+                    inspect Linux permissions, modify permissions
+                    using chmod, change ownership using chown,
+                    and verify the results from the terminal.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LAB INFORMATION
+            ================================================== -->
+
+            <div class="linux-lab-info">
+
+                <div class="linux-info-card">
+
+                    <strong>Difficulty</strong>
+
+                    <span>Beginner</span>
+
+                </div>
+
+
+                <div class="linux-info-card">
+
+                    <strong>Platform</strong>
+
+                    <span>Linux / Ubuntu</span>
+
+                </div>
+
+
+                <div class="linux-info-card">
+
+                    <strong>Focus</strong>
+
+                    <span>File Security</span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 OBJECTIVES
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lab Objectives
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-objectives">
+
+                    <li>
+                        Understand Linux file permission notation.
+                    </li>
+
+                    <li>
+                        Create and inspect files from the terminal.
+                    </li>
+
+                    <li>
+                        Use <strong>ls -l</strong> to view permissions.
+                    </li>
+
+                    <li>
+                        Change permissions using <strong>chmod</strong>.
+                    </li>
+
+                    <li>
+                        Understand numeric permissions such as 755 and 644.
+                    </li>
+
+                    <li>
+                        Understand basic file ownership using <strong>chown</strong>.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 1
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        01
+                    </div>
+
+                    <h2>
+                        Step 1 — Create a Lab Directory
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    First create a separate directory for this practical.
+
+                </p>
+
+
+                <div class="linux-terminal">
+
+                    <div class="linux-terminal-header">
+
+                        <span class="terminal-dot"></span>
+
+                        Terminal
+
+                    </div>
+
+                    <pre>mkdir permissions-lab
+cd permissions-lab</pre>
+
+                </div>
+
+
+                <div class="linux-output">
+
+                    <div class="linux-output-title">
+                        Expected Result
+                    </div>
+
+                    <code>
+                        You are now inside the permissions-lab directory.
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 2
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        02
+                    </div>
+
+                    <h2>
+                        Step 2 — Create a File
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Create a simple text file that we will use
+                    throughout the practical.
+
+                </p>
+
+
+                <div class="linux-terminal">
+
+                    <div class="linux-terminal-header">
+
+                        <span class="terminal-dot"></span>
+
+                        Terminal
+
+                    </div>
+
+                    <pre>touch secret.txt
+echo "CyberNexa Linux Lab" &gt; secret.txt</pre>
+
+                </div>
+
+
+                <div class="linux-output">
+
+                    <div class="linux-output-title">
+                        Verify File
+                    </div>
+
+                    <code>
+                        ls
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 3
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        03
+                    </div>
+
+                    <h2>
+                        Step 3 — View File Permissions
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>ls -l</strong> to display the
+                    file permissions.
+
+                </p>
+
+
+                <div class="linux-terminal">
+
+                    <div class="linux-terminal-header">
+
+                        <span class="terminal-dot"></span>
+
+                        Terminal
+
+                    </div>
+
+                    <pre>ls -l secret.txt</pre>
+
+                </div>
+
+
+                <div class="linux-output">
+
+                    <div class="linux-output-title">
+                        Example Output
+                    </div>
+
+                    <code>
+                        -rw-r--r-- 1 user user 20 Sep 22 12:00 secret.txt
+                    </code>
+
+                </div>
+
+
+                <div class="linux-task-box">
+
+                    <strong>
+                        Understand the Permission String
+                    </strong>
+
+                    <ol>
+
+                        <li>
+                            First character = file type
+                        </li>
+
+                        <li>
+                            Next three characters = owner permissions
+                        </li>
+
+                        <li>
+                            Next three characters = group permissions
+                        </li>
+
+                        <li>
+                            Last three characters = others permissions
+                        </li>
+
+                    </ol>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PERMISSION TABLE
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        R
+                    </div>
+
+                    <h2>
+                        Step 4 — Permission Values
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux also uses numeric values to represent
+                    permissions.
+
+                </p>
+
+
+                <div class="linux-table-wrapper">
+
+                    <table class="linux-permission-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Permission
+                                </th>
+
+                                <th>
+                                    Symbol
+                                </th>
+
+                                <th>
+                                    Numeric Value
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    Read
+                                </td>
+
+                                <td>
+                                    <code>r</code>
+                                </td>
+
+                                <td>
+                                    <code>4</code>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Write
+                                </td>
+
+                                <td>
+                                    <code>w</code>
+                                </td>
+
+                                <td>
+                                    <code>2</code>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Execute
+                                </td>
+
+                                <td>
+                                    <code>x</code>
+                                </td>
+
+                                <td>
+                                    <code>1</code>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 5
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        05
+                    </div>
+
+                    <h2>
+                        Step 5 — Change Permissions with chmod
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Change the file permission so that only the
+                    owner can read and write the file.
+
+                </p>
+
+
+                <div class="linux-terminal">
+
+                    <div class="linux-terminal-header">
+
+                        <span class="terminal-dot"></span>
+
+                        Terminal
+
+                    </div>
+
+                    <pre>chmod 600 secret.txt
+ls -l secret.txt</pre>
+
+                </div>
+
+
+                <div class="linux-output">
+
+                    <div class="linux-output-title">
+                        Expected Permission
+                    </div>
+
+                    <code>
+                        -rw------- secret.txt
+                    </code>
+
+                </div>
+
+
+                <div class="linux-task-box">
+
+                    <strong>
+                        Why 600?
+                    </strong>
+
+                    <ol>
+
+                        <li>
+                            Owner = 6 = 4 + 2 = read + write
+                        </li>
+
+                        <li>
+                            Group = 0 = no permission
+                        </li>
+
+                        <li>
+                            Others = 0 = no permission
+                        </li>
+
+                    </ol>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 6
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        06
+                    </div>
+
+                    <h2>
+                        Step 6 — Make a Script Executable
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Create a simple shell script and give the
+                    owner execute permission.
+
+                </p>
+
+
+                <div class="linux-terminal">
+
+                    <div class="linux-terminal-header">
+
+                        <span class="terminal-dot"></span>
+
+                        Terminal
+
+                    </div>
+
+                    <pre>touch test.sh
+echo '#!/bin/bash' &gt; test.sh
+echo 'echo "CyberNexa Lab"' &gt;&gt; test.sh
+
+chmod u+x test.sh
+
+ls -l test.sh</pre>
+
+                </div>
+
+
+                <div class="linux-output">
+
+                    <div class="linux-output-title">
+                        Expected Result
+                    </div>
+
+                    <code>
+                        -rwx------ test.sh
+                    </code>
+
+                </div>
+
+
+                <div class="linux-success">
+
+                    <strong>
+                        Security Concept
+                    </strong>
+
+                    <p>
+
+                        Execute permission determines whether a file
+                        can be executed by a particular user category.
+                        Permissions should follow the principle of
+                        least privilege.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 7
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        07
+                    </div>
+
+                    <h2>
+                        Step 7 — Use chmod Symbolic Mode
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux also allows permissions to be changed
+                    using symbols.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chmod u+r file
+                        </code>
+
+                        <p>
+                            Add read permission for the owner.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chmod u-w file
+                        </code>
+
+                        <p>
+                            Remove write permission from the owner.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chmod g+r file
+                        </code>
+
+                        <p>
+                            Add read permission for the group.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chmod o-r file
+                        </code>
+
+                        <p>
+                            Remove read permission from others.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 8
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        08
+                    </div>
+
+                    <h2>
+                        Step 8 — Set Standard 755 Permissions
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Apply 755 permissions to the script.
+
+                </p>
+
+
+                <div class="linux-terminal">
+
+                    <div class="linux-terminal-header">
+
+                        <span class="terminal-dot"></span>
+
+                        Terminal
+
+                    </div>
+
+                    <pre>chmod 755 test.sh
+ls -l test.sh</pre>
+
+                </div>
+
+
+                <div class="linux-output">
+
+                    <div class="linux-output-title">
+                        Expected Permission
+                    </div>
+
+                    <code>
+                        -rwxr-xr-x test.sh
+                    </code>
+
+                </div>
+
+
+                <div class="linux-task-box">
+
+                    <strong>
+                        Understand 755
+                    </strong>
+
+                    <ol>
+
+                        <li>
+                            7 = read + write + execute
+                        </li>
+
+                        <li>
+                            5 = read + execute
+                        </li>
+
+                        <li>
+                            5 = read + execute
+                        </li>
+
+                    </ol>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 9
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        09
+                    </div>
+
+                    <h2>
+                        Step 9 — Check File Ownership
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>ls -l</strong> to identify the
+                    owner and group of a file.
+
+                </p>
+
+
+                <div class="linux-terminal">
+
+                    <div class="linux-terminal-header">
+
+                        <span class="terminal-dot"></span>
+
+                        Terminal
+
+                    </div>
+
+                    <pre>ls -l secret.txt</pre>
+
+                </div>
+
+
+                <div class="linux-output">
+
+                    <div class="linux-output-title">
+                        Important Fields
+                    </div>
+
+                    <code>
+                        permissions → owner → group → filename
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 10
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        10
+                    </div>
+
+                    <h2>
+                        Step 10 — Change Ownership
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    If you have administrator privileges, ownership
+                    can be changed with <strong>chown</strong>.
+
+                </p>
+
+
+                <div class="linux-terminal">
+
+                    <div class="linux-terminal-header">
+
+                        <span class="terminal-dot"></span>
+
+                        Terminal
+
+                    </div>
+
+                    <pre>sudo chown username secret.txt</pre>
+
+                </div>
+
+
+                <div class="linux-warning">
+
+                    <strong>
+                        Important
+                    </strong>
+
+                    <p>
+
+                        Replace <strong>username</strong> with an
+                        actual Linux user account. Do not change
+                        ownership of system files during this lab.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL CHALLENGE
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        !
+                    </div>
+
+                    <h2>
+                        Practical Challenge
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Complete the following tasks without looking
+                    at the previous commands.
+
+                </p>
+
+
+                <div class="linux-task-box">
+
+                    <strong>
+                        Challenge Tasks
+                    </strong>
+
+                    <ol>
+
+                        <li>
+                            Create a file named <code>private.txt</code>.
+                        </li>
+
+                        <li>
+                            Give the owner read and write permission only.
+                        </li>
+
+                        <li>
+                            Verify the permission using <code>ls -l</code>.
+                        </li>
+
+                        <li>
+                            Create a script named <code>backup.sh</code>.
+                        </li>
+
+                        <li>
+                            Give the script execute permission.
+                        </li>
+
+                        <li>
+                            Set the script permissions to <code>755</code>.
+                        </li>
+
+                        <li>
+                            Verify the final permissions.
+                        </li>
+
+                    </ol>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 QUICK COMMAND REFERENCE
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        Quick Command Reference
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ls -l
+                        </code>
+
+                        <p>
+                            View detailed file information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chmod 600 file
+                        </code>
+
+                        <p>
+                            Owner read/write only.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chmod 755 file
+                        </code>
+
+                        <p>
+                            Owner full access; group and others
+                            read/execute.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chmod +x file
+                        </code>
+
+                        <p>
+                            Add execute permission.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chmod u+w file
+                        </code>
+
+                        <p>
+                            Add write permission for the owner.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            chown user file
+                        </code>
+
+                        <p>
+                            Change file owner.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 LAB COMPLETION
+            ================================================== -->
+
+            <section class="linux-lab-card">
+
+                <div class="linux-lab-heading">
+
+                    <div class="linux-lab-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lab Completion
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-success">
+
+                    <strong>
+                        What You Should Know Now
+                    </strong>
+
+                    <p>
+
+                        You should now be able to read Linux permission
+                        strings, identify owner/group/others permissions,
+                        use <strong>ls -l</strong>, modify permissions
+                        using <strong>chmod</strong>, understand numeric
+                        permissions such as <strong>600</strong> and
+                        <strong>755</strong>, and understand basic
+                        ownership management.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-topic-navigation">
+
+
+                <a
+                    href="lab04.html"
+                    class="linux-topic-button"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Users & groups
+                    </strong>
+
+                </a>
+
+
+                <a
+                    href="../theory/linux-processes.html"
+                    class="linux-topic-button"
+                >
+
+                    <strong>
+                        Next Topic: Processes 
+                    </strong>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+</body>
+
+</html>

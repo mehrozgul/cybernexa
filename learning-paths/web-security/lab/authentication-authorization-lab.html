@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Authentication & Authorization Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 191, 255, 0.07),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 255, 176, 0.05),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 50%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 40px 35px;
+
+            margin-bottom: 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.16);
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 20, 34, 0.98),
+                    rgba(2, 10, 21, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00bfff,
+                    #00ffb0,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            margin-bottom: 13px;
+
+            color: #00bfff;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 40px;
+
+            line-height: 1.15;
+        }
+
+        .lab-hero h1 span {
+
+            color: #00bfff;
+        }
+
+        .lab-hero p {
+
+            max-width: 760px;
+
+            margin: 15px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           LAB STATUS
+        ====================================================== */
+
+        .lab-status {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 22px;
+        }
+
+        .status-item {
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .status-item small {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #526a7e;
+
+            font-size: 8px;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+        }
+
+        .status-item strong {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+        }
+
+        .status-item .safe {
+
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           INFO BOX
+        ====================================================== */
+
+        .info-box {
+
+            margin-bottom: 18px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.17);
+
+            border-radius: 10px;
+
+            background:
+                rgba(255, 177, 0, 0.025);
+        }
+
+        .info-box strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #ffc44d;
+
+            font-size: 12px;
+        }
+
+        .info-box p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 11px;
+
+            line-height: 1.75;
+        }
+
+        /* =====================================================
+           QUIZ CARD
+        ====================================================== */
+
+        .quiz-card {
+
+            margin-bottom: 16px;
+
+            padding: 23px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .question-number {
+
+            margin-bottom: 8px;
+
+            color: #00bfff;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+        }
+
+        .question {
+
+            margin: 0 0 16px;
+
+            color: #ffffff;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+        .options {
+
+            display: grid;
+
+            gap: 8px;
+        }
+
+        .option {
+
+            position: relative;
+
+            display: block;
+
+            padding: 12px 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 8px;
+
+            color: #8298aa;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .option:hover {
+
+            color: #dce9f4;
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+
+            background:
+                rgba(0, 191, 255, 0.035);
+        }
+
+        .option input {
+
+            margin-right: 8px;
+        }
+
+        /* =====================================================
+           SIMULATION
+        ====================================================== */
+
+        .simulation {
+
+            margin-top: 22px;
+
+            padding: 24px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.12);
+
+            border-radius: 12px;
+
+            background:
+                rgba(0, 255, 176, 0.018);
+        }
+
+        .simulation h2 {
+
+            margin: 0 0 7px;
+
+            color: #ffffff;
+
+            font-size: 18px;
+        }
+
+        .simulation-description {
+
+            margin: 0 0 18px;
+
+            color: #71879b;
+
+            font-size: 11px;
+
+            line-height: 1.75;
+        }
+
+        .sim-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 10px;
+        }
+
+        .sim-card {
+
+            padding: 17px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            background:
+                rgba(0, 0, 0, 0.18);
+        }
+
+        .sim-card h3 {
+
+            margin: 0 0 7px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+        .sim-card p {
+
+            margin: 0;
+
+            color: #71879b;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        .sim-result {
+
+            margin-top: 15px;
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 8px;
+
+            color: #8fa5bb;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           BUTTON
+        ====================================================== */
+
+        .lab-actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-top: 24px;
+        }
+
+        .lab-btn {
+
+            padding: 13px 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 8px;
+
+            color: #d6f6ff;
+
+            background:
+                rgba(0, 191, 255, 0.055);
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .lab-btn:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            background:
+                rgba(0, 191, 255, 0.09);
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        #result {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 23px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.18);
+
+            border-radius: 11px;
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        #result h2 {
+
+            margin: 0 0 8px;
+
+            color: #00ffb0;
+
+            font-size: 20px;
+        }
+
+        #result p {
+
+            margin: 0;
+
+            color: #8fa5bb;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           NAV
+        ====================================================== */
+
+        .topic-navigation {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-top: 28px;
+        }
+
+        .topic-navigation a {
+
+            padding: 14px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 9px;
+
+            color: #71879b;
+
+            background:
+                rgba(0, 191, 255, 0.02);
+
+            text-decoration: none;
+
+            text-align: center;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .topic-navigation a:hover {
+
+            color: #d6f6ff;
+
+            border-color:
+                rgba(0, 191, 255, 0.25);
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .lab-status {
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .sim-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .lab-page {
+
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+
+                padding: 27px 20px;
+            }
+
+            .lab-hero h1 {
+
+                font-size: 30px;
+            }
+
+            .quiz-card {
+
+                padding: 19px;
+            }
+
+            .topic-navigation {
+
+                grid-template-columns: 1fr;
+            }
+
+            .lab-actions {
+
+                flex-direction: column;
+            }
+
+            .lab-btn {
+
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- HERO -->
+
+            <section class="lab-hero">
+
+                <div class="lab-kicker">
+                    WEB SECURITY LAB / 05
+                </div>
+
+                <h1>
+                    Authentication
+                    <span>&amp;</span>
+                    Authorization
+                </h1>
+
+                <p>
+                    Test your understanding of identity verification,
+                    permissions, roles and secure access control through
+                    a controlled Web Security learning environment.
+                </p>
+
+            </section>
+
+
+            <!-- STATUS -->
+
+            <div class="lab-status">
+
+                <div class="status-item">
+
+                    <small>
+                        Environment
+                    </small>
+
+                    <strong class="safe">
+                        Authorized Lab
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <small>
+                        Difficulty
+                    </small>
+
+                    <strong>
+                        Beginner
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <small>
+                        Questions
+                    </small>
+
+                    <strong>
+                        10 MCQs
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <small>
+                        Focus
+                    </small>
+
+                    <strong>
+                        Access Control
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- INFO -->
+
+            <div class="info-box">
+
+                <strong>
+                    ⚠ SAFE LEARNING ENVIRONMENT
+                </strong>
+
+                <p>
+                    This lab is a browser-based educational simulation.
+                    It does not test real accounts, bypass authentication
+                    on external systems, or access unauthorized resources.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 QUESTIONS
+            ================================================== -->
+
+            <form id="quizForm">
+
+
+                <!-- Q1 -->
+
+                <section class="quiz-card">
+
+                    <div class="question-number">
+                        QUESTION 01
+                    </div>
+
+                    <h2 class="question">
+                        What is the main purpose of authentication?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="a">
+                            A. Determine what files a user can access
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="b">
+                            B. Verify the identity of a user
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="c">
+                            C. Encrypt every database record
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q1" value="d">
+                            D. Increase network bandwidth
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q2 -->
+
+                <section class="quiz-card">
+
+                    <div class="question-number">
+                        QUESTION 02
+                    </div>
+
+                    <h2 class="question">
+                        What question does authorization answer?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="a">
+                            A. Who are you?
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="b">
+                            B. What are you allowed to do?
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="c">
+                            C. What is your IP address?
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q2" value="d">
+                            D. Which browser are you using?
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q3 -->
+
+                <section class="quiz-card">
+
+                    <div class="question-number">
+                        QUESTION 03
+                    </div>
+
+                    <h2 class="question">
+                        Which is an example of an authentication factor?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="a">
+                            A. Password
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="b">
+                            B. File permission
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="c">
+                            C. User role
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q3" value="d">
+                            D. Database table
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q4 -->
+
+                <section class="quiz-card">
+
+                    <div class="question-number">
+                        QUESTION 04
+                    </div>
+
+                    <h2 class="question">
+                        A user successfully logs in. What should happen
+                        before accessing an administrator-only resource?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="a">
+                            A. The browser should automatically allow access
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="b">
+                            B. The server should check authorization
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="c">
+                            C. The user should change their IP address
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q4" value="d">
+                            D. The page should hide the resource name
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q5 -->
+
+                <section class="quiz-card">
+
+                    <div class="question-number">
+                        QUESTION 05
+                    </div>
+
+                    <h2 class="question">
+                        Which principle gives users only the permissions
+                        they need?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="a">
+                            A. Least privilege
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="b">
+                            B. Open access
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="c">
+                            C. Anonymous access
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q5" value="d">
+                            D. Public privilege
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q6 -->
+
+                <section class="quiz-card">
+
+                    <div class="question-number">
+                        QUESTION 06
+                    </div>
+
+                    <h2 class="question">
+                        Which statement correctly describes authorization?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q6" value="a">
+                            A. It verifies a password only
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q6" value="b">
+                            B. It determines permitted actions and resources
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q6" value="c">
+                            C. It creates a network connection
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q6" value="d">
+                            D. It replaces encryption
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q7 -->
+
+                <section class="quiz-card">
+
+                    <div class="question-number">
+                        QUESTION 07
+                    </div>
+
+                    <h2 class="question">
+                        Where should important authorization checks
+                        ultimately be enforced?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q7" value="a">
+                            A. Only in HTML
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q7" value="b">
+                            B. Only through CSS
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q7" value="c">
+                            C. On the server
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q7" value="d">
+                            D. Only in the browser address bar
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q8 -->
+
+                <section class="quiz-card">
+
+                    <div class="question-number">
+                        QUESTION 08
+                    </div>
+
+                    <h2 class="question">
+                        What is MFA mainly used for?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q8" value="a">
+                            A. Adding additional identity verification
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q8" value="b">
+                            B. Removing authorization
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q8" value="c">
+                            C. Disabling sessions
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q8" value="d">
+                            D. Making all users administrators
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q9 -->
+
+                <section class="quiz-card">
+
+                    <div class="question-number">
+                        QUESTION 09
+                    </div>
+
+                    <h2 class="question">
+                        A student is authenticated but tries to access
+                        an administrator-only page. What should happen?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q9" value="a">
+                            A. Access should automatically be granted
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q9" value="b">
+                            B. Authorization should deny the request
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q9" value="c">
+                            C. Authentication should be disabled
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q9" value="d">
+                            D. The browser should close
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- Q10 -->
+
+                <section class="quiz-card">
+
+                    <div class="question-number">
+                        QUESTION 10
+                    </div>
+
+                    <h2 class="question">
+                        Which pair correctly represents the two concepts?
+                    </h2>
+
+                    <div class="options">
+
+                        <label class="option">
+                            <input type="radio" name="q10" value="a">
+                            A. Authentication = permissions, Authorization = identity
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q10" value="b">
+                            B. Authentication = identity, Authorization = permissions
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q10" value="c">
+                            C. Both only mean encryption
+                        </label>
+
+                        <label class="option">
+                            <input type="radio" name="q10" value="d">
+                            D. Both only mean password storage
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     SAFE SIMULATION
+                ================================================== -->
+
+                <section class="simulation">
+
+                    <h2>
+                        🔬 Access Control Simulation
+                    </h2>
+
+                    <p class="simulation-description">
+                        This controlled simulation demonstrates the
+                        difference between authentication and authorization.
+                        Select a user role and a requested resource.
+                    </p>
+
+
+                    <div class="sim-grid">
+
+
+                        <div class="sim-card">
+
+                            <h3>
+                                User Role
+                            </h3>
+
+                            <p>
+
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="role"
+                                        value="student"
+                                        checked
+                                    >
+                                    Student
+                                </label>
+
+                                <br><br>
+
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="role"
+                                        value="admin"
+                                    >
+                                    Administrator
+                                </label>
+
+                            </p>
+
+                        </div>
+
+
+                        <div class="sim-card">
+
+                            <h3>
+                                Requested Resource
+                            </h3>
+
+                            <p>
+
+                                <select id="resource">
+
+                                    <option value="profile">
+                                        Student Profile
+                                    </option>
+
+                                    <option value="grades">
+                                        Academic Records
+                                    </option>
+
+                                    <option value="admin">
+                                        Admin Dashboard
+                                    </option>
+
+                                </select>
+
+                            </p>
+
+                        </div>
+
+
+                        <div class="sim-card">
+
+                            <h3>
+                                Authentication
+                            </h3>
+
+                            <p>
+                                Simulated user identity:
+                                <strong>
+                                    VERIFIED
+                                </strong>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="lab-actions">
+
+                        <button
+                            type="button"
+                            class="lab-btn"
+                            onclick="checkAccess()"
+                        >
+                            Check Authorization
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="sim-result"
+                        id="simResult"
+                    >
+                        System ready. Select a role and resource,
+                        then run the authorization check.
+                    </div>
+
+                </section>
+
+
+                <!-- SUBMIT -->
+
+                <div class="lab-actions">
+
+                    <button
+                        type="submit"
+                        class="lab-btn"
+                    >
+                        Submit Lab
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- RESULT -->
+
+            <div id="result">
+
+                <h2 id="scoreTitle">
+                    Lab Completed
+                </h2>
+
+                <p id="scoreText"></p>
+
+            </div>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="topic-navigation">
+
+                <a href="sessions-lab.html">
+                    ← Lab: Sessions
+                </a>
+
+                <a href="web-security-lab.html">
+                    All Labs
+                </a>
+
+                <a href="../theory/sql-injection.html">
+                 Next Theory: SQL Injection →
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <script>
+
+        /* =====================================================
+           ANSWER KEY
+        ====================================================== */
+
+        const answers = {
+
+            q1: "b",
+            q2: "b",
+            q3: "a",
+            q4: "b",
+            q5: "a",
+            q6: "b",
+            q7: "c",
+            q8: "a",
+            q9: "b",
+            q10: "b"
+
+        };
+
+
+        /* =====================================================
+           QUIZ SUBMISSION
+        ====================================================== */
+
+        document
+            .getElementById("quizForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                let score = 0;
+
+                let answered = 0;
+
+                for (const question in answers) {
+
+                    const selected =
+                        document.querySelector(
+                            `input[name="${question}"]:checked`
+                        );
+
+                    if (selected) {
+
+                        answered++;
+
+                        if (
+                            selected.value ===
+                            answers[question]
+                        ) {
+
+                            score++;
+
+                        }
+
+                    }
+
+                }
+
+
+                const result =
+                    document.getElementById("result");
+
+                const scoreTitle =
+                    document.getElementById("scoreTitle");
+
+                const scoreText =
+                    document.getElementById("scoreText");
+
+
+                result.style.display = "block";
+
+
+                if (answered < 10) {
+
+                    scoreTitle.textContent =
+                        "Complete All Questions";
+
+                    scoreText.textContent =
+                        `You answered ${answered}/10 questions. ` +
+                        "Please answer all questions before submitting the lab.";
+
+                }
+
+                else {
+
+                    scoreTitle.textContent =
+                        `Score: ${score}/10`;
+
+                    if (score >= 8) {
+
+                        scoreText.textContent =
+                            "Excellent. You have a strong understanding " +
+                            "of authentication and authorization.";
+
+                    }
+
+                    else if (score >= 5) {
+
+                        scoreText.textContent =
+                            "Good attempt. Review the difference between " +
+                            "identity verification and permission control.";
+
+                    }
+
+                    else {
+
+                        scoreText.textContent =
+                            "Keep practicing. Review the theory section " +
+                            "and try the lab again.";
+
+                    }
+
+                }
+
+
+                result.scrollIntoView({
+                    behavior: "smooth"
+                });
+
+            });
+
+
+        /* =====================================================
+           AUTHORIZATION SIMULATION
+        ====================================================== */
+
+        function checkAccess() {
+
+            const role =
+                document.querySelector(
+                    'input[name="role"]:checked'
+                ).value;
+
+            const resource =
+                document.getElementById(
+                    "resource"
+                ).value;
+
+            const output =
+                document.getElementById(
+                    "simResult"
+                );
+
+
+            let allowed = false;
+
+            if (role === "admin") {
+
+                allowed = true;
+
+            }
+
+            else if (
+                role === "student" &&
+                (
+                    resource === "profile" ||
+                    resource === "grades"
+                )
+            ) {
+
+                allowed = true;
+
+            }
+
+
+            if (allowed) {
+
+                output.innerHTML =
+                    `<strong style="color:#00ffb0;">
+                        ACCESS GRANTED
+                    </strong>
+                    <br>
+                    Authentication status:
+                    VERIFIED
+                    <br>
+                    Authorization result:
+                    PERMISSION AVAILABLE`;
+
+            }
+
+            else {
+
+                output.innerHTML =
+                    `<strong style="color:#ffb84d;">
+                        ACCESS DENIED
+                    </strong>
+                    <br>
+                    Authentication status:
+                    VERIFIED
+                    <br>
+                    Authorization result:
+                    REQUIRED PERMISSION NOT AVAILABLE`;
+
+            }
+
+        }
+
+    </script>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

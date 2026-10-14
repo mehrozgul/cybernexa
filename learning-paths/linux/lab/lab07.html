@@ -1,0 +1,2985 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux Processes Practical Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-process-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%
+                ),
+                #02080d;
+        }
+
+
+        .linux-process-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-process-header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .linux-process-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-process-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-process-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-process-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           LAB BADGE
+        ====================================================== */
+
+        .linux-process-badge {
+
+            display: inline-block;
+
+            margin-top: 20px;
+
+            padding: 8px 14px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 20px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-process-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98)
+                );
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-process-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-process-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent
+                );
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-process-card:hover::after {
+
+                animation:
+                    linuxProcessLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxProcessMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxProcessLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxProcessMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-process-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-process-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-process-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-process-card h3 {
+
+            margin: 0 0 9px;
+
+            color: #f8fafc;
+
+            font-size: 16px;
+        }
+
+
+        .linux-process-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-process-card p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           OBJECTIVE
+        ====================================================== */
+
+        .linux-process-objective {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid
+                #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-process-objective strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-process-objective span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           STEP GRID
+        ====================================================== */
+
+        .linux-process-step-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-process-step-box {
+
+            padding: 20px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .linux-process-step-number {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 30px;
+            height: 30px;
+
+            margin-bottom: 12px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.30);
+
+            border-radius: 50%;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-process-step-box p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .linux-process-command-box {
+
+            position: relative;
+
+            margin-top: 18px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-process-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+
+            white-space: pre;
+        }
+
+
+        /* =====================================================
+           COPY BUTTON
+        ====================================================== */
+
+        .linux-process-copy-button {
+
+            position: absolute;
+
+            top: 10px;
+            right: 10px;
+
+            padding: 6px 10px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.20);
+
+            border-radius: 6px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 10px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+
+        .linux-process-copy-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.55);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+        }
+
+
+        /* =====================================================
+           OUTPUT BOX
+        ====================================================== */
+
+        .linux-process-output-box {
+
+            margin-top: 15px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid
+                rgba(74, 222, 128, 0.16);
+
+            border-radius: 10px;
+
+            background:
+                rgba(74, 222, 128, 0.025);
+
+            overflow-x: auto;
+        }
+
+
+        .linux-process-output-label {
+
+            margin-bottom: 9px;
+
+            color: #86efac;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-process-output-box pre {
+
+            margin: 0;
+
+            color: #b8e8c7;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           WARNING BOX
+        ====================================================== */
+
+        .linux-process-warning-box {
+
+            margin-top: 18px;
+
+            padding: 17px 20px;
+
+            border:
+                1px solid
+                rgba(251, 191, 36, 0.18);
+
+            border-left:
+                3px solid
+                #fbbf24;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(251, 191, 36, 0.035);
+        }
+
+
+        .linux-process-warning-box strong {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #fbbf24;
+
+            font-size: 13px;
+        }
+
+
+        .linux-process-warning-box p {
+
+            margin: 0;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           PRACTICAL TASK
+        ====================================================== */
+
+        .linux-process-task-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-process-task-list li {
+
+            position: relative;
+
+            padding:
+                10px 0 10px 25px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid
+                rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-process-task-list li:last-child {
+
+            border-bottom: none;
+        }
+
+
+        .linux-process-task-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 10px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           FLOW
+        ====================================================== */
+
+        .linux-process-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-process-flow-item {
+
+            padding: 12px 16px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-process-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .linux-process-result-box {
+
+            padding: 20px;
+
+            margin-top: 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.18);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+        }
+
+
+        .linux-process-result-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-size: 14px;
+        }
+
+
+        .linux-process-result-box p {
+
+            margin: 0;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-process-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-process-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           PROCESS STATE TABLE
+        ====================================================== */
+
+        .linux-process-table-wrapper {
+
+            margin-top: 20px;
+
+            overflow-x: auto;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.12);
+
+            border-radius: 10px;
+        }
+
+
+        .linux-process-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 600px;
+        }
+
+
+        .linux-process-table th {
+
+            padding: 13px 15px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            border-bottom:
+                1px solid
+                rgba(103, 232, 249, 0.14);
+
+            font-size: 12px;
+
+            text-align: left;
+        }
+
+
+        .linux-process-table td {
+
+            padding: 13px 15px;
+
+            color: #b6c2cc;
+
+            border-bottom:
+                1px solid
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        .linux-process-table tr:last-child td {
+
+            border-bottom: none;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-process-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-process-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid
+                rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-process-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform: translateY(-1px);
+        }
+
+
+        .linux-process-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-process-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-process-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-process-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-process-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-process-header {
+
+                margin-bottom: 30px;
+            }
+
+
+            .linux-process-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-process-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-process-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-process-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-process-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-process-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-process-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-process-step-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-process-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-process-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-process-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-process-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-process-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-process-key-item {
+
+                font-size: 11px;
+
+                padding: 9px 11px;
+            }
+
+
+            .linux-process-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-process-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-process-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-process-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-process-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-process-page">
+
+        <div class="linux-process-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="linux-process-header">
+
+                <div class="linux-process-category">
+                    LINUX PRACTICAL LAB
+                </div>
+
+                <h1>
+                    Lab 07 -  <span> Linux Services</span>
+                </h1>
+
+                <p class="linux-process-intro">
+
+                    In this practical lab, you will learn how Linux
+                    processes work, identify running processes,
+                    inspect process information, monitor system
+                    activity and safely terminate processes using
+                    basic Linux commands.
+
+                </p>
+
+                <div class="linux-process-badge">
+                    Hands-On Lab • Beginner
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 OBJECTIVE
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        🎯
+                    </div>
+
+                    <h2>
+                        Lab Objective
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-process-objective">
+
+                    <strong>
+                        What You Will Practice
+                    </strong>
+
+                    <span>
+
+                        By completing this lab, you will learn how to
+                        identify processes, view process IDs, monitor
+                        running processes, search for specific processes,
+                        inspect process trees and terminate processes
+                        using appropriate Linux commands.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 REQUIREMENTS
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        ⚙
+                    </div>
+
+                    <h2>
+                        Lab Requirements
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-process-step-grid">
+
+                    <div class="linux-process-step-box">
+
+                        <div class="linux-process-step-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Linux System
+                        </h3>
+
+                        <p>
+                            Ubuntu, Kali Linux, Debian or another
+                            Linux distribution.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-process-step-box">
+
+                        <div class="linux-process-step-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Terminal
+                        </h3>
+
+                        <p>
+                            Open the Linux Terminal to execute
+                            process-management commands.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-process-step-box">
+
+                        <div class="linux-process-step-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Sudo Access
+                        </h3>
+
+                        <p>
+                            Administrative access may be required
+                            for some process-management operations.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-process-step-box">
+
+                        <div class="linux-process-step-number">
+                            04
+                        </div>
+
+                        <h3>
+                            Basic Linux Knowledge
+                        </h3>
+
+                        <p>
+                            You should know how to open a terminal
+                            and execute basic Linux commands.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 1
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        01
+                    </div>
+
+                    <h2>
+                        Step 1 — View Running Processes
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>ps</strong> command displays information
+                    about currently running processes.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>ps</code>
+
+                </div>
+
+
+                <div class="linux-process-output-box">
+
+                    <div class="linux-process-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>    PID TTY          TIME CMD
+   2145 pts/0    00:00:00 bash
+   2198 pts/0    00:00:00 ps</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 2
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        02
+                    </div>
+
+                    <h2>
+                        Step 2 — View All Processes
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>ps aux</strong> to display processes
+                    from all users with detailed information.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>ps aux</code>
+
+                </div>
+
+
+                <div class="linux-process-output-box">
+
+                    <div class="linux-process-output-label">
+                        Important Columns
+                    </div>
+
+                    <pre>USER     PID     %CPU     %MEM     COMMAND
+
+USER     = Process owner
+PID      = Process ID
+%CPU     = CPU usage
+%MEM     = Memory usage
+COMMAND  = Process command</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 3
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        03
+                    </div>
+
+                    <h2>
+                        Step 3 — Find a Process by Name
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>pgrep</strong> command searches for
+                    process IDs based on a process name.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>pgrep bash</code>
+
+                </div>
+
+
+                <div class="linux-process-output-box">
+
+                    <div class="linux-process-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>2145</pre>
+
+                </div>
+
+
+                <div class="linux-process-warning-box">
+
+                    <strong>
+                        Remember
+                    </strong>
+
+                    <p>
+
+                        The number returned by <strong>pgrep</strong>
+                        is the PID of the matching process.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 4
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        04
+                    </div>
+
+                    <h2>
+                        Step 4 — Check Process ID
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>pidof</strong> command can be used
+                    to find the PID of a running program.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>pidof bash</code>
+
+                </div>
+
+
+                <div class="linux-process-output-box">
+
+                    <div class="linux-process-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>2145</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 5
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        05
+                    </div>
+
+                    <h2>
+                        Step 5 — Monitor Processes in Real Time
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>top</strong> command provides a
+                    continuously updated view of running processes
+                    and system resource usage.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>top</code>
+
+                </div>
+
+
+                <div class="linux-process-warning-box">
+
+                    <strong>
+                        Exit the Command
+                    </strong>
+
+                    <p>
+
+                        Press <strong>q</strong> to exit the
+                        <strong>top</strong> interface.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 6
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        06
+                    </div>
+
+                    <h2>
+                        Step 6 — View Process Tree
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>pstree</strong> command displays
+                    processes in a parent-child tree structure.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>pstree</code>
+
+                </div>
+
+
+                <div class="linux-process-output-box">
+
+                    <div class="linux-process-output-label">
+                        Example
+                    </div>
+
+                    <pre>systemd
+ ├─sshd
+ │  └─bash
+ │     └─pstree
+ └─NetworkManager</pre>
+
+                </div>
+
+
+                <div class="linux-process-result-box">
+
+                    <strong>
+                        Why This Matters
+                    </strong>
+
+                    <p>
+
+                        A process tree helps you understand which
+                        processes are parents and which processes
+                        were created by them.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 7
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        07
+                    </div>
+
+                    <h2>
+                        Step 7 — Create a Test Process
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Create a simple process using the
+                    <strong>sleep</strong> command. The process
+                    will remain active for 60 seconds.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>sleep 60 &amp;</code>
+
+                </div>
+
+
+                <div class="linux-process-output-box">
+
+                    <div class="linux-process-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>[1] 3250</pre>
+
+                </div>
+
+
+                <div class="linux-process-warning-box">
+
+                    <strong>
+                        Background Process
+                    </strong>
+
+                    <p>
+
+                        The <strong>&amp;</strong> symbol starts the
+                        command as a background process, allowing
+                        you to continue using the terminal.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 8
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        08
+                    </div>
+
+                    <h2>
+                        Step 8 — Find the Test Process
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use <strong>pgrep</strong> to find the PID of
+                    the <strong>sleep</strong> process.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>pgrep sleep</code>
+
+                </div>
+
+
+                <div class="linux-process-output-box">
+
+                    <div class="linux-process-output-label">
+                        Example Output
+                    </div>
+
+                    <pre>3250</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 9
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        09
+                    </div>
+
+                    <h2>
+                        Step 9 — Terminate a Process
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The <strong>kill</strong> command sends a signal
+                    to a process. Use it with the PID of the test
+                    process created in the previous step.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>kill 3250</code>
+
+                </div>
+
+
+                <div class="linux-process-warning-box">
+
+                    <strong>
+                        Important
+                    </strong>
+
+                    <p>
+
+                        Replace <strong>3250</strong> with the actual
+                        PID returned on your system. Do not randomly
+                        terminate important system processes.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 STEP 10
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        10
+                    </div>
+
+                    <h2>
+                        Step 10 — Check Process Status
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Use the <strong>ps -p</strong> command to inspect
+                    a specific process by its PID.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>ps -p 3250</code>
+
+                </div>
+
+
+                <div class="linux-process-output-box">
+
+                    <div class="linux-process-output-label">
+                        Example
+                    </div>
+
+                    <pre>    PID TTY          TIME CMD
+   3250 pts/0    00:00:00 sleep</pre>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PROCESS STATES
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        ◉
+                    </div>
+
+                    <h2>
+                        Linux Process States
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux processes can have different states.
+                    The <strong>STAT</strong> column in commands
+                    such as <strong>ps</strong> provides information
+                    about the current process state.
+
+                </p>
+
+
+                <div class="linux-process-table-wrapper">
+
+                    <table class="linux-process-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    State
+                                </th>
+
+                                <th>
+                                    Meaning
+                                </th>
+
+                                <th>
+                                    Description
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    R
+                                </td>
+
+                                <td>
+                                    Running
+                                </td>
+
+                                <td>
+                                    Process is running or ready to run.
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    S
+                                </td>
+
+                                <td>
+                                    Sleeping
+                                </td>
+
+                                <td>
+                                    Process is waiting for an event.
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    D
+                                </td>
+
+                                <td>
+                                    Uninterruptible Sleep
+                                </td>
+
+                                <td>
+                                    Usually waiting for I/O.
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    T
+                                </td>
+
+                                <td>
+                                    Stopped
+                                </td>
+
+                                <td>
+                                    Process has been stopped.
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Z
+                                </td>
+
+                                <td>
+                                    Zombie
+                                </td>
+
+                                <td>
+                                    Process has finished but still has
+                                    an entry waiting for its parent.
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PROCESS INFORMATION
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        ℹ
+                    </div>
+
+                    <h2>
+                        Important Process Information
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-process-step-grid">
+
+                    <div class="linux-process-step-box">
+
+                        <h3>
+                            PID
+                        </h3>
+
+                        <p>
+                            Process ID uniquely identifies a process
+                            while it exists.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-process-step-box">
+
+                        <h3>
+                            PPID
+                        </h3>
+
+                        <p>
+                            Parent Process ID identifies the process
+                            that created the current process.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-process-step-box">
+
+                        <h3>
+                            CPU Usage
+                        </h3>
+
+                        <p>
+                            Indicates how much processor time a
+                            process is using.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-process-step-box">
+
+                        <h3>
+                            Memory Usage
+                        </h3>
+
+                        <p>
+                            Shows the amount of system memory being
+                            used by a process.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL FLOW
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        ↔
+                    </div>
+
+                    <h2>
+                        Practical Workflow
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-process-flow">
+
+                    <div class="linux-process-flow-item">
+                        View Processes
+                    </div>
+
+                    <div class="linux-process-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-process-flow-item">
+                        Find PID
+                    </div>
+
+                    <div class="linux-process-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-process-flow-item">
+                        Inspect Process
+                    </div>
+
+                    <div class="linux-process-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-process-flow-item">
+                        Monitor
+                    </div>
+
+                    <div class="linux-process-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-process-flow-item">
+                        Manage Process
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 PRACTICAL TASK
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        🧪
+                    </div>
+
+                    <h2>
+                        Your Practical Task
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Now perform the following tasks yourself in
+                    your Linux terminal.
+
+                </p>
+
+
+                <ul class="linux-process-task-list">
+
+                    <li>
+                        Display the processes running in your terminal
+                        using <strong>ps</strong>.
+                    </li>
+
+                    <li>
+                        Display detailed information using
+                        <strong>ps aux</strong>.
+                    </li>
+
+                    <li>
+                        Find the PID of the <strong>bash</strong>
+                        process.
+                    </li>
+
+                    <li>
+                        Display the process tree using
+                        <strong>pstree</strong>.
+                    </li>
+
+                    <li>
+                        Start a background process using
+                        <strong>sleep 120 &amp;</strong>.
+                    </li>
+
+                    <li>
+                        Find the PID of the sleep process using
+                        <strong>pgrep</strong>.
+                    </li>
+
+                    <li>
+                        Check the process using <strong>ps -p</strong>.
+                    </li>
+
+                    <li>
+                        Terminate the test process using
+                        <strong>kill</strong>.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FINAL VERIFICATION
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Final Verification
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Run the following commands to verify your
+                    process-management practical work.
+
+                </p>
+
+
+                <div class="linux-process-command-box">
+
+                    <button
+                        class="linux-process-copy-button"
+                        onclick="copyCommand(this)"
+                    >
+                        Copy
+                    </button>
+
+                    <code>ps aux
+pgrep bash
+pidof bash
+pstree
+ps -p 1</code>
+
+                </div>
+
+
+                <div class="linux-process-result-box">
+
+                    <strong>
+                        Expected Result
+                    </strong>
+
+                    <p>
+
+                        The output should display running processes,
+                        process IDs, process relationships and
+                        information about the selected process.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CYBERSECURITY CONNECTION
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Cybersecurity Connection
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Process management is an important part of
+                    Linux security. Security professionals monitor
+                    processes to identify unusual activity,
+                    unauthorized programs and resource abuse.
+
+                </p>
+
+
+                <div class="linux-process-key-concepts">
+
+                    <div class="linux-process-key-item">
+                        Process Monitoring
+                    </div>
+
+                    <div class="linux-process-key-item">
+                        PID Analysis
+                    </div>
+
+                    <div class="linux-process-key-item">
+                        Resource Monitoring
+                    </div>
+
+                    <div class="linux-process-key-item">
+                        Malware Detection
+                    </div>
+
+                    <div class="linux-process-key-item">
+                        Incident Response
+                    </div>
+
+                    <div class="linux-process-key-item">
+                        System Administration
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECURITY NOTE
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        ⚠
+                    </div>
+
+                    <h2>
+                        Security Note
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-process-warning-box">
+
+                    <strong>
+                        Use Process Commands Carefully
+                    </strong>
+
+                    <p>
+
+                        Do not terminate processes simply because
+                        their names are unfamiliar. System processes
+                        may be required for Linux to operate correctly.
+                        Practice process termination only on processes
+                        that you created or clearly understand.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SUMMARY
+            ================================================== -->
+
+            <section class="linux-process-card">
+
+                <div class="linux-process-heading">
+
+                    <div class="linux-process-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Lab Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-process-task-list">
+
+                    <li>
+                        <strong>ps</strong> displays information
+                        about processes.
+                    </li>
+
+                    <li>
+                        <strong>ps aux</strong> displays detailed
+                        information about processes from all users.
+                    </li>
+
+                    <li>
+                        <strong>pgrep</strong> finds process IDs
+                        using a process name.
+                    </li>
+
+                    <li>
+                        <strong>pidof</strong> finds the PID of
+                        a running program.
+                    </li>
+
+                    <li>
+                        <strong>top</strong> monitors processes
+                        and resource usage in real time.
+                    </li>
+
+                    <li>
+                        <strong>pstree</strong> displays parent-child
+                        process relationships.
+                    </li>
+
+                    <li>
+                        <strong>kill</strong> sends a signal to
+                        a process.
+                    </li>
+
+                    <li>
+                        <strong>PID</strong> identifies a process.
+                    </li>
+
+                    <li>
+                        <strong>PPID</strong> identifies the parent
+                        process.
+                    </li>
+
+                    <li>
+                        Linux processes can have states such as
+                        <strong>Running, Sleeping, Stopped</strong>
+                        and <strong>Zombie</strong>.
+                    </li>
+
+                </ul>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-process-topic-navigation">
+
+                <a
+                    href="lab06.html"
+                    class="linux-process-topic-button previous"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Linux Processes
+                    </strong>
+
+                </a>
+
+
+                <a
+                    href="../theory/linux-ssh.html"
+                    class="linux-process-topic-button next"
+                >
+
+                    <strong>
+                        Next Topic: Linux SSH
+                    </strong>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         NAVBAR JS
+    ====================================================== -->
+
+    <script src="../../../js/navbar.js"></script>
+
+
+
+    <!-- =====================================================
+         COPY COMMAND
+    ====================================================== -->
+
+    <script>
+
+        function copyCommand(button) {
+
+            const code =
+                button.parentElement
+                    .querySelector("code")
+                    .innerText
+                    .trim();
+
+            navigator.clipboard.writeText(code);
+
+            const originalText =
+                button.innerText;
+
+            button.innerText =
+                "Copied!";
+
+            setTimeout(() => {
+
+                button.innerText =
+                    originalText;
+
+            }, 1200);
+
+        }
+
+    </script>
+
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards =
+            document.querySelectorAll(
+                ".linux-process-card"
+            );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+                void card.offsetWidth;
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(sweepTimeout);
+
+
+            sweepTimeout =
+                setTimeout(() => {
+
+                    sweepCards.forEach(card => {
+
+                        card.classList.remove(
+                            "mobile-sweep"
+                        );
+
+                    });
+
+                }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            () => {
+
+                triggerMobileSweep();
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

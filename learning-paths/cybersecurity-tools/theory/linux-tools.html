@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+    <title>Linux Tools | CyberNexa</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top right,
+                    rgba(0, 230, 138, 0.08),
+                    transparent 30%),
+                radial-gradient(circle at bottom left,
+                    rgba(0, 202, 255, 0.06),
+                    transparent 28%),
+                #02080d;
+
+            color: #dce8f5;
+            font-family: Arial, sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            width: 100%;
+            background: #020a11;
+            border-bottom: 1px solid rgba(0, 230, 138, 0.18);
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1180px;
+            margin: auto;
+            padding: 15px 22px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 45px;
+            color: #00e68a;
+            flex-shrink: 0;
+        }
+
+        .brand-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brand-name {
+            font-size: 21px;
+            font-weight: 900;
+        }
+
+        .brand-name span {
+            color: #00e68a;
+        }
+
+        .brand-tagline {
+            color: #71879a;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .tool-page {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        .breadcrumb {
+            color: #71879a;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb span {
+            color: #00e68a;
+            padding: 0 7px;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .tool-header {
+            position: relative;
+            overflow: hidden;
+
+            padding: 32px;
+
+            border: 1px solid rgba(0, 230, 138, 0.28);
+            border-left: 4px solid #00e68a;
+            border-radius: 10px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(0, 230, 138, 0.08),
+                    rgba(0, 202, 255, 0.025));
+        }
+
+        .tool-header::after {
+            content: "$ linux_security_tools";
+
+            position: absolute;
+            right: 25px;
+            bottom: 20px;
+
+            color: rgba(0, 230, 138, 0.08);
+            font-family: Consolas, monospace;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .tool-label {
+            color: #00e68a;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .tool-header h1 {
+            color: white;
+            font-size: 36px;
+            margin: 10px 0;
+        }
+
+        .tool-header h1 span {
+            color: #00e68a;
+        }
+
+        .tool-header p {
+            max-width: 750px;
+            color: #9db1c3;
+            font-size: 14px;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .section {
+            margin-top: 24px;
+            padding: 25px;
+
+            background: #041018;
+
+            border: 1px solid rgba(0, 202, 255, 0.16);
+            border-radius: 9px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: white;
+            font-size: 21px;
+        }
+
+        .section h2::before {
+            content: "> ";
+            color: #00e68a;
+            font-family: Consolas, monospace;
+        }
+
+        .section p {
+            color: #aabbd0;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           WHAT / WHY
+        ===================================================== */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .info-card {
+            min-width: 0;
+            padding: 20px;
+
+            border: 1px solid rgba(0, 230, 138, 0.14);
+            border-radius: 8px;
+
+            background: rgba(0, 230, 138, 0.025);
+        }
+
+        .info-card h3 {
+            color: #00e68a;
+            font-size: 15px;
+            margin-top: 0;
+        }
+
+        .info-card p {
+            margin-bottom: 0;
+        }
+
+        /* =====================================================
+           TERMINAL
+        ===================================================== */
+
+        .terminal {
+            margin-top: 18px;
+
+            border: 1px solid rgba(0, 230, 138, 0.18);
+            border-radius: 8px;
+
+            background: #010509;
+
+            overflow: hidden;
+        }
+
+        .terminal-top {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 10px 13px;
+
+            background: #07121a;
+            border-bottom: 1px solid rgba(0, 230, 138, 0.12);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00e68a;
+        }
+
+        .terminal-title {
+            margin-left: 5px;
+            color: #71879a;
+            font-size: 10px;
+            font-family: Consolas, monospace;
+        }
+
+        .terminal pre {
+            margin: 0;
+            padding: 18px;
+
+            color: #7fffc0;
+
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .prompt {
+            color: #00e68a;
+        }
+
+        /* =====================================================
+           TOOLS GRID
+        ===================================================== */
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .tool-card {
+            min-width: 0;
+            padding: 18px;
+
+            background: #030c13;
+
+            border: 1px solid rgba(0, 202, 255, 0.14);
+            border-radius: 8px;
+
+            transition: 0.2s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 230, 138, 0.45);
+        }
+
+        .tool-command {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 4px;
+
+            background: rgba(0, 230, 138, 0.08);
+            color: #00e68a;
+
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .tool-card h3 {
+            color: white;
+            font-size: 15px;
+            margin: 12px 0 7px;
+        }
+
+        .tool-card p {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           USAGE TABLE
+        ===================================================== */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 18px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+
+            border: 1px solid rgba(0, 202, 255, 0.12);
+
+            text-align: left;
+            font-size: 12px;
+        }
+
+        th {
+            color: #00e68a;
+            background: #06131b;
+        }
+
+        td {
+            color: #aabbd0;
+        }
+
+        td code {
+            color: #7fffc0;
+            font-family: Consolas, monospace;
+        }
+
+        /* =====================================================
+           SECURITY NOTE
+        ===================================================== */
+
+        .security-note {
+            margin-top: 20px;
+            padding: 20px;
+
+            border-left: 4px solid #ffbd00;
+            border-radius: 7px;
+
+            background: rgba(255, 189, 0, 0.04);
+            border-top: 1px solid rgba(255, 189, 0, 0.14);
+            border-right: 1px solid rgba(255, 189, 0, 0.14);
+            border-bottom: 1px solid rgba(255, 189, 0, 0.14);
+        }
+
+        .security-note h3 {
+            color: #ffbd00;
+            margin-top: 0;
+        }
+
+        .security-note p {
+            margin-bottom: 0;
+        }
+
+        /* =====================================================
+           LAB CTA
+        ===================================================== */
+
+        .lab-cta {
+            margin-top: 25px;
+            padding: 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+
+            border: 1px solid rgba(0, 230, 138, 0.25);
+            border-radius: 9px;
+
+            background:
+                linear-gradient(90deg,
+                    rgba(0, 230, 138, 0.07),
+                    rgba(0, 202, 255, 0.025));
+        }
+
+        .lab-cta h2 {
+            color: white;
+            margin: 0 0 7px;
+        }
+
+        .lab-cta p {
+            color: #91a5b9;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .lab-button {
+            flex-shrink: 0;
+
+            padding: 11px 20px;
+
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+
+            color: #00e68a;
+            background: rgba(0, 230, 138, 0.06);
+
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .lab-button:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+
+        /* =====================================================
+   LESSON COMPLETION BUTTON
+===================================================== */
+
+        .lesson-completion-button {
+            display: inline-block;
+            padding: 11px 20px;
+            border: 1px solid #00e68a;
+            border-radius: 22px;
+            color: #00e68a;
+            background: rgba(0, 230, 138, 0.06);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .lesson-completion-button:hover {
+            background: #00e68a;
+            color: #02100a;
+        }
+
+        .lesson-completion-button:focus-visible {
+            outline: 2px solid white;
+            outline-offset: 4px;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            width: 100%;
+            background: #02070c;
+            border-top: 1px solid rgba(0, 230, 138, 0.13);
+            padding: 35px 20px 20px;
+        }
+
+        .footer-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .footer-brand span {
+            color: #00e68a;
+        }
+
+        .footer-container p {
+            color: #62798c;
+            font-size: 11px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .footer-links a {
+            color: #8197aa;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            color: #00e68a;
+        }
+
+        .copyright {
+            max-width: 1050px;
+            margin: 25px auto 0;
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+            text-align: center;
+            color: #4d6375;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            .tools-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .tool-header h1 {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .tool-page {
+                padding: 25px 14px 55px;
+            }
+
+            .nav-container {
+                padding: 13px 15px;
+            }
+
+            .tool-header {
+                padding: 23px;
+            }
+
+            .tool-header h1 {
+                font-size: 28px;
+            }
+
+            .tool-header::after {
+                display: none;
+            }
+
+            .info-grid,
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .lab-cta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .lab-button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .topic-navigation {
+                flex-direction: column;
+            }
+
+            .topic-navigation a {
+                width: 100%;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            .brand-name {
+                font-size: 18px;
+            }
+
+            .brand-tagline {
+                font-size: 9px;
+            }
+
+            .tool-header h1 {
+                font-size: 25px;
+            }
+
+            .section h2 {
+                font-size: 18px;
+            }
+
+            .terminal pre {
+                font-size: 11px;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SHARED CYBERNEXA NAVBAR -->
+    <div id="navbar-placeholder" data-navbar-path="../../../components/navbar.html" data-root-path="../../../">
+    </div>
+
+
+    <!-- =====================================================
+     MAIN
+===================================================== -->
+
+    <main class="tool-page">
+
+        <div class="breadcrumb">
+            Cybersecurity Tools
+            <span>›</span>
+            Linux Tools
+        </div>
+
+
+        <!-- HEADER -->
+
+        <section class="tool-header">
+
+            <div class="tool-label">
+                CYBERSECURITY TOOLS
+            </div>
+
+            <h1>
+                Linux <span>Tools</span>
+            </h1>
+
+            <p>
+                Learn essential Linux command-line tools used in
+                cybersecurity, system administration, network analysis,
+                troubleshooting and security operations.
+            </p>
+
+        </section>
+
+
+        <!-- WHAT -->
+
+        <section class="section">
+
+            <h2>What are Linux Tools?</h2>
+
+            <p>
+                Linux tools are command-line utilities that help users
+                interact with the operating system, inspect files and
+                processes, analyze networks, manage permissions and
+                investigate system activity.
+            </p>
+
+            <div class="terminal">
+
+                <div class="terminal-top">
+
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+
+                    <span class="terminal-title">
+                        linux-terminal
+                    </span>
+
+                </div>
+
+                <pre><span class="prompt">$</span> whoami
+student
+
+<span class="prompt">$</span> pwd
+/home/student
+
+<span class="prompt">$</span> ls
+documents  logs  scripts</pre>
+
+            </div>
+
+        </section>
+
+
+        <!-- WHY -->
+
+        <section class="section">
+
+            <h2>Why are Linux Tools Important?</h2>
+
+            <p>
+                Cybersecurity professionals frequently work with Linux
+                because many security environments, servers and security
+                tools rely heavily on the command line.
+            </p>
+
+            <div class="info-grid">
+
+                <div class="info-card">
+
+                    <h3>System Analysis</h3>
+
+                    <p>
+                        Inspect processes, users, files and system
+                        information.
+                    </p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h3>Network Analysis</h3>
+
+                    <p>
+                        Examine interfaces, connections, routes and
+                        network communication.
+                    </p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h3>Log Analysis</h3>
+
+                    <p>
+                        Search and filter large amounts of security
+                        and system log data.
+                    </p>
+
+                </div>
+
+                <div class="info-card">
+
+                    <h3>Automation</h3>
+
+                    <p>
+                        Combine Linux commands into scripts to perform
+                        repetitive security tasks.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CORE TOOLS -->
+
+        <section class="section">
+
+            <h2>Essential Linux Tools</h2>
+
+            <div class="tools-grid">
+
+                <div class="tool-card">
+
+                    <span class="tool-command">pwd</span>
+
+                    <h3>Print Working Directory</h3>
+
+                    <p>
+                        Displays the current directory.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">ls</span>
+
+                    <h3>List Files</h3>
+
+                    <p>
+                        Displays files and directories.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">cd</span>
+
+                    <h3>Change Directory</h3>
+
+                    <p>
+                        Moves between directories.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">cat</span>
+
+                    <h3>Read Files</h3>
+
+                    <p>
+                        Displays the contents of a text file.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">grep</span>
+
+                    <h3>Search Text</h3>
+
+                    <p>
+                        Searches text for a specific pattern.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">find</span>
+
+                    <h3>Find Files</h3>
+
+                    <p>
+                        Searches for files and directories.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">chmod</span>
+
+                    <h3>Permissions</h3>
+
+                    <p>
+                        Changes file or directory permissions.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">ps</span>
+
+                    <h3>Process Information</h3>
+
+                    <p>
+                        Displays running processes.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">top</span>
+
+                    <h3>System Monitoring</h3>
+
+                    <p>
+                        Monitors processes and system resource usage.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">ss</span>
+
+                    <h3>Socket Statistics</h3>
+
+                    <p>
+                        Displays network connections and listening sockets.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">ip</span>
+
+                    <h3>Network Configuration</h3>
+
+                    <p>
+                        Displays and manages network interfaces and routes.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">curl</span>
+
+                    <h3>Network Requests</h3>
+
+                    <p>
+                        Transfers data and sends HTTP requests from
+                        the command line.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">whoami</span>
+
+                    <h3>Current User</h3>
+
+                    <p>
+                        Displays the username of the current user.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">id</span>
+
+                    <h3>User Identity</h3>
+
+                    <p>
+                        Displays user and group information.
+                    </p>
+
+                </div>
+
+
+                <div class="tool-card">
+
+                    <span class="tool-command">wget</span>
+
+                    <h3>Download Utility</h3>
+
+                    <p>
+                        Retrieves files from supported network resources.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BASIC USAGE -->
+
+        <section class="section">
+
+            <h2>Basic Usage Examples</h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Tool</th>
+                            <th>Command</th>
+                            <th>Purpose</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td><code>pwd</code></td>
+                            <td><code>pwd</code></td>
+                            <td>Show current directory</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>ls</code></td>
+                            <td><code>ls -la</code></td>
+                            <td>Show detailed files</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>grep</code></td>
+                            <td><code>grep "failed" security.log</code></td>
+                            <td>Search failed events</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>find</code></td>
+                            <td><code>find . -name "*.log"</code></td>
+                            <td>Find log files</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>ps</code></td>
+                            <td><code>ps aux</code></td>
+                            <td>View running processes</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>ss</code></td>
+                            <td><code>ss -tuln</code></td>
+                            <td>View listening sockets</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>ip</code></td>
+                            <td><code>ip addr</code></td>
+                            <td>View network interfaces</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>whoami</code></td>
+                            <td><code>whoami</code></td>
+                            <td>Show current user</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- CYBERSECURITY WORKFLOW -->
+
+        <section class="section">
+
+            <h2>Linux Tools in Cybersecurity</h2>
+
+            <p>
+                Linux tools are often combined during security analysis.
+                For example, an analyst may identify the current user,
+                inspect network connections, search logs and examine
+                running processes.
+            </p>
+
+            <div class="terminal">
+
+                <div class="terminal-top">
+
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+
+                    <span class="terminal-title">
+                        security-analysis
+                    </span>
+
+                </div>
+
+                <pre><span class="prompt">$</span> whoami
+student
+
+<span class="prompt">$</span> ip addr
+
+<span class="prompt">$</span> ss -tuln
+
+<span class="prompt">$</span> ps aux
+
+<span class="prompt">$</span> grep "failed" security.log</pre>
+
+            </div>
+
+        </section>
+
+
+        <!-- SECURITY NOTE -->
+
+        <div class="security-note">
+
+            <h3>Security Practice Note</h3>
+
+            <p>
+                Use Linux security commands only on systems, files and
+                networks that you own or have explicit permission to
+                analyze. The practical lab below uses local,
+                non-destructive examples.
+            </p>
+
+        </div>
+
+        <!-- LESSON COMPLETION -->
+
+        <section class="section" id="lessonCompletion">
+
+            <h2>Complete This Lesson</h2>
+
+            <p>
+                Mark this lesson as complete after studying essential
+                Linux tools, command-line usage, file management,
+                process monitoring and network analysis.
+            </p>
+
+            <div style="text-align: center; margin-top: 20px;">
+
+                <button type="button" class="lesson-completion-button" data-lesson-progress
+                    data-course-id="cybersecurity-tools" data-lesson-id="linux-tools"
+                    data-dashboard-url="../learning-paths/cybersecurity-tools/theory/linux-tools.html"
+                    data-status-id="lessonCompletionStatus">
+
+                    ✓ Mark Lesson Complete
+
+                </button>
+
+            </div>
+
+            <p id="lessonCompletionStatus" role="status" aria-live="polite"
+                style="text-align: center; margin-top: 15px;">
+            </p>
+
+        </section>
+        <!-- LAB CTA -->
+
+        <section class="lab-cta">
+
+            <div>
+
+                <h2>Linux Tools Practical Lab</h2>
+
+                <p>
+                    Practice Linux commands through a guided
+                    cybersecurity-oriented environment.
+                </p>
+
+            </div>
+
+            <a href="../lab/linux-tools-lab.html" class="lab-button">
+                Open Practical Lab →
+            </a>
+
+        </section>
+    </main>
+
+
+    <!-- =====================================================
+     FOOTER
+===================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 CyberNexa. All rights reserved.
+        </div>
+
+    </footer>
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../js/supabase-client.js"></script>
+    <script src="../../../js/lesson-progress.js"></script>
+    <script src="../../../js/navbar-loader.js"></script>
+    <script src="../../../js/navbar.js"></script>
+    <script src="../../../js/session.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Enumeration Lab - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           LAB PAGE
+        ====================================================== */
+
+        .lab-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 90px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(0, 255, 170, 0.055),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 90% 15%,
+                    rgba(0, 191, 255, 0.075),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #01050b 0%,
+                    #020914 48%,
+                    #01050b 100%
+                );
+        }
+
+        .lab-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .lab-hero {
+
+            position: relative;
+
+            padding: 42px 35px;
+
+            margin-bottom: 25px;
+
+            border:
+                1px solid rgba(0, 255, 170, 0.15);
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(3, 23, 30, 0.98),
+                    rgba(2, 12, 23, 0.98)
+                );
+
+            overflow: hidden;
+        }
+
+        .lab-hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    #00ffb0,
+                    #00bfff,
+                    transparent
+                );
+        }
+
+        .lab-kicker {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 15px;
+
+            color: #00ffb0;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2.5px;
+
+            text-transform: uppercase;
+        }
+
+        .lab-kicker::before {
+
+            content: "";
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #00ffb0;
+
+            box-shadow:
+                0 0 12px rgba(0, 255, 176, 0.65);
+        }
+
+        .lab-hero h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 43px;
+
+            line-height: 1.15;
+
+            font-weight: 850;
+        }
+
+        .lab-hero h1 span {
+
+            color: #00ffb0;
+        }
+
+        .lab-description {
+
+            max-width: 800px;
+
+            margin: 16px 0 0;
+
+            color: #8fa5bb;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+        /* =====================================================
+           LAB META
+        ====================================================== */
+
+        .lab-meta {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .meta-item {
+
+            padding: 15px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.10);
+
+            border-radius: 10px;
+
+            background:
+                rgba(0, 191, 255, 0.025);
+        }
+
+        .meta-label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #536a7f;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+
+            color: #dce9f4;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .meta-value.green {
+
+            color: #00ffb0;
+        }
+
+        /* =====================================================
+           AUTHORIZATION NOTICE
+        ====================================================== */
+
+        .authorization-box {
+
+            margin-bottom: 20px;
+
+            padding: 21px;
+
+            border:
+                1px solid rgba(255, 177, 0, 0.17);
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 177, 0, 0.045),
+                    rgba(255, 177, 0, 0.012)
+                );
+        }
+
+        .authorization-title {
+
+            margin-bottom: 8px;
+
+            color: #ffc44d;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .authorization-box p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ====================================================== */
+
+        .progress-card {
+
+            margin-bottom: 20px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 10px;
+        }
+
+        .progress-title {
+
+            color: #ffffff;
+
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .progress-count {
+
+            color: #00ffb0;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 11px;
+        }
+
+        .progress-bar {
+
+            width: 100%;
+
+            height: 7px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background:
+                rgba(0, 191, 255, 0.07);
+        }
+
+        .progress-fill {
+
+            width: 0%;
+
+            height: 100%;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #00ffb0,
+                    #00bfff
+                );
+
+            transition: width 0.3s ease;
+        }
+
+        /* =====================================================
+           QUESTION CARD
+        ====================================================== */
+
+        .question-card {
+
+            margin-bottom: 18px;
+
+            padding: 25px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.11);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(5, 20, 34, 0.97),
+                    rgba(2, 11, 21, 0.97)
+                );
+        }
+
+        .question-number {
+
+            margin-bottom: 10px;
+
+            color: #00ffb0;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+        }
+
+        .question-card h2 {
+
+            margin: 0 0 18px;
+
+            color: #ffffff;
+
+            font-size: 17px;
+
+            line-height: 1.5;
+        }
+
+        .options {
+
+            display: grid;
+
+            gap: 9px;
+        }
+
+        .option {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            padding: 13px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.08);
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 191, 255, 0.018);
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .option:hover {
+
+            border-color:
+                rgba(0, 255, 176, 0.25);
+
+            background:
+                rgba(0, 255, 176, 0.025);
+        }
+
+        .option input {
+
+            margin-top: 2px;
+
+            accent-color: #00ffb0;
+        }
+
+        .option span {
+
+            color: #899bad;
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           SCENARIO
+        ====================================================== */
+
+        .scenario-card {
+
+            margin-bottom: 20px;
+
+            padding: 24px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.12);
+
+            border-radius: 13px;
+
+            background:
+                rgba(0, 255, 176, 0.018);
+        }
+
+        .scenario-label {
+
+            margin-bottom: 9px;
+
+            color: #00ffb0;
+
+            font-family:
+                Consolas,
+                monospace;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .scenario-card p {
+
+            margin: 0;
+
+            color: #899bad;
+
+            font-size: 12px;
+
+            line-height: 1.85;
+        }
+
+        /* =====================================================
+           BUTTON
+        ====================================================== */
+
+        .lab-actions {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin: 25px 0;
+        }
+
+        .check-button {
+
+            padding: 13px 28px;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.30);
+
+            border-radius: 8px;
+
+            color: #c8fff0;
+
+            background:
+                rgba(0, 255, 176, 0.055);
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .check-button:hover {
+
+            transform: translateY(-2px);
+
+            background:
+                rgba(0, 255, 176, 0.09);
+        }
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result-box {
+
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 25px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(0, 255, 176, 0.16);
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 255, 176, 0.035),
+                    rgba(0, 191, 255, 0.025)
+                );
+        }
+
+        .result-title {
+
+            margin-bottom: 8px;
+
+            color: #00ffb0;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        .result-score {
+
+            margin: 5px 0;
+
+            color: #ffffff;
+
+            font-size: 30px;
+
+            font-weight: 850;
+        }
+
+        .result-message {
+
+            color: #7e94a8;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+.topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.topic-navigation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 18px;
+
+    border: 1px solid rgba(0, 191, 255, 0.09);
+    border-radius: 9px;
+
+    color: #71879b;
+    background: rgba(0, 191, 255, 0.02);
+
+    text-decoration: none;
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.topic-navigation a:hover {
+    color: #ccefe5;
+    border-color: rgba(0, 255, 176, 0.25);
+    background: rgba(0, 255, 176, 0.035);
+}
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .lab-page {
+
+                padding: 45px 12px 60px;
+            }
+
+            .lab-hero {
+
+                padding: 28px 20px;
+            }
+
+            .lab-hero h1 {
+
+                font-size: 31px;
+            }
+
+            .lab-description {
+
+                font-size: 12px;
+            }
+
+            .lab-meta {
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .question-card {
+
+                padding: 20px;
+            }
+
+            .topic-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.topic-navigation a {
+    flex: 0 1 auto;
+    max-width: 48%;
+    padding: 12px 10px;
+}
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="../../../index.html" class="brand">
+
+                <div class="brand-logo">
+
+                    <svg viewBox="0 0 50 60">
+
+                        <path
+                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                        />
+
+                        <rect
+                            x="18"
+                            y="25"
+                            width="14"
+                            height="14"
+                            rx="2"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <path
+                            d="M20 25 V20 C20 16 30 16 30 20 V25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                        />
+
+                        <circle
+                            cx="25"
+                            cy="31"
+                            r="2"
+                            fill="currentColor"
+                        />
+
+                        <path
+                            d="M25 33 V36"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="brand-text">
+
+                    <div class="brand-name">
+                        Cyber<span>Nexa</span>
+                    </div>
+
+                    <div class="brand-tagline">
+                        Cybersecurity &amp; IT Learning
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN LAB
+    ====================================================== -->
+
+    <main class="lab-page">
+
+        <div class="lab-container">
+
+
+            <!-- =================================================
+                 HERO
+            ================================================== -->
+
+            <section class="lab-hero">
+
+                <div class="lab-kicker">
+                    ETHICAL HACKING LAB / 05
+                </div>
+
+                <h1>
+                    <span>Enumeration</span> Lab
+                </h1>
+
+                <p class="lab-description">
+                    Test your understanding of enumeration through
+                    cybersecurity scenarios and controlled assessment
+                    questions. This lab uses simulated authorized
+                    environments for educational purposes.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 META
+            ================================================== -->
+
+            <div class="lab-meta">
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Lab Type
+                    </span>
+
+                    <span class="meta-value">
+                        MCQ Simulation
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Difficulty
+                    </span>
+
+                    <span class="meta-value">
+                        Beginner
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Environment
+                    </span>
+
+                    <span class="meta-value green">
+                        Authorized
+                    </span>
+
+                </div>
+
+
+                <div class="meta-item">
+
+                    <span class="meta-label">
+                        Questions
+                    </span>
+
+                    <span class="meta-value">
+                        10
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 AUTHORIZATION
+            ================================================== -->
+
+            <div class="authorization-box">
+
+                <div class="authorization-title">
+                    ⚠ AUTHORIZED TRAINING ENVIRONMENT
+                </div>
+
+                <p>
+                    This practical exercise is a simulated learning
+                    environment. Real enumeration should only be performed
+                    against systems that you own or have explicit permission
+                    to assess. Use dedicated labs, CTFs and virtual machines
+                    for hands-on security testing.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 PROGRESS
+            ================================================== -->
+
+            <div class="progress-card">
+
+                <div class="progress-top">
+
+                    <span class="progress-title">
+                        Lab Progress
+                    </span>
+
+                    <span
+                        class="progress-count"
+                        id="progressCount"
+                    >
+                        0 / 10
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SCENARIO
+            ================================================== -->
+
+            <div class="scenario-card">
+
+                <div class="scenario-label">
+                    AUTHORIZED LAB SCENARIO
+                </div>
+
+                <p>
+                    You are assessing a fictional training server named
+                    <strong>LAB-SERVER</strong>. Previous scanning has
+                    identified several available services. Your task is to
+                    select the most appropriate enumeration concept for
+                    each situation.
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 QUESTION 01
+            ================================================== -->
+
+            <section class="question-card">
+
+                <div class="question-number">
+                    QUESTION 01
+                </div>
+
+                <h2>
+                    What is the primary purpose of enumeration?
+                </h2>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="wrong"
+                        >
+                        <span>
+                            To permanently damage the target system
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="correct"
+                        >
+                        <span>
+                            To collect detailed information about
+                            discovered services and resources
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="wrong"
+                        >
+                        <span>
+                            To automatically delete vulnerabilities
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="wrong"
+                        >
+                        <span>
+                            To bypass all security controls
+                        </span>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUESTION 02
+            ================================================== -->
+
+            <section class="question-card">
+
+                <div class="question-number">
+                    QUESTION 02
+                </div>
+
+                <h2>
+                    Which stage normally provides information that can
+                    later be examined through enumeration?
+                </h2>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="wrong"
+                        >
+                        <span>
+                            Reporting
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="correct"
+                        >
+                        <span>
+                            Scanning
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="wrong"
+                        >
+                        <span>
+                            Data destruction
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="wrong"
+                        >
+                        <span>
+                            Backup deletion
+                        </span>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUESTION 03
+            ================================================== -->
+
+            <section class="question-card">
+
+                <div class="question-number">
+                    QUESTION 03
+                </div>
+
+                <h2>
+                    Which of the following can be an enumeration target?
+                </h2>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="correct"
+                        >
+                        <span>
+                            Service information
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="wrong"
+                        >
+                        <span>
+                            Only physical hardware
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="wrong"
+                        >
+                        <span>
+                            Only passwords
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="wrong"
+                        >
+                        <span>
+                            Only encrypted files
+                        </span>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUESTION 04
+            ================================================== -->
+
+            <section class="question-card">
+
+                <div class="question-number">
+                    QUESTION 04
+                </div>
+
+                <h2>
+                    How is enumeration different from scanning?
+                </h2>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="wrong"
+                        >
+                        <span>
+                            Enumeration is only about destroying services
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="correct"
+                        >
+                        <span>
+                            Enumeration collects deeper information about
+                            discovered services and resources
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="wrong"
+                        >
+                        <span>
+                            Scanning always requires administrator access
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="wrong"
+                        >
+                        <span>
+                            There is no difference
+                        </span>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUESTION 05
+            ================================================== -->
+
+            <section class="question-card">
+
+                <div class="question-number">
+                    QUESTION 05
+                </div>
+
+                <h2>
+                    What should a security tester confirm before performing
+                    enumeration?
+                </h2>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="correct"
+                        >
+                        <span>
+                            Authorization and testing scope
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="wrong"
+                        >
+                        <span>
+                            The target's social-media popularity
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="wrong"
+                        >
+                        <span>
+                            The physical location of the tester
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="wrong"
+                        >
+                        <span>
+                            Nothing
+                        </span>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUESTION 06
+            ================================================== -->
+
+            <section class="question-card">
+
+                <div class="question-number">
+                    QUESTION 06
+                </div>
+
+                <h2>
+                    Why can service information be useful during
+                    vulnerability assessment?
+                </h2>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="wrong"
+                        >
+                        <span>
+                            It automatically compromises the system
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="correct"
+                        >
+                        <span>
+                            It helps the tester understand the software
+                            and configuration exposed by the service
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="wrong"
+                        >
+                        <span>
+                            It disables authentication automatically
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="wrong"
+                        >
+                        <span>
+                            It guarantees exploitation
+                        </span>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUESTION 07
+            ================================================== -->
+
+            <section class="question-card">
+
+                <div class="question-number">
+                    QUESTION 07
+                </div>
+
+                <h2>
+                    Which information may be exposed by a service?
+                </h2>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q7"
+                            value="correct"
+                        >
+                        <span>
+                            Service or software identification information
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q7"
+                            value="wrong"
+                        >
+                        <span>
+                            Only the monitor brightness
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q7"
+                            value="wrong"
+                        >
+                        <span>
+                            Only the keyboard layout
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q7"
+                            value="wrong"
+                        >
+                        <span>
+                            Nothing
+                        </span>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUESTION 08
+            ================================================== -->
+
+            <section class="question-card">
+
+                <div class="question-number">
+                    QUESTION 08
+                </div>
+
+                <h2>
+                    What should a tester do with useful enumeration findings?
+                </h2>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q8"
+                            value="wrong"
+                        >
+                        <span>
+                            Publish them publicly without permission
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q8"
+                            value="correct"
+                        >
+                        <span>
+                            Document them accurately for assessment and reporting
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q8"
+                            value="wrong"
+                        >
+                        <span>
+                            Delete the target
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q8"
+                            value="wrong"
+                        >
+                        <span>
+                            Ignore them
+                        </span>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUESTION 09
+            ================================================== -->
+
+            <section class="question-card">
+
+                <div class="question-number">
+                    QUESTION 09
+                </div>
+
+                <h2>
+                    Which statement best describes responsible enumeration?
+                </h2>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q9"
+                            value="correct"
+                        >
+                        <span>
+                            Collect relevant information while staying within
+                            the approved scope and minimizing impact
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q9"
+                            value="wrong"
+                        >
+                        <span>
+                            Collect everything from every system on the Internet
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q9"
+                            value="wrong"
+                        >
+                        <span>
+                            Ignore authorization
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q9"
+                            value="wrong"
+                        >
+                        <span>
+                            Always attempt exploitation
+                        </span>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 QUESTION 10
+            ================================================== -->
+
+            <section class="question-card">
+
+                <div class="question-number">
+                    QUESTION 10
+                </div>
+
+                <h2>
+                    What is the overall goal of enumeration in ethical hacking?
+                </h2>
+
+                <div class="options">
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q10"
+                            value="wrong"
+                        >
+                        <span>
+                            To cause maximum disruption
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q10"
+                            value="correct"
+                        >
+                        <span>
+                            To understand the target's exposed services,
+                            resources and technical information
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q10"
+                            value="wrong"
+                        >
+                        <span>
+                            To remove all security controls
+                        </span>
+                    </label>
+
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="q10"
+                            value="wrong"
+                        >
+                        <span>
+                            To permanently take control of a system
+                        </span>
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CHECK BUTTON
+            ================================================== -->
+
+            <div class="lab-actions">
+
+                <button
+                    class="check-button"
+                    onclick="checkAnswers()"
+                >
+                    Check Lab Results →
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 RESULT
+            ================================================== -->
+
+            <div
+                class="result-box"
+                id="resultBox"
+            >
+
+                <div class="result-title">
+                    Lab Result
+                </div>
+
+                <div
+                    class="result-score"
+                    id="resultScore"
+                >
+                    0 / 10
+                </div>
+
+                <div
+                    class="result-message"
+                    id="resultMessage"
+                >
+                    Complete the lab to view your result.
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="topic-navigation">
+
+                <a href="scanning-lab.html">
+                    ← Lab: Scanning
+                </a>
+
+                <a href="../theory/vulnerability-assessment.html">
+                    Next Theory: Vulnerability Assessment
+                </a>
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+
+    <script>
+
+        /* =====================================================
+           PROGRESS TRACKING
+        ====================================================== */
+
+        const totalQuestions = 10;
+
+        const questionNames = [];
+
+        for (let i = 1; i <= totalQuestions; i++) {
+            questionNames.push("q" + i);
+        }
+
+
+        document.addEventListener(
+            "change",
+            function () {
+
+                let answered = 0;
+
+                questionNames.forEach(
+                    function (name) {
+
+                        const selected =
+                            document.querySelector(
+                                'input[name="' + name + '"]:checked'
+                            );
+
+                        if (selected) {
+                            answered++;
+                        }
+
+                    }
+                );
+
+
+                document.getElementById(
+                    "progressCount"
+                ).textContent =
+                    answered + " / " + totalQuestions;
+
+
+                document.getElementById(
+                    "progressFill"
+                ).style.width =
+                    (answered / totalQuestions * 100) + "%";
+
+            }
+        );
+
+
+        /* =====================================================
+           CHECK ANSWERS
+        ====================================================== */
+
+        function checkAnswers() {
+
+            let score = 0;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+
+                const selected =
+                    document.querySelector(
+                        'input[name="q' + i + '"]:checked'
+                    );
+
+                if (selected && selected.value === "correct") {
+
+                    score++;
+
+                }
+
+            }
+
+
+            const resultBox =
+                document.getElementById(
+                    "resultBox"
+                );
+
+            const resultScore =
+                document.getElementById(
+                    "resultScore"
+                );
+
+            const resultMessage =
+                document.getElementById(
+                    "resultMessage"
+                );
+
+
+            resultBox.style.display = "block";
+
+
+            resultScore.textContent =
+                score + " / " + totalQuestions;
+
+
+            if (score === 10) {
+
+                resultMessage.textContent =
+                    "Excellent. You have a strong understanding of enumeration concepts and responsible security assessment.";
+
+            }
+
+            else if (score >= 8) {
+
+                resultMessage.textContent =
+                    "Very good. Your enumeration fundamentals are strong. Review the few missed concepts once.";
+
+            }
+
+            else if (score >= 6) {
+
+                resultMessage.textContent =
+                    "Good progress. Review the enumeration theory and try the lab again.";
+
+            }
+
+            else {
+
+                resultMessage.textContent =
+                    "Keep learning. Review the Enumeration theory page and attempt the lab again.";
+
+            }
+
+
+            resultBox.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+    </script>
+
+
+    <script src="../../../js/navbar.js"></script>
+
+</body>
+
+</html>

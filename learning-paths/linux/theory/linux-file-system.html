@@ -1,0 +1,2685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linux File System - CyberNexa</title>
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+
+    <style>
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ====================================================== */
+
+        .linux-learning-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 70px 20px 80px;
+
+            background:
+                radial-gradient(circle at top right,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 32%),
+                radial-gradient(circle at bottom left,
+                    rgba(59, 130, 246, 0.07),
+                    transparent 30%),
+                #02080d;
+        }
+
+
+        .linux-learning-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .linux-topic-header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+        }
+
+
+        .linux-topic-category {
+
+            display: inline-block;
+
+            margin-bottom: 14px;
+
+            color: #67e8f9;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .linux-topic-header h1 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 44px;
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .linux-topic-header h1 span {
+
+            color: #67e8f9;
+        }
+
+
+        .linux-topic-intro {
+
+            max-width: 760px;
+
+            margin: 18px auto 0;
+
+            color: #b6c2cc;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ====================================================== */
+
+        .linux-search-wrapper {
+
+            max-width: 720px;
+
+            margin: 0 auto 35px;
+
+            position: relative;
+        }
+
+
+        .linux-search-box {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            width: 100%;
+
+            padding: 6px;
+
+            border: 1px solid rgba(103, 232, 249, 0.18);
+
+            border-radius: 12px;
+
+            background:
+                rgba(3, 16, 24, 0.95);
+
+            box-shadow:
+                0 12px 35px rgba(0, 0, 0, 0.25);
+        }
+
+
+        .linux-search-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            color: #67e8f9;
+
+            font-size: 18px;
+        }
+
+
+        .linux-search-input {
+
+            width: 100%;
+
+            border: none;
+            outline: none;
+
+            color: #e2e8f0;
+
+            background: transparent;
+
+            font-size: 14px;
+        }
+
+
+        .linux-search-input::placeholder {
+
+            color: #71808b;
+        }
+
+
+        .linux-search-results {
+
+            display: none;
+
+            position: absolute;
+
+            z-index: 50;
+
+            top: calc(100% + 8px);
+
+            left: 0;
+            right: 0;
+
+            padding: 8px;
+
+            border: 1px solid rgba(103, 232, 249, 0.18);
+
+            border-radius: 11px;
+
+            background: #06121a;
+
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, 0.45);
+        }
+
+
+        .linux-search-result {
+
+            display: block;
+
+            padding: 12px 14px;
+
+            border-radius: 8px;
+
+            color: #dbeafe;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        .linux-search-result:hover {
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-search-empty {
+
+            padding: 12px 14px;
+
+            color: #81909b;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .linux-card {
+
+            position: relative;
+
+            width: 100%;
+
+            margin-bottom: 22px;
+
+            padding: 30px;
+
+            border: 1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(135deg,
+                    rgba(7, 25, 35, 0.98),
+                    rgba(3, 13, 20, 0.98));
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.28);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        /* =====================================================
+           DESKTOP HOVER
+        ====================================================== */
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover {
+
+                border-color:
+                    rgba(103, 232, 249, 0.42);
+
+                box-shadow:
+                    0 18px 45px rgba(0, 0, 0, 0.32),
+                    0 0 28px rgba(103, 232, 249, 0.08);
+
+                transform: translateY(-2px);
+            }
+        }
+
+
+        /* =====================================================
+           SWEEP EFFECT
+        ====================================================== */
+
+        .linux-card::after,
+        .linux-directory-card::after,
+        .linux-command-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 55%;
+            height: 100%;
+
+            background:
+                linear-gradient(100deg,
+                    transparent,
+                    rgba(103, 232, 249, 0.06),
+                    rgba(255, 255, 255, 0.10),
+                    rgba(103, 232, 249, 0.06),
+                    transparent);
+
+            transform: skewX(-18deg);
+
+            pointer-events: none;
+
+            opacity: 0;
+        }
+
+
+        @media (hover: hover) and (pointer: fine) {
+
+            .linux-card:hover::after,
+            .linux-directory-card:hover::after,
+            .linux-command-card:hover::after {
+
+                animation:
+                    linuxLightSweep 0.75s ease forwards;
+            }
+        }
+
+
+        .mobile-sweep::after {
+
+            animation:
+                linuxMobileSweep 0.75s ease forwards !important;
+        }
+
+
+        @keyframes linuxLightSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        @keyframes linuxMobileSweep {
+
+            0% {
+                left: -120%;
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 140%;
+                opacity: 0;
+            }
+        }
+
+
+        /* =====================================================
+           CARD HEADING
+        ====================================================== */
+
+        .linux-card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .linux-icon {
+
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.30);
+
+            border-radius: 10px;
+
+            color: #67e8f9;
+
+            background:
+                rgba(103, 232, 249, 0.07);
+
+            font-size: 18px;
+        }
+
+
+        .linux-card h2 {
+
+            margin: 0;
+
+            color: #f8fafc;
+
+            font-size: 21px;
+
+            font-weight: 750;
+        }
+
+
+        .linux-card p {
+
+            margin: 0 0 14px;
+
+            color: #b6c2cc;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+
+        .linux-card p:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           DEFINITION
+        ====================================================== */
+
+        .linux-definition-box {
+
+            padding: 20px;
+
+            margin-top: 5px;
+
+            border-left:
+                3px solid #67e8f9;
+
+            border-radius:
+                0 10px 10px 0;
+
+            background:
+                rgba(103, 232, 249, 0.055);
+        }
+
+
+        .linux-definition-box strong {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #f8fafc;
+
+            font-size: 14px;
+        }
+
+
+        .linux-definition-box span {
+
+            color: #c3cdd5;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           DIRECTORY GRID
+        ====================================================== */
+
+        .linux-directory-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-directory-card {
+
+            position: relative;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.14);
+
+            border-radius: 11px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-directory-card:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.35);
+
+            background:
+                rgba(103, 232, 249, 0.06);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .linux-directory-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 15px;
+        }
+
+
+        .linux-directory-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 13px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMMAND BOX
+        ====================================================== */
+
+        .linux-command-box {
+
+            margin-top: 20px;
+
+            padding: 18px 20px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.15);
+
+            border-radius: 10px;
+
+            background: #01060a;
+
+            overflow-x: auto;
+        }
+
+
+        .linux-command-box code {
+
+            color: #7dd3fc;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            line-height: 1.9;
+        }
+
+
+        /* =====================================================
+           COMMAND CARDS
+        ====================================================== */
+
+        .linux-command-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 13px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-command-card {
+
+            position: relative;
+
+            padding: 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.13);
+
+            border-radius: 10px;
+
+            background:
+                rgba(103, 232, 249, 0.035);
+
+            overflow: hidden;
+        }
+
+
+        .linux-command-card code {
+
+            display: inline-block;
+
+            margin-bottom: 8px;
+
+            color: #67e8f9;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .linux-command-card p {
+
+            margin: 0;
+
+            color: #aebbc5;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FILE SYSTEM FLOW
+        ====================================================== */
+
+        .linux-flow {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .linux-flow-item {
+
+            padding: 12px 16px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.20);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+
+        .linux-flow-arrow {
+
+            color: #67e8f9;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           KEY CONCEPTS
+        ====================================================== */
+
+        .linux-key-concepts {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+
+        .linux-key-item {
+
+            padding: 10px 14px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.16);
+
+            border-radius: 8px;
+
+            color: #d7e4eb;
+
+            background:
+                rgba(103, 232, 249, 0.04);
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .linux-summary-list {
+
+            margin: 18px 0 0;
+
+            padding: 0;
+
+            list-style: none;
+        }
+
+
+        .linux-summary-list li {
+
+            position: relative;
+
+            padding:
+                9px 0 9px 23px;
+
+            color: #b6c2cc;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            border-bottom:
+                1px solid rgba(103, 232, 249, 0.07);
+        }
+
+
+        .linux-summary-list li:last-child {
+            border-bottom: none;
+        }
+
+
+        .linux-summary-list li::before {
+
+            content: "✓";
+
+            position: absolute;
+
+            left: 0;
+            top: 9px;
+
+            color: #67e8f9;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+
+        .linux-topic-navigation {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 35px;
+        }
+
+
+        .linux-topic-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 18px;
+
+            border:
+                1px solid rgba(103, 232, 249, 0.25);
+
+            border-radius: 9px;
+
+            color: #dbeafe;
+
+            background:
+                rgba(103, 232, 249, 0.05);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .linux-topic-button:hover {
+
+            border-color:
+                rgba(103, 232, 249, 0.65);
+
+            background:
+                rgba(103, 232, 249, 0.10);
+
+            transform: translateY(-1px);
+        }
+
+
+        .linux-topic-button span {
+
+            color: #67e8f9;
+
+            font-size: 17px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 800px) {
+
+            .linux-learning-page {
+
+                padding:
+                    55px 15px 65px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 36px;
+            }
+
+
+            .linux-topic-intro {
+
+                font-size: 14px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .linux-learning-page {
+
+                padding:
+                    45px 12px 55px;
+            }
+
+
+            .linux-topic-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .linux-topic-header h1 {
+
+                font-size: 30px;
+
+                line-height: 1.25;
+            }
+
+
+            .linux-topic-intro {
+
+                margin-top: 14px;
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .linux-search-wrapper {
+
+                margin-bottom: 25px;
+            }
+
+
+            .linux-search-input {
+
+                font-size: 13px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    21px 18px;
+
+                margin-bottom: 16px;
+
+                border-radius: 12px;
+            }
+
+
+            .linux-card-heading {
+
+                gap: 10px;
+
+                margin-bottom: 15px;
+            }
+
+
+            .linux-icon {
+
+                width: 37px;
+                height: 37px;
+
+                font-size: 16px;
+            }
+
+
+            .linux-card h2 {
+
+                font-size: 18px;
+            }
+
+
+            .linux-card p {
+
+                font-size: 13px;
+
+                line-height: 1.8;
+            }
+
+
+            .linux-definition-box {
+
+                padding: 16px;
+            }
+
+
+            .linux-definition-box span {
+
+                font-size: 13px;
+            }
+
+
+            .linux-directory-grid,
+            .linux-command-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+
+            .linux-flow {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .linux-flow-item {
+
+                width: 100%;
+            }
+
+
+            .linux-flow-arrow {
+
+                display: flex;
+
+                justify-content: center;
+
+                font-size: 0;
+            }
+
+
+            .linux-flow-arrow::after {
+
+                content: "↓";
+
+                color: #67e8f9;
+
+                font-size: 18px;
+            }
+
+
+            .linux-key-concepts {
+
+                gap: 7px;
+            }
+
+
+            .linux-key-item {
+
+                font-size: 11px;
+
+                padding: 9px 11px;
+            }
+
+
+            .linux-topic-navigation {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                margin-top: 25px;
+            }
+
+
+            .linux-topic-button {
+
+                width: 100%;
+
+                justify-content: center;
+            }
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 380px) {
+
+            .linux-topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .linux-learning-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .linux-card {
+
+                padding:
+                    18px 15px;
+            }
+        }
+        #navbar-placeholder a[href*="linux"] svg,
+#navbar-placeholder a[href*="linux"] i {
+    width: 18px;
+    height: 18px;
+    font-size: 16px;
+}
+/* Page-specific fix: Linux navbar icon */
+#navbar-placeholder a[href*="linux"] svg,
+#navbar-placeholder a[href*="linux"] i,
+#navbar-placeholder a[href*="linux"] .nav-icon,
+#navbar-placeholder a[href*="linux"] .nav-icon-wrapper {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+    font-size: 16px !important;
+}
+
+/* Keep the Linux navigation item compact */
+#navbar-placeholder a[href*="linux"] {
+    gap: 8px;
+}
+    </style>
+
+</head>
+<body>
+<!-- SHARED NAVBAR -->
+<div
+    id="navbar-placeholder"
+    data-navbar-path="../../../components/navbar.html"
+    data-root-path="../../../">
+</div>
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="linux-learning-page">
+
+        <div class="linux-learning-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="linux-topic-header">
+
+                <div class="linux-topic-category">
+                    LINUX
+                </div>
+
+                <h1>
+                    Linux <span>File System</span>
+                </h1>
+
+                <p class="linux-topic-intro">
+
+                    The Linux file system organizes files, directories,
+                    system resources and configuration files in a
+                    hierarchical structure. Understanding this structure
+                    is essential for Linux administration and cybersecurity.
+
+                </p>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 LINUX SEARCH
+            ================================================== -->
+
+            <div class="linux-search-wrapper">
+
+                <div class="linux-search-box">
+
+                    <div class="linux-search-icon">
+                        🔎
+                    </div>
+
+                    <input type="text" id="linuxSearch" class="linux-search-input" placeholder="Search Linux topics..."
+                        autocomplete="off">
+
+                </div>
+
+
+                <div id="linuxSearchResults" class="linux-search-results"></div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DEFINITION
+            ================================================== -->
+
+            <section class="linux-card" id="what-is-linux-file-system">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        /
+                    </div>
+
+                    <h2>
+                        What is the Linux File System?
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-definition-box">
+
+                    <strong>
+                        Simple Definition
+                    </strong>
+
+                    <span>
+
+                        The Linux file system is the hierarchical structure
+                        used to organize files and directories. It starts
+                        from the root directory represented by
+                        <strong>/</strong>.
+
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ROOT DIRECTORY
+            ================================================== -->
+
+            <section class="linux-card" id="root-directory">
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        /
+                    </div>
+
+                    <h2>
+                        Root Directory
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The root directory is the top-level directory of a
+                    Linux file system. Every other directory and file
+                    exists somewhere below it.
+
+                </p>
+
+
+                <div class="linux-flow">
+
+                    <div class="linux-flow-item">
+                        /
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Directories
+                    </div>
+
+                    <div class="linux-flow-arrow">
+                        →
+                    </div>
+
+                    <div class="linux-flow-item">
+                        Files
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 IMPORTANT DIRECTORIES
+            ================================================== -->
+
+            <section class="linux-card" id="important-linux-directories">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        📁
+                    </div>
+
+                    <h2>
+                        Important Linux Directories
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux contains several standard directories. Each
+                    directory has a specific purpose.
+
+                </p>
+
+
+                <div class="linux-directory-grid">
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /
+                        </h3>
+
+                        <p>
+                            The root of the entire Linux file system.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /home
+                        </h3>
+
+                        <p>
+                            Contains personal directories and files
+                            belonging to regular users.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /root
+                        </h3>
+
+                        <p>
+                            Home directory of the root administrator.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /etc
+                        </h3>
+
+                        <p>
+                            Contains many system-wide configuration files.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /var
+                        </h3>
+
+                        <p>
+                            Contains variable data such as logs,
+                            caches and other changing files.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /tmp
+                        </h3>
+
+                        <p>
+                            Used for temporary files created by the
+                            system and applications.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /usr
+                        </h3>
+
+                        <p>
+                            Contains many user-space programs,
+                            libraries and related resources.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /bin
+                        </h3>
+
+                        <p>
+                            Contains essential user command binaries
+                            on systems that use this traditional layout.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /sbin
+                        </h3>
+
+                        <p>
+                            Contains important system administration
+                            binaries on systems using this traditional layout.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /dev
+                        </h3>
+
+                        <p>
+                            Contains device files used to represent
+                            hardware and devices.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /proc
+                        </h3>
+
+                        <p>
+                            Provides a virtual view of process and
+                            kernel-related information.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            /opt
+                        </h3>
+
+                        <p>
+                            Commonly used for optional or additional
+                            application software.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ABSOLUTE VS RELATIVE
+            ================================================== -->
+
+            <section class="linux-card" id="absolute-relative-paths">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        #
+                    </div>
+
+                    <h2>
+                        Absolute and Relative Paths
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-directory-grid">
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            Absolute Path
+                        </h3>
+
+                        <p>
+
+                            An absolute path starts from the root
+                            directory and gives the complete location
+                            of a file or directory.
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-directory-card">
+
+                        <h3>
+                            Relative Path
+                        </h3>
+
+                        <p>
+
+                            A relative path describes a location from
+                            the current working directory.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        /home/user/Documents/file.txt
+                    </code>
+
+                    <br>
+
+                    <code>
+                        Documents/file.txt
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 NAVIGATION COMMANDS
+            ================================================== -->
+
+            <section class="linux-card" id="navigation-commands">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        File System Navigation Commands
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux provides simple commands for moving through
+                    directories and checking the current location.
+
+                </p>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            pwd
+                        </code>
+
+                        <p>
+                            Displays the current working directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ls
+                        </code>
+
+                        <p>
+                            Lists files and directories.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cd
+                        </code>
+
+                        <p>
+                            Changes the current directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cd ..
+                        </code>
+
+                        <p>
+                            Moves one level up in the directory tree.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cd ~
+                        </code>
+
+                        <p>
+                            Moves to the current user's home directory.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            ls -la
+                        </code>
+
+                        <p>
+                            Lists files including hidden files with
+                            detailed information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CREATE FILE AND DIRECTORY
+            ================================================== -->
+
+            <section class="linux-card" id="creating-files-directories">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        +
+                    </div>
+
+                    <h2>
+                        Creating Files and Directories
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Linux provides commands for creating directories
+                    and empty files.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        mkdir myfolder
+                    </code>
+
+                    <br>
+
+                    <code>
+                        touch file.txt
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 COPY MOVE DELETE
+            ================================================== -->
+
+            <section class="linux-card" id="copy-move-remove">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ↔
+                    </div>
+
+                    <h2>
+                        Copying, Moving and Removing Files
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-command-grid">
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            cp file.txt backup.txt
+                        </code>
+
+                        <p>
+                            Creates a copy of a file.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            mv file.txt folder/
+                        </code>
+
+                        <p>
+                            Moves a file to another location.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            rm file.txt
+                        </code>
+
+                        <p>
+                            Removes a file.
+                        </p>
+
+                    </div>
+
+
+                    <div class="linux-command-card">
+
+                        <code>
+                            rmdir folder
+                        </code>
+
+                        <p>
+                            Removes an empty directory.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FILE SYSTEM SECURITY
+            ================================================== -->
+
+            <section class="linux-card" id="filesystem-cybersecurity">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        File System and Cybersecurity
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    Understanding the Linux file system is important
+                    for cybersecurity because security analysts often
+                    need to locate configuration files, logs, user
+                    directories and system resources.
+
+                </p>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Configuration
+                    </div>
+
+                    <div class="linux-key-item">
+                        Logs
+                    </div>
+
+                    <div class="linux-key-item">
+                        User Data
+                    </div>
+
+                    <div class="linux-key-item">
+                        System Files
+                    </div>
+
+                    <div class="linux-key-item">
+                        Access Control
+                    </div>
+
+                    <div class="linux-key-item">
+                        Investigation
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 IMPORTANT COMMAND EXAMPLE
+            ================================================== -->
+
+            <section class="linux-card" id="practical-example">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        >
+                    </div>
+
+                    <h2>
+                        Simple Practical Example
+                    </h2>
+
+                </div>
+
+
+                <p>
+
+                    The following commands demonstrate basic file-system
+                    navigation.
+
+                </p>
+
+
+                <div class="linux-command-box">
+
+                    <code>
+                        pwd
+                    </code>
+
+                    <br>
+
+                    <code>
+                        ls
+                    </code>
+
+                    <br>
+
+                    <code>
+                        cd /etc
+                    </code>
+
+                    <br>
+
+                    <code>
+                        ls
+                    </code>
+
+                    <br>
+
+                    <code>
+                        cd ..
+                    </code>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 KEY CONCEPTS
+            ================================================== -->
+
+            <section class="linux-card" id="key-concepts">
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Key Concepts
+                    </h2>
+
+                </div>
+
+
+                <div class="linux-key-concepts">
+
+                    <div class="linux-key-item">
+                        Root /
+                    </div>
+
+                    <div class="linux-key-item">
+                        /home
+                    </div>
+
+                    <div class="linux-key-item">
+                        /etc
+                    </div>
+
+                    <div class="linux-key-item">
+                        /var
+                    </div>
+
+                    <div class="linux-key-item">
+                        /tmp
+                    </div>
+
+                    <div class="linux-key-item">
+                        Absolute Path
+                    </div>
+
+                    <div class="linux-key-item">
+                        Relative Path
+                    </div>
+
+                    <div class="linux-key-item">
+                        pwd
+                    </div>
+
+                    <div class="linux-key-item">
+                        ls
+                    </div>
+
+                    <div class="linux-key-item">
+                        cd
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SUMMARY
+            ================================================== -->
+
+            <section class="linux-card" id="quick-summary">
+
+                <div class="linux-card-heading">
+
+                    <div class="linux-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Quick Summary
+                    </h2>
+
+                </div>
+
+
+                <ul class="linux-summary-list">
+
+                    <li>
+                        Linux uses a hierarchical file system.
+                    </li>
+
+                    <li>
+                        The root directory is represented by /.
+                    </li>
+
+                    <li>
+                        All files and directories exist below the root.
+                    </li>
+
+                    <li>
+                        /home commonly contains regular users' home directories.
+                    </li>
+
+                    <li>
+                        /etc contains many system configuration files.
+                    </li>
+
+                    <li>
+                        /var commonly contains changing data such as logs.
+                    </li>
+
+                    <li>
+                        /tmp is commonly used for temporary files.
+                    </li>
+
+                    <li>
+                        pwd displays the current working directory.
+                    </li>
+
+                    <li>
+                        ls lists files and directories.
+                    </li>
+
+                    <li>
+                        cd changes the current directory.
+                    </li>
+
+                    <li>
+                        Absolute paths start from the root directory.
+                    </li>
+
+                    <li>
+                        Relative paths are interpreted from the current directory.
+                    </li>
+
+                    <li>
+                        Understanding the file system is important for Linux security.
+                    </li>
+
+                </ul>
+
+            </section>
+            
+<!-- Lesson Completion -->
+<section class="linux-card" id="lessonCompletion">
+    <div class="linux-card-heading">
+        <div class="linux-icon" aria-hidden="true">✓</div>
+        <h2>Complete This Lesson</h2>
+    </div>
+
+    <p>
+        Mark this lesson as complete after studying all the topics.
+        Your progress will be saved to your CyberNexa account.
+    </p>
+
+    <button
+        type="button"
+        class="linux-topic-button"
+        data-lesson-progress
+        data-course-id="linux"
+        data-lesson-id="linux-file-system"
+        data-dashboard-url="../learning-paths/linux/theory/linux-file-system.html"
+        data-status-id="lessonCompletionStatus">
+
+        Mark Lesson Complete
+    </button>
+
+    <p
+        id="lessonCompletionStatus"
+        role="status"
+        aria-live="polite">
+    </p>
+</section>
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <div class="linux-topic-navigation">
+
+
+                <a href="linux-basics.html" class="linux-topic-button previous">
+
+                    <span>
+                        ←
+                    </span>
+
+                    <strong>
+                        Previous: Linux Basics
+                    </strong>
+
+                </a>
+
+                <a href="../lab/lab02.html" class="linux-topic-button practical-lab">
+                    <span>🧪</span>
+                    <strong>Perform Lab</strong> 
+                </a>
+            </div>
+        </div>
+    </main>
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div>
+
+                <div class="footer-brand">
+                    Cyber<span>Nexa</span>
+                </div>
+
+                <p>
+                    Cybersecurity &amp; IT Learning
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="../../../index.html">
+                    Home
+                </a>
+
+                <a href="../../../footer/about.html">
+                    About
+                </a>
+
+                <a href="../../../footer/contact.html">
+                    Contact
+                </a>
+
+                <a href="../../../footer/privacy-policy.html">
+                    Privacy Policy
+                </a>
+
+                <a href="../../../footer/disclaimer.html">
+                    Disclaimer
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 CyberNexa. All rights reserved.
+
+        </div>
+
+    </footer>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../js/supabase-client.js"></script>
+<script src="../../../js/lesson-progress.js"></script>
+<script src="../../../js/navbar-loader.js"></script>
+<script src="../../../js/navbar.js"></script>
+<script src="../../../js/session.js"></script>    <script>
+
+        const linuxSubtopics = [
+
+            {
+                title: "What is the Linux File System?",
+                keywords: "linux file system definition hierarchical structure files directories",
+                id: "what-is-linux-file-system"
+            },
+
+            {
+                title: "Root Directory",
+                keywords: "root directory root slash / top level directory",
+                id: "root-directory"
+            },
+
+            {
+                title: "Important Linux Directories",
+                keywords: "important directories linux directories",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/home",
+                keywords: "home user personal files users directory",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/root",
+                keywords: "root administrator home directory",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/etc",
+                keywords: "etc configuration configuration files system configuration",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/var",
+                keywords: "var logs cache variable data changing files",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/tmp",
+                keywords: "tmp temporary temporary files",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/usr",
+                keywords: "usr programs libraries user space",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/bin",
+                keywords: "bin binaries commands essential commands",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/sbin",
+                keywords: "sbin system administration binaries",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/dev",
+                keywords: "dev device files hardware devices",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/proc",
+                keywords: "proc processes kernel process information",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "/opt",
+                keywords: "opt optional application software",
+                id: "important-linux-directories"
+            },
+
+            {
+                title: "Absolute Path",
+                keywords: "absolute path complete path root directory",
+                id: "absolute-relative-paths"
+            },
+
+            {
+                title: "Relative Path",
+                keywords: "relative path current working directory",
+                id: "absolute-relative-paths"
+            },
+
+            {
+                title: "pwd",
+                keywords: "pwd print working directory current directory",
+                id: "navigation-commands"
+            },
+
+            {
+                title: "ls",
+                keywords: "ls list files directories",
+                id: "navigation-commands"
+            },
+
+            {
+                title: "cd",
+                keywords: "cd change directory",
+                id: "navigation-commands"
+            },
+
+            {
+                title: "cd ..",
+                keywords: "parent directory move one level up",
+                id: "navigation-commands"
+            },
+
+            {
+                title: "cd ~",
+                keywords: "home directory current user",
+                id: "navigation-commands"
+            },
+
+            {
+                title: "ls -la",
+                keywords: "hidden files detailed information",
+                id: "navigation-commands"
+            },
+
+            {
+                title: "mkdir",
+                keywords: "mkdir create directory folder",
+                id: "creating-files-directories"
+            },
+
+            {
+                title: "touch",
+                keywords: "touch create file empty file",
+                id: "creating-files-directories"
+            },
+
+            {
+                title: "cp",
+                keywords: "cp copy file backup",
+                id: "copy-move-remove"
+            },
+
+            {
+                title: "mv",
+                keywords: "mv move file directory",
+                id: "copy-move-remove"
+            },
+
+            {
+                title: "rm",
+                keywords: "rm remove delete file",
+                id: "copy-move-remove"
+            },
+
+            {
+                title: "rmdir",
+                keywords: "rmdir remove empty directory folder",
+                id: "copy-move-remove"
+            },
+
+            {
+                title: "File System and Cybersecurity",
+                keywords: "cybersecurity security configuration logs user data system files access control investigation",
+                id: "filesystem-cybersecurity"
+            },
+
+            {
+                title: "Simple Practical Example",
+                keywords: "practical example pwd ls cd etc navigation",
+                id: "practical-example"
+            },
+
+            {
+                title: "Key Concepts",
+                keywords: "root home etc var tmp absolute relative pwd ls cd",
+                id: "key-concepts"
+            },
+
+            {
+                title: "Quick Summary",
+                keywords: "summary linux file system root directories paths commands security",
+                id: "quick-summary"
+            }
+
+        ];
+
+
+        const searchInput =
+            document.getElementById("linuxSearch");
+
+
+        const searchResults =
+            document.getElementById("linuxSearchResults");
+
+
+        function performLinuxSearch() {
+
+            const query =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+
+            searchResults.innerHTML = "";
+
+
+            if (!query) {
+
+                searchResults.style.display = "none";
+
+                return;
+            }
+
+
+            const matches =
+                linuxSubtopics.filter(subtopic => {
+
+                    return (
+                        subtopic.title
+                            .toLowerCase()
+                            .includes(query)
+
+                        ||
+
+                        subtopic.keywords
+                            .toLowerCase()
+                            .includes(query)
+                    );
+
+                });
+
+
+            searchResults.style.display = "block";
+
+
+            if (matches.length === 0) {
+
+                const empty =
+                    document.createElement("div");
+
+                empty.className =
+                    "linux-search-empty";
+
+                empty.textContent =
+                    "No matching subtopic found on this page.";
+
+                searchResults.appendChild(empty);
+
+                return;
+            }
+
+
+            matches.forEach(subtopic => {
+
+                const result =
+                    document.createElement("div");
+
+                result.className =
+                    "linux-search-result";
+
+                result.textContent =
+                    subtopic.title;
+
+                result.style.cursor =
+                    "pointer";
+
+
+                result.addEventListener("click", () => {
+
+                    searchInput.value =
+                        subtopic.title;
+
+                    searchResults.style.display =
+                        "none";
+
+
+                    const target =
+                        document.getElementById(
+                            subtopic.id
+                        );
+
+
+                    if (target) {
+
+                        target.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                        target.style.transition =
+                            "box-shadow 0.3s ease, border-color 0.3s ease";
+
+                        target.style.borderColor =
+                            "rgba(103, 232, 249, 0.65)";
+
+                        target.style.boxShadow =
+                            "0 0 30px rgba(103, 232, 249, 0.15)";
+
+
+                        setTimeout(() => {
+
+                            target.style.borderColor =
+                                "";
+
+                            target.style.boxShadow =
+                                "";
+
+                        }, 1500);
+
+                    }
+
+                });
+
+
+                searchResults.appendChild(result);
+
+            });
+
+        }
+
+
+        searchInput.addEventListener(
+            "input",
+            performLinuxSearch
+        );
+
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    !event.target.closest(
+                        ".linux-search-wrapper"
+                    )
+                ) {
+
+                    searchResults.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+    <!-- =====================================================
+         MOBILE SWEEP
+         Sweep only when user scrolls/touches.
+    ====================================================== -->
+
+    <script>
+
+        const sweepCards = document.querySelectorAll(
+            ".linux-card, .linux-directory-card, .linux-command-card"
+        );
+
+
+        let sweepTimeout;
+
+
+        function triggerMobileSweep() {
+
+            if (window.innerWidth > 600) {
+                return;
+            }
+
+
+            sweepCards.forEach(card => {
+
+                card.classList.remove(
+                    "mobile-sweep"
+                );
+
+                void card.offsetWidth;
+
+                card.classList.add(
+                    "mobile-sweep"
+                );
+
+            });
+
+
+            clearTimeout(
+                sweepTimeout
+            );
+
+
+            sweepTimeout = setTimeout(() => {
+
+                sweepCards.forEach(card => {
+
+                    card.classList.remove(
+                        "mobile-sweep"
+                    );
+
+                });
+
+            }, 800);
+
+        }
+
+
+        window.addEventListener(
+            "touchstart",
+            triggerMobileSweep,
+            { passive: true }
+        );
+
+
+        window.addEventListener(
+            "scroll",
+            () => {
+
+                if (window.innerWidth <= 600) {
+
+                    triggerMobileSweep();
+
+                }
+
+            },
+            { passive: true }
+        );
+    </script>
+</body>
+</html>
