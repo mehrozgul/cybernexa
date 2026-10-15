@@ -146,10 +146,13 @@ document.addEventListener("DOMContentLoaded", () => {
         options: {
           data: {
             full_name: name
-          }
+          },
+          emailRedirectTo: new URL(
+            "auth/login.html",
+            window.location.origin + "/cybernexa/"
+          ).href
         }
       });
-
       if (error) {
         message.textContent = error.message;
         return;
