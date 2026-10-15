@@ -78,7 +78,10 @@ document.addEventListener("DOMContentLoaded", () => {
       submitButton.querySelector("span").textContent = "Sending...";
 
       try {
-        const redirectTo = `${window.location.origin}/auth/reset-password.html`;
+        const redirectTo = new URL(
+          "reset-password.html",
+          window.location.href
+        ).href;
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo
