@@ -1,640 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn CIA Triad - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>CIA Triad - CyberNexa</title>
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-        .theory-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(0, 191, 255, 0.09),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(0, 100, 180, 0.06),
-                    transparent 30%
-                ),
-                #020714;
-        }
-
-
-        .theory-container {
-
-            width: 100%;
-            max-width: 1000px;
-
-            margin: 0 auto;
-        }
-        .topic-header {
-
-            text-align: center;
-
-            margin-bottom: 50px;
-        }
-
-
-        .topic-label {
-
-            display: inline-block;
-
-            margin-bottom: 14px;
-
-            color: #00bfff;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-
-
-        .topic-header h1 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 44px;
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-
-        .topic-header h1 span {
-
-            color: #00bfff;
-        }
-
-
-        .topic-intro {
-
-            max-width: 760px;
-
-            margin: 18px auto 0;
-
-            color: #91a4bd;
-
-            font-size: 15px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           CONTENT SECTION
-        ====================================================== */
-
-        .theory-section {
-
-            margin-bottom: 24px;
-
-            padding: 26px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.14);
-
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 26, 51, 0.96),
-                    rgba(3, 16, 32, 0.96)
-                );
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.22);
-        }
-
-
-        .theory-section h2 {
-
-            margin: 0 0 14px;
-
-            color: #ffffff;
-
-            font-size: 21px;
-
-            line-height: 1.4;
-        }
-
-
-        .theory-section h2 span {
-
-            color: #00bfff;
-        }
-
-
-        .theory-section p {
-
-            margin: 0 0 12px;
-
-            color: #91a4bd;
-
-            font-size: 13px;
-
-            line-height: 1.85;
-        }
-
-
-        .theory-section p:last-child {
-
-            margin-bottom: 0;
-        }
-
-
-        /* =====================================================
-           CIA CARDS
-        ====================================================== */
-
-        .cia-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-
-            gap: 16px;
-
-            margin-top: 20px;
-        }
-
-
-        .cia-card {
-
-            position: relative;
-
-            padding: 24px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.14);
-
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 26, 51, 0.96),
-                    rgba(3, 16, 32, 0.96)
-                );
-
-            overflow: hidden;
-
-            transition:
-                border-color 0.25s ease,
-                transform 0.25s ease,
-                box-shadow 0.25s ease;
-        }
-
-
-        .cia-card::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: -120%;
-
-            width: 70%;
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(0, 191, 255, 0.12),
-                    transparent
-                );
-
-            transform: skewX(-20deg);
-        }
-
-
-        .cia-card:hover::before {
-
-            animation:
-                ciaLightSweep 0.75s ease;
-        }
-
-
-        @keyframes ciaLightSweep {
-
-            0% {
-                left: -120%;
-            }
-
-            100% {
-                left: 150%;
-            }
-        }
-
-
-        .cia-card:hover {
-
-            border-color:
-                rgba(0, 191, 255, 0.40);
-
-            transform:
-                translateY(-3px);
-
-            box-shadow:
-                0 17px 38px rgba(0, 0, 0, 0.28),
-                0 0 24px rgba(0, 191, 255, 0.05);
-        }
-
-
-        .cia-icon {
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            width: 52px;
-            height: 52px;
-
-            margin-bottom: 17px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.24);
-
-            border-radius: 12px;
-
-            color: #00bfff;
-
-            background:
-                rgba(0, 191, 255, 0.06);
-
-            font-size: 25px;
-        }
-
-
-        .cia-card h3 {
-
-            margin: 0 0 9px;
-
-            color: #ffffff;
-
-            font-size: 18px;
-        }
-
-
-        .cia-card p {
-
-            margin: 0;
-
-            color: #8193aa;
-
-            font-size: 12px;
-
-            line-height: 1.75;
-        }
-
-
-        /* =====================================================
-           LIST
-        ====================================================== */
-
-        .theory-list {
-
-            margin: 15px 0 0;
-
-            padding-left: 20px;
-        }
-
-
-        .theory-list li {
-
-            margin-bottom: 9px;
-
-            color: #91a4bd;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-        }
-
-
-        .theory-list li::marker {
-
-            color: #00bfff;
-        }
-
-
-        /* =====================================================
-           EXAMPLE BOX
-        ====================================================== */
-
-        .example-box {
-
-            margin-top: 18px;
-
-            padding: 20px;
-
-            border-left:
-                3px solid #00bfff;
-
-            border-radius: 0 10px 10px 0;
-
-            background:
-                rgba(0, 191, 255, 0.045);
-        }
-
-
-        .example-box strong {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #ffffff;
-
-            font-size: 13px;
-        }
-
-
-        .example-box p {
-
-            margin: 0;
-
-            color: #91a4bd;
-
-            font-size: 12px;
-
-            line-height: 1.75;
-        }
-
-
-        /* =====================================================
-           COMPARISON TABLE
-        ====================================================== */
-
-        .table-wrapper {
-
-            width: 100%;
-
-            overflow-x: auto;
-
-            margin-top: 18px;
-        }
-
-
-        .cia-table {
-
-            width: 100%;
-
-            min-width: 650px;
-
-            border-collapse: collapse;
-        }
-
-
-        .cia-table th,
-        .cia-table td {
-
-            padding: 13px 15px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.10);
-
-            text-align: left;
-
-            font-size: 12px;
-        }
-
-
-        .cia-table th {
-
-            color: #ffffff;
-
-            background:
-                rgba(0, 191, 255, 0.07);
-        }
-
-
-        .cia-table td {
-
-            color: #91a4bd;
-
-            background:
-                rgba(3, 16, 32, 0.50);
-        }
-
-
-        /* =====================================================
-           LAB LINK
-        ====================================================== */
-
-        .lab-link-box {
-
-            margin-top: 30px;
-
-            padding: 24px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.18);
-
-            border-radius: 13px;
-
-            text-align: center;
-
-            background:
-                rgba(0, 191, 255, 0.035);
-        }
-
-
-        .lab-link-box h3 {
-
-            margin: 0 0 8px;
-
-            color: #ffffff;
-
-            font-size: 17px;
-        }
-
-
-        .lab-link-box p {
-
-            margin: 0 0 17px;
-
-            color: #8193aa;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-
-        .lab-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 9px;
-
-            padding: 11px 18px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.30);
-
-            border-radius: 8px;
-
-            color: #bfeaff;
-
-            background:
-                rgba(0, 191, 255, 0.07);
-
-            text-decoration: none;
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-
-        .lab-button:hover {
-
-            background:
-                rgba(0, 191, 255, 0.13);
-
-            border-color:
-                rgba(0, 191, 255, 0.45);
-
-            transform:
-                translateY(-2px);
-        }
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 800px) {
-
-            .cia-grid {
-
-                grid-template-columns:
-                    1fr;
-            }
-
-        }
-
-
-        @media (max-width: 600px) {
-
-            .theory-page {
-
-                padding:
-                    45px 12px 55px;
-            }
-
-
-            .topic-header {
-
-                margin-bottom: 35px;
-            }
-
-
-            .topic-header h1 {
-
-                font-size: 30px;
-            }
-
-
-            .topic-intro {
-
-                font-size: 13px;
-            }
-
-
-            .theory-section {
-
-                padding: 20px 18px;
-            }
-
-
-            .theory-section h2 {
-
-                font-size: 18px;
-            }
-
-
-            .theory-section p,
-            .theory-list li {
-
-                font-size: 12px;
-            }
-
-
-            .topic-navigation {
-
-                flex-direction: column;
-            }
-
-
-            .topic-navigation a {
-
-                width: 100%;
-
-                justify-content: center;
-            }
-
-        }
-
-
-        @media (max-width: 380px) {
-
-            .theory-page {
-
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-
-            .topic-header h1 {
-
-                font-size: 27px;
-            }
-
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -662,8 +46,8 @@
                 </div>
 
                 <h1>
-                    <span>CIA</span> Triad
-                </h1>
+ <span>CIA</span> Triad
+ </h1>
 
                 <p class="topic-intro">
                     Learn the three fundamental security principles
@@ -681,8 +65,8 @@
             <section class="theory-section">
 
                 <h2>
-                    What is the <span>CIA Triad?</span>
-                </h2>
+ What is the <span>CIA Triad?</span>
+ </h2>
 
                 <p>
                     The CIA Triad is a fundamental model in
@@ -708,8 +92,8 @@
             <section class="theory-section">
 
                 <h2>
-                    Three Principles of the CIA Triad
-                </h2>
+ Three Principles of the CIA Triad
+ </h2>
 
                 <div class="cia-grid">
 
@@ -723,8 +107,8 @@
                         </div>
 
                         <h3>
-                            Confidentiality
-                        </h3>
+ Confidentiality
+ </h3>
 
                         <p>
                             Confidentiality means protecting
@@ -744,8 +128,8 @@
                         </div>
 
                         <h3>
-                            Integrity
-                        </h3>
+ Integrity
+ </h3>
 
                         <p>
                             Integrity means keeping information
@@ -765,8 +149,8 @@
                         </div>
 
                         <h3>
-                            Availability
-                        </h3>
+ Availability
+ </h3>
 
                         <p>
                             Availability means ensuring that
@@ -789,8 +173,8 @@
             <section class="theory-section">
 
                 <h2>
-                    01. <span>Confidentiality</span>
-                </h2>
+ 01. <span>Confidentiality</span>
+ </h2>
 
                 <p>
                     Confidentiality focuses on preventing
@@ -853,8 +237,8 @@
             <section class="theory-section">
 
                 <h2>
-                    02. <span>Integrity</span>
-                </h2>
+ 02. <span>Integrity</span>
+ </h2>
 
                 <p>
                     Integrity ensures that information remains
@@ -916,8 +300,8 @@
             <section class="theory-section">
 
                 <h2>
-                    03. <span>Availability</span>
-                </h2>
+ 03. <span>Availability</span>
+ </h2>
 
                 <p>
                     Availability means that authorized users
@@ -981,8 +365,8 @@
             <section class="theory-section">
 
                 <h2>
-                    CIA Triad <span>Comparison</span>
-                </h2>
+ CIA Triad <span>Comparison</span>
+ </h2>
 
                 <div class="table-wrapper">
 
@@ -1074,8 +458,8 @@
             <section class="theory-section">
 
                 <h2>
-                    Real-World <span>Example</span>
-                </h2>
+ Real-World <span>Example</span>
+ </h2>
 
                 <p>
                     Consider an online banking system.
@@ -1114,8 +498,8 @@
             <section class="theory-section">
 
                 <h2>
-                    Why is the CIA Triad <span>Important?</span>
-                </h2>
+ Why is the CIA Triad <span>Important?</span>
+ </h2>
 
                 <p>
                     The CIA Triad provides a simple framework for
@@ -1140,8 +524,8 @@
             <section class="theory-section">
 
                 <h2>
-                    <span>Summary</span>
-                </h2>
+ <span>Summary</span>
+ </h2>
 
                 <ul class="theory-list">
 
@@ -1189,8 +573,8 @@
             data-lesson-id="cia-traid"
             data-dashboard-url="../learning-paths/cybersecurity/theory/cia-traid.html"
             data-status-id="lessonCompletionStatus">
-            ✓ Mark Lesson Complete
-        </button>
+ Mark Lesson Complete
+ </button>
     </div>
     <p
         id="lessonCompletionStatus"
@@ -1207,8 +591,8 @@
             <div class="lab-link-box">
 
                 <h3>
-                    Practice the CIA Triad
-                </h3>
+ Practice the CIA Triad
+ </h3>
 
                 <p>
                     Test your understanding by identifying
@@ -1220,8 +604,8 @@
                     href="../lab/cia-traid-lab.html"
                     class="lab-button"
                 >
-                    Open Practical Lab →
-                </a>
+ Open Practical Lab →
+ </a>
             </div>
         </div>
     </main>

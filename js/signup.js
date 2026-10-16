@@ -1,16 +1,11 @@
 
 "use strict";
 
-const SUPABASE_URL = "https://obunhbnrxhysysrmumrb.supabase.co";
-const SUPABASE_KEY = "sb_publishable_a9Zexy2efFImrJYvxkcvpw_W_rUUegp";
-
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
 document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signupForm");
   if (!signupForm) return;
+
+  const supabaseClient = window.supabaseClient;
 
   const nameInput = document.getElementById("fullName");
   const emailInput = document.getElementById("signupEmail");
@@ -137,9 +132,18 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     submitButton.disabled = true;
     submitButton.querySelector("span").textContent = "Creating Account...";
+    if (!supabaseClient) {
+      message.textContent = "Authentication service is not initialized. Please try again later.";
+      submitButton.disabled = false;
+      submitButton.querySelector("span").textContent = "Create Account";
+      return;
+    }
+
     message.textContent = "";
 
     try {
+      const emailRedirectTo = new URL("login.html", window.location.href).href;
+
       const { data, error } = await supabaseClient.auth.signUp({
         email: email,
         password: password,
@@ -147,10 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
           data: {
             full_name: name
           },
-          emailRedirectTo: new URL(
-            "auth/login.html",
-            window.location.origin + "/cybernexa/"
-          ).href
+          emailRedirectTo
         }
       });
       if (error) {

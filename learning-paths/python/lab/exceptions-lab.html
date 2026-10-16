@@ -1,445 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Exceptions Lab with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
     <title>Exceptions Lab | CyberNexa</title>
     
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(0, 202, 255, 0.08),
-                    transparent 30%
-                ),
-                #030b16;
-
-            color: #dce8f5;
-            font-family: Arial, sans-serif;
-        }
-
-        .navbar {
-            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
-            background: #030c19;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 16px 25px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: white;
-            text-decoration: none;
-        }
-
-        .brand-logo {
-            width: 38px;
-            height: 45px;
-            color: #00caff;
-        }
-
-        .brand-logo svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .brand-name {
-            font-size: 21px;
-            font-weight: 900;
-        }
-
-        .brand-name span {
-            color: #00caff;
-        }
-
-        .brand-tagline {
-            color: #7f94aa;
-            font-size: 10px;
-        }
-
-        .lab-page {
-            max-width: 1000px;
-            margin: auto;
-            padding: 35px 20px 70px;
-        }
-
-        .breadcrumb {
-            color: #6f849a;
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
-
-        .breadcrumb span {
-            color: #00caff;
-            padding: 0 7px;
-        }
-
-        .lab-header {
-            padding: 28px;
-
-            border: 1px solid rgba(0, 230, 138, 0.3);
-            border-left: 4px solid #00e68a;
-            border-radius: 9px;
-
-            background: rgba(0, 230, 138, 0.04);
-        }
-
-        .lab-label {
-            color: #00e68a;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 2px;
-        }
-
-        .lab-header h1 {
-            color: white;
-            font-size: 32px;
-            margin: 9px 0;
-        }
-
-        .lab-header p {
-            color: #9fb1c5;
-            font-size: 13px;
-            margin: 0;
-        }
-
-        .lab-box {
-            margin-top: 22px;
-            padding: 22px;
-
-            border: 1px solid rgba(0, 202, 255, 0.18);
-            border-radius: 9px;
-
-            background: #041221;
-        }
-
-        .lab-box h2 {
-            color: white;
-            font-size: 19px;
-            margin-top: 0;
-        }
-
-        .instructions {
-            color: #aabbd0;
-            font-size: 13px;
-        }
-
-        .instructions li {
-            margin-bottom: 6px;
-        }
-
-        textarea {
-            width: 100%;
-            min-height: 330px;
-            resize: vertical;
-
-            padding: 18px;
-
-            border: 1px solid rgba(0, 202, 255, 0.25);
-            border-radius: 7px;
-
-            background: #020810;
-            color: #7ee7ff;
-
-            font-family: Consolas, monospace;
-            font-size: 13px;
-            line-height: 1.6;
-
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: #00caff;
-
-            box-shadow:
-                0 0 15px
-                rgba(0, 202, 255, 0.08);
-        }
-
-        .button-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        button {
-            padding: 10px 20px;
-
-            border-radius: 22px;
-
-            cursor: pointer;
-
-            font-weight: 800;
-            font-size: 12px;
-        }
-
-        .run-btn {
-            border: 1px solid #00e68a;
-
-            background: rgba(0, 230, 138, 0.08);
-
-            color: #00e68a;
-        }
-
-        .run-btn:hover {
-            background: #00e68a;
-            color: #02100a;
-        }
-
-        .clear-btn {
-            border: 1px solid rgba(0, 202, 255, 0.4);
-
-            background: rgba(0, 202, 255, 0.06);
-
-            color: #00caff;
-        }
-
-        .clear-btn:hover {
-            background: rgba(0, 202, 255, 0.15);
-        }
-
-        .output-title {
-            margin-top: 22px;
-
-            color: #00caff;
-
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        .output {
-            min-height: 130px;
-            margin-top: 8px;
-
-            padding: 16px;
-
-            border: 1px solid rgba(0, 230, 138, 0.2);
-            border-radius: 7px;
-
-            background: #020810;
-
-            color: #7fffc0;
-
-            font-family: Consolas, monospace;
-            font-size: 12px;
-
-            white-space: pre-wrap;
-        }
-
-        .challenge {
-            margin-top: 22px;
-            padding: 20px;
-
-            border: 1px solid rgba(255, 189, 0, 0.25);
-            border-left: 4px solid #ffbd00;
-            border-radius: 8px;
-
-            background: rgba(255, 189, 0, 0.04);
-        }
-
-        .challenge h3 {
-            color: #ffbd00;
-            margin-top: 0;
-        }
-
-        .challenge p,
-        .challenge li {
-            color: #aabbd0;
-            font-size: 13px;
-        }
-
-        /* =====================================================
-           PREVIOUS / ALL / NEXT
-        ===================================================== */
-
-        .lab-navigation {
-            margin-top: 28px;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            gap: 15px;
-        }
-
-        .lab-nav-btn {
-            display: inline-flex;
-
-            align-items: center;
-            justify-content: center;
-
-            min-width: 150px;
-
-            padding: 11px 20px;
-
-            border: 1px solid rgba(0, 202, 255, 0.35);
-            border-radius: 22px;
-
-            background: rgba(0, 202, 255, 0.05);
-
-            color: #00caff;
-
-            text-decoration: none;
-
-            font-size: 12px;
-            font-weight: 800;
-
-            transition: all 0.25s ease;
-        }
-
-        .lab-nav-btn:hover {
-            background: rgba(0, 202, 255, 0.12);
-
-            border-color: #00caff;
-
-            transform: translateY(-2px);
-        }
-
-        .lab-nav-btn.center {
-            border-color: rgba(0, 230, 138, 0.35);
-            color: #00e68a;
-        }
-
-        .lab-nav-btn.center:hover {
-            background: rgba(0, 230, 138, 0.08);
-            border-color: #00e68a;
-        }
-
-        /* =====================================================
-           FOOTER
-        ===================================================== */
-
-        .footer {
-            border-top: 1px solid rgba(0, 202, 255, 0.15);
-
-            background: #020914;
-
-            padding: 35px 20px 20px;
-        }
-
-        .footer-container {
-            max-width: 1000px;
-            margin: auto;
-
-            display: flex;
-
-            justify-content: space-between;
-
-            gap: 20px;
-        }
-
-        .footer-brand {
-            color: white;
-
-            font-size: 20px;
-
-            font-weight: 900;
-        }
-
-        .footer-brand span {
-            color: #00caff;
-        }
-
-        .footer-container p {
-            color: #6f849a;
-            font-size: 11px;
-        }
-
-        .footer-links {
-            display: flex;
-
-            gap: 18px;
-
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: #8da2b8;
-
-            text-decoration: none;
-
-            font-size: 11px;
-        }
-
-        .footer-links a:hover {
-            color: #00caff;
-        }
-
-        .copyright {
-            max-width: 1000px;
-
-            margin: 25px auto 0;
-
-            padding-top: 15px;
-
-            border-top:
-                1px solid rgba(255,255,255,0.05);
-
-            text-align: center;
-
-            color: #52667b;
-
-            font-size: 10px;
-        }
-
-        @media (max-width: 700px) {
-
-            .lab-page {
-                padding: 25px 15px 55px;
-            }
-
-            .lab-header {
-                padding: 22px;
-            }
-
-            .lab-header h1 {
-                font-size: 27px;
-            }
-
-            .button-row {
-                flex-direction: column;
-            }
-
-            button {
-                width: 100%;
-            }
-
-            .lab-navigation {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .lab-nav-btn {
-                width: 100%;
-            }
-
-            .footer-container {
-                flex-direction: column;
-            }
-
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -534,8 +113,8 @@
         </div>
 
         <h1>
-            Exceptions Lab
-        </h1>
+ Exceptions Lab
+ </h1>
 
         <p>
             Practice handling errors safely in a cybersecurity
@@ -585,8 +164,8 @@
     <section class="lab-box">
 
         <h2>
-            Python Environment
-        </h2>
+ Python Environment
+ </h2>
 
         <textarea id="codeEditor">port_input = "443"
 
@@ -611,18 +190,18 @@ except Exception as error:
                 class="run-btn"
                 id="runButton">
 
-                ▶ Run Code
+ ▶ Run Code
 
-            </button>
+ </button>
 
 
             <button
                 class="clear-btn"
                 id="clearButton">
 
-                Clear
+ Clear
 
-            </button>
+ </button>
 
         </div>
 
@@ -648,8 +227,8 @@ except Exception as error:
     <section class="challenge">
 
         <h3>
-            Challenge
-        </h3>
+ Challenge
+ </h3>
 
         <p>
             Modify the program so that it handles different
@@ -693,16 +272,16 @@ except Exception as error:
             href="file-handling-lab.html"
             class="lab-nav-btn">
 
-            ← Lab: File Handling
+ ← Lab: File Handling
 
-        </a>
+ </a>
         <a
             href="../theory/modules.html"
             class="lab-nav-btn">
 
-            Next Theory: Modules →
+ Next Theory: Modules →
 
-        </a>
+ </a>
 
     </div>
 

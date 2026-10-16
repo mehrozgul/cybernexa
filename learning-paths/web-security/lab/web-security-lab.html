@@ -1,622 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Web Security Labs - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Web Security Labs - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* =====================================================
-           LAB PAGE
-        ====================================================== */
-
-        .lab-page {
-
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 90px;
-
-            background:
-                radial-gradient(
-                    circle at 12% 8%,
-                    rgba(0, 255, 176, 0.055),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 90% 15%,
-                    rgba(0, 191, 255, 0.075),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    180deg,
-                    #01050b 0%,
-                    #020914 50%,
-                    #01050b 100%
-                );
-        }
-
-        .lab-container {
-
-            width: 100%;
-            max-width: 1100px;
-
-            margin: auto;
-        }
-
-        /* =====================================================
-           HERO
-        ====================================================== */
-
-        .lab-hero {
-
-            position: relative;
-
-            padding: 42px 35px;
-
-            margin-bottom: 25px;
-
-            border:
-                1px solid rgba(0, 255, 176, 0.16);
-
-            border-radius: 16px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(3, 23, 30, 0.98),
-                    rgba(2, 12, 23, 0.98)
-                );
-
-            overflow: hidden;
-
-            box-shadow:
-                0 20px 50px rgba(0, 0, 0, 0.28);
-        }
-
-        .lab-hero::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #00ffb0,
-                    #00bfff,
-                    transparent
-                );
-        }
-
-        .lab-hero-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                minmax(0, 1.5fr)
-                minmax(260px, 0.8fr);
-
-            gap: 35px;
-
-            align-items: center;
-        }
-
-        .lab-kicker {
-
-            display: inline-flex;
-
-            align-items: center;
-            gap: 8px;
-
-            margin-bottom: 15px;
-
-            color: #00ffb0;
-
-            font-size: 10px;
-            font-weight: 800;
-
-            letter-spacing: 2.5px;
-
-            text-transform: uppercase;
-        }
-
-        .lab-kicker::before {
-
-            content: "";
-
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-
-            background: #00ffb0;
-
-            box-shadow:
-                0 0 12px rgba(0, 255, 176, 0.65);
-        }
-
-        .lab-hero h1 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 46px;
-
-            line-height: 1.12;
-
-            font-weight: 850;
-
-            letter-spacing: -1px;
-        }
-
-        .lab-hero h1 span {
-            color: #00ffb0;
-        }
-
-        .lab-description {
-
-            max-width: 720px;
-
-            margin: 17px 0 0;
-
-            color: #8fa5bb;
-
-            font-size: 14px;
-
-            line-height: 1.9;
-        }
-
-        /* =====================================================
-           TERMINAL
-        ====================================================== */
-
-        .lab-terminal {
-
-            padding: 18px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.15);
-
-            border-radius: 11px;
-
-            background:
-                rgba(0, 0, 0, 0.34);
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-        }
-
-        .terminal-top {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 6px;
-
-            padding-bottom: 13px;
-
-            margin-bottom: 13px;
-
-            border-bottom:
-                1px solid rgba(0, 191, 255, 0.09);
-        }
-
-        .terminal-dot {
-
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-
-            background: #405263;
-        }
-
-        .terminal-title {
-
-            margin-left: auto;
-
-            color: #52687c;
-
-            font-size: 9px;
-
-            letter-spacing: 1px;
-        }
-
-        .terminal-line {
-
-            margin-bottom: 9px;
-
-            color: #60788d;
-
-            font-size: 11px;
-
-            line-height: 1.5;
-        }
-
-        .green {
-            color: #00ffb0;
-        }
-
-        .blue {
-            color: #00bfff;
-        }
-
-        /* =====================================================
-           INFO STRIP
-        ====================================================== */
-
-        .lab-meta {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-
-            gap: 10px;
-
-            margin-bottom: 25px;
-        }
-
-        .meta-item {
-
-            padding: 15px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.10);
-
-            border-radius: 10px;
-
-            background:
-                rgba(0, 191, 255, 0.025);
-        }
-
-        .meta-label {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #536a7f;
-
-            font-size: 9px;
-
-            letter-spacing: 1.5px;
-
-            text-transform: uppercase;
-        }
-
-        .meta-value {
-
-            color: #dce9f4;
-
-            font-size: 11px;
-
-            font-weight: 700;
-        }
-
-        /* =====================================================
-           NOTICE
-        ====================================================== */
-
-        .authorized-notice {
-
-            margin-bottom: 22px;
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(255, 177, 0, 0.17);
-
-            border-radius: 11px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255, 177, 0, 0.045),
-                    rgba(255, 177, 0, 0.012)
-                );
-        }
-
-        .notice-title {
-
-            margin-bottom: 8px;
-
-            color: #ffc44d;
-
-            font-size: 13px;
-
-            font-weight: 800;
-        }
-
-        .authorized-notice p {
-
-            margin: 0;
-
-            color: #899bad;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-        }
-
-        /* =====================================================
-           LAB GRID
-        ====================================================== */
-
-        .lab-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-
-            gap: 13px;
-        }
-
-        .lab-card {
-
-            position: relative;
-
-            min-height: 205px;
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.11);
-
-            border-radius: 11px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(5, 20, 34, 0.97),
-                    rgba(2, 11, 21, 0.97)
-                );
-
-            overflow: hidden;
-
-            transition:
-                transform 0.22s ease,
-                border-color 0.22s ease;
-        }
-
-        .lab-card::before {
-
-            content: "";
-
-            position: absolute;
-
-            left: 0;
-            top: 0;
-
-            width: 3px;
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    #00ffb0,
-                    #00bfff
-                );
-        }
-
-        .lab-card:hover {
-
-            transform: translateY(-4px);
-
-            border-color:
-                rgba(0, 255, 176, 0.30);
-        }
-
-        .lab-number {
-
-            color: #00ffb0;
-
-            font-family: Consolas, monospace;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            letter-spacing: 1px;
-        }
-
-        .lab-card h2 {
-
-            margin: 11px 0 8px;
-
-            color: #ffffff;
-
-            font-size: 15px;
-
-            line-height: 1.4;
-        }
-
-        .lab-card p {
-
-            margin: 0 0 17px;
-
-            color: #71879b;
-
-            font-size: 11px;
-
-            line-height: 1.7;
-        }
-
-        .launch-button {
-
-            position: absolute;
-
-            left: 20px;
-            right: 20px;
-            bottom: 17px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            padding: 10px;
-
-            border:
-                1px solid rgba(0, 255, 176, 0.20);
-
-            border-radius: 7px;
-
-            color: #bfffee;
-
-            background:
-                rgba(0, 255, 176, 0.035);
-
-            text-decoration: none;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-        .launch-button:hover {
-
-            border-color:
-                rgba(0, 255, 176, 0.45);
-
-            background:
-                rgba(0, 255, 176, 0.08);
-        }
-
-        /* =====================================================
-           FOOTER CTA
-        ====================================================== */
-
-        .lab-summary {
-
-            margin-top: 25px;
-
-            padding: 25px;
-
-            text-align: center;
-
-            border:
-                1px solid rgba(0, 255, 176, 0.13);
-
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(0, 255, 176, 0.035),
-                    rgba(0, 191, 255, 0.025)
-                );
-        }
-
-        .lab-summary h2 {
-
-            margin: 0 0 9px;
-
-            color: #ffffff;
-
-            font-size: 18px;
-        }
-
-        .lab-summary p {
-
-            max-width: 750px;
-
-            margin: auto;
-
-            color: #7e94a8;
-
-            font-size: 12px;
-
-            line-height: 1.85;
-        }
-
-        /* =====================================================
-           RESPONSIVE
-        ====================================================== */
-
-        @media (max-width: 850px) {
-
-            .lab-hero-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .lab-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .lab-meta {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        @media (max-width: 600px) {
-
-            .lab-page {
-                padding: 45px 12px 60px;
-            }
-
-            .lab-hero {
-                padding: 27px 20px;
-            }
-
-            .lab-hero h1 {
-                font-size: 31px;
-            }
-
-            .lab-description {
-                font-size: 12px;
-            }
-
-            .lab-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .lab-summary {
-                padding: 20px;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -714,9 +117,9 @@
                     </div>
 
                     <h1>
-                        <span>Web Security</span>
-                        Labs
-                    </h1>
+ <span>Web Security</span>
+ Labs
+ </h1>
 
                     <p class="lab-description">
 
@@ -775,11 +178,8 @@
 
         <div class="lab-meta">
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Module
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Module</span>
 
                 <span class="meta-value">
                     Web Security
@@ -788,11 +188,8 @@
             </div>
 
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Labs
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Labs</span>
 
                 <span class="meta-value">
                     15
@@ -801,11 +198,8 @@
             </div>
 
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Level
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Level</span>
 
                 <span class="meta-value">
                     Beginner → Intermediate
@@ -814,11 +208,8 @@
             </div>
 
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Mode
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Mode</span>
 
                 <span class="meta-value">
                     Authorized Training
@@ -862,8 +253,8 @@
                 </div>
 
                 <h2>
-                    How Websites Work
-                </h2>
+ How Websites Work
+ </h2>
 
                 <p>
                     Test your understanding of browsers, servers,
@@ -872,8 +263,8 @@
 
                 <a href="how-websites-work-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -885,8 +276,8 @@
                 </div>
 
                 <h2>
-                    HTTP / HTTPS
-                </h2>
+ HTTP / HTTPS
+ </h2>
 
                 <p>
                     Identify HTTP methods, status codes, headers and
@@ -895,8 +286,8 @@
 
                 <a href="http-https-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -908,8 +299,8 @@
                 </div>
 
                 <h2>
-                    Cookies
-                </h2>
+ Cookies
+ </h2>
 
                 <p>
                     Explore cookie concepts, attributes and secure
@@ -918,8 +309,8 @@
 
                 <a href="cookies-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -931,8 +322,8 @@
                 </div>
 
                 <h2>
-                    Sessions
-                </h2>
+ Sessions
+ </h2>
 
                 <p>
                     Test your knowledge of sessions, session identifiers
@@ -941,8 +332,8 @@
 
                 <a href="sessions-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -954,8 +345,8 @@
                 </div>
 
                 <h2>
-                    Authentication &amp; Authorization
-                </h2>
+ Authentication &amp; Authorization
+ </h2>
 
                 <p>
                     Distinguish identity verification from permission
@@ -964,8 +355,8 @@
 
                 <a href="authentication-authorization-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -977,8 +368,8 @@
                 </div>
 
                 <h2>
-                    SQL Injection
-                </h2>
+ SQL Injection
+ </h2>
 
                 <p>
                     Recognize unsafe database input handling and
@@ -987,8 +378,8 @@
 
                 <a href="sql-injection-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -1000,8 +391,8 @@
                 </div>
 
                 <h2>
-                    XSS
-                </h2>
+ XSS
+ </h2>
 
                 <p>
                     Identify cross-site scripting risks and understand
@@ -1010,8 +401,8 @@
 
                 <a href="xss-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -1023,8 +414,8 @@
                 </div>
 
                 <h2>
-                    CSRF
-                </h2>
+ CSRF
+ </h2>
 
                 <p>
                     Understand cross-site request forgery and
@@ -1033,8 +424,8 @@
 
                 <a href="csrf-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -1046,8 +437,8 @@
                 </div>
 
                 <h2>
-                    IDOR
-                </h2>
+ IDOR
+ </h2>
 
                 <p>
                     Practice identifying authorization weaknesses
@@ -1056,8 +447,8 @@
 
                 <a href="idor-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -1069,8 +460,8 @@
                 </div>
 
                 <h2>
-                    File Upload Vulnerabilities
-                </h2>
+ File Upload Vulnerabilities
+ </h2>
 
                 <p>
                     Identify insecure file-upload behavior and
@@ -1079,8 +470,8 @@
 
                 <a href="file-upload-vulnerabilities-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -1092,8 +483,8 @@
                 </div>
 
                 <h2>
-                    Command Injection
-                </h2>
+ Command Injection
+ </h2>
 
                 <p>
                     Recognize unsafe operating-system command handling
@@ -1102,8 +493,8 @@
 
                 <a href="command-injection-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -1115,8 +506,8 @@
                 </div>
 
                 <h2>
-                    Path Traversal
-                </h2>
+ Path Traversal
+ </h2>
 
                 <p>
                     Identify unsafe file path processing and secure
@@ -1125,8 +516,8 @@
 
                 <a href="path-traversal-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -1138,8 +529,8 @@
                 </div>
 
                 <h2>
-                    Security Headers
-                </h2>
+ Security Headers
+ </h2>
 
                 <p>
                     Examine common security headers and understand
@@ -1148,8 +539,8 @@
 
                 <a href="security-headers-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -1161,8 +552,8 @@
                 </div>
 
                 <h2>
-                    OWASP Top 10
-                </h2>
+ OWASP Top 10
+ </h2>
 
                 <p>
                     Test your knowledge of major web application
@@ -1171,8 +562,8 @@
 
                 <a href="owasp-top-10-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -1184,8 +575,8 @@
                 </div>
 
                 <h2>
-                    Web Security Assessment
-                </h2>
+ Web Security Assessment
+ </h2>
 
                 <p>
                     Complete a final assessment covering the complete
@@ -1194,8 +585,8 @@
 
                 <a href="web-security-lab.html"
                    class="launch-button">
-                    LAUNCH LAB →
-                </a>
+ LAUNCH LAB →
+ </a>
 
             </article>
 
@@ -1208,8 +599,8 @@
         <section class="lab-summary">
 
             <h2>
-                Secure the Web. Understand the Risk. Defend the Application.
-            </h2>
+ Secure the Web. Understand the Risk. Defend the Application.
+ </h2>
 
             <p>
 

@@ -1,834 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Lab 02 - What is NAT? with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Lab 02 - What is NAT? | CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* =====================================================
-           MAIN
-        ===================================================== */
-
-        .network-lab-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 55px 15px 65px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(14, 165, 233, 0.13),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(34, 211, 238, 0.08),
-                    transparent 30%
-                ),
-                #02080d;
-        }
-
-        .network-lab-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-        /* =====================================================
-           HEADER
-        ===================================================== */
-
-        .network-lab-header {
-
-            text-align: center;
-
-            margin-bottom: 28px;
-        }
-
-        .network-lab-category {
-
-            display: inline-block;
-
-            margin-bottom: 12px;
-
-            color: #22d3ee;
-
-            font-size: 10px;
-            font-weight: 800;
-
-            letter-spacing: 2.5px;
-
-            text-transform: uppercase;
-        }
-
-        .network-lab-header h1 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 42px;
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-        .network-lab-header h1 span {
-
-            color: #38bdf8;
-        }
-
-        .network-lab-intro {
-
-            max-width: 720px;
-
-            margin: 14px auto 0;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-            line-height: 1.75;
-        }
-
-        /* =====================================================
-           LAB INFO
-        ===================================================== */
-
-        .network-lab-info {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 8px;
-
-            margin-bottom: 22px;
-        }
-
-        .network-info-card {
-
-            padding: 14px;
-
-            border: 1px solid
-                rgba(34, 211, 238, 0.15);
-
-            border-radius: 9px;
-
-            background:
-                rgba(34, 211, 238, 0.035);
-        }
-
-        .network-info-icon {
-
-            margin-bottom: 7px;
-
-            color: #22d3ee;
-
-            font-size: 17px;
-        }
-
-        .network-info-label {
-
-            margin-bottom: 3px;
-
-            color: #71808c;
-
-            font-size: 8px;
-
-            font-weight: 800;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-        }
-
-        .network-info-value {
-
-            color: #e2e8f0;
-
-            font-size: 10px;
-
-            font-weight: 700;
-        }
-
-        /* =====================================================
-           PROGRESS
-        ===================================================== */
-
-        .network-lab-progress {
-
-            margin-bottom: 25px;
-
-            padding: 14px 16px;
-
-            border: 1px solid
-                rgba(34, 211, 238, 0.16);
-
-            border-radius: 10px;
-
-            background:
-                rgba(34, 211, 238, 0.035);
-        }
-
-        .network-progress-top {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            margin-bottom: 9px;
-        }
-
-        .network-progress-title {
-
-            color: #f8fafc;
-
-            font-size: 12px;
-
-            font-weight: 700;
-        }
-
-        .network-progress-count {
-
-            color: #22d3ee;
-
-            font-size: 11px;
-
-            font-weight: 800;
-        }
-
-        .network-progress-track {
-
-            width: 100%;
-
-            height: 4px;
-
-            border-radius: 10px;
-
-            overflow: hidden;
-
-            background:
-                rgba(34, 211, 238, 0.10);
-        }
-
-        .network-progress-bar {
-
-            width: 16.66%;
-
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #22d3ee,
-                    #38bdf8
-                );
-        }
-
-        /* =====================================================
-           SECTION
-        ===================================================== */
-
-        .network-section {
-
-            margin-bottom: 18px;
-
-            padding: 20px;
-
-            border: 1px solid
-                rgba(34, 211, 238, 0.15);
-
-            border-radius: 10px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 22, 38, 0.98),
-                    rgba(3, 13, 20, 0.98)
-                );
-        }
-
-        .network-section-title {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 9px;
-
-            margin-bottom: 12px;
-
-            color: #f8fafc;
-
-            font-size: 15px;
-
-            font-weight: 800;
-        }
-
-        .network-section-icon {
-
-            color: #22d3ee;
-
-            font-size: 18px;
-        }
-
-        .network-section p {
-
-            margin: 0 0 12px;
-
-            color: #aebbc5;
-
-            font-size: 10px;
-
-            line-height: 1.75;
-        }
-
-        /* =====================================================
-           NETWORK DIAGRAM
-        ===================================================== */
-
-        .network-diagram {
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            gap: 10px;
-
-            margin: 20px 0;
-
-            flex-wrap: wrap;
-        }
-
-        .network-node {
-
-            min-width: 110px;
-
-            padding: 13px 10px;
-
-            border: 1px solid
-                rgba(34, 211, 238, 0.20);
-
-            border-radius: 8px;
-
-            text-align: center;
-
-            background:
-                rgba(34, 211, 238, 0.045);
-        }
-
-        .network-node-icon {
-
-            margin-bottom: 5px;
-
-            color: #22d3ee;
-
-            font-size: 20px;
-        }
-
-        .network-node-title {
-
-            color: #f8fafc;
-
-            font-size: 10px;
-
-            font-weight: 800;
-        }
-
-        .network-node-text {
-
-            margin-top: 3px;
-
-            color: #7f909d;
-
-            font-size: 8px;
-        }
-
-        .network-arrow {
-
-            color: #38bdf8;
-
-            font-size: 18px;
-
-            font-weight: 800;
-        }
-
-        /* =====================================================
-           TASK
-        ===================================================== */
-
-        .network-task {
-
-            margin-top: 12px;
-
-            padding: 14px;
-
-            border-left: 3px solid #22d3ee;
-
-            border-radius: 7px;
-
-            background:
-                rgba(34, 211, 238, 0.045);
-        }
-
-        .network-task-title {
-
-            margin-bottom: 7px;
-
-            color: #67e8f9;
-
-            font-size: 11px;
-
-            font-weight: 800;
-        }
-
-        .network-task p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 10px;
-
-            line-height: 1.7;
-        }
-
-        /* =====================================================
-           COMMAND BLOCK
-        ===================================================== */
-
-        .network-command {
-
-            position: relative;
-
-            margin: 12px 0;
-
-            padding: 15px;
-
-            border: 1px solid
-                rgba(34, 211, 238, 0.13);
-
-            border-radius: 8px;
-
-            background: #010508;
-
-            overflow-x: auto;
-        }
-
-        .network-command-label {
-
-            margin-bottom: 8px;
-
-            color: #22d3ee;
-
-            font-size: 8px;
-
-            font-weight: 800;
-
-            letter-spacing: 1.3px;
-
-            text-transform: uppercase;
-        }
-
-        .network-command code {
-
-            color: #dbeafe;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 10px;
-
-            line-height: 1.8;
-
-            white-space: pre;
-        }
-
-        .network-copy {
-
-            position: absolute;
-
-            top: 10px;
-            right: 10px;
-
-            padding: 5px 8px;
-
-            border: 1px solid
-                rgba(34, 211, 238, 0.18);
-
-            border-radius: 5px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(34, 211, 238, 0.05);
-
-            font-size: 8px;
-
-            font-weight: 700;
-
-            cursor: pointer;
-        }
-
-        .network-copy:hover {
-
-            border-color:
-                rgba(34, 211, 238, 0.55);
-
-            background:
-                rgba(34, 211, 238, 0.09);
-        }
-
-        /* =====================================================
-           OUTPUT
-        ===================================================== */
-
-        .network-output {
-
-            margin-top: 10px;
-
-            padding: 14px;
-
-            border: 1px solid
-                rgba(96, 165, 250, 0.15);
-
-            border-radius: 8px;
-
-            background: #010508;
-
-            overflow-x: auto;
-        }
-
-        .network-output-title {
-
-            margin-bottom: 7px;
-
-            color: #60a5fa;
-
-            font-size: 8px;
-
-            font-weight: 800;
-
-            letter-spacing: 1.2px;
-
-            text-transform: uppercase;
-        }
-
-        .network-output pre {
-
-            margin: 0;
-
-            color: #94a3b8;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 9px;
-
-            line-height: 1.7;
-
-            white-space: pre-wrap;
-        }
-
-        /* =====================================================
-           CHECKLIST
-        ===================================================== */
-
-        .network-checklist {
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 8px;
-
-            margin-top: 10px;
-        }
-
-        .network-check {
-
-            display: flex;
-
-            align-items: flex-start;
-
-            gap: 9px;
-
-            padding: 10px;
-
-            border: 1px solid
-                rgba(34, 211, 238, 0.10);
-
-            border-radius: 7px;
-
-            background:
-                rgba(34, 211, 238, 0.025);
-        }
-
-        .network-check input {
-
-            margin-top: 2px;
-
-            accent-color: #22d3ee;
-
-            cursor: pointer;
-        }
-
-        .network-check label {
-
-            color: #aebbc5;
-
-            font-size: 10px;
-
-            line-height: 1.5;
-
-            cursor: pointer;
-        }
-
-        /* =====================================================
-           KEY CONCEPTS
-        ===================================================== */
-
-        .network-concepts {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 8px;
-
-            margin-top: 12px;
-        }
-
-        .network-concept {
-
-            padding: 12px;
-
-            border: 1px solid
-                rgba(34, 211, 238, 0.12);
-
-            border-radius: 8px;
-
-            background:
-                rgba(34, 211, 238, 0.025);
-        }
-
-        .network-concept strong {
-
-            display: block;
-
-            margin-bottom: 5px;
-
-            color: #67e8f9;
-
-            font-size: 10px;
-        }
-
-        .network-concept span {
-
-            color: #8999a5;
-
-            font-size: 9px;
-
-            line-height: 1.55;
-        }
-
-        /* =====================================================
-           SAFETY
-        ===================================================== */
-
-        .network-safety {
-
-            margin-top: 18px;
-
-            padding: 17px;
-
-            border: 1px solid
-                rgba(96, 165, 250, 0.18);
-
-            border-radius: 9px;
-
-            background:
-                rgba(96, 165, 250, 0.035);
-        }
-
-        .network-safety h2 {
-
-            margin: 0 0 8px;
-
-            color: #f8fafc;
-
-            font-size: 13px;
-        }
-
-        .network-safety p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 10px;
-
-            line-height: 1.7;
-        }
-
-        /* =====================================================
-           NAVIGATION
-        ===================================================== */
-
-        .network-navigation {
-
-            display: flex;
-
-            gap: 8px;
-
-            margin-top: 18px;
-        }
-
-        .network-button {
-
-            flex: 1;
-
-            padding: 12px;
-
-            border: 1px solid
-                rgba(34, 211, 238, 0.16);
-
-            border-radius: 8px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(34, 211, 238, 0.035);
-
-            text-decoration: none;
-
-            text-align: center;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-            transition: 0.2s ease;
-        }
-
-        .network-button:hover {
-
-            border-color:
-                rgba(34, 211, 238, 0.55);
-
-            background:
-                rgba(34, 211, 238, 0.08);
-        }
-
-        /* =====================================================
-           MOBILE
-        ===================================================== */
-
-        @media (max-width: 700px) {
-
-            .network-lab-page {
-
-                padding: 45px 10px 55px;
-            }
-
-            .network-lab-header h1 {
-
-                font-size: 30px;
-            }
-
-            .network-lab-intro {
-
-                font-size: 11px;
-            }
-
-            .network-lab-info {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .network-concepts {
-
-                grid-template-columns: 1fr;
-            }
-
-            .network-diagram {
-
-                flex-direction: column;
-            }
-
-            .network-arrow {
-
-                transform: rotate(90deg);
-            }
-
-            .network-navigation {
-
-                flex-direction: column;
-            }
-
-            .network-button {
-
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 450px) {
-
-            .network-lab-info {
-
-                grid-template-columns: 1fr;
-            }
-
-            .network-section {
-
-                padding: 15px;
-            }
-
-            .network-lab-header h1 {
-
-                font-size: 27px;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -926,13 +117,11 @@
 
 <header class="network-lab-header">
 
-    <div class="network-lab-category">
-        🌐 NETWORKING PRACTICAL
-    </div>
+    <div class="network-lab-category">NETWORKING PRACTICAL</div>
 
     <h1>
-        Lab 10 — <span>What is NAT?</span>
-    </h1>
+ Lab 10 — <span>What is NAT?</span>
+ </h1>
 
     <p class="network-lab-intro">
 
@@ -1207,8 +396,8 @@
             class="network-copy"
             onclick="copyCommand('ipconfig')"
         >
-            Copy
-        </button>
+ Copy
+ </button>
 
         <code>ipconfig</code>
 
@@ -1288,8 +477,8 @@ Wireless LAN adapter Wi-Fi:
             class="network-copy"
             onclick="copyCommand('ipconfig')"
         >
-            Copy
-        </button>
+ Copy
+ </button>
 
         <code>ipconfig</code>
 
@@ -1362,8 +551,8 @@ Default Gateway . . . . . : 192.168.1.1
             class="network-copy"
             onclick="copyCommand('tracert example.com')"
         >
-            Copy
-        </button>
+ Copy
+ </button>
 
         <code>tracert example.com</code>
 
@@ -1861,8 +1050,8 @@ Public: 203.0.113.25:40002
 <section class="network-safety">
 
     <h2>
-        🧪 Lab Safety
-    </h2>
+ Lab Safety
+ </h2>
 
     <p>
 
@@ -1886,24 +1075,24 @@ Public: 203.0.113.25:40002
         href="lab10.html"
         class="network-button"
     >
-        Previous: Lab 
-    </a>
+ Previous: Lab 
+ </a>
 
 
     <a
         href="../theory/arp.html"
         class="network-button"
     >
-        ☰ ARP 
-    </a>
+ ARP 
+ </a>
 
 <!-- 
     <a
         href="lab03.html"
         class="network-button"
     >
-        Next Lab →
-    </a> -->
+ Next Lab →
+ </a> -->
 
 </div>
 

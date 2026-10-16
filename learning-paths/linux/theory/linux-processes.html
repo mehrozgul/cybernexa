@@ -1,1143 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Linux Processes - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Linux Processes - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-
-    <style>
-        /* =====================================================
-           GLOBAL
-        ====================================================== */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-
-        /* =====================================================
-           MAIN PAGE
-        ====================================================== */
-
-        .linux-learning-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 80px;
-
-            background:
-                radial-gradient(circle at top right,
-                    rgba(34, 211, 238, 0.08),
-                    transparent 32%),
-                radial-gradient(circle at bottom left,
-                    rgba(59, 130, 246, 0.07),
-                    transparent 30%),
-                #02080d;
-        }
-
-
-        .linux-learning-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-
-        /* =====================================================
-           HEADER
-        ====================================================== */
-
-        .linux-topic-header {
-
-            text-align: center;
-
-            margin-bottom: 35px;
-        }
-
-
-        .linux-topic-category {
-
-            display: inline-block;
-
-            margin-bottom: 14px;
-
-            color: #67e8f9;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-
-
-        .linux-topic-header h1 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 44px;
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-
-        .linux-topic-header h1 span {
-
-            color: #67e8f9;
-        }
-
-
-        .linux-topic-intro {
-
-            max-width: 760px;
-
-            margin: 18px auto 0;
-
-            color: #b6c2cc;
-
-            font-size: 15px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           LINUX SEARCH
-        ====================================================== */
-
-        .linux-search-box {
-
-            position: relative;
-
-            max-width: 650px;
-
-            margin: 0 auto 38px;
-        }
-
-
-        .linux-search-box input {
-
-            width: 100%;
-
-            padding: 15px 48px 15px 18px;
-
-            border: 1px solid rgba(103, 232, 249, 0.18);
-
-            border-radius: 10px;
-
-            outline: none;
-
-            color: #e2e8f0;
-
-            background: rgba(3, 13, 20, 0.95);
-
-            font-size: 13px;
-
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
-        }
-
-
-        .linux-search-box input::placeholder {
-
-            color: #71808c;
-        }
-
-
-        .linux-search-box input:focus {
-
-            border-color: rgba(103, 232, 249, 0.55);
-
-            box-shadow:
-                0 0 20px rgba(103, 232, 249, 0.06);
-        }
-
-
-        .linux-search-icon {
-
-            position: absolute;
-
-            right: 17px;
-            top: 50%;
-
-            transform: translateY(-50%);
-
-            color: #67e8f9;
-
-            font-size: 17px;
-
-            pointer-events: none;
-        }
-
-
-        /* =====================================================
-           MAIN CARD
-        ====================================================== */
-
-        .linux-card {
-
-            position: relative;
-
-            width: 100%;
-
-            margin-bottom: 22px;
-
-            padding: 30px;
-
-            border: 1px solid rgba(103, 232, 249, 0.16);
-
-            border-radius: 15px;
-
-            background:
-                linear-gradient(135deg,
-                    rgba(7, 25, 35, 0.98),
-                    rgba(3, 13, 20, 0.98));
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.28);
-
-            overflow: hidden;
-
-            transition:
-                border-color 0.25s ease,
-                box-shadow 0.25s ease,
-                transform 0.25s ease;
-        }
-
-
-        /* =====================================================
-           DESKTOP HOVER
-        ====================================================== */
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .linux-card:hover {
-
-                border-color:
-                    rgba(103, 232, 249, 0.42);
-
-                box-shadow:
-                    0 18px 45px rgba(0, 0, 0, 0.32),
-                    0 0 28px rgba(103, 232, 249, 0.08);
-
-                transform: translateY(-2px);
-            }
-        }
-
-
-        /* =====================================================
-           SWEEP EFFECT
-        ====================================================== */
-
-        .linux-card::after,
-        .linux-process-card::after,
-        .linux-command-card::after {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: -120%;
-
-            width: 55%;
-            height: 100%;
-
-            background:
-                linear-gradient(100deg,
-                    transparent,
-                    rgba(103, 232, 249, 0.06),
-                    rgba(255, 255, 255, 0.10),
-                    rgba(103, 232, 249, 0.06),
-                    transparent);
-
-            transform: skewX(-18deg);
-
-            pointer-events: none;
-
-            opacity: 0;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .linux-card:hover::after,
-            .linux-process-card:hover::after,
-            .linux-command-card:hover::after {
-
-                animation:
-                    linuxLightSweep 0.75s ease forwards;
-            }
-        }
-
-
-        .mobile-sweep::after {
-
-            animation:
-                linuxMobileSweep 0.75s ease forwards !important;
-        }
-
-
-        @keyframes linuxLightSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        @keyframes linuxMobileSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        /* =====================================================
-           CARD HEADING
-        ====================================================== */
-
-        .linux-card-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-
-            margin-bottom: 18px;
-        }
-
-
-        .linux-icon {
-
-            width: 42px;
-            height: 42px;
-
-            flex-shrink: 0;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.30);
-
-            border-radius: 10px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 18px;
-        }
-
-
-        .linux-card h2 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 21px;
-
-            font-weight: 750;
-        }
-
-
-        .linux-card p {
-
-            margin: 0 0 14px;
-
-            color: #b6c2cc;
-
-            font-size: 14px;
-
-            line-height: 1.85;
-        }
-
-
-        .linux-card p:last-child {
-
-            margin-bottom: 0;
-        }
-
-
-        /* =====================================================
-           DEFINITION
-        ====================================================== */
-
-        .linux-definition-box {
-
-            padding: 20px;
-
-            margin-top: 5px;
-
-            border-left:
-                3px solid #67e8f9;
-
-            border-radius:
-                0 10px 10px 0;
-
-            background:
-                rgba(103, 232, 249, 0.055);
-        }
-
-
-        .linux-definition-box strong {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #f8fafc;
-
-            font-size: 14px;
-        }
-
-
-        .linux-definition-box span {
-
-            color: #c3cdd5;
-
-            font-size: 14px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           PROCESS GRID
-        ====================================================== */
-
-        .linux-process-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 14px;
-
-            margin-top: 20px;
-        }
-
-
-        .linux-process-card {
-
-            position: relative;
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.14);
-
-            border-radius: 11px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-
-            overflow: hidden;
-
-            transition:
-                border-color 0.2s ease,
-                background 0.2s ease,
-                transform 0.2s ease;
-        }
-
-
-        .linux-process-card:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.35);
-
-            background:
-                rgba(103, 232, 249, 0.06);
-
-            transform:
-                translateY(-2px);
-        }
-
-
-        .linux-process-card h3 {
-
-            margin: 0 0 8px;
-
-            color: #f8fafc;
-
-            font-size: 16px;
-        }
-
-
-        .linux-process-card p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-        }
-
-
-        /* =====================================================
-           COMMAND BOX
-        ====================================================== */
-
-        .linux-command-box {
-
-            margin-top: 20px;
-
-            padding: 18px 20px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.15);
-
-            border-radius: 10px;
-
-            background: #01060a;
-
-            overflow-x: auto;
-        }
-
-
-        .linux-command-box code {
-
-            color: #7dd3fc;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            line-height: 1.9;
-        }
-
-
-        /* =====================================================
-           COMMAND CARDS
-        ====================================================== */
-
-        .linux-command-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 13px;
-
-            margin-top: 20px;
-        }
-
-
-        .linux-command-card {
-
-            position: relative;
-
-            padding: 18px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.13);
-
-            border-radius: 10px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-
-            overflow: hidden;
-        }
-
-
-        .linux-command-card code {
-
-            display: inline-block;
-
-            margin-bottom: 8px;
-
-            color: #67e8f9;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            font-weight: 700;
-        }
-
-
-        .linux-command-card p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-
-        /* =====================================================
-           FLOW
-        ====================================================== */
-
-        .linux-flow {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 22px;
-        }
-
-
-        .linux-flow-item {
-
-            padding: 12px 16px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.20);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-            text-align: center;
-        }
-
-
-        .linux-flow-arrow {
-
-            color: #67e8f9;
-
-            font-size: 18px;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           PROCESS STATES
-        ====================================================== */
-
-        .linux-key-concepts {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 20px;
-        }
-
-
-        .linux-key-item {
-
-            padding: 10px 14px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.16);
-
-            border-radius: 8px;
-
-            color: #d7e4eb;
-
-            background:
-                rgba(103, 232, 249, 0.04);
-
-            font-size: 12px;
-
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           PROCESS TREE
-        ====================================================== */
-
-        .linux-process-tree {
-
-            margin-top: 20px;
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.14);
-
-            border-radius: 10px;
-
-            background: #01060a;
-
-            color: #aebbc5;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            line-height: 1.9;
-
-            overflow-x: auto;
-        }
-
-
-        .linux-process-tree .highlight {
-
-            color: #67e8f9;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           SUMMARY
-        ====================================================== */
-
-        .linux-summary-list {
-
-            margin: 18px 0 0;
-
-            padding: 0;
-
-            list-style: none;
-        }
-
-
-        .linux-summary-list li {
-
-            position: relative;
-
-            padding:
-                9px 0 9px 23px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-
-            border-bottom:
-                1px solid rgba(103, 232, 249, 0.07);
-        }
-
-
-        .linux-summary-list li:last-child {
-
-            border-bottom: none;
-        }
-
-
-        .linux-summary-list li::before {
-
-            content: "✓";
-
-            position: absolute;
-
-            left: 0;
-            top: 9px;
-
-            color: #67e8f9;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-
-        .linux-topic-navigation {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-top: 35px;
-        }
-
-
-        .linux-topic-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            padding: 13px 18px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.25);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-
-        .linux-topic-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.65);
-
-            background:
-                rgba(103, 232, 249, 0.10);
-        }
-
-
-        .linux-topic-button span {
-
-            color: #67e8f9;
-
-            font-size: 17px;
-        }
-
-
-        /* =====================================================
-           TABLET
-        ====================================================== */
-
-        @media (max-width: 800px) {
-
-            .linux-learning-page {
-
-                padding:
-                    55px 15px 65px;
-            }
-
-
-            .linux-topic-header h1 {
-
-                font-size: 36px;
-            }
-
-
-            .linux-topic-intro {
-
-                font-size: 14px;
-            }
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 600px) {
-
-            .linux-learning-page {
-
-                padding:
-                    45px 12px 55px;
-            }
-
-
-            .linux-topic-header {
-
-                margin-bottom: 30px;
-            }
-
-
-            .linux-topic-header h1 {
-
-                font-size: 30px;
-
-                line-height: 1.25;
-            }
-
-
-            .linux-topic-intro {
-
-                margin-top: 14px;
-
-                font-size: 13px;
-
-                line-height: 1.75;
-            }
-
-
-            .linux-search-box {
-
-                margin-bottom: 30px;
-            }
-
-
-            .linux-card {
-
-                padding:
-                    21px 18px;
-
-                margin-bottom: 16px;
-
-                border-radius: 12px;
-            }
-
-
-            .linux-card-heading {
-
-                gap: 10px;
-
-                margin-bottom: 15px;
-            }
-
-
-            .linux-icon {
-
-                width: 37px;
-                height: 37px;
-
-                font-size: 16px;
-            }
-
-
-            .linux-card h2 {
-
-                font-size: 18px;
-            }
-
-
-            .linux-card p {
-
-                font-size: 13px;
-
-                line-height: 1.8;
-            }
-
-
-            .linux-definition-box {
-
-                padding: 16px;
-            }
-
-
-            .linux-definition-box span {
-
-                font-size: 13px;
-            }
-
-
-            .linux-process-grid,
-            .linux-command-grid {
-
-                grid-template-columns: 1fr;
-
-                gap: 10px;
-            }
-
-
-            .linux-flow {
-
-                flex-direction: column;
-
-                align-items: stretch;
-            }
-
-
-            .linux-flow-item {
-
-                width: 100%;
-            }
-
-
-            .linux-flow-arrow {
-
-                display: flex;
-
-                justify-content: center;
-
-                font-size: 0;
-            }
-
-
-            .linux-flow-arrow::after {
-
-                content: "↓";
-
-                color: #67e8f9;
-
-                font-size: 18px;
-            }
-
-
-            .linux-key-concepts {
-
-                gap: 7px;
-            }
-
-
-            .linux-key-item {
-
-                font-size: 11px;
-
-                padding: 9px 11px;
-            }
-
-
-            .linux-topic-navigation {
-
-                flex-direction: column;
-
-                align-items: stretch;
-
-                margin-top: 25px;
-            }
-
-
-            .linux-topic-button {
-
-                width: 100%;
-
-                justify-content: center;
-            }
-        }
-
-
-        /* =====================================================
-           SMALL MOBILE
-        ====================================================== */
-
-        @media (max-width: 380px) {
-
-            .linux-topic-header h1 {
-
-                font-size: 27px;
-            }
-
-
-            .linux-learning-page {
-
-                padding-left: 10px;
-
-                padding-right: 10px;
-            }
-
-
-            .linux-card {
-
-                padding:
-                    18px 15px;
-            }
-        }
-        #navbar-placeholder a[href*="linux"] svg,
-#navbar-placeholder a[href*="linux"] i {
-    width: 18px;
-    height: 18px;
-    font-size: 16px;
-}
-/* Page-specific fix: Linux navbar icon */
-#navbar-placeholder a[href*="linux"] svg,
-#navbar-placeholder a[href*="linux"] i,
-#navbar-placeholder a[href*="linux"] .nav-icon,
-#navbar-placeholder a[href*="linux"] .nav-icon-wrapper {
-    width: 18px !important;
-    height: 18px !important;
-    min-width: 18px !important;
-    min-height: 18px !important;
-    font-size: 16px !important;
-}
-
-/* Keep the Linux navigation item compact */
-#navbar-placeholder a[href*="linux"] {
-    gap: 8px;
-}
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 </head>
 <body>
 
@@ -1162,13 +44,11 @@
 
             <header class="linux-topic-header">
 
-                <div class="linux-topic-category">
-                    LINUX
-                </div>
+                <div class="linux-topic-category">LINUX</div>
 
                 <h1>
-                    Linux <span>Processes</span>
-                </h1>
+ Linux <span>Processes</span>
+ </h1>
 
                 <p class="linux-topic-intro">
 
@@ -1211,8 +91,8 @@
                     </div>
 
                     <h2>
-                        What is a Linux Process?
-                    </h2>
+ What is a Linux Process?
+ </h2>
 
                 </div>
 
@@ -1251,8 +131,8 @@
                     </div>
 
                     <h2>
-                        Process Basics
-                    </h2>
+ Process Basics
+ </h2>
 
                 </div>
 
@@ -1272,8 +152,8 @@
                     <div class="linux-process-card">
 
                         <h3>
-                            PID
-                        </h3>
+ PID
+ </h3>
 
                         <p>
 
@@ -1288,8 +168,8 @@
                     <div class="linux-process-card">
 
                         <h3>
-                            Parent Process
-                        </h3>
+ Parent Process
+ </h3>
 
                         <p>
 
@@ -1304,8 +184,8 @@
                     <div class="linux-process-card">
 
                         <h3>
-                            Child Process
-                        </h3>
+ Child Process
+ </h3>
 
                         <p>
 
@@ -1320,8 +200,8 @@
                     <div class="linux-process-card">
 
                         <h3>
-                            Process Owner
-                        </h3>
+ Process Owner
+ </h3>
 
                         <p>
 
@@ -1351,8 +231,8 @@
                     </div>
 
                     <h2>
-                        Process ID (PID)
-                    </h2>
+ Process ID (PID)
+ </h2>
 
                 </div>
 
@@ -1398,8 +278,8 @@
                     </div>
 
                     <h2>
-                        Viewing Running Processes
-                    </h2>
+ Viewing Running Processes
+ </h2>
 
                 </div>
 
@@ -1485,8 +365,8 @@
                     </div>
 
                     <h2>
-                        Process States
-                    </h2>
+ Process States
+ </h2>
 
                 </div>
 
@@ -1540,8 +420,8 @@
                     </div>
 
                     <h2>
-                        Basic Process Lifecycle
-                    </h2>
+ Basic Process Lifecycle
+ </h2>
 
                 </div>
 
@@ -1595,8 +475,8 @@
                     </div>
 
                     <h2>
-                        Parent and Child Processes
-                    </h2>
+ Parent and Child Processes
+ </h2>
 
                 </div>
 
@@ -1644,8 +524,8 @@
                     </div>
 
                     <h2>
-                        Foreground and Background Processes
-                    </h2>
+ Foreground and Background Processes
+ </h2>
 
                 </div>
 
@@ -1656,8 +536,8 @@
                     <div class="linux-process-card">
 
                         <h3>
-                            Foreground Process
-                        </h3>
+ Foreground Process
+ </h3>
 
                         <p>
 
@@ -1672,8 +552,8 @@
                     <div class="linux-process-card">
 
                         <h3>
-                            Background Process
-                        </h3>
+ Background Process
+ </h3>
 
                         <p>
 
@@ -1730,8 +610,8 @@
                     </div>
 
                     <h2>
-                        Terminating a Process
-                    </h2>
+ Terminating a Process
+ </h2>
 
                 </div>
 
@@ -1785,8 +665,8 @@
                     </div>
 
                     <h2>
-                        Important Process Commands
-                    </h2>
+ Important Process Commands
+ </h2>
 
                 </div>
 
@@ -1890,8 +770,8 @@
                     </div>
 
                     <h2>
-                        Why Processes Matter in Cybersecurity
-                    </h2>
+ Why Processes Matter in Cybersecurity
+ </h2>
 
                 </div>
 
@@ -1947,8 +827,8 @@
                     </div>
 
                     <h2>
-                        Quick Summary
-                    </h2>
+ Quick Summary
+ </h2>
 
                 </div>
 
@@ -2016,8 +896,8 @@
         data-dashboard-url="../learning-paths/linux/theory/linux-processes.html"
         data-status-id="lessonCompletionStatus">
 
-        Mark Lesson Complete
-    </button>
+ Mark Lesson Complete
+ </button>
 
     <p
         id="lessonCompletionStatus"
@@ -2034,19 +914,19 @@
 
                 <a href="linux-permissions.html" class="linux-topic-button previous">
 
-                    <span>
-                        ←
-                    </span>
+ <span>
+ ←
+ </span>
 
-                    <strong>
-                        Previous: File Permissions
-                    </strong>
+ <strong>
+ Previous: File Permissions
+ </strong>
 
-                </a>
+ </a>
                 
                 <a href="../lab/lab06.html" class="linux-topic-button practical-lab">
-                    <span>🧪</span>
- <strong>Perform Lab</strong>                </a>
+ <span></span>
+ <strong>Perform Lab</strong> </a>
             </div>
         </div>
     </main>

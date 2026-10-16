@@ -1,972 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07101e">
 
 <title>Incident Response Labs | CyberNexa</title>
 
 <meta name="description"
       content="Practice Incident Response through CyberNexa practical cybersecurity labs including detection, triage, containment, eradication, recovery, IOC and log investigation.">
 
-<link rel="stylesheet" href="../../../css/base.css">
-<link rel="stylesheet" href="../../../css/navbar.css">
-<link rel="stylesheet" href="../../../css/footer.css">
-
-<style>
-
-    /* =========================================================
-       CYBERNEXA INCIDENT RESPONSE LAB
-       MAIN PRACTICAL LAB PAGE
-       ========================================================= */
-
-    :root {
-
-        --ir-bg: #080d14;
-
-        --ir-panel: #0d141d;
-
-        --ir-panel-2: #111b26;
-
-        --ir-red: #ff4d5a;
-
-        --ir-orange: #ff9f43;
-
-        --ir-yellow: #ffd166;
-
-        --ir-green: #43d19e;
-
-        --ir-blue: #42a5ff;
-
-        --ir-text: #edf5fb;
-
-        --ir-muted: #91a4b5;
-
-        --ir-border: #20303e;
-    }
-
-
-    * {
-        box-sizing: border-box;
-    }
-
-
-    html {
-        overflow-x: hidden;
-    }
-
-
-    body {
-
-        margin: 0;
-
-        background:
-            radial-gradient(
-                circle at 15% 15%,
-                rgba(255, 77, 90, 0.09),
-                transparent 30%
-            ),
-            radial-gradient(
-                circle at 85% 25%,
-                rgba(67, 209, 158, 0.06),
-                transparent 28%
-            ),
-            var(--ir-bg);
-
-        color: var(--ir-text);
-
-        font-family: Arial, Helvetica, sans-serif;
-
-        overflow-x: hidden;
-    }
-
-
-    a {
-        text-decoration: none;
-    }
-
-
-    .ir-container {
-
-        width: min(1150px, 92%);
-
-        margin: auto;
-    }
-
-
-    /* =========================================================
-       RESPONSIVE NAVBAR
-       ========================================================= */
-
-    .navbar {
-
-        width: 100%;
-
-        overflow: hidden;
-    }
-
-
-    .nav-container {
-
-        width: min(1150px, 92%);
-
-        margin: auto;
-
-        display: flex;
-
-        align-items: center;
-
-        min-height: 70px;
-    }
-
-
-    .brand {
-
-        max-width: 100%;
-
-        display: flex;
-
-        align-items: center;
-
-        min-width: 0;
-    }
-
-
-    .brand-logo {
-        flex-shrink: 0;
-    }
-
-
-    .brand-text {
-        min-width: 0;
-    }
-
-
-    .brand-name,
-    .brand-tagline {
-
-        overflow: hidden;
-
-        text-overflow: ellipsis;
-
-        white-space: nowrap;
-    }
-
-
-    /* =========================================================
-       HERO
-       ========================================================= */
-
-    .ir-hero {
-
-        position: relative;
-
-        overflow: hidden;
-
-        padding: 85px 0 70px;
-
-        border-bottom: 1px solid var(--ir-border);
-    }
-
-
-    .ir-hero::after {
-
-        content: "";
-
-        position: absolute;
-
-        width: 420px;
-
-        height: 420px;
-
-        right: -180px;
-
-        top: -180px;
-
-        border: 1px solid rgba(67, 209, 158, 0.10);
-
-        border-radius: 50%;
-
-        box-shadow:
-            0 0 0 40px rgba(67, 209, 158, 0.02),
-            0 0 0 80px rgba(67, 209, 158, 0.012);
-    }
-
-
-    .ir-breadcrumb {
-
-        color: var(--ir-green);
-
-        font-size: 13px;
-
-        margin-bottom: 22px;
-
-        letter-spacing: 0.4px;
-    }
-
-
-    .ir-hero-grid {
-
-        display: grid;
-
-        grid-template-columns: 1.35fr 0.65fr;
-
-        gap: 45px;
-
-        align-items: center;
-    }
-
-
-    .ir-alert {
-
-        display: inline-flex;
-
-        align-items: center;
-
-        gap: 9px;
-
-        padding: 8px 13px;
-
-        margin-bottom: 18px;
-
-        border: 1px solid rgba(67, 209, 158, 0.30);
-
-        border-radius: 4px;
-
-        background: rgba(67, 209, 158, 0.05);
-
-        color: var(--ir-green);
-
-        font-size: 12px;
-
-        font-weight: bold;
-
-        letter-spacing: 1px;
-
-        text-transform: uppercase;
-    }
-
-
-    .ir-pulse {
-
-        width: 7px;
-
-        height: 7px;
-
-        border-radius: 50%;
-
-        background: var(--ir-green);
-
-        box-shadow: 0 0 12px rgba(67, 209, 158, 0.8);
-    }
-
-
-    .ir-hero h1 {
-
-        margin: 0 0 18px;
-
-        font-size: clamp(38px, 5vw, 62px);
-
-        line-height: 1.05;
-
-        letter-spacing: -1px;
-    }
-
-
-    .ir-hero h1 span {
-
-        color: var(--ir-green);
-    }
-
-
-    .ir-hero-description {
-
-        max-width: 720px;
-
-        color: var(--ir-muted);
-
-        font-size: 17px;
-
-        line-height: 1.8;
-    }
-
-
-    /* =========================================================
-       STATUS PANEL
-       ========================================================= */
-
-    .ir-status-panel {
-
-        padding: 24px;
-
-        border: 1px solid var(--ir-border);
-
-        border-top: 2px solid var(--ir-green);
-
-        border-radius: 7px;
-
-        background:
-            linear-gradient(
-                145deg,
-                rgba(17, 27, 38, 0.98),
-                rgba(9, 14, 21, 0.98)
-            );
-
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
-    }
-
-
-    .ir-status-header {
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        margin-bottom: 18px;
-    }
-
-
-    .ir-status-header strong {
-
-        font-size: 13px;
-
-        letter-spacing: 1px;
-    }
-
-
-    .ir-live {
-
-        color: var(--ir-green);
-
-        font-size: 11px;
-    }
-
-
-    .ir-divider {
-
-        height: 1px;
-
-        background: var(--ir-border);
-
-        margin: 15px 0;
-    }
-
-
-    .ir-status-row {
-
-        display: flex;
-
-        justify-content: space-between;
-
-        padding: 8px 0;
-
-        color: var(--ir-muted);
-
-        font-size: 13px;
-    }
-
-
-    .ir-status-row strong {
-
-        color: var(--ir-text);
-
-        font-weight: normal;
-    }
-
-
-    /* =========================================================
-       CONTENT
-       ========================================================= */
-
-    .ir-section {
-
-        padding: 70px 0;
-    }
-
-
-    .ir-section-title {
-
-        margin-bottom: 28px;
-    }
-
-
-    .ir-section-title h2 {
-
-        margin: 0 0 10px;
-
-        font-size: 32px;
-    }
-
-
-    .ir-section-title p {
-
-        color: var(--ir-muted);
-
-        line-height: 1.7;
-    }
-
-
-    /* =========================================================
-       LAB INTRO
-       ========================================================= */
-
-    .ir-intro {
-
-        padding: 30px;
-
-        border: 1px solid var(--ir-border);
-
-        border-left: 3px solid var(--ir-green);
-
-        border-radius: 7px;
-
-        background: var(--ir-panel);
-    }
-
-
-    .ir-intro p {
-
-        margin: 0 0 16px;
-
-        color: var(--ir-muted);
-
-        line-height: 1.85;
-
-        font-size: 15px;
-    }
-
-
-    .ir-intro p:last-child {
-        margin-bottom: 0;
-    }
-
-
-    /* =========================================================
-       LAB GRID
-       ========================================================= */
-
-    .ir-topic-grid {
-
-        display: grid;
-
-        grid-template-columns: repeat(3, 1fr);
-
-        gap: 18px;
-    }
-
-
-    .ir-topic-card {
-
-        position: relative;
-
-        display: block;
-
-        padding: 25px;
-
-        min-height: 185px;
-
-        border: 1px solid var(--ir-border);
-
-        border-left: 3px solid var(--ir-green);
-
-        border-radius: 7px;
-
-        background:
-            linear-gradient(
-                145deg,
-                var(--ir-panel-2),
-                var(--ir-panel)
-            );
-
-        transition:
-            transform 0.2s ease,
-            border-color 0.2s ease,
-            box-shadow 0.2s ease;
-    }
-
-
-    .ir-topic-card:hover {
-
-        transform: translateY(-4px);
-
-        border-color: rgba(67, 209, 158, 0.45);
-
-        box-shadow:
-            0 15px 35px rgba(0, 0, 0, 0.25);
-    }
-
-
-    .ir-topic-number {
-
-        display: block;
-
-        margin-bottom: 16px;
-
-        color: var(--ir-green);
-
-        font-size: 11px;
-
-        font-weight: bold;
-
-        letter-spacing: 1px;
-    }
-
-
-    .ir-topic-card h3 {
-
-        margin: 0 0 11px;
-
-        color: var(--ir-text);
-
-        font-size: 18px;
-    }
-
-
-    .ir-topic-card p {
-
-        margin: 0;
-
-        color: var(--ir-muted);
-
-        font-size: 14px;
-
-        line-height: 1.65;
-    }
-
-
-    .ir-topic-arrow {
-
-        position: absolute;
-
-        right: 20px;
-
-        bottom: 18px;
-
-        color: var(--ir-green);
-
-        font-size: 18px;
-    }
-
-
-    /* =========================================================
-       THEORY BUTTON
-       ========================================================= */
-
-    .ir-theory-box {
-
-        padding: 30px;
-
-        border: 1px solid rgba(66, 165, 255, 0.25);
-
-        border-top: 2px solid var(--ir-blue);
-
-        border-radius: 7px;
-
-        background: rgba(66, 165, 255, 0.035);
-    }
-
-
-    .ir-theory-box h2 {
-
-        margin-top: 0;
-
-        color: var(--ir-blue);
-    }
-
-
-    .ir-theory-box p {
-
-        color: var(--ir-muted);
-
-        line-height: 1.8;
-    }
-
-
-    .ir-theory-button {
-
-        display: inline-flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        margin-top: 12px;
-
-        padding: 12px 18px;
-
-        border: 1px solid rgba(66, 165, 255, 0.35);
-
-        border-radius: 5px;
-
-        color: var(--ir-blue);
-
-        font-size: 13px;
-
-        transition: 0.2s ease;
-    }
-
-
-    .ir-theory-button:hover {
-
-        border-color: var(--ir-blue);
-
-        background: rgba(66, 165, 255, 0.05);
-    }
-
-
-    /* =========================================================
-       SUMMARY
-       ========================================================= */
-
-    .ir-summary {
-
-        padding: 30px;
-
-        border: 1px solid rgba(67, 209, 158, 0.25);
-
-        border-radius: 7px;
-
-        background: rgba(67, 209, 158, 0.035);
-    }
-
-
-    .ir-summary h2 {
-
-        margin-top: 0;
-
-        color: var(--ir-green);
-    }
-
-
-    .ir-summary p {
-
-        margin: 0;
-
-        color: var(--ir-muted);
-
-        line-height: 1.8;
-    }
-
-
-    /* =========================================================
-       RESPONSIVE
-       ========================================================= */
-
-    @media (max-width: 950px) {
-
-        .nav-container {
-            width: 92%;
-        }
-
-        .ir-hero-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .ir-topic-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-
-    @media (max-width: 768px) {
-
-        .nav-container {
-
-            width: 94%;
-
-            min-height: 64px;
-
-            padding: 8px 0;
-        }
-
-
-        .brand {
-            gap: 8px;
-        }
-
-
-        .brand-logo svg {
-
-            width: 38px;
-
-            height: 46px;
-        }
-
-
-        .brand-name {
-            font-size: 19px;
-        }
-
-
-        .brand-tagline {
-            font-size: 9px;
-        }
-
-
-        .ir-hero {
-
-            padding: 70px 0 55px;
-        }
-
-
-        .ir-section {
-
-            padding: 60px 0;
-        }
-
-
-        .ir-topic-grid {
-
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-
-        .footer {
-
-            width: 100%;
-
-            overflow: hidden;
-        }
-
-
-        .footer-container {
-
-            width: 92%;
-
-            margin: auto;
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 25px;
-        }
-
-
-        .footer-links {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px 18px;
-        }
-    }
-
-
-    @media (max-width: 600px) {
-
-        .nav-container {
-
-            width: 92%;
-
-            min-height: 62px;
-
-            padding: 7px 0;
-        }
-
-
-        .brand {
-
-            gap: 7px;
-        }
-
-
-        .brand-logo svg {
-
-            width: 34px;
-
-            height: 42px;
-        }
-
-
-        .brand-name {
-            font-size: 17px;
-        }
-
-
-        .brand-tagline {
-            font-size: 8px;
-        }
-
-
-        .ir-hero {
-
-            padding: 55px 0 45px;
-        }
-
-
-        .ir-breadcrumb {
-
-            font-size: 11px;
-
-            line-height: 1.6;
-        }
-
-
-        .ir-alert {
-
-            font-size: 10px;
-        }
-
-
-        .ir-hero h1 {
-
-            font-size: clamp(34px, 10vw, 48px);
-        }
-
-
-        .ir-hero-description {
-
-            font-size: 15px;
-        }
-
-
-        .ir-status-panel {
-
-            padding: 20px;
-        }
-
-
-        .ir-section {
-
-            padding: 50px 0;
-        }
-
-
-        .ir-section-title h2 {
-
-            font-size: 26px;
-        }
-
-
-        .ir-section-title p {
-
-            font-size: 14px;
-        }
-
-
-        .ir-intro {
-
-            padding: 22px;
-        }
-
-
-        .ir-intro p {
-
-            font-size: 14px;
-        }
-
-
-        .ir-topic-grid {
-
-            grid-template-columns: 1fr;
-        }
-
-
-        .ir-topic-card {
-
-            min-height: 165px;
-        }
-
-
-        .ir-theory-box {
-
-            padding: 22px;
-        }
-
-
-        .ir-summary {
-
-            padding: 22px;
-        }
-
-
-        .footer-container {
-
-            width: 92%;
-        }
-
-
-        .footer-links {
-
-            width: 100%;
-
-            display: grid;
-
-            grid-template-columns: 1fr 1fr;
-
-            gap: 12px 18px;
-        }
-
-
-        .copyright {
-
-            width: 92%;
-
-            margin: auto;
-
-            padding: 18px 0;
-
-            font-size: 11px;
-
-            line-height: 1.6;
-
-            text-align: center;
-        }
-    }
-
-
-    @media (max-width: 380px) {
-
-        .nav-container {
-
-            width: 94%;
-        }
-
-
-        .brand-logo svg {
-
-            width: 30px;
-
-            height: 38px;
-        }
-
-
-        .brand-name {
-
-            font-size: 15px;
-        }
-
-
-        .brand-tagline {
-
-            font-size: 7px;
-        }
-
-
-        .ir-container {
-
-            width: 94%;
-        }
-
-
-        .ir-hero h1 {
-
-            font-size: 32px;
-        }
-
-
-        .footer-links {
-
-            grid-template-columns: 1fr;
-        }
-    }
-
-</style>
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 </head>
 
 
@@ -1078,8 +131,8 @@
 
 
                 <h1>
-                    Incident Response <span>Labs</span>
-                </h1>
+ Incident Response <span>Labs</span>
+ </h1>
 
 
                 <p class="ir-hero-description">
@@ -1228,8 +281,8 @@
                 </span>
 
                 <h3>
-                    What is Incident Response?
-                </h3>
+ What is Incident Response?
+ </h3>
 
                 <p>
                     Practice the basic Incident Response process
@@ -1254,8 +307,8 @@
                 </span>
 
                 <h3>
-                    Incident Detection
-                </h3>
+ Incident Detection
+ </h3>
 
                 <p>
                     Analyze security events and identify activity
@@ -1280,8 +333,8 @@
                 </span>
 
                 <h3>
-                    Triage
-                </h3>
+ Triage
+ </h3>
 
                 <p>
                     Evaluate a security alert and determine its
@@ -1306,8 +359,8 @@
                 </span>
 
                 <h3>
-                    Containment
-                </h3>
+ Containment
+ </h3>
 
                 <p>
                     Practice selecting appropriate actions to
@@ -1332,8 +385,8 @@
                 </span>
 
                 <h3>
-                    Eradication
-                </h3>
+ Eradication
+ </h3>
 
                 <p>
                     Identify and remove malicious components
@@ -1358,8 +411,8 @@
                 </span>
 
                 <h3>
-                    Recovery
-                </h3>
+ Recovery
+ </h3>
 
                 <p>
                     Practice restoring affected systems and
@@ -1384,8 +437,8 @@
                 </span>
 
                 <h3>
-                    Incident Documentation
-                </h3>
+ Incident Documentation
+ </h3>
 
                 <p>
                     Record incident information, actions,
@@ -1410,8 +463,8 @@
                 </span>
 
                 <h3>
-                    IOC
-                </h3>
+ IOC
+ </h3>
 
                 <p>
                     Identify Indicators of Compromise from
@@ -1436,8 +489,8 @@
                 </span>
 
                 <h3>
-                    Log Investigation
-                </h3>
+ Log Investigation
+ </h3>
 
                 <p>
                     Analyze simulated logs to identify suspicious
@@ -1462,8 +515,8 @@
                 </span>
 
                 <h3>
-                    Incident Response Lifecycle
-                </h3>
+ Incident Response Lifecycle
+ </h3>
 
                 <p>
                     Practice the complete Incident Response
@@ -1496,8 +549,8 @@
         <div class="ir-theory-box">
 
             <h2>
-                Study the Theory First
-            </h2>
+ Study the Theory First
+ </h2>
 
             <p>
                 Before starting the practical labs, study the
@@ -1509,9 +562,9 @@
             <a href="../theory/incident-response.html"
                class="ir-theory-button">
 
-                Open Incident Response Theory →
+ Open Incident Response Theory →
 
-            </a>
+ </a>
 
         </div>
 
@@ -1532,8 +585,8 @@
         <div class="ir-summary">
 
             <h2>
-                Lab Summary
-            </h2>
+ Lab Summary
+ </h2>
 
             <p>
                 The Incident Response practical labs provide

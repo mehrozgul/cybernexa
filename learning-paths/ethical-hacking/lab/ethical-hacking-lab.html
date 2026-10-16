@@ -1,716 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Ethical Hacking Labs - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Ethical Hacking Labs - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* =====================================================
-           PAGE
-        ====================================================== */
-
-        .lab-page {
-
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 90px;
-
-            background:
-                radial-gradient(
-                    circle at 15% 10%,
-                    rgba(0, 255, 170, 0.055),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 90% 15%,
-                    rgba(0, 191, 255, 0.075),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    180deg,
-                    #01050b 0%,
-                    #020914 48%,
-                    #01050b 100%
-                );
-        }
-
-        .lab-container {
-
-            width: 100%;
-
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-        /* =====================================================
-           HERO
-        ====================================================== */
-
-        .lab-hero {
-
-            position: relative;
-
-            padding: 45px 35px;
-
-            margin-bottom: 25px;
-
-            border:
-                1px solid rgba(0, 255, 170, 0.15);
-
-            border-radius: 16px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(3, 23, 30, 0.98),
-                    rgba(2, 12, 23, 0.98)
-                );
-
-            overflow: hidden;
-
-            box-shadow:
-                0 20px 50px rgba(0, 0, 0, 0.28);
-        }
-
-        .lab-hero::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #00ffb0,
-                    #00bfff,
-                    transparent
-                );
-        }
-
-        .lab-hero-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                minmax(0, 1.5fr)
-                minmax(260px, 0.75fr);
-
-            gap: 35px;
-
-            align-items: center;
-        }
-
-        .lab-kicker {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            margin-bottom: 15px;
-
-            color: #00ffb0;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            letter-spacing: 2.5px;
-
-            text-transform: uppercase;
-        }
-
-        .lab-kicker::before {
-
-            content: "";
-
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-
-            background: #00ffb0;
-
-            box-shadow:
-                0 0 12px rgba(0, 255, 176, 0.65);
-        }
-
-        .lab-hero h1 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 46px;
-
-            line-height: 1.12;
-
-            font-weight: 850;
-
-            letter-spacing: -1px;
-        }
-
-        .lab-hero h1 span {
-
-            color: #00ffb0;
-        }
-
-        .lab-description {
-
-            max-width: 700px;
-
-            margin: 17px 0 0;
-
-            color: #8fa5bb;
-
-            font-size: 14px;
-
-            line-height: 1.9;
-        }
-
-        /* =====================================================
-           TERMINAL
-        ====================================================== */
-
-        .terminal-panel {
-
-            padding: 18px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.15);
-
-            border-radius: 11px;
-
-            background:
-                rgba(0, 0, 0, 0.34);
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-        }
-
-        .terminal-top {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 6px;
-
-            padding-bottom: 13px;
-
-            margin-bottom: 13px;
-
-            border-bottom:
-                1px solid rgba(0, 191, 255, 0.09);
-        }
-
-        .terminal-dot {
-
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-
-            background: #405263;
-        }
-
-        .terminal-title {
-
-            margin-left: auto;
-
-            color: #52687c;
-
-            font-size: 9px;
-
-            letter-spacing: 1px;
-        }
-
-        .terminal-line {
-
-            margin-bottom: 9px;
-
-            color: #60788d;
-
-            font-size: 11px;
-
-            line-height: 1.5;
-        }
-
-        .green {
-            color: #00ffb0;
-        }
-
-        .blue {
-            color: #00bfff;
-        }
-
-        /* =====================================================
-           META
-        ====================================================== */
-
-        .lab-meta {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-
-            gap: 10px;
-
-            margin-bottom: 25px;
-        }
-
-        .meta-item {
-
-            padding: 15px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.10);
-
-            border-radius: 10px;
-
-            background:
-                rgba(0, 191, 255, 0.025);
-        }
-
-        .meta-label {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #536a7f;
-
-            font-size: 9px;
-
-            letter-spacing: 1.5px;
-
-            text-transform: uppercase;
-        }
-
-        .meta-value {
-
-            color: #dce9f4;
-
-            font-size: 11px;
-
-            font-weight: 700;
-        }
-
-        /* =====================================================
-           LAB CARD
-        ====================================================== */
-
-        .lab-card {
-
-            margin-bottom: 18px;
-
-            padding: 27px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.11);
-
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(5, 20, 34, 0.97),
-                    rgba(2, 11, 21, 0.97)
-                );
-
-            box-shadow:
-                0 12px 32px rgba(0, 0, 0, 0.18);
-        }
-
-        .card-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            margin-bottom: 15px;
-        }
-
-        .card-number {
-
-            width: 29px;
-            height: 29px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            flex-shrink: 0;
-
-            border:
-                1px solid rgba(0, 255, 176, 0.22);
-
-            border-radius: 7px;
-
-            color: #00ffb0;
-
-            background:
-                rgba(0, 255, 176, 0.045);
-
-            font-family:
-                Consolas,
-                monospace;
-
-            font-size: 10px;
-
-            font-weight: 800;
-        }
-
-        .card-heading h2 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 20px;
-
-            font-weight: 800;
-        }
-
-        .lab-card > p {
-
-            margin: 0;
-
-            color: #8fa5bb;
-
-            font-size: 13px;
-
-            line-height: 1.9;
-        }
-
-        /* =====================================================
-           LAB GRID
-        ====================================================== */
-
-        .lab-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
-            gap: 12px;
-
-            margin-top: 20px;
-        }
-
-        .lab-topic {
-
-            position: relative;
-
-            display: block;
-
-            min-height: 155px;
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.10);
-
-            border-radius: 11px;
-
-            background:
-                rgba(0, 191, 255, 0.025);
-
-            text-decoration: none;
-
-            overflow: hidden;
-
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease,
-                background 0.2s ease;
-        }
-
-        .lab-topic::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 0;
-
-            width: 3px;
-            height: 100%;
-
-            background: #00ffb0;
-
-            opacity: 0.65;
-        }
-
-        .lab-topic:hover {
-
-            transform: translateY(-3px);
-
-            border-color:
-                rgba(0, 255, 176, 0.30);
-
-            background:
-                rgba(0, 255, 176, 0.035);
-        }
-
-        .lab-number {
-
-            color: #00ffb0;
-
-            font-family:
-                Consolas,
-                monospace;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            letter-spacing: 1.5px;
-        }
-
-        .lab-topic h3 {
-
-            margin: 11px 0 7px;
-
-            color: #ffffff;
-
-            font-size: 15px;
-
-            font-weight: 800;
-        }
-
-        .lab-topic p {
-
-            margin: 0;
-
-            color: #71879b;
-
-            font-size: 11px;
-
-            line-height: 1.7;
-        }
-
-        .launch {
-
-            position: absolute;
-
-            right: 18px;
-            bottom: 16px;
-
-            color: #00bfff;
-
-            font-size: 11px;
-
-            font-weight: 800;
-
-            transition:
-                transform 0.2s ease;
-        }
-
-        .lab-topic:hover .launch {
-
-            transform: translateX(4px);
-        }
-
-        /* =====================================================
-           AUTHORIZATION
-        ====================================================== */
-
-        .authorization-box {
-
-            margin-top: 20px;
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(255, 177, 0, 0.17);
-
-            border-radius: 10px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255, 177, 0, 0.045),
-                    rgba(255, 177, 0, 0.012)
-                );
-        }
-
-        .authorization-title {
-
-            margin-bottom: 8px;
-
-            color: #ffc44d;
-
-            font-size: 13px;
-
-            font-weight: 800;
-        }
-
-        .authorization-box p {
-
-            margin: 0;
-
-            color: #899bad;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-        }
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-
-        .topic-navigation {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 10px;
-
-            margin-top: 28px;
-        }
-
-        .topic-navigation a {
-
-            padding: 14px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.09);
-
-            border-radius: 9px;
-
-            color: #71879b;
-
-            background:
-                rgba(0, 191, 255, 0.02);
-
-            text-decoration: none;
-
-            text-align: center;
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            transition:
-                color 0.2s ease,
-                border-color 0.2s ease,
-                background 0.2s ease;
-        }
-
-        .topic-navigation a:hover {
-
-            color: #ccefe5;
-
-            border-color:
-                rgba(0, 255, 176, 0.25);
-
-            background:
-                rgba(0, 255, 176, 0.035);
-        }
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 800px) {
-
-            .lab-hero-grid {
-
-                grid-template-columns: 1fr;
-            }
-
-            .lab-meta {
-
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .lab-grid {
-
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-        @media (max-width: 600px) {
-
-            .lab-page {
-
-                padding: 45px 12px 60px;
-            }
-
-            .lab-hero {
-
-                padding: 27px 20px;
-            }
-
-            .lab-hero h1 {
-
-                font-size: 31px;
-            }
-
-            .lab-description {
-
-                font-size: 12px;
-            }
-
-            .lab-card {
-
-                padding: 20px;
-            }
-
-            .topic-navigation {
-
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -807,9 +116,9 @@
                     </div>
 
                     <h1>
-                        <span>Ethical Hacking</span>
-                        Labs
-                    </h1>
+ <span>Ethical Hacking</span>
+ Labs
+ </h1>
 
                     <p class="lab-description">
                         Practice ethical-hacking concepts through controlled,
@@ -878,11 +187,8 @@
 
         <div class="lab-meta">
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Module
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Module</span>
 
                 <span class="meta-value">
                     Ethical Hacking
@@ -891,11 +197,8 @@
             </div>
 
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Labs
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Labs</span>
 
                 <span class="meta-value">
                     13
@@ -904,11 +207,8 @@
             </div>
 
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Level
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Level</span>
 
                 <span class="meta-value">
                     Beginner
@@ -917,11 +217,8 @@
             </div>
 
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Environment
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Environment</span>
 
                 <span class="meta-value green">
                     Authorized
@@ -943,8 +240,8 @@
                 </div>
 
                 <h2>
-                    Practical Ethical Hacking Labs
-                </h2>
+ Practical Ethical Hacking Labs
+ </h2>
 
             </div>
 
@@ -971,8 +268,8 @@
                     </div>
 
                     <h3>
-                        Ethical Hacking Introduction
-                    </h3>
+ Ethical Hacking Introduction
+ </h3>
 
                     <p>
                         Test your understanding of ethical hacking,
@@ -998,8 +295,8 @@
                     </div>
 
                     <h3>
-                        Reconnaissance
-                    </h3>
+ Reconnaissance
+ </h3>
 
                     <p>
                         Practice identifying the purpose, scope and
@@ -1025,8 +322,8 @@
                     </div>
 
                     <h3>
-                        Information Gathering
-                    </h3>
+ Information Gathering
+ </h3>
 
                     <p>
                         Review authorized information-gathering concepts
@@ -1052,8 +349,8 @@
                     </div>
 
                     <h3>
-                        Scanning
-                    </h3>
+ Scanning
+ </h3>
 
                     <p>
                         Test your understanding of scanning and service
@@ -1079,8 +376,8 @@
                     </div>
 
                     <h3>
-                        Enumeration
-                    </h3>
+ Enumeration
+ </h3>
 
                     <p>
                         Practice identifying detailed information exposed
@@ -1106,8 +403,8 @@
                     </div>
 
                     <h3>
-                        Vulnerability Assessment
-                    </h3>
+ Vulnerability Assessment
+ </h3>
 
                     <p>
                         Evaluate vulnerability identification,
@@ -1133,8 +430,8 @@
                     </div>
 
                     <h3>
-                        Exploitation Concepts
-                    </h3>
+ Exploitation Concepts
+ </h3>
 
                     <p>
                         Test your understanding of controlled exploitation
@@ -1160,8 +457,8 @@
                     </div>
 
                     <h3>
-                        Password Attacks
-                    </h3>
+ Password Attacks
+ </h3>
 
                     <p>
                         Review password attack concepts and defensive
@@ -1187,8 +484,8 @@
                     </div>
 
                     <h3>
-                        Network Attacks
-                    </h3>
+ Network Attacks
+ </h3>
 
                     <p>
                         Test your understanding of network attack concepts
@@ -1214,8 +511,8 @@
                     </div>
 
                     <h3>
-                        Web Attacks
-                    </h3>
+ Web Attacks
+ </h3>
 
                     <p>
                         Practice recognizing common web application attack
@@ -1241,8 +538,8 @@
                     </div>
 
                     <h3>
-                        Post-Exploitation Concepts
-                    </h3>
+ Post-Exploitation Concepts
+ </h3>
 
                     <p>
                         Review post-exploitation concepts and responsible
@@ -1268,8 +565,8 @@
                     </div>
 
                     <h3>
-                        Privilege Escalation
-                    </h3>
+ Privilege Escalation
+ </h3>
 
                     <p>
                         Test your understanding of privilege boundaries,
@@ -1295,8 +592,8 @@
                     </div>
 
                     <h3>
-                        Reporting
-                    </h3>
+ Reporting
+ </h3>
 
                     <p>
                         Practice identifying important elements of a

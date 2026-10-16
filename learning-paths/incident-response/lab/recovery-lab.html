@@ -1,930 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07101e">
 
 <title>Recovery Practical Lab | CyberNexa</title>
 
 <meta name="description"
       content="Practice cybersecurity incident recovery through a simulated system restoration lab.">
 
-<link rel="stylesheet" href="../../../css/base.css">
-<link rel="stylesheet" href="../../../css/navbar.css">
-<link rel="stylesheet" href="../../../css/footer.css">
-
-<style>
-
-    /* =========================================================
-       CYBERNEXA INCIDENT RESPONSE
-       PRACTICAL LAB: RECOVERY
-       ========================================================= */
-
-    :root {
-        --lab-bg: #080d14;
-        --lab-panel: #0d141d;
-        --lab-panel-2: #111b26;
-
-        --lab-green: #43d19e;
-        --lab-blue: #42a5ff;
-        --lab-orange: #ff9f43;
-        --lab-red: #ff4d5a;
-
-        --lab-text: #edf5fb;
-        --lab-muted: #91a4b5;
-
-        --lab-border: #20303e;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    html {
-        overflow-x: hidden;
-    }
-
-    body {
-        margin: 0;
-
-        background:
-            radial-gradient(
-                circle at 15% 15%,
-                rgba(67, 209, 158, 0.08),
-                transparent 30%
-            ),
-            radial-gradient(
-                circle at 85% 25%,
-                rgba(66, 165, 255, 0.06),
-                transparent 28%
-            ),
-            var(--lab-bg);
-
-        color: var(--lab-text);
-
-        font-family: Arial, Helvetica, sans-serif;
-
-        overflow-x: hidden;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-    .lab-container {
-        width: min(1150px, 92%);
-
-        margin: auto;
-    }
-
-
-    /* =========================================================
-       RESPONSIVE NAVBAR
-       ========================================================= */
-
-    .navbar {
-        width: 100%;
-        overflow: hidden;
-    }
-
-    .nav-container {
-        width: min(1150px, 92%);
-
-        margin: 0 auto;
-
-        display: flex;
-        align-items: center;
-
-        min-height: 70px;
-    }
-
-    .brand {
-        display: flex;
-
-        align-items: center;
-
-        max-width: 100%;
-
-        min-width: 0;
-    }
-
-    .brand-logo {
-        flex-shrink: 0;
-    }
-
-    .brand-text {
-        min-width: 0;
-    }
-
-    .brand-name,
-    .brand-tagline {
-        overflow: hidden;
-
-        text-overflow: ellipsis;
-
-        white-space: nowrap;
-    }
-
-
-    /* =========================================================
-       HERO
-       ========================================================= */
-
-    .lab-hero {
-        padding: 75px 0 60px;
-
-        border-bottom: 1px solid var(--lab-border);
-
-        position: relative;
-
-        overflow: hidden;
-    }
-
-    .lab-breadcrumb {
-        margin-bottom: 20px;
-
-        color: var(--lab-blue);
-
-        font-size: 13px;
-    }
-
-    .lab-badge {
-        display: inline-flex;
-
-        align-items: center;
-
-        gap: 8px;
-
-        padding: 8px 13px;
-
-        margin-bottom: 18px;
-
-        border: 1px solid
-            rgba(67, 209, 158, 0.35);
-
-        border-radius: 4px;
-
-        color: var(--lab-green);
-
-        background:
-            rgba(67, 209, 158, 0.05);
-
-        font-size: 11px;
-
-        font-weight: bold;
-
-        letter-spacing: 1px;
-
-        text-transform: uppercase;
-    }
-
-    .lab-badge-dot {
-        width: 7px;
-        height: 7px;
-
-        border-radius: 50%;
-
-        background: var(--lab-green);
-
-        box-shadow:
-            0 0 10px rgba(67, 209, 158, 0.8);
-    }
-
-    .lab-hero h1 {
-        margin: 0 0 15px;
-
-        font-size: clamp(38px, 5vw, 58px);
-
-        line-height: 1.05;
-
-        letter-spacing: -1px;
-    }
-
-    .lab-hero h1 span {
-        color: var(--lab-green);
-    }
-
-    .lab-hero p {
-        max-width: 760px;
-
-        margin: 0;
-
-        color: var(--lab-muted);
-
-        font-size: 16px;
-
-        line-height: 1.8;
-    }
-
-
-    /* =========================================================
-       LAB INFORMATION
-       ========================================================= */
-
-    .lab-info {
-        display: grid;
-
-        grid-template-columns:
-            repeat(4, 1fr);
-
-        gap: 12px;
-
-        margin-top: 30px;
-    }
-
-    .lab-info-box {
-        padding: 18px;
-
-        border: 1px solid var(--lab-border);
-
-        border-radius: 6px;
-
-        background: var(--lab-panel);
-    }
-
-    .lab-info-box span {
-        display: block;
-
-        margin-bottom: 7px;
-
-        color: var(--lab-muted);
-
-        font-size: 11px;
-
-        text-transform: uppercase;
-
-        letter-spacing: 0.8px;
-    }
-
-    .lab-info-box strong {
-        font-size: 14px;
-    }
-
-
-    /* =========================================================
-       PROGRESS
-       ========================================================= */
-
-    .lab-progress-area {
-        margin-top: 25px;
-
-        padding: 20px;
-
-        border: 1px solid var(--lab-border);
-
-        border-radius: 6px;
-
-        background: var(--lab-panel);
-    }
-
-    .lab-progress-header {
-        display: flex;
-
-        justify-content: space-between;
-
-        gap: 15px;
-
-        margin-bottom: 10px;
-
-        color: var(--lab-muted);
-
-        font-size: 12px;
-    }
-
-    .lab-progress {
-        width: 100%;
-
-        height: 7px;
-
-        overflow: hidden;
-
-        border-radius: 10px;
-
-        background: #17222d;
-    }
-
-    .lab-progress-bar {
-        width: 0%;
-
-        height: 100%;
-
-        background: var(--lab-green);
-
-        transition: width 0.3s ease;
-    }
-
-
-    /* =========================================================
-       SECTIONS
-       ========================================================= */
-
-    .lab-section {
-        padding: 60px 0;
-    }
-
-    .lab-section-title {
-        margin-bottom: 25px;
-    }
-
-    .lab-section-title h2 {
-        margin: 0 0 8px;
-
-        font-size: 30px;
-    }
-
-    .lab-section-title p {
-        margin: 0;
-
-        color: var(--lab-muted);
-
-        line-height: 1.7;
-    }
-
-
-    /* =========================================================
-       SCENARIO
-       ========================================================= */
-
-    .lab-scenario {
-        padding: 25px;
-
-        border: 1px solid
-            rgba(255, 159, 67, 0.25);
-
-        border-left: 3px solid var(--lab-orange);
-
-        border-radius: 6px;
-
-        background:
-            rgba(255, 159, 67, 0.035);
-    }
-
-    .lab-scenario h3 {
-        margin: 0 0 12px;
-
-        color: var(--lab-orange);
-
-        font-size: 17px;
-    }
-
-    .lab-scenario p {
-        margin: 0;
-
-        color: var(--lab-muted);
-
-        line-height: 1.8;
-
-        font-size: 14px;
-    }
-
-
-    /* =========================================================
-       TASKS
-       ========================================================= */
-
-    .lab-tasks {
-        display: grid;
-
-        gap: 15px;
-    }
-
-    .lab-task {
-        padding: 20px;
-
-        border: 1px solid var(--lab-border);
-
-        border-radius: 6px;
-
-        background: var(--lab-panel);
-    }
-
-    .lab-task-header {
-        display: flex;
-
-        align-items: center;
-
-        gap: 12px;
-    }
-
-    .lab-task-number {
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        width: 30px;
-        height: 30px;
-
-        flex-shrink: 0;
-
-        border: 1px solid
-            rgba(67, 209, 158, 0.3);
-
-        border-radius: 50%;
-
-        color: var(--lab-green);
-
-        font-size: 11px;
-
-        font-weight: bold;
-    }
-
-    .lab-task-header strong {
-        font-size: 15px;
-    }
-
-    .lab-task p {
-        margin: 12px 0 0;
-
-        color: var(--lab-muted);
-
-        line-height: 1.7;
-
-        font-size: 14px;
-    }
-
-
-    /* =========================================================
-       CHECKBOX
-       ========================================================= */
-
-    .lab-check {
-        margin-top: 15px;
-
-        display: flex;
-
-        align-items: center;
-
-        gap: 8px;
-
-        color: var(--lab-muted);
-
-        font-size: 12px;
-
-        cursor: pointer;
-    }
-
-    .lab-check input {
-        accent-color: var(--lab-green);
-
-        cursor: pointer;
-    }
-
-
-    /* =========================================================
-       COMMAND AREA
-       ========================================================= */
-
-    .lab-command-box {
-        margin-top: 15px;
-
-        overflow: hidden;
-
-        border: 1px solid var(--lab-border);
-
-        border-radius: 6px;
-
-        background: #060a0f;
-    }
-
-    .lab-command-header {
-        display: flex;
-
-        justify-content: space-between;
-
-        align-items: center;
-
-        padding: 10px 14px;
-
-        border-bottom: 1px solid var(--lab-border);
-
-        background: var(--lab-panel-2);
-
-        color: var(--lab-muted);
-
-        font-size: 11px;
-    }
-
-    .copy-btn {
-        padding: 5px 9px;
-
-        border: 1px solid
-            rgba(67, 209, 158, 0.3);
-
-        border-radius: 4px;
-
-        background: transparent;
-
-        color: var(--lab-green);
-
-        cursor: pointer;
-
-        font-size: 11px;
-    }
-
-    .copy-btn:hover {
-        background:
-            rgba(67, 209, 158, 0.08);
-    }
-
-    .lab-command {
-        padding: 18px;
-
-        color: var(--lab-green);
-
-        font-family:
-            Consolas,
-            "Courier New",
-            monospace;
-
-        font-size: 13px;
-
-        line-height: 1.7;
-
-        white-space: pre-wrap;
-
-        overflow-x: auto;
-    }
-
-
-    /* =========================================================
-       OUTPUT
-       ========================================================= */
-
-    .lab-output {
-        margin-top: 15px;
-
-        padding: 18px;
-
-        border: 1px solid
-            rgba(66, 165, 255, 0.2);
-
-        border-radius: 6px;
-
-        background:
-            rgba(66, 165, 255, 0.025);
-
-        color: var(--lab-muted);
-
-        font-family:
-            Consolas,
-            "Courier New",
-            monospace;
-
-        font-size: 12px;
-
-        line-height: 1.7;
-    }
-
-    .lab-output strong {
-        color: var(--lab-blue);
-    }
-
-
-    /* =========================================================
-       COMPLETION
-       ========================================================= */
-
-    .lab-completion {
-        margin-top: 30px;
-
-        padding: 25px;
-
-        border: 1px solid
-            rgba(67, 209, 158, 0.25);
-
-        border-radius: 7px;
-
-        background:
-            rgba(67, 209, 158, 0.035);
-
-        text-align: center;
-    }
-
-    .lab-completion h2 {
-        margin: 0 0 10px;
-
-        color: var(--lab-green);
-
-        font-size: 24px;
-    }
-
-    .lab-completion p {
-        margin: 0;
-
-        color: var(--lab-muted);
-
-        font-size: 14px;
-
-        line-height: 1.7;
-    }
-
-    .completion-status {
-        margin-top: 12px;
-
-        color: var(--lab-green);
-
-        font-size: 13px;
-
-        font-weight: bold;
-    }
-
-
-    /* =========================================================
-       NAVIGATION
-       ========================================================= */
-
-    .lab-topic-nav {
-        display: flex;
-
-        justify-content: space-between;
-
-        gap: 15px;
-
-        margin-top: 35px;
-    }
-
-    .lab-nav-button {
-        display: inline-flex;
-
-        align-items: center;
-
-        padding: 12px 17px;
-
-        border: 1px solid var(--lab-border);
-
-        border-radius: 5px;
-
-        color: var(--lab-muted);
-
-        font-size: 13px;
-
-        transition: 0.2s ease;
-    }
-
-    .lab-nav-button:hover {
-        color: var(--lab-green);
-
-        border-color:
-            rgba(67, 209, 158, 0.4);
-    }
-
-    .lab-nav-primary {
-        border-color:
-            rgba(67, 209, 158, 0.35);
-
-        color: var(--lab-green);
-    }
-
-
-    /* =========================================================
-       RESPONSIVE
-       ========================================================= */
-
-    @media (max-width: 950px) {
-
-        .nav-container {
-            width: 92%;
-        }
-
-        .brand-logo svg {
-            width: 42px;
-            height: 50px;
-        }
-
-        .lab-info {
-            grid-template-columns:
-                repeat(2, 1fr);
-        }
-    }
-
-
-    @media (max-width: 768px) {
-
-        .nav-container {
-            width: 94%;
-
-            min-height: 64px;
-
-            padding: 8px 0;
-        }
-
-        .brand {
-            gap: 8px;
-        }
-
-        .brand-logo svg {
-            width: 38px;
-            height: 46px;
-        }
-
-        .brand-name {
-            font-size: 19px;
-        }
-
-        .brand-tagline {
-            font-size: 9px;
-        }
-
-        .lab-hero {
-            padding: 65px 0 50px;
-        }
-
-        .lab-info {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .lab-section {
-            padding: 55px 0;
-        }
-
-        .lab-topic-nav {
-            flex-wrap: wrap;
-        }
-
-        .footer {
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .footer-container {
-            width: 92%;
-
-            margin: 0 auto;
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 25px;
-        }
-
-        .footer-links {
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px 18px;
-        }
-    }
-
-
-    @media (max-width: 600px) {
-
-        .nav-container {
-            width: 92%;
-
-            min-height: 62px;
-
-            padding: 7px 0;
-        }
-
-        .brand {
-            gap: 7px;
-        }
-
-        .brand-logo svg {
-            width: 34px;
-            height: 42px;
-        }
-
-        .brand-name {
-            font-size: 17px;
-        }
-
-        .brand-tagline {
-            font-size: 8px;
-        }
-
-        .lab-hero {
-            padding: 55px 0 45px;
-        }
-
-        .lab-breadcrumb {
-            font-size: 11px;
-
-            line-height: 1.6;
-        }
-
-        .lab-hero h1 {
-            font-size:
-                clamp(34px, 10vw, 48px);
-        }
-
-        .lab-hero p {
-            font-size: 14px;
-        }
-
-        .lab-info {
-            grid-template-columns: 1fr;
-        }
-
-        .lab-section {
-            padding: 45px 0;
-        }
-
-        .lab-section-title h2 {
-            font-size: 26px;
-        }
-
-        .lab-scenario {
-            padding: 21px;
-        }
-
-        .lab-task {
-            padding: 18px;
-        }
-
-        .lab-command {
-            font-size: 11px;
-
-            padding: 15px;
-        }
-
-        .lab-topic-nav {
-            flex-direction: column;
-        }
-
-        .lab-nav-button {
-            width: 100%;
-
-            justify-content: center;
-
-            text-align: center;
-        }
-
-        .footer-container {
-            width: 92%;
-
-            gap: 22px;
-        }
-
-        .footer-links {
-            width: 100%;
-
-            display: grid;
-
-            grid-template-columns: 1fr 1fr;
-
-            gap: 12px 18px;
-        }
-
-        .footer-links a {
-            font-size: 13px;
-
-            white-space: normal;
-        }
-
-        .copyright {
-            width: 92%;
-
-            margin: auto;
-
-            padding: 18px 0;
-
-            text-align: center;
-
-            font-size: 11px;
-
-            line-height: 1.6;
-        }
-    }
-
-
-    @media (max-width: 380px) {
-
-        .nav-container {
-            width: 94%;
-        }
-
-        .brand-logo svg {
-            width: 30px;
-            height: 38px;
-        }
-
-        .brand-name {
-            font-size: 15px;
-        }
-
-        .brand-tagline {
-            font-size: 7px;
-        }
-
-        .lab-container {
-            width: 94%;
-        }
-
-        .lab-info {
-            grid-template-columns: 1fr;
-        }
-
-        .footer-links {
-            grid-template-columns: 1fr;
-        }
-    }
-
-</style>
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 </head>
 
 <body>
@@ -1018,17 +112,15 @@
         CyberNexa / Incident Response / Recovery / Practical Lab
     </div>
 
-    <div class="lab-badge">
-
-        <span class="lab-badge-dot"></span>
+    <div class="lab-badge"><span class="lab-badge-dot"></span>
 
         Practical Cybersecurity Lab
 
     </div>
 
     <h1>
-        Incident <span>Recovery Lab</span>
-    </h1>
+ Incident <span>Recovery Lab</span>
+ </h1>
 
     <p>
         Practice the recovery phase of Incident Response by
@@ -1139,7 +231,7 @@
 
     <div class="lab-scenario">
 
-        <h3>⚠️ Compromised Server</h3>
+        <h3>️ Compromised Server</h3>
 
         <p>
             A company's internal application server was compromised
@@ -1216,8 +308,8 @@
                 <button
                     class="copy-btn"
                     onclick="copyCommand('cmd1')">
-                    Copy
-                </button>
+ Copy
+ </button>
 
             </div>
 
@@ -1306,8 +398,8 @@
                 <button
                     class="copy-btn"
                     onclick="copyCommand('cmd2')">
-                    Copy
-                </button>
+ Copy
+ </button>
 
             </div>
 
@@ -1399,8 +491,8 @@
                 <button
                     class="copy-btn"
                     onclick="copyCommand('cmd3')">
-                    Copy
-                </button>
+ Copy
+ </button>
 
             </div>
 
@@ -1489,8 +581,8 @@
                 <button
                     class="copy-btn"
                     onclick="copyCommand('cmd4')">
-                    Copy
-                </button>
+ Copy
+ </button>
 
             </div>
 
@@ -1581,8 +673,8 @@
                 <button
                     class="copy-btn"
                     onclick="copyCommand('cmd5')">
-                    Copy
-                </button>
+ Copy
+ </button>
 
             </div>
 
@@ -1634,7 +726,7 @@
 
     <div class="lab-completion">
 
-        <h2>✓ Recovery Lab</h2>
+        <h2>Recovery Lab</h2>
 
         <p>
             Complete all five tasks to finish the simulated
@@ -1662,17 +754,17 @@
             href="eradication-lab.html"
             class="lab-nav-button">
 
-            ← Lab: Eradication
+ ← Lab: Eradication
 
-        </a>
+ </a>
 
         <a
             href="../theory/incident-documentation.html"
             class="lab-nav-button">
 
-            Next Theory: Incident Documentation →
+ Next Theory: Incident Documentation →
 
-        </a>
+ </a>
 
     </div>
 

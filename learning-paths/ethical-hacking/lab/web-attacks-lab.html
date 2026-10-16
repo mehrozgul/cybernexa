@@ -1,579 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Web Attacks Lab - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Web Attacks Lab - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* =====================================================
-           PAGE
-        ====================================================== */
-
-        .lab-page {
-            min-height: calc(100vh - 80px);
-            padding: 65px 20px 90px;
-
-            background:
-                radial-gradient(
-                    circle at 15% 10%,
-                    rgba(0, 255, 170, 0.055),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 90% 15%,
-                    rgba(0, 191, 255, 0.075),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    180deg,
-                    #01050b 0%,
-                    #020914 50%,
-                    #01050b 100%
-                );
-        }
-
-        .lab-container {
-            width: 100%;
-            max-width: 1050px;
-            margin: 0 auto;
-        }
-
-        /* =====================================================
-           HERO
-        ====================================================== */
-
-        .lab-hero {
-            position: relative;
-
-            padding: 38px 32px;
-            margin-bottom: 22px;
-
-            border: 1px solid rgba(0, 255, 176, 0.15);
-            border-radius: 16px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(3, 23, 30, 0.98),
-                    rgba(2, 12, 23, 0.98)
-                );
-
-            overflow: hidden;
-        }
-
-        .lab-hero::before {
-            content: "";
-
-            position: absolute;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #00ffb0,
-                    #00bfff,
-                    transparent
-                );
-        }
-
-        .lab-kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-
-            margin-bottom: 12px;
-
-            color: #00ffb0;
-
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .lab-kicker::before {
-            content: "";
-
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-
-            background: #00ffb0;
-
-            box-shadow:
-                0 0 12px rgba(0, 255, 176, 0.65);
-        }
-
-        .lab-hero h1 {
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 40px;
-            line-height: 1.15;
-        }
-
-        .lab-hero h1 span {
-            color: #00ffb0;
-        }
-
-        .lab-hero p {
-            max-width: 760px;
-
-            margin: 14px 0 0;
-
-            color: #8fa5bb;
-
-            font-size: 13px;
-            line-height: 1.85;
-        }
-
-        /* =====================================================
-           LAB STATUS
-        ====================================================== */
-
-        .lab-status {
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-
-            gap: 10px;
-
-            margin-bottom: 20px;
-        }
-
-        .status-card {
-            padding: 14px;
-
-            border: 1px solid rgba(0, 191, 255, 0.10);
-            border-radius: 10px;
-
-            background: rgba(0, 191, 255, 0.025);
-        }
-
-        .status-label {
-            display: block;
-
-            margin-bottom: 5px;
-
-            color: #536a7f;
-
-            font-size: 8px;
-            letter-spacing: 1.4px;
-            text-transform: uppercase;
-        }
-
-        .status-value {
-            color: #dce9f4;
-
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .status-value.green {
-            color: #00ffb0;
-        }
-
-        /* =====================================================
-           AUTHORIZATION
-        ====================================================== */
-
-        .notice {
-            margin-bottom: 20px;
-            padding: 18px;
-
-            border: 1px solid rgba(255, 177, 0, 0.17);
-            border-radius: 11px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255, 177, 0, 0.045),
-                    rgba(255, 177, 0, 0.012)
-                );
-        }
-
-        .notice-title {
-            margin-bottom: 7px;
-
-            color: #ffc44d;
-
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .notice p {
-            margin: 0;
-
-            color: #899bad;
-
-            font-size: 11px;
-            line-height: 1.75;
-        }
-
-        /* =====================================================
-           PROGRESS
-        ====================================================== */
-
-        .progress-box {
-            margin-bottom: 20px;
-            padding: 18px;
-
-            border: 1px solid rgba(0, 191, 255, 0.10);
-            border-radius: 11px;
-
-            background:
-                rgba(0, 191, 255, 0.025);
-        }
-
-        .progress-top {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-
-            margin-bottom: 9px;
-        }
-
-        .progress-top span {
-            color: #71879b;
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .progress-top strong {
-            color: #00ffb0;
-            font-size: 10px;
-        }
-
-        .progress-track {
-            width: 100%;
-            height: 7px;
-
-            overflow: hidden;
-
-            border-radius: 20px;
-
-            background: rgba(255,255,255,0.05);
-        }
-
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-
-            border-radius: 20px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #00ffb0,
-                    #00bfff
-                );
-
-            transition: width 0.3s ease;
-        }
-
-        /* =====================================================
-           QUESTION CARD
-        ====================================================== */
-
-        .question-card {
-            margin-bottom: 18px;
-            padding: 25px;
-
-            border: 1px solid rgba(0, 191, 255, 0.11);
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(5, 20, 34, 0.97),
-                    rgba(2, 11, 21, 0.97)
-                );
-        }
-
-        .question-number {
-            margin-bottom: 8px;
-
-            color: #00ffb0;
-
-            font-family: Consolas, monospace;
-
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-        }
-
-        .question {
-            margin: 0 0 18px;
-
-            color: #ffffff;
-
-            font-size: 15px;
-            line-height: 1.65;
-            font-weight: 800;
-        }
-
-        .options {
-            display: grid;
-            gap: 9px;
-        }
-
-        .option {
-            position: relative;
-
-            display: flex;
-            align-items: center;
-
-            gap: 11px;
-
-            padding: 13px 14px;
-
-            border: 1px solid rgba(0, 191, 255, 0.09);
-            border-radius: 8px;
-
-            color: #8298aa;
-
-            background: rgba(0, 191, 255, 0.018);
-
-            cursor: pointer;
-
-            font-size: 11px;
-            line-height: 1.5;
-
-            transition:
-                border-color 0.2s ease,
-                background 0.2s ease,
-                color 0.2s ease;
-        }
-
-        .option:hover {
-            color: #dce9f4;
-
-            border-color:
-                rgba(0, 255, 176, 0.25);
-
-            background:
-                rgba(0, 255, 176, 0.035);
-        }
-
-        .option input {
-            accent-color: #00ffb0;
-        }
-
-        /* =====================================================
-           SUBMIT
-        ====================================================== */
-
-        .submit-area {
-            display: flex;
-            justify-content: center;
-
-            margin: 25px 0;
-        }
-
-        .submit-button {
-            padding: 13px 30px;
-
-            border: 1px solid rgba(0, 255, 176, 0.30);
-            border-radius: 8px;
-
-            color: #c8fff0;
-
-            background:
-                rgba(0, 255, 176, 0.055);
-
-            cursor: pointer;
-
-            font-size: 11px;
-            font-weight: 800;
-
-            transition:
-                transform 0.2s ease,
-                background 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-        .submit-button:hover {
-            transform: translateY(-2px);
-
-            border-color:
-                rgba(0, 255, 176, 0.55);
-
-            background:
-                rgba(0, 255, 176, 0.09);
-        }
-
-        /* =====================================================
-           RESULT
-        ====================================================== */
-
-        .result {
-            display: none;
-
-            margin-top: 20px;
-            padding: 28px;
-
-            text-align: center;
-
-            border: 1px solid rgba(0, 255, 176, 0.15);
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(0, 255, 176, 0.035),
-                    rgba(0, 191, 255, 0.025)
-                );
-        }
-
-        .result.show {
-            display: block;
-        }
-
-        .result-label {
-            color: #00ffb0;
-
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .result h2 {
-            margin: 8px 0;
-
-            color: #ffffff;
-
-            font-size: 27px;
-        }
-
-        .result p {
-            margin: 0;
-
-            color: #7e94a8;
-
-            font-size: 12px;
-            line-height: 1.8;
-        }
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-.topic-navigation {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    margin-top: 30px;
-}
-
-.topic-navigation a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 14px 18px;
-
-    border: 1px solid rgba(0, 191, 255, 0.09);
-    border-radius: 9px;
-
-    color: #71879b;
-    background: rgba(0, 191, 255, 0.02);
-
-    text-decoration: none;
-    text-align: center;
-
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.topic-navigation a:hover {
-    color: #ccefe5;
-    border-color: rgba(0, 255, 176, 0.25);
-    background: rgba(0, 255, 176, 0.035);
-}
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 800px) {
-
-            .lab-status {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-        }
-
-        @media (max-width: 600px) {
-
-            .lab-page {
-                padding: 45px 12px 60px;
-            }
-
-            .lab-hero {
-                padding: 27px 20px;
-            }
-
-            .lab-hero h1 {
-                font-size: 30px;
-            }
-
-            .lab-status {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .question-card {
-                padding: 20px;
-            }
-
-            .topic-navigation {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-}
-
-.topic-navigation a {
-    flex: 0 1 auto;
-    max-width: 48%;
-    padding: 12px 10px;
-}
-
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -675,8 +121,8 @@
                 </div>
 
                 <h1>
-                    <span>Web Attacks</span> Lab
-                </h1>
+ <span>Web Attacks</span> Lab
+ </h1>
 
                 <p>
                     Test your understanding of common web application attack
@@ -808,8 +254,8 @@
                     </div>
 
                     <h2 class="question">
-                        What is the main purpose of a web security assessment?
-                    </h2>
+ What is the main purpose of a web security assessment?
+ </h2>
 
                     <div class="options">
 
@@ -859,9 +305,9 @@
                     </div>
 
                     <h2 class="question">
-                        Which vulnerability occurs when untrusted input
-                        changes the intended structure of a database query?
-                    </h2>
+ Which vulnerability occurs when untrusted input
+ changes the intended structure of a database query?
+ </h2>
 
                     <div class="options">
 
@@ -911,8 +357,8 @@
                     </div>
 
                     <h2 class="question">
-                        What does XSS primarily involve?
-                    </h2>
+ What does XSS primarily involve?
+ </h2>
 
                     <div class="options">
 
@@ -962,8 +408,8 @@
                     </div>
 
                     <h2 class="question">
-                        What does CSRF attempt to abuse?
-                    </h2>
+ What does CSRF attempt to abuse?
+ </h2>
 
                     <div class="options">
 
@@ -1013,8 +459,8 @@
                     </div>
 
                     <h2 class="question">
-                        Which control helps prevent SQL injection?
-                    </h2>
+ Which control helps prevent SQL injection?
+ </h2>
 
                     <div class="options">
 
@@ -1064,8 +510,8 @@
                     </div>
 
                     <h2 class="question">
-                        What is broken access control?
-                    </h2>
+ What is broken access control?
+ </h2>
 
                     <div class="options">
 
@@ -1115,9 +561,9 @@
                     </div>
 
                     <h2 class="question">
-                        Which of the following is part of a web application's
-                        attack surface?
-                    </h2>
+ Which of the following is part of a web application's
+ attack surface?
+ </h2>
 
                     <div class="options">
 
@@ -1167,8 +613,8 @@
                     </div>
 
                     <h2 class="question">
-                        What is SSRF?
-                    </h2>
+ What is SSRF?
+ </h2>
 
                     <div class="options">
 
@@ -1218,9 +664,9 @@
                     </div>
 
                     <h2 class="question">
-                        Which practice helps protect web applications
-                        from XSS?
-                    </h2>
+ Which practice helps protect web applications
+ from XSS?
+ </h2>
 
                     <div class="options">
 
@@ -1270,8 +716,8 @@
                     </div>
 
                     <h2 class="question">
-                        Where should practical web security testing be performed?
-                    </h2>
+ Where should practical web security testing be performed?
+ </h2>
 
                     <div class="options">
 
@@ -1321,9 +767,9 @@
                         class="submit-button"
                         onclick="checkQuiz()">
 
-                        CHECK LAB →
+ CHECK LAB →
 
-                    </button>
+ </button>
 
                 </div>
 
@@ -1341,8 +787,8 @@
                 </div>
 
                 <h2 id="score">
-                    0 / 10
-                </h2>
+ 0 / 10
+ </h2>
 
                 <p id="resultMessage">
                     Complete the laboratory to view your result.

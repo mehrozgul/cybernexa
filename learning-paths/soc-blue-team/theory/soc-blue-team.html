@@ -1,483 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07101e">
 
     <title>SOC / Blue Team | CyberNexa</title>
 
     <meta name="description"
           content="Learn SOC and Blue Team cybersecurity concepts including SOC Analyst, SIEM, Log Monitoring, Alert Analysis, Threat Intelligence and Threat Hunting.">
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        :root {
-            --soc-bg: #070d13;
-            --soc-panel: #0c151e;
-            --soc-panel-2: #101c27;
-
-            --soc-blue: #38a8ff;
-            --soc-cyan: #35d7ff;
-            --soc-green: #43d19e;
-            --soc-red: #ff5364;
-            --soc-yellow: #ffd166;
-
-            --soc-text: #edf7ff;
-            --soc-muted: #8fa5b7;
-
-            --soc-border: #1d303f;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-
-            background:
-                radial-gradient(
-                    circle at 10% 10%,
-                    rgba(56, 168, 255, 0.09),
-                    transparent 30%
-                ),
-                radial-gradient(
-                    circle at 90% 20%,
-                    rgba(53, 215, 255, 0.06),
-                    transparent 28%
-                ),
-                var(--soc-bg);
-
-            color: var(--soc-text);
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            overflow-x: hidden;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        .soc-container {
-            width: min(1150px, 92%);
-            margin: auto;
-        }
-
-        /* =====================================================
-           HERO
-        ===================================================== */
-
-        .soc-hero {
-            position: relative;
-            overflow: hidden;
-
-            padding: 85px 0 70px;
-
-            border-bottom: 1px solid var(--soc-border);
-        }
-
-        .soc-hero::before {
-            content: "";
-
-            position: absolute;
-
-            width: 420px;
-            height: 420px;
-
-            right: -200px;
-            top: -180px;
-
-            border: 1px solid rgba(56, 168, 255, 0.12);
-
-            border-radius: 50%;
-
-            box-shadow:
-                0 0 0 45px rgba(56, 168, 255, 0.025),
-                0 0 0 90px rgba(56, 168, 255, 0.015);
-        }
-
-        .soc-breadcrumb {
-            margin-bottom: 20px;
-
-            color: var(--soc-cyan);
-
-            font-size: 13px;
-            letter-spacing: 0.5px;
-        }
-
-        .soc-hero-grid {
-            display: grid;
-
-            grid-template-columns: 1.35fr 0.65fr;
-
-            gap: 45px;
-
-            align-items: center;
-        }
-
-        .soc-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-
-            padding: 8px 13px;
-
-            margin-bottom: 18px;
-
-            border: 1px solid rgba(67, 209, 158, 0.3);
-
-            border-radius: 4px;
-
-            background: rgba(67, 209, 158, 0.05);
-
-            color: var(--soc-green);
-
-            font-size: 11px;
-            font-weight: bold;
-
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .soc-dot {
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-
-            background: var(--soc-green);
-
-            box-shadow:
-                0 0 12px rgba(67, 209, 158, 0.8);
-        }
-
-        .soc-hero h1 {
-            margin: 0 0 18px;
-
-            font-size: clamp(38px, 5vw, 62px);
-
-            line-height: 1.05;
-
-            letter-spacing: -1px;
-        }
-
-        .soc-hero h1 span {
-            color: var(--soc-blue);
-        }
-
-        .soc-description {
-            max-width: 720px;
-
-            color: var(--soc-muted);
-
-            font-size: 17px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           SOC COMMAND PANEL
-        ===================================================== */
-
-        .soc-command {
-            padding: 24px;
-
-            border: 1px solid var(--soc-border);
-
-            border-top: 2px solid var(--soc-blue);
-
-            border-radius: 7px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(16, 28, 39, 0.98),
-                    rgba(8, 14, 21, 0.98)
-                );
-
-            box-shadow:
-                0 20px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .command-header {
-            display: flex;
-
-            justify-content: space-between;
-            align-items: center;
-
-            margin-bottom: 18px;
-        }
-
-        .command-header strong {
-            font-size: 12px;
-
-            letter-spacing: 1px;
-        }
-
-        .command-status {
-            color: var(--soc-green);
-
-            font-size: 10px;
-        }
-
-        .command-line {
-            height: 1px;
-
-            margin: 15px 0;
-
-            background: var(--soc-border);
-        }
-
-        .command-row {
-            display: flex;
-
-            justify-content: space-between;
-
-            padding: 8px 0;
-
-            color: var(--soc-muted);
-
-            font-size: 13px;
-        }
-
-        .command-row strong {
-            color: var(--soc-text);
-
-            font-weight: normal;
-        }
-
-        .command-row .active {
-            color: var(--soc-green);
-        }
-
-
-        /* =====================================================
-           TOPIC SECTION
-        ===================================================== */
-
-        .soc-section {
-            padding: 70px 0;
-        }
-
-        .section-heading {
-            margin-bottom: 30px;
-        }
-
-        .section-heading h2 {
-            margin: 0 0 10px;
-
-            font-size: 32px;
-        }
-
-        .section-heading p {
-            margin: 0;
-
-            color: var(--soc-muted);
-
-            line-height: 1.7;
-        }
-
-
-        /* =====================================================
-           TOPIC GRID
-        ===================================================== */
-
-        .soc-topic-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 18px;
-        }
-
-        .soc-topic {
-            position: relative;
-
-            padding: 25px;
-
-            min-height: 210px;
-
-            border: 1px solid var(--soc-border);
-
-            border-radius: 7px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    var(--soc-panel-2),
-                    var(--soc-panel)
-                );
-
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
-
-            overflow: hidden;
-        }
-
-        .soc-topic::before {
-            content: "";
-
-            position: absolute;
-
-            left: 0;
-            top: 0;
-
-            width: 3px;
-            height: 100%;
-
-            background: var(--soc-blue);
-
-            opacity: 0.8;
-        }
-
-        .soc-topic:hover {
-            transform: translateY(-4px);
-
-            border-color:
-                rgba(56, 168, 255, 0.45);
-
-            box-shadow:
-                0 15px 35px rgba(0, 0, 0, 0.25);
-        }
-
-        .topic-number {
-            display: block;
-
-            margin-bottom: 13px;
-
-            color: var(--soc-cyan);
-
-            font-size: 11px;
-
-            font-weight: bold;
-
-            letter-spacing: 1px;
-        }
-
-        .soc-topic h3 {
-            margin: 0 0 11px;
-
-            font-size: 18px;
-        }
-
-        .soc-topic p {
-            margin: 0 0 20px;
-
-            color: var(--soc-muted);
-
-            font-size: 13px;
-
-            line-height: 1.65;
-        }
-
-        .topic-link {
-            display: inline-flex;
-
-            align-items: center;
-
-            color: var(--soc-blue);
-
-            font-size: 13px;
-
-            font-weight: bold;
-        }
-
-        .topic-link:hover {
-            color: var(--soc-cyan);
-        }
-
-
-        /* =====================================================
-           FOOTER
-        ===================================================== */
-
-        .footer {
-            width: 100%;
-            overflow: hidden;
-        }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
-
-        @media (max-width: 950px) {
-
-            .soc-hero-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .soc-topic-grid {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-        }
-
-
-        @media (max-width: 600px) {
-
-            .soc-container {
-                width: 92%;
-            }
-
-            .soc-hero {
-                padding: 60px 0 50px;
-            }
-
-            .soc-hero h1 {
-                font-size: 38px;
-            }
-
-            .soc-description {
-                font-size: 15px;
-            }
-
-            .soc-section {
-                padding: 50px 0;
-            }
-
-            .section-heading h2 {
-                font-size: 27px;
-            }
-
-            .soc-topic-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .soc-topic {
-                min-height: auto;
-            }
-        }
-
-
-        @media (max-width: 380px) {
-
-            .soc-container {
-                width: 94%;
-            }
-
-            .soc-hero h1 {
-                font-size: 33px;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 </head>
 
 
@@ -518,9 +59,9 @@
 
 
                 <h1>
-                    SOC /
-                    <span>Blue Team</span>
-                </h1>
+ SOC /
+ <span>Blue Team</span>
+ </h1>
 
 
                 <p class="soc-description">
@@ -622,8 +163,8 @@
         <div class="section-heading">
 
             <h2>
-                SOC / Blue Team Theory
-            </h2>
+ SOC / Blue Team Theory
+ </h2>
 
             <p>
                 Select a topic to learn its cybersecurity
@@ -648,8 +189,8 @@
                 </span>
 
                 <h3>
-                    What is SOC?
-                </h3>
+ What is SOC?
+ </h3>
 
                 <p>
                     Understand the Security Operations Center,
@@ -675,8 +216,8 @@
                 </span>
 
                 <h3>
-                    SOC Analyst
-                </h3>
+ SOC Analyst
+ </h3>
 
                 <p>
                     Learn the responsibilities, skills,
@@ -701,8 +242,8 @@
                 </span>
 
                 <h3>
-                    SIEM
-                </h3>
+ SIEM
+ </h3>
 
                 <p>
                     Understand Security Information and Event
@@ -728,8 +269,8 @@
                 </span>
 
                 <h3>
-                    Log Monitoring
-                </h3>
+ Log Monitoring
+ </h3>
 
                 <p>
                     Learn how security logs are collected,
@@ -754,8 +295,8 @@
                 </span>
 
                 <h3>
-                    Alert Analysis
-                </h3>
+ Alert Analysis
+ </h3>
 
                 <p>
                     Understand how analysts investigate alerts,
@@ -780,8 +321,8 @@
                 </span>
 
                 <h3>
-                    IOC
-                </h3>
+ IOC
+ </h3>
 
                 <p>
                     Learn Indicators of Compromise and how they
@@ -806,8 +347,8 @@
                 </span>
 
                 <h3>
-                    Threat Intelligence
-                </h3>
+ Threat Intelligence
+ </h3>
 
                 <p>
                     Understand how threat intelligence provides
@@ -832,8 +373,8 @@
                 </span>
 
                 <h3>
-                    Incident Detection
-                </h3>
+ Incident Detection
+ </h3>
 
                 <p>
                     Learn how security teams identify potential
@@ -858,8 +399,8 @@
                 </span>
 
                 <h3>
-                    Network Monitoring
-                </h3>
+ Network Monitoring
+ </h3>
 
                 <p>
                     Learn how network traffic and communication
@@ -884,8 +425,8 @@
                 </span>
 
                 <h3>
-                    Endpoint Security
-                </h3>
+ Endpoint Security
+ </h3>
 
                 <p>
                     Understand how endpoints such as computers
@@ -910,8 +451,8 @@
                 </span>
 
                 <h3>
-                    Detection Rules
-                </h3>
+ Detection Rules
+ </h3>
 
                 <p>
                     Learn how detection rules identify suspicious
@@ -936,8 +477,8 @@
                 </span>
 
                 <h3>
-                    Basic Threat Hunting
-                </h3>
+ Basic Threat Hunting
+ </h3>
 
                 <p>
                     Learn how defenders proactively search logs,

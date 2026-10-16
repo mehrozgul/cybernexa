@@ -1,486 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn HTTP / HTTPS Lab - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>HTTP / HTTPS Lab - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        .lab-page {
-
-            min-height: calc(100vh - 80px);
-
-            padding: 65px 20px 90px;
-
-            background:
-                radial-gradient(
-                    circle at 15% 10%,
-                    rgba(0, 191, 255, 0.07),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 90% 15%,
-                    rgba(125, 80, 255, 0.07),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    180deg,
-                    #01050b,
-                    #020914 50%,
-                    #01050b
-                );
-        }
-
-        .lab-container {
-
-            width: 100%;
-            max-width: 950px;
-
-            margin: auto;
-        }
-
-        .lab-hero {
-
-            position: relative;
-
-            padding: 38px 32px;
-
-            margin-bottom: 22px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.16);
-
-            border-radius: 15px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(3, 18, 35, .98),
-                    rgba(2, 10, 23, .98)
-                );
-
-            overflow: hidden;
-        }
-
-        .lab-hero::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #00bfff,
-                    #7d50ff,
-                    transparent
-                );
-        }
-
-        .lab-kicker {
-
-            color: #00bfff;
-
-            font-size: 10px;
-            font-weight: 800;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-
-            margin-bottom: 12px;
-        }
-
-        .lab-hero h1 {
-
-            margin: 0;
-
-            color: white;
-
-            font-size: 38px;
-        }
-
-        .lab-hero h1 span {
-
-            color: #00bfff;
-        }
-
-        .lab-hero p {
-
-            max-width: 700px;
-
-            margin: 14px 0 0;
-
-            color: #8fa5bb;
-
-            font-size: 13px;
-
-            line-height: 1.8;
-        }
-
-        .lab-card {
-
-            padding: 25px;
-
-            margin-bottom: 17px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.11);
-
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(5, 20, 34, .97),
-                    rgba(2, 11, 21, .97)
-                );
-        }
-
-        .lab-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 11px;
-
-            margin-bottom: 16px;
-        }
-
-        .lab-number {
-
-            width: 29px;
-            height: 29px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border:
-                1px solid rgba(0, 191, 255, .25);
-
-            border-radius: 7px;
-
-            color: #00bfff;
-
-            font-family: monospace;
-
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .lab-heading h2 {
-
-            margin: 0;
-
-            color: white;
-
-            font-size: 19px;
-        }
-
-        .lab-question {
-
-            margin-bottom: 15px;
-
-            color: #cbd9e6;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-        }
-
-        .options {
-
-            display: grid;
-
-            gap: 9px;
-        }
-
-        .option {
-
-            width: 100%;
-
-            padding: 13px 15px;
-
-            border:
-                1px solid rgba(0, 191, 255, .10);
-
-            border-radius: 8px;
-
-            color: #8499ac;
-
-            background:
-                rgba(0, 191, 255, .018);
-
-            text-align: left;
-
-            cursor: pointer;
-
-            transition:
-                border-color .2s ease,
-                background .2s ease,
-                transform .2s ease;
-        }
-
-        .option:hover {
-
-            transform: translateX(2px);
-
-            border-color:
-                rgba(0, 191, 255, .30);
-
-            background:
-                rgba(0, 191, 255, .035);
-        }
-
-        .option.selected {
-
-            border-color: #00bfff;
-
-            color: #dff8ff;
-
-            background:
-                rgba(0, 191, 255, .07);
-        }
-
-        .traffic-box {
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(0, 191, 255, .10);
-
-            border-radius: 10px;
-
-            background:
-                rgba(0, 0, 0, .25);
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-        }
-
-        .traffic-line {
-
-            margin-bottom: 9px;
-
-            color: #70869a;
-
-            font-size: 11px;
-
-            line-height: 1.6;
-        }
-
-        .traffic-line:last-child {
-            margin-bottom: 0;
-        }
-
-        .blue {
-            color: #00bfff;
-        }
-
-        .green {
-            color: #00ffb0;
-        }
-
-        .purple {
-            color: #a879ff;
-        }
-
-        .submit-area {
-
-            display: flex;
-
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 15px;
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(0, 191, 255, .12);
-
-            border-radius: 11px;
-
-            background:
-                rgba(0, 191, 255, .025);
-        }
-
-        .submit-button {
-
-            padding: 12px 21px;
-
-            border:
-                1px solid rgba(0, 191, 255, .30);
-
-            border-radius: 8px;
-
-            color: #dff8ff;
-
-            background:
-                rgba(0, 191, 255, .06);
-
-            cursor: pointer;
-
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .submit-button:hover {
-
-            background:
-                rgba(0, 191, 255, .11);
-
-            border-color:
-                rgba(0, 191, 255, .55);
-        }
-
-        #result {
-
-            margin-top: 15px;
-
-            padding: 16px;
-
-            border-radius: 9px;
-
-            color: #a7bacb;
-
-            background:
-                rgba(0, 0, 0, .20);
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-        .progress {
-
-            height: 5px;
-
-            margin-bottom: 20px;
-
-            overflow: hidden;
-
-            border-radius: 20px;
-
-            background:
-                rgba(255,255,255,.06);
-        }
-
-        .progress-bar {
-
-            width: 0%;
-
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    #00bfff,
-                    #7d50ff
-                );
-
-            transition: width .3s ease;
-        }
-
-        .navigation {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 10px;
-
-            margin-top: 25px;
-        }
-
-        .navigation a {
-
-            padding: 14px;
-
-            border:
-                1px solid rgba(0,191,255,.09);
-
-            border-radius: 8px;
-
-            color: #71879b;
-
-            text-align: center;
-
-            text-decoration: none;
-
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        @media (max-width: 600px) {
-
-            .lab-page {
-                padding: 45px 12px 60px;
-            }
-
-            .lab-hero {
-                padding: 27px 20px;
-            }
-
-            .lab-hero h1 {
-                font-size: 29px;
-            }
-
-            .lab-card {
-                padding: 20px;
-            }
-
-            .submit-area {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .submit-button {
-                width: 100%;
-            }
-
-            .navigation {
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -569,8 +108,8 @@
     </div>
 
     <h1>
-        <span>HTTP / HTTPS</span> Security Lab
-    </h1>
+ <span>HTTP / HTTPS</span> Security Lab
+ </h1>
 
     <p>
         Analyze simulated web traffic, identify HTTP request and response
@@ -602,8 +141,8 @@
         </div>
 
         <h2>
-            Analyze the Traffic
-        </h2>
+ Analyze the Traffic
+ </h2>
 
     </div>
 
@@ -660,8 +199,8 @@
         </div>
 
         <h2>
-            Concept Check
-        </h2>
+ Concept Check
+ </h2>
 
     </div>
 
@@ -679,23 +218,23 @@
 
             <button class="option"
                 onclick="selectAnswer(this, 'HTTP')">
-                HTTP
-            </button>
+ HTTP
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'FTP')">
-                FTP
-            </button>
+ FTP
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'DNS')">
-                DNS
-            </button>
+ DNS
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'SSH')">
-                SSH
-            </button>
+ SSH
+ </button>
 
         </div>
 
@@ -717,23 +256,23 @@
 
             <button class="option"
                 onclick="selectAnswer(this, '200 OK')">
-                Request was successfully processed
-            </button>
+ Request was successfully processed
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, '404')">
-                Resource was not found
-            </button>
+ Resource was not found
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, '500')">
-                Server error
-            </button>
+ Server error
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, '401')">
-                Authentication required
-            </button>
+ Authentication required
+ </button>
 
         </div>
 
@@ -755,23 +294,23 @@
 
             <button class="option"
                 onclick="selectAnswer(this, 'HTTP')">
-                HTTP
-            </button>
+ HTTP
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'HTTPS')">
-                HTTPS
-            </button>
+ HTTPS
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'FTP')">
-                FTP
-            </button>
+ FTP
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'DNS')">
-                DNS
-            </button>
+ DNS
+ </button>
 
         </div>
 
@@ -793,23 +332,23 @@
 
             <button class="option"
                 onclick="selectAnswer(this, 'TCP')">
-                TCP
-            </button>
+ TCP
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'DNS')">
-                DNS
-            </button>
+ DNS
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'TLS')">
-                TLS
-            </button>
+ TLS
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'HTML')">
-                HTML
-            </button>
+ HTML
+ </button>
 
         </div>
 
@@ -831,23 +370,23 @@
 
             <button class="option"
                 onclick="selectAnswer(this, '200')">
-                200
-            </button>
+ 200
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, '404')">
-                404
-            </button>
+ 404
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, '301')">
-                301
-            </button>
+ 301
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, '500')">
-                500
-            </button>
+ 500
+ </button>
 
         </div>
 
@@ -867,8 +406,8 @@
         </div>
 
         <h2>
-            Security Decision
-        </h2>
+ Security Decision
+ </h2>
 
     </div>
 
@@ -887,18 +426,18 @@
 
             <button class="option"
                 onclick="selectAnswer(this, 'HTTP')">
-                HTTP
-            </button>
+ HTTP
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'HTTPS')">
-                HTTPS
-            </button>
+ HTTPS
+ </button>
 
             <button class="option"
                 onclick="selectAnswer(this, 'FTP')">
-                FTP
-            </button>
+ FTP
+ </button>
 
         </div>
 
@@ -918,8 +457,8 @@
         </div>
 
         <h2>
-            Lab Result
-        </h2>
+ Lab Result
+ </h2>
 
     </div>
 
@@ -947,8 +486,8 @@
             class="submit-button"
             onclick="checkLab()"
         >
-            Check Lab →
-        </button>
+ Check Lab →
+ </button>
 
     </div>
 

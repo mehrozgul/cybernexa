@@ -1,1264 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Lab 03 - Linux Commands - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Lab 03 - Linux Commands - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        /* =====================================================
-           GLOBAL
-        ====================================================== */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-
-        /* =====================================================
-           MAIN PAGE
-        ====================================================== */
-
-        .linux-lab-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(34, 211, 238, 0.08),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(59, 130, 246, 0.07),
-                    transparent 30%
-                ),
-                #02080d;
-        }
-
-
-        .linux-lab-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-
-        /* =====================================================
-           HEADER
-        ====================================================== */
-
-        .linux-lab-header {
-
-            text-align: center;
-
-            margin-bottom: 35px;
-        }
-
-
-        .linux-lab-number {
-
-            display: inline-block;
-
-            margin-bottom: 12px;
-
-            color: #67e8f9;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-
-
-        .linux-lab-header h1 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 44px;
-
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-
-        .linux-lab-header h1 span {
-
-            color: #67e8f9;
-        }
-
-
-        .linux-lab-intro {
-
-            max-width: 760px;
-
-            margin: 18px auto 0;
-
-            color: #b6c2cc;
-
-            font-size: 15px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           LAB STATUS
-        ====================================================== */
-
-        .lab-status {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 15px;
-
-            margin-bottom: 25px;
-
-            padding: 15px 18px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.16);
-
-            border-radius: 10px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-        }
-
-
-        .lab-status-text {
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-        }
-
-
-        .lab-status-text strong {
-
-            color: #67e8f9;
-        }
-
-
-        .lab-status-badge {
-
-            padding: 7px 12px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.22);
-
-            border-radius: 7px;
-
-            color: #94a3b8;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            font-size: 11px;
-
-            font-weight: 700;
-        }
-
-
-        .lab-status-badge.completed {
-
-            color: #67e8f9;
-
-            border-color:
-                rgba(103, 232, 249, 0.55);
-
-            background:
-                rgba(103, 232, 249, 0.10);
-        }
-
-
-        /* =====================================================
-           MAIN CARD
-        ====================================================== */
-
-        .linux-lab-card {
-
-            position: relative;
-
-            width: 100%;
-
-            margin-bottom: 22px;
-
-            padding: 30px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.16);
-
-            border-radius: 15px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 25, 35, 0.98),
-                    rgba(3, 13, 20, 0.98)
-                );
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.28);
-
-            overflow: hidden;
-
-            transition:
-                border-color 0.25s ease,
-                box-shadow 0.25s ease,
-                transform 0.25s ease;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .linux-lab-card:hover {
-
-                border-color:
-                    rgba(103, 232, 249, 0.42);
-
-                box-shadow:
-                    0 18px 45px rgba(0, 0, 0, 0.32),
-                    0 0 28px rgba(103, 232, 249, 0.08);
-
-                transform: translateY(-2px);
-            }
-        }
-
-
-        /* =====================================================
-           SWEEP EFFECT
-        ====================================================== */
-
-        .linux-lab-card::after,
-        .linux-step-card::after {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: -120%;
-
-            width: 55%;
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    100deg,
-                    transparent,
-                    rgba(103, 232, 249, 0.06),
-                    rgba(255, 255, 255, 0.10),
-                    rgba(103, 232, 249, 0.06),
-                    transparent
-                );
-
-            transform: skewX(-18deg);
-
-            pointer-events: none;
-
-            opacity: 0;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .linux-lab-card:hover::after,
-            .linux-step-card:hover::after {
-
-                animation:
-                    linuxLabLightSweep 0.75s ease forwards;
-            }
-        }
-
-
-        .mobile-sweep::after {
-
-            animation:
-                linuxLabMobileSweep 0.75s ease forwards !important;
-        }
-
-
-        @keyframes linuxLabLightSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        @keyframes linuxLabMobileSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        /* =====================================================
-           CARD HEADING
-        ====================================================== */
-
-        .linux-card-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-
-            margin-bottom: 18px;
-        }
-
-
-        .linux-icon {
-
-            width: 42px;
-            height: 42px;
-
-            flex-shrink: 0;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.30);
-
-            border-radius: 10px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 18px;
-        }
-
-
-        .linux-lab-card h2 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 21px;
-
-            font-weight: 750;
-        }
-
-
-        .linux-lab-card p {
-
-            margin: 0 0 14px;
-
-            color: #b6c2cc;
-
-            font-size: 14px;
-
-            line-height: 1.85;
-        }
-
-
-        .linux-lab-card p:last-child {
-
-            margin-bottom: 0;
-        }
-
-
-        /* =====================================================
-           OBJECTIVE
-        ====================================================== */
-
-        .objective-list {
-
-            margin: 18px 0 0;
-
-            padding: 0;
-
-            list-style: none;
-        }
-
-
-        .objective-list li {
-
-            position: relative;
-
-            padding:
-                9px 0 9px 24px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-
-            border-bottom:
-                1px solid
-                rgba(103, 232, 249, 0.07);
-        }
-
-
-        .objective-list li:last-child {
-
-            border-bottom: none;
-        }
-
-
-        .objective-list li::before {
-
-            content: "✓";
-
-            position: absolute;
-
-            left: 0;
-            top: 9px;
-
-            color: #67e8f9;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           STEP CARD
-        ====================================================== */
-
-        .linux-step-card {
-
-            position: relative;
-
-            margin-top: 18px;
-
-            padding: 22px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.13);
-
-            border-radius: 11px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-
-            overflow: hidden;
-        }
-
-
-        .step-header {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 11px;
-
-            margin-bottom: 14px;
-        }
-
-
-        .step-number {
-
-            width: 31px;
-            height: 31px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            flex-shrink: 0;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.35);
-
-            border-radius: 8px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.08);
-
-            font-size: 12px;
-
-            font-weight: 800;
-        }
-
-
-        .step-header h3 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 16px;
-        }
-
-
-        .step-description {
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-
-            margin-bottom: 15px;
-        }
-
-
-        /* =====================================================
-           STEP INSTRUCTIONS
-        ====================================================== */
-
-        .step-instructions {
-
-            margin: 0 0 16px;
-
-            padding-left: 21px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.8;
-        }
-
-
-        .step-instructions li {
-
-            margin-bottom: 6px;
-        }
-
-
-        .step-instructions li:last-child {
-
-            margin-bottom: 0;
-        }
-
-
-        /* =====================================================
-           COMMAND BOX
-        ====================================================== */
-
-        .command-wrapper {
-
-            position: relative;
-
-            margin-top: 15px;
-        }
-
-
-        .command-label {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            color: #94a3b8;
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            letter-spacing: 0.5px;
-
-            text-transform: uppercase;
-        }
-
-
-        .command-box {
-
-            position: relative;
-
-            padding: 16px 54px 16px 17px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.16);
-
-            border-radius: 9px;
-
-            background: #01060a;
-
-            overflow-x: auto;
-        }
-
-
-        .command-box code {
-
-            color: #7dd3fc;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            line-height: 1.8;
-
-            white-space: pre;
-        }
-
-
-        /* =====================================================
-           COPY BUTTON
-        ====================================================== */
-
-        .copy-command-btn {
-
-            position: absolute;
-
-            right: 9px;
-            top: 9px;
-
-            padding: 7px 9px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.25);
-
-            border-radius: 7px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.06);
-
-            cursor: pointer;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-
-        .copy-command-btn:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.60);
-
-            background:
-                rgba(103, 232, 249, 0.12);
-        }
-
-
-        .copy-command-btn.copied {
-
-            color: #f8fafc;
-
-            border-color:
-                rgba(103, 232, 249, 0.65);
-
-            background:
-                rgba(103, 232, 249, 0.16);
-        }
-
-
-        /* =====================================================
-           EXPECTED RESULT
-        ====================================================== */
-
-        .expected-result {
-
-            margin-top: 15px;
-
-            padding: 14px 16px;
-
-            border-left:
-                3px solid
-                #67e8f9;
-
-            border-radius:
-                0 8px 8px 0;
-
-            background:
-                rgba(103, 232, 249, 0.045);
-        }
-
-
-        .expected-result strong {
-
-            display: block;
-
-            margin-bottom: 5px;
-
-            color: #f8fafc;
-
-            font-size: 12px;
-        }
-
-
-        .expected-result span {
-
-            color: #aebbc5;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-
-        /* =====================================================
-           SAFETY NOTE
-        ====================================================== */
-
-        .safety-note {
-
-            margin-top: 14px;
-
-            padding: 13px 15px;
-
-            border:
-                1px solid
-                rgba(251, 191, 36, 0.16);
-
-            border-radius: 8px;
-
-            color: #b8b29c;
-
-            background:
-                rgba(251, 191, 36, 0.035);
-
-            font-size: 11px;
-
-            line-height: 1.7;
-        }
-
-
-        .safety-note strong {
-
-            color: #facc15;
-        }
-
-
-        /* =====================================================
-           PRACTICAL FLOW
-        ====================================================== */
-
-        .lab-flow {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 22px;
-        }
-
-
-        .lab-flow-item {
-
-            padding: 11px 15px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.20);
-
-            border-radius: 8px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-            text-align: center;
-        }
-
-
-        .lab-flow-arrow {
-
-            color: #67e8f9;
-
-            font-size: 18px;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           FINAL COMPLETION
-        ====================================================== */
-
-        .completion-card {
-
-            text-align: center;
-
-            padding: 32px 25px;
-        }
-
-
-        .completion-card h2 {
-
-            margin-bottom: 10px;
-        }
-
-
-        .completion-card p {
-
-            max-width: 650px;
-
-            margin: 0 auto 20px;
-        }
-
-
-        .complete-lab-btn {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 9px;
-
-            padding: 14px 23px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.35);
-
-            border-radius: 9px;
-
-            color: #02080d;
-
-            background: #67e8f9;
-
-            cursor: pointer;
-
-            font-size: 13px;
-
-            font-weight: 800;
-
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease,
-                background 0.2s ease;
-        }
-
-
-        .complete-lab-btn:hover {
-
-            transform: translateY(-2px);
-
-            background: #a5f3fc;
-
-            box-shadow:
-                0 8px 25px
-                rgba(103, 232, 249, 0.20);
-        }
-
-
-        .complete-lab-btn.completed {
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.08);
-
-            border-color:
-                rgba(103, 232, 249, 0.60);
-
-            cursor: default;
-
-            transform: none;
-
-            box-shadow: none;
-        }
-
-
-        .completion-message {
-
-            display: none;
-
-            margin-top: 15px;
-
-            color: #67e8f9;
-
-            font-size: 13px;
-
-            font-weight: 700;
-        }
-
-
-        .completion-message.show {
-
-            display: block;
-        }
-
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-
-        .linux-lab-navigation {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-top: 35px;
-        }
-
-
-        .linux-lab-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            padding: 13px 18px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.25);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-
-        .linux-lab-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.65);
-
-            background:
-                rgba(103, 232, 249, 0.10);
-
-            transform: translateY(-1px);
-        }
-
-
-        .linux-lab-button span {
-
-            color: #67e8f9;
-
-            font-size: 17px;
-        }
-
-
-        /* =====================================================
-           TABLET
-        ====================================================== */
-
-        @media (max-width: 800px) {
-
-            .linux-lab-page {
-
-                padding:
-                    55px 15px 65px;
-            }
-
-
-            .linux-lab-header h1 {
-
-                font-size: 36px;
-            }
-
-
-            .linux-lab-intro {
-
-                font-size: 14px;
-            }
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 600px) {
-
-            .linux-lab-page {
-
-                padding:
-                    45px 12px 55px;
-            }
-
-
-            .linux-lab-header {
-
-                margin-bottom: 28px;
-            }
-
-
-            .linux-lab-header h1 {
-
-                font-size: 30px;
-
-                line-height: 1.25;
-            }
-
-
-            .linux-lab-intro {
-
-                margin-top: 14px;
-
-                font-size: 13px;
-
-                line-height: 1.75;
-            }
-
-
-            .lab-status {
-
-                flex-direction: column;
-
-                align-items: flex-start;
-            }
-
-
-            .linux-lab-card {
-
-                padding:
-                    21px 18px;
-
-                margin-bottom: 16px;
-
-                border-radius: 12px;
-            }
-
-
-            .linux-card-heading {
-
-                gap: 10px;
-
-                margin-bottom: 15px;
-            }
-
-
-            .linux-icon {
-
-                width: 37px;
-                height: 37px;
-
-                font-size: 16px;
-            }
-
-
-            .linux-lab-card h2 {
-
-                font-size: 18px;
-            }
-
-
-            .linux-lab-card p {
-
-                font-size: 13px;
-
-                line-height: 1.8;
-            }
-
-
-            .linux-step-card {
-
-                padding: 17px;
-            }
-
-
-            .step-header h3 {
-
-                font-size: 15px;
-            }
-
-
-            .step-description,
-            .step-instructions {
-
-                font-size: 12px;
-            }
-
-
-            .command-box code {
-
-                font-size: 12px;
-            }
-
-
-            .lab-flow {
-
-                flex-direction: column;
-
-                align-items: stretch;
-            }
-
-
-            .lab-flow-item {
-
-                width: 100%;
-            }
-
-
-            .lab-flow-arrow {
-
-                display: flex;
-
-                justify-content: center;
-
-                font-size: 0;
-            }
-
-
-            .lab-flow-arrow::after {
-
-                content: "↓";
-
-                color: #67e8f9;
-
-                font-size: 18px;
-            }
-
-
-            .linux-lab-navigation {
-
-                flex-direction: column;
-
-                align-items: stretch;
-
-                margin-top: 25px;
-            }
-
-
-            .linux-lab-button {
-
-                width: 100%;
-
-                justify-content: center;
-            }
-        }
-
-
-        /* =====================================================
-           SMALL MOBILE
-        ====================================================== */
-
-        @media (max-width: 380px) {
-
-            .linux-lab-header h1 {
-
-                font-size: 27px;
-            }
-
-
-            .linux-lab-page {
-
-                padding-left: 10px;
-
-                padding-right: 10px;
-            }
-
-
-            .linux-lab-card {
-
-                padding:
-                    18px 15px;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -1363,8 +124,8 @@
                 </div>
 
                 <h1>
-                   Lab 03 - <span>Linux Commands</span>
-                </h1>
+ Lab 03 - <span>Linux Commands</span>
+ </h1>
 
                 <p class="linux-lab-intro">
 
@@ -1395,9 +156,7 @@
                 <div
                     class="lab-status-badge"
                     id="labStatusBadge"
-                >
-                    Not Completed
-                </div>
+                >Not Completed</div>
 
             </div>
 
@@ -1416,8 +175,8 @@
                     </div>
 
                     <h2>
-                        Lab Objective
-                    </h2>
+ Lab Objective
+ </h2>
 
                 </div>
 
@@ -1484,8 +243,8 @@
                     </div>
 
                     <h2>
-                        Before You Start
-                    </h2>
+ Before You Start
+ </h2>
 
                 </div>
 
@@ -1531,8 +290,8 @@
                     </div>
 
                     <h2>
-                        Task 1 — Check Your Current Location
-                    </h2>
+ Task 1 — Check Your Current Location
+ </h2>
 
                 </div>
 
@@ -1546,8 +305,8 @@
                         </div>
 
                         <h3>
-                            Use the pwd command
-                        </h3>
+ Use the pwd command
+ </h3>
 
                     </div>
 
@@ -1595,8 +354,8 @@
                                 class="copy-command-btn"
                                 onclick="copyCommand('command1', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -1638,8 +397,8 @@
                     </div>
 
                     <h2>
-                        Task 2 — List Files and Directories
-                    </h2>
+ Task 2 — List Files and Directories
+ </h2>
 
                 </div>
 
@@ -1653,8 +412,8 @@
                         </div>
 
                         <h3>
-                            Use ls
-                        </h3>
+ Use ls
+ </h3>
 
                     </div>
 
@@ -1702,8 +461,8 @@
                                 class="copy-command-btn"
                                 onclick="copyCommand('command2', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -1734,8 +493,8 @@
                         </div>
 
                         <h3>
-                            Display Detailed Files
-                        </h3>
+ Display Detailed Files
+ </h3>
 
                     </div>
 
@@ -1779,8 +538,8 @@
                                 class="copy-command-btn"
                                 onclick="copyCommand('command3', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -1822,8 +581,8 @@
                     </div>
 
                     <h2>
-                        Task 3 — Create and Manage a File
-                    </h2>
+ Task 3 — Create and Manage a File
+ </h2>
 
                 </div>
 
@@ -1837,8 +596,8 @@
                         </div>
 
                         <h3>
-                            Create a File
-                        </h3>
+ Create a File
+ </h3>
 
                     </div>
 
@@ -1882,8 +641,8 @@
                                 class="copy-command-btn"
                                 onclick="copyCommand('command4', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -1915,8 +674,8 @@
                         </div>
 
                         <h3>
-                            Copy the File
-                        </h3>
+ Copy the File
+ </h3>
 
                     </div>
 
@@ -1962,8 +721,8 @@ cp notes.txt backup.txt
                                 class="copy-command-btn"
                                 onclick="copyCommand('command5', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -1997,8 +756,8 @@ cp notes.txt backup.txt
                         </div>
 
                         <h3>
-                            Rename the File
-                        </h3>
+ Rename the File
+ </h3>
 
                     </div>
 
@@ -2044,8 +803,8 @@ mv backup.txt backup-copy.txt
                                 class="copy-command-btn"
                                 onclick="copyCommand('command6', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2079,8 +838,8 @@ mv backup.txt backup-copy.txt
                         </div>
 
                         <h3>
-                            Remove the File
-                        </h3>
+ Remove the File
+ </h3>
 
                     </div>
 
@@ -2126,8 +885,8 @@ rm backup-copy.txt
                                 class="copy-command-btn"
                                 onclick="copyCommand('command7', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2175,8 +934,8 @@ rm backup-copy.txt
                     </div>
 
                     <h2>
-                        Task 4 — Create and Manage a Directory
-                    </h2>
+ Task 4 — Create and Manage a Directory
+ </h2>
 
                 </div>
 
@@ -2190,8 +949,8 @@ rm backup-copy.txt
                         </div>
 
                         <h3>
-                            Create a Directory
-                        </h3>
+ Create a Directory
+ </h3>
 
                     </div>
 
@@ -2237,8 +996,8 @@ mkdir cybersecurity
                                 class="copy-command-btn"
                                 onclick="copyCommand('command8', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2270,8 +1029,8 @@ mkdir cybersecurity
                         </div>
 
                         <h3>
-                            Enter the Directory
-                        </h3>
+ Enter the Directory
+ </h3>
 
                     </div>
 
@@ -2322,8 +1081,8 @@ cd cybersecurity
                                 class="copy-command-btn"
                                 onclick="copyCommand('command9', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2357,8 +1116,8 @@ cd cybersecurity
                         </div>
 
                         <h3>
-                            Create a File Inside the Directory
-                        </h3>
+ Create a File Inside the Directory
+ </h3>
 
                     </div>
 
@@ -2404,8 +1163,8 @@ touch notes.txt
                                 class="copy-command-btn"
                                 onclick="copyCommand('command10', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2437,8 +1196,8 @@ touch notes.txt
                         </div>
 
                         <h3>
-                            List the Directory Contents
-                        </h3>
+ List the Directory Contents
+ </h3>
 
                     </div>
 
@@ -2482,8 +1241,8 @@ touch notes.txt
                                 class="copy-command-btn"
                                 onclick="copyCommand('command11', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2522,8 +1281,8 @@ touch notes.txt
                     </div>
 
                     <h2>
-                        Task 5 — View File Content
-                    </h2>
+ Task 5 — View File Content
+ </h2>
 
                 </div>
 
@@ -2537,8 +1296,8 @@ touch notes.txt
                         </div>
 
                         <h3>
-                            Display File Content
-                        </h3>
+ Display File Content
+ </h3>
 
                     </div>
 
@@ -2588,8 +1347,8 @@ cat notes.txt
                                 class="copy-command-btn"
                                 onclick="copyCommand('command12', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2624,8 +1383,8 @@ cat notes.txt
                         </div>
 
                         <h3>
-                            View the Beginning of a File
-                        </h3>
+ View the Beginning of a File
+ </h3>
 
                     </div>
 
@@ -2646,8 +1405,8 @@ head notes.txt
                                 class="copy-command-btn"
                                 onclick="copyCommand('command13', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2678,8 +1437,8 @@ head notes.txt
                         </div>
 
                         <h3>
-                            View the End of a File
-                        </h3>
+ View the End of a File
+ </h3>
 
                     </div>
 
@@ -2700,8 +1459,8 @@ tail notes.txt
                                 class="copy-command-btn"
                                 onclick="copyCommand('command14', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2739,8 +1498,8 @@ tail notes.txt
                     </div>
 
                     <h2>
-                        Task 6 — Search for Files and Commands
-                    </h2>
+ Task 6 — Search for Files and Commands
+ </h2>
 
                 </div>
 
@@ -2754,8 +1513,8 @@ tail notes.txt
                         </div>
 
                         <h3>
-                            Search for a File
-                        </h3>
+ Search for a File
+ </h3>
 
                     </div>
 
@@ -2805,8 +1564,8 @@ find . -name "notes.txt"
                                 class="copy-command-btn"
                                 onclick="copyCommand('command15', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2841,8 +1600,8 @@ find . -name "notes.txt"
                         </div>
 
                         <h3>
-                            Find the Location of a Command
-                        </h3>
+ Find the Location of a Command
+ </h3>
 
                     </div>
 
@@ -2871,8 +1630,8 @@ which ls
                                 class="copy-command-btn"
                                 onclick="copyCommand('command16', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2907,8 +1666,8 @@ which ls
                         </div>
 
                         <h3>
-                            Search Text with grep
-                        </h3>
+ Search Text with grep
+ </h3>
 
                     </div>
 
@@ -2937,8 +1696,8 @@ grep "Linux" notes.txt
                                 class="copy-command-btn"
                                 onclick="copyCommand('command17', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -2982,8 +1741,8 @@ grep "Linux" notes.txt
                     </div>
 
                     <h2>
-                        Task 7 — Check System Information
-                    </h2>
+ Task 7 — Check System Information
+ </h2>
 
                 </div>
 
@@ -2997,8 +1756,8 @@ grep "Linux" notes.txt
                         </div>
 
                         <h3>
-                            Check Current Username
-                        </h3>
+ Check Current Username
+ </h3>
 
                     </div>
 
@@ -3019,8 +1778,8 @@ whoami
                                 class="copy-command-btn"
                                 onclick="copyCommand('command18', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -3051,8 +1810,8 @@ whoami
                         </div>
 
                         <h3>
-                            Check Hostname
-                        </h3>
+ Check Hostname
+ </h3>
 
                     </div>
 
@@ -3073,8 +1832,8 @@ hostname
                                 class="copy-command-btn"
                                 onclick="copyCommand('command19', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -3105,8 +1864,8 @@ hostname
                         </div>
 
                         <h3>
-                            Check Kernel Information
-                        </h3>
+ Check Kernel Information
+ </h3>
 
                     </div>
 
@@ -3127,8 +1886,8 @@ uname -a
                                 class="copy-command-btn"
                                 onclick="copyCommand('command20', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -3159,8 +1918,8 @@ uname -a
                         </div>
 
                         <h3>
-                            Check System Uptime
-                        </h3>
+ Check System Uptime
+ </h3>
 
                     </div>
 
@@ -3181,8 +1940,8 @@ uptime
                                 class="copy-command-btn"
                                 onclick="copyCommand('command21', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -3220,8 +1979,8 @@ uptime
                     </div>
 
                     <h2>
-                        Task 8 — Check Disk and Memory Usage
-                    </h2>
+ Task 8 — Check Disk and Memory Usage
+ </h2>
 
                 </div>
 
@@ -3235,8 +1994,8 @@ uptime
                         </div>
 
                         <h3>
-                            Check Disk Space
-                        </h3>
+ Check Disk Space
+ </h3>
 
                     </div>
 
@@ -3257,8 +2016,8 @@ df -h
                                 class="copy-command-btn"
                                 onclick="copyCommand('command22', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -3289,8 +2048,8 @@ df -h
                         </div>
 
                         <h3>
-                            Check Memory Usage
-                        </h3>
+ Check Memory Usage
+ </h3>
 
                     </div>
 
@@ -3311,8 +2070,8 @@ free -h
                                 class="copy-command-btn"
                                 onclick="copyCommand('command23', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -3343,8 +2102,8 @@ free -h
                         </div>
 
                         <h3>
-                            Check Running Processes
-                        </h3>
+ Check Running Processes
+ </h3>
 
                     </div>
 
@@ -3365,8 +2124,8 @@ top
                                 class="copy-command-btn"
                                 onclick="copyCommand('command24', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -3417,8 +2176,8 @@ top
                     </div>
 
                     <h2>
-                        Task 9 — Practice Permissions
-                    </h2>
+ Task 9 — Practice Permissions
+ </h2>
 
                 </div>
 
@@ -3432,8 +2191,8 @@ top
                         </div>
 
                         <h3>
-                            Change File Permissions
-                        </h3>
+ Change File Permissions
+ </h3>
 
                     </div>
 
@@ -3483,8 +2242,8 @@ chmod 600 notes.txt
                                 class="copy-command-btn"
                                 onclick="copyCommand('command25', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -3528,8 +2287,8 @@ chmod 600 notes.txt
                         </div>
 
                         <h3>
-                            Use sudo for Authorized Privileges
-                        </h3>
+ Use sudo for Authorized Privileges
+ </h3>
 
                     </div>
 
@@ -3558,8 +2317,8 @@ sudo whoami
                                 class="copy-command-btn"
                                 onclick="copyCommand('command26', this)"
                             >
-                                Copy
-                            </button>
+ Copy
+ </button>
 
                         </div>
 
@@ -3610,8 +2369,8 @@ sudo whoami
                     </div>
 
                     <h2>
-                        Complete Practical Flow
-                    </h2>
+ Complete Practical Flow
+ </h2>
 
                 </div>
 
@@ -3697,8 +2456,8 @@ sudo whoami
                     </div>
 
                     <h2>
-                        Why This Lab Matters in Cybersecurity
-                    </h2>
+ Why This Lab Matters in Cybersecurity
+ </h2>
 
                 </div>
 
@@ -3755,8 +2514,8 @@ sudo whoami
                     </div>
 
                     <h2>
-                        Complete Lab 03
-                    </h2>
+ Complete Lab 03
+ </h2>
 
                 </div>
 
@@ -3775,13 +2534,13 @@ sudo whoami
                     onclick="completeLab()"
                 >
 
-                    <span>
-                        ✓
-                    </span>
+ <span>
+ 
+ </span>
 
-                    Complete Lab 03
+ Complete Lab 03
 
-                </button>
+ </button>
 
 
                 <div
@@ -3809,15 +2568,15 @@ sudo whoami
                     class="linux-lab-button previous"
                 >
 
-                    <span>
-                        ←
-                    </span>
+ <span>
+ ←
+ </span>
 
-                    <strong>
-                        Previous: Linux File System
-                    </strong>
+ <strong>
+ Previous: Linux File System
+ </strong>
 
-                </a>
+ </a>
 
 
                 <a
@@ -3825,15 +2584,15 @@ sudo whoami
                     class="linux-lab-button next"
                 >
 
-                    <strong>
-                        Next Topic: Users & groups
-                    </strong>
+ <strong>
+ Next Topic: Users & groups
+ </strong>
 
-                    <span>
-                        →
-                    </span>
+ <span>
+ →
+ </span>
 
-                </a>
+ </a>
 
 
             </div>

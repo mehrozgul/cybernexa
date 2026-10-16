@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,778 +7,27 @@
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07101e">
 
     <title>Digital Forensics | CyberNexa</title>
 
     <meta name="description"
           content="CyberNexa Digital Forensics theory learning path covering evidence, metadata, Windows, Linux, browser, log, network and disk forensics.">
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet"
           href="../../../css/base.css">
 
-    <link rel="stylesheet"
+        <link rel="stylesheet"
           href="../../../css/navbar.css">
 
-    <link rel="stylesheet"
+        <link rel="stylesheet"
           href="../../../css/footer.css">
-
-
-<style>
-
-/* =========================================================
-   DIGITAL FORENSICS - MAIN THEORY PAGE
-   CYBERNEXA
-   ========================================================= */
-
-:root {
-
-    --df-bg: #071018;
-    --df-panel: #0b1722;
-    --df-panel-2: #0e1d2a;
-
-    --df-border: #183246;
-
-    --df-cyan: #39d9ff;
-    --df-blue: #198cff;
-
-    --df-text: #e8f7ff;
-    --df-muted: #91a8b8;
-
-    --df-green: #45e0a8;
-    --df-warning: #ffc857;
-}
-
-
-* {
-    box-sizing: border-box;
-}
-
-
-html {
-    overflow-x: hidden;
-}
-
-
-body {
-
-    margin: 0;
-
-    background:
-
-        radial-gradient(
-            circle at 10% 10%,
-            rgba(25, 140, 255, 0.10),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 90% 20%,
-            rgba(57, 217, 255, 0.08),
-            transparent 25%
-        ),
-
-        var(--df-bg);
-
-    color: var(--df-text);
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    overflow-x: hidden;
-}
-
-
-a {
-    text-decoration: none;
-}
-
-
-/* =========================================================
-   MAIN CONTAINER
-   ========================================================= */
-
-.df-container {
-
-    width: min(1180px, 92%);
-
-    margin: auto;
-}
-
-
-/* =========================================================
-   HERO
-   ========================================================= */
-
-.df-hero {
-
-    position: relative;
-
-    overflow: hidden;
-
-    padding:
-        75px
-        20px
-        65px;
-
-    border-bottom:
-        1px solid
-        var(--df-border);
-}
-
-
-.df-hero::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    background:
-
-        linear-gradient(
-            90deg,
-            transparent 0%,
-            rgba(57, 217, 255, 0.04) 50%,
-            transparent 100%
-        );
-
-    pointer-events: none;
-}
-
-
-.df-breadcrumb {
-
-    color:
-        var(--df-cyan);
-
-    font-size: 13px;
-
-    margin-bottom: 22px;
-
-    letter-spacing: 0.5px;
-}
-
-
-.df-hero-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        1.3fr 0.7fr;
-
-    gap: 45px;
-
-    align-items: center;
-}
-
-
-.df-hero h1 {
-
-    margin:
-        0
-        0
-        18px;
-
-    font-size:
-        clamp(38px, 5vw, 64px);
-
-    line-height: 1.05;
-
-    letter-spacing: -1px;
-}
-
-
-.df-hero h1 span {
-
-    color:
-        var(--df-cyan);
-}
-
-
-.df-hero p {
-
-    max-width: 720px;
-
-    color:
-        var(--df-muted);
-
-    line-height: 1.8;
-
-    font-size: 17px;
-}
-
-
-.df-badge {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    padding:
-        9px
-        14px;
-
-    margin-bottom: 18px;
-
-    border:
-        1px solid
-        rgba(57, 217, 255, 0.35);
-
-    border-radius: 5px;
-
-    background:
-        rgba(57, 217, 255, 0.06);
-
-    color:
-        var(--df-cyan);
-
-    font-size: 13px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
-}
-
-
-/* =========================================================
-   FORENSIC CASE CARD
-   ========================================================= */
-
-.df-case-card {
-
-    border:
-        1px solid
-        var(--df-border);
-
-    background:
-
-        linear-gradient(
-            145deg,
-            rgba(14, 29, 42, 0.95),
-            rgba(7, 16, 24, 0.95)
-        );
-
-    border-radius: 10px;
-
-    padding: 25px;
-
-    box-shadow:
-        0 15px 45px
-        rgba(0, 0, 0, 0.25);
-}
-
-
-.df-case-title {
-
-    display: flex;
-
-    justify-content:
-        space-between;
-
-    align-items: center;
-
-    margin-bottom: 22px;
-}
-
-
-.df-case-title strong {
-
-    font-size: 14px;
-
-    letter-spacing: 1px;
-}
-
-
-.df-status {
-
-    color:
-        var(--df-green);
-
-    font-size: 12px;
-}
-
-
-.df-case-line {
-
-    height: 1px;
-
-    background:
-        var(--df-border);
-
-    margin:
-        15px 0;
-}
-
-
-.df-case-row {
-
-    display: flex;
-
-    justify-content:
-        space-between;
-
-    gap: 20px;
-
-    padding:
-        8px 0;
-
-    color:
-        var(--df-muted);
-
-    font-size: 13px;
-}
-
-
-.df-case-row span:last-child {
-
-    color:
-        var(--df-text);
-}
-
-
-/* =========================================================
-   SECTION
-   ========================================================= */
-
-.df-section {
-
-    padding:
-        75px 0;
-}
-
-
-.df-section-heading {
-
-    text-align: center;
-
-    max-width: 750px;
-
-    margin:
-        0 auto 45px;
-}
-
-
-.df-section-heading h2 {
-
-    margin:
-        0 0 12px;
-
-    font-size: 34px;
-}
-
-
-.df-section-heading p {
-
-    color:
-        var(--df-muted);
-
-    line-height: 1.7;
-}
-
-
-/* =========================================================
-   TOPIC GRID
-   ========================================================= */
-
-.df-topic-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 18px;
-}
-
-
-.df-topic {
-
-    position: relative;
-
-    min-height: 220px;
-
-    padding: 25px;
-
-    border:
-        1px solid
-        var(--df-border);
-
-    border-radius: 8px;
-
-    background:
-        var(--df-panel);
-
-    overflow: hidden;
-
-    transition:
-        0.25s ease;
-}
-
-
-.df-topic::before {
-
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-
-    top: 0;
-
-    bottom: 0;
-
-    width: 3px;
-
-    background:
-        var(--df-cyan);
-
-    opacity: 0.75;
-}
-
-
-.df-topic:hover {
-
-    transform:
-        translateY(-5px);
-
-    border-color:
-        rgba(57, 217, 255, 0.5);
-
-    box-shadow:
-        0 12px 35px
-        rgba(0, 0, 0, 0.28);
-}
-
-
-.df-number {
-
-    display: inline-flex;
-
-    width: 34px;
-
-    height: 34px;
-
-    align-items: center;
-
-    justify-content: center;
-
-    margin-bottom: 18px;
-
-    border:
-        1px solid
-        rgba(57, 217, 255, 0.35);
-
-    border-radius: 5px;
-
-    color:
-        var(--df-cyan);
-
-    font-size: 13px;
-
-    font-weight: bold;
-}
-
-
-.df-topic h3 {
-
-    margin:
-        0 0 10px;
-
-    font-size: 19px;
-}
-
-
-.df-topic p {
-
-    margin:
-        0 0 20px;
-
-    color:
-        var(--df-muted);
-
-    line-height: 1.6;
-
-    font-size: 14px;
-}
-
-
-.df-open {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    color:
-        var(--df-cyan);
-
-    font-size: 13px;
-
-    font-weight: bold;
-}
-
-
-/* =========================================================
-   WORKFLOW
-   ========================================================= */
-
-.df-workflow {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(5, 1fr);
-
-    gap: 12px;
-
-    margin-top: 35px;
-}
-
-
-.df-work-step {
-
-    padding:
-        18px
-        12px;
-
-    text-align: center;
-
-    border:
-        1px solid
-        var(--df-border);
-
-    background:
-        var(--df-panel);
-
-    border-radius: 7px;
-}
-
-
-.df-work-step span {
-
-    display: block;
-
-    margin-bottom: 8px;
-
-    color:
-        var(--df-cyan);
-
-    font-size: 12px;
-
-    font-weight: bold;
-}
-
-
-.df-work-step strong {
-
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   LAB CTA
-   ========================================================= */
-
-.df-lab-cta {
-
-    margin-top: 55px;
-
-    padding: 35px;
-
-    border:
-        1px solid
-        rgba(57, 217, 255, 0.3);
-
-    border-radius: 10px;
-
-    background:
-
-        linear-gradient(
-            135deg,
-            rgba(25, 140, 255, 0.09),
-            rgba(57, 217, 255, 0.03)
-        );
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content:
-        space-between;
-
-    gap: 30px;
-}
-
-
-.df-lab-cta h3 {
-
-    margin:
-        0 0 8px;
-
-    font-size: 24px;
-}
-
-
-.df-lab-cta p {
-
-    margin: 0;
-
-    color:
-        var(--df-muted);
-
-    line-height: 1.6;
-}
-
-
-.df-button {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding:
-        13px
-        20px;
-
-    border-radius: 5px;
-
-    background:
-        var(--df-cyan);
-
-    color:
-        #031018;
-
-    font-weight: bold;
-
-    white-space: nowrap;
-
-    transition:
-        0.2s ease;
-}
-
-
-.df-button:hover {
-
-    transform:
-        translateY(-2px);
-
-    box-shadow:
-        0 8px 25px
-        rgba(57, 217, 255, 0.2);
-}
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 950px) {
-
-    .df-hero-grid {
-
-        grid-template-columns: 1fr;
-    }
-
-
-    .df-topic-grid {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-
-    .df-workflow {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-
-    .df-lab-cta {
-
-        flex-direction: column;
-
-        align-items:
-            flex-start;
-    }
-
-}
-
-
-@media (max-width: 600px) {
-
-    .df-hero {
-
-        padding:
-            55px
-            0
-            45px;
-    }
-
-
-    .df-section {
-
-        padding:
-            55px 0;
-    }
-
-
-    .df-topic-grid {
-
-        grid-template-columns: 1fr;
-    }
-
-
-    .df-workflow {
-
-        grid-template-columns: 1fr;
-    }
-
-
-    .df-case-card {
-
-        padding: 20px;
-    }
-
-
-    .df-lab-cta {
-
-        padding: 25px;
-    }
-
-
-    .df-lab-cta .df-button {
-
-        width: 100%;
-    }
-
-}
-
-
-@media (max-width: 380px) {
-
-    .df-container {
-
-        width: 94%;
-    }
-
-
-    .df-hero h1 {
-
-        font-size: 32px;
-    }
-
-}
-
-</style>
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -815,18 +64,14 @@ a {
 
             <div>
 
-                <div class="df-badge">
-
-                    🔎 Digital Investigation Track
-
-                </div>
+                <div class="df-badge">Digital Investigation Track</div>
 
 
                 <h1>
 
-                    Digital <span>Forensics</span>
+ Digital <span>Forensics</span>
 
-                </h1>
+ </h1>
 
 
                 <p>
@@ -934,8 +179,8 @@ a {
             <div class="df-section-heading">
 
                 <h2>
-                    Digital Forensics Theory
-                </h2>
+ Digital Forensics Theory
+ </h2>
 
                 <p>
 
@@ -965,8 +210,8 @@ a {
                     </span>
 
                     <h3>
-                        Digital Forensics Introduction
-                    </h3>
+ Digital Forensics Introduction
+ </h3>
 
                     <p>
 
@@ -992,8 +237,8 @@ a {
                     </span>
 
                     <h3>
-                        Evidence
-                    </h3>
+ Evidence
+ </h3>
 
                     <p>
 
@@ -1019,8 +264,8 @@ a {
                     </span>
 
                     <h3>
-                        File Metadata
-                    </h3>
+ File Metadata
+ </h3>
 
                     <p>
 
@@ -1046,8 +291,8 @@ a {
                     </span>
 
                     <h3>
-                        Windows Forensics
-                    </h3>
+ Windows Forensics
+ </h3>
 
                     <p>
 
@@ -1073,8 +318,8 @@ a {
                     </span>
 
                     <h3>
-                        Linux Forensics
-                    </h3>
+ Linux Forensics
+ </h3>
 
                     <p>
 
@@ -1100,8 +345,8 @@ a {
                     </span>
 
                     <h3>
-                        Browser Forensics
-                    </h3>
+ Browser Forensics
+ </h3>
 
                     <p>
 
@@ -1127,8 +372,8 @@ a {
                     </span>
 
                     <h3>
-                        Log Analysis
-                    </h3>
+ Log Analysis
+ </h3>
 
                     <p>
 
@@ -1154,8 +399,8 @@ a {
                     </span>
 
                     <h3>
-                        Network Forensics
-                    </h3>
+ Network Forensics
+ </h3>
 
                     <p>
 
@@ -1181,8 +426,8 @@ a {
                     </span>
 
                     <h3>
-                        Disk Forensics
-                    </h3>
+ Disk Forensics
+ </h3>
 
                     <p>
 
@@ -1208,8 +453,8 @@ a {
                     </span>
 
                     <h3>
-                        Incident Timeline
-                    </h3>
+ Incident Timeline
+ </h3>
 
                     <p>
 
@@ -1235,8 +480,8 @@ a {
                     </span>
 
                     <h3>
-                        Evidence Preservation
-                    </h3>
+ Evidence Preservation
+ </h3>
 
                     <p>
 
@@ -1266,8 +511,8 @@ a {
                  ">
 
                 <h2>
-                    Forensic Investigation Workflow
-                </h2>
+ Forensic Investigation Workflow
+ </h2>
 
                 <p>
 
@@ -1358,8 +603,8 @@ a {
                 <div>
 
                     <h3>
-                        Ready for Practical Investigation?
-                    </h3>
+ Ready for Practical Investigation?
+ </h3>
 
                     <p>
 
@@ -1374,9 +619,9 @@ a {
                 <a href="../lab/digital-forensics-lab.html"
                    class="df-button">
 
-                    Open Forensics Labs →
+ Open Forensics Labs →
 
-                </a>
+ </a>
 
 
             </div>

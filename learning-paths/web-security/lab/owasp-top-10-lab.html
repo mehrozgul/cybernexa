@@ -1,423 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn OWASP Top 10 Lab - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>OWASP Top 10 Lab - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        .lab-page {
-            width: 100%;
-            min-height: calc(100vh - 80px);
-            padding: 70px 20px 90px;
-
-            background:
-                radial-gradient(
-                    circle at 15% 10%,
-                    rgba(0, 191, 255, 0.06),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 90% 15%,
-                    rgba(0, 255, 176, 0.055),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    180deg,
-                    #01050b 0%,
-                    #020914 48%,
-                    #01050b 100%
-                );
-        }
-
-        .lab-container {
-            width: 100%;
-            max-width: 1050px;
-            margin: 0 auto;
-        }
-
-        /* HERO */
-
-        .lab-hero {
-            position: relative;
-            padding: 42px 35px;
-            margin-bottom: 25px;
-
-            border: 1px solid rgba(0, 191, 255, 0.16);
-            border-radius: 16px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(3, 20, 34, 0.98),
-                    rgba(2, 12, 23, 0.98)
-                );
-
-            overflow: hidden;
-        }
-
-        .lab-hero::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #00bfff,
-                    #00ffb0,
-                    transparent
-                );
-        }
-
-        .lab-kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-
-            margin-bottom: 15px;
-
-            color: #00bfff;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-        }
-
-        .lab-kicker::before {
-            content: "";
-
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-
-            background: #00bfff;
-            box-shadow: 0 0 12px rgba(0, 191, 255, 0.7);
-        }
-
-        .lab-hero h1 {
-            margin: 0;
-
-            color: #ffffff;
-            font-size: 42px;
-            line-height: 1.15;
-            font-weight: 850;
-        }
-
-        .lab-hero h1 span {
-            color: #00bfff;
-        }
-
-        .lab-description {
-            max-width: 780px;
-            margin: 16px 0 0;
-
-            color: #8fa5bb;
-            font-size: 13px;
-            line-height: 1.9;
-        }
-
-        /* META */
-
-        .lab-meta {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .meta-item {
-            padding: 15px;
-
-            border: 1px solid rgba(0, 191, 255, 0.10);
-            border-radius: 10px;
-
-            background: rgba(0, 191, 255, 0.025);
-        }
-
-        .meta-label {
-            display: block;
-            margin-bottom: 6px;
-
-            color: #536a7f;
-            font-size: 9px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .meta-value {
-            color: #dce9f4;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .green {
-            color: #00ffb0;
-        }
-
-        /* LAB CARD */
-
-        .question-card {
-            margin-bottom: 15px;
-            padding: 24px;
-
-            border: 1px solid rgba(0, 191, 255, 0.11);
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(5, 20, 34, 0.97),
-                    rgba(2, 11, 21, 0.97)
-                );
-        }
-
-        .question-top {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-
-            margin-bottom: 15px;
-        }
-
-        .question-number {
-            width: 30px;
-            height: 30px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            flex-shrink: 0;
-
-            border: 1px solid rgba(0, 191, 255, 0.22);
-            border-radius: 7px;
-
-            color: #00bfff;
-            background: rgba(0, 191, 255, 0.045);
-
-            font-family: Consolas, monospace;
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .question {
-            margin: 0;
-
-            color: #ffffff;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .options {
-            display: grid;
-            gap: 8px;
-        }
-
-        .option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            padding: 13px 15px;
-
-            border: 1px solid rgba(0, 191, 255, 0.08);
-            border-radius: 8px;
-
-            color: #8196a9;
-            background: rgba(0, 191, 255, 0.018);
-
-            cursor: pointer;
-
-            font-size: 12px;
-
-            transition:
-                border-color 0.2s ease,
-                background 0.2s ease,
-                color 0.2s ease;
-        }
-
-        .option:hover {
-            color: #d7edf7;
-            border-color: rgba(0, 191, 255, 0.25);
-            background: rgba(0, 191, 255, 0.035);
-        }
-
-        .option input {
-            accent-color: #00bfff;
-        }
-
-        /* SCENARIO */
-
-        .scenario {
-            margin-bottom: 15px;
-            padding: 24px;
-
-            border: 1px solid rgba(0, 255, 176, 0.12);
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(0, 255, 176, 0.025),
-                    rgba(2, 11, 21, 0.97)
-                );
-        }
-
-        .scenario-label {
-            margin-bottom: 9px;
-
-            color: #00ffb0;
-            font-family: Consolas, monospace;
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .scenario p {
-            margin: 0 0 15px;
-
-            color: #8196a9;
-            font-size: 12px;
-            line-height: 1.8;
-        }
-
-        /* BUTTON */
-
-        .submit-area {
-            margin-top: 25px;
-            padding: 22px;
-
-            text-align: center;
-
-            border: 1px solid rgba(0, 191, 255, 0.12);
-            border-radius: 12px;
-
-            background: rgba(0, 191, 255, 0.025);
-        }
-
-        .submit-button {
-            padding: 13px 27px;
-
-            border: 1px solid rgba(0, 191, 255, 0.35);
-            border-radius: 8px;
-
-            color: #d5f7ff;
-            background: rgba(0, 191, 255, 0.06);
-
-            cursor: pointer;
-
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .submit-button:hover {
-            border-color: rgba(0, 191, 255, 0.6);
-            background: rgba(0, 191, 255, 0.11);
-        }
-
-        #result {
-            margin-top: 17px;
-
-            color: #8fa5bb;
-            font-size: 13px;
-            line-height: 1.8;
-        }
-
-        /* NAVIGATION */
-
-        .topic-navigation {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-
-            gap: 10px;
-            margin-top: 28px;
-        }
-
-        .topic-navigation a {
-            padding: 14px;
-
-            border: 1px solid rgba(0, 191, 255, 0.09);
-            border-radius: 9px;
-
-            color: #71879b;
-            background: rgba(0, 191, 255, 0.02);
-
-            text-decoration: none;
-            text-align: center;
-
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .topic-navigation a:hover {
-            color: #d5f7ff;
-            border-color: rgba(0, 191, 255, 0.25);
-        }
-
-        @media (max-width: 800px) {
-
-            .lab-meta {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-        }
-
-        @media (max-width: 600px) {
-
-            .lab-page {
-                padding: 45px 12px 60px;
-            }
-
-            .lab-hero {
-                padding: 27px 20px;
-            }
-
-            .lab-hero h1 {
-                font-size: 31px;
-            }
-
-            .question-card,
-            .scenario {
-                padding: 20px;
-            }
-
-            .topic-navigation {
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -510,8 +112,8 @@
             </div>
 
             <h1>
-                <span>OWASP Top 10</span> Assessment Lab
-            </h1>
+ <span>OWASP Top 10</span> Assessment Lab
+ </h1>
 
             <p class="lab-description">
 
@@ -528,11 +130,8 @@
 
         <div class="lab-meta">
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Lab Type
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Lab Type</span>
 
                 <span class="meta-value">
                     Assessment
@@ -541,11 +140,8 @@
             </div>
 
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Questions
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Questions</span>
 
                 <span class="meta-value">
                     10
@@ -554,11 +150,8 @@
             </div>
 
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Level
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Level</span>
 
                 <span class="meta-value">
                     Beginner
@@ -567,11 +160,8 @@
             </div>
 
 
-            <div class="meta-item">
-
-                <span class="meta-label">
-                    Environment
-                </span>
+            <div class="meta-item"><span class="meta-label">
+                    Environment</span>
 
                 <span class="meta-value green">
                     Safe / Authorized
@@ -596,8 +186,8 @@
                     </div>
 
                     <h2 class="question">
-                        What is the main purpose of the OWASP Top 10?
-                    </h2>
+ What is the main purpose of the OWASP Top 10?
+ </h2>
 
                 </div>
 
@@ -639,9 +229,9 @@
                     </div>
 
                     <h2 class="question">
-                        Which category deals with users accessing resources
-                        outside their permitted permissions?
-                    </h2>
+ Which category deals with users accessing resources
+ outside their permitted permissions?
+ </h2>
 
                 </div>
 
@@ -683,8 +273,8 @@
                     </div>
 
                     <h2 class="question">
-                        Which OWASP category includes SQL injection?
-                    </h2>
+ Which OWASP category includes SQL injection?
+ </h2>
 
                 </div>
 
@@ -726,8 +316,8 @@
                     </div>
 
                     <h2 class="question">
-                        Why is secure configuration important?
-                    </h2>
+ Why is secure configuration important?
+ </h2>
 
                 </div>
 
@@ -769,8 +359,8 @@
                     </div>
 
                     <h2 class="question">
-                        What can outdated third-party libraries introduce?
-                    </h2>
+ What can outdated third-party libraries introduce?
+ </h2>
 
                 </div>
 
@@ -812,9 +402,9 @@
                     </div>
 
                     <h2 class="question">
-                        Which category focuses on protecting sensitive
-                        information through proper cryptography?
-                    </h2>
+ Which category focuses on protecting sensitive
+ information through proper cryptography?
+ </h2>
 
                 </div>
 
@@ -856,8 +446,8 @@
                     </div>
 
                     <h2 class="question">
-                        Why are security logs important?
-                    </h2>
+ Why are security logs important?
+ </h2>
 
                 </div>
 
@@ -899,9 +489,9 @@
                     </div>
 
                     <h2 class="question">
-                        Which principle gives users only the permissions
-                        they actually need?
-                    </h2>
+ Which principle gives users only the permissions
+ they actually need?
+ </h2>
 
                 </div>
 
@@ -943,9 +533,9 @@
                     </div>
 
                     <h2 class="question">
-                        What should security teams do after identifying
-                        a vulnerability?
-                    </h2>
+ What should security teams do after identifying
+ a vulnerability?
+ </h2>
 
                 </div>
 
@@ -987,8 +577,8 @@
                     </div>
 
                     <h2 class="question">
-                        Which statement about the OWASP Top 10 is correct?
-                    </h2>
+ Which statement about the OWASP Top 10 is correct?
+ </h2>
 
                 </div>
 
@@ -1072,8 +662,8 @@
                     class="submit-button"
                     onclick="checkQuiz()"
                 >
-                    CHECK ASSESSMENT →
-                </button>
+ CHECK ASSESSMENT →
+ </button>
 
                 <div id="result"></div>
 

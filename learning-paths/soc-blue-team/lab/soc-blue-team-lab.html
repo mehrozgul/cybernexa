@@ -1,507 +1,31 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07101e">
 
     <title>SOC / Blue Team Labs | CyberNexa</title>
 
     <meta name="description"
           content="Practice SOC and Blue Team cybersecurity skills through practical CyberNexa labs.">
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet"
           href="../../../css/base.css">
 
-    <link rel="stylesheet"
+        <link rel="stylesheet"
           href="../../../css/navbar.css">
 
-    <link rel="stylesheet"
+        <link rel="stylesheet"
           href="../../../css/footer.css">
-
-
-    <style>
-
-        :root {
-
-            --lab-bg: #070d13;
-            --lab-panel: #0c151e;
-            --lab-panel-2: #101c27;
-
-            --lab-blue: #38a8ff;
-            --lab-cyan: #35d7ff;
-            --lab-green: #43d19e;
-            --lab-yellow: #ffd166;
-            --lab-red: #ff5364;
-
-            --lab-text: #edf7ff;
-            --lab-muted: #8fa5b7;
-
-            --lab-border: #1d303f;
-
-        }
-
-
-        * {
-            box-sizing: border-box;
-        }
-
-
-        html {
-            overflow-x: hidden;
-        }
-
-
-        body {
-
-            margin: 0;
-
-            background:
-
-                radial-gradient(
-                    circle at 12% 10%,
-                    rgba(56,168,255,0.09),
-                    transparent 30%
-                ),
-
-                radial-gradient(
-                    circle at 88% 25%,
-                    rgba(67,209,158,0.06),
-                    transparent 28%
-                ),
-
-                var(--lab-bg);
-
-            color: var(--lab-text);
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            overflow-x: hidden;
-        }
-
-
-        a {
-            text-decoration: none;
-        }
-
-
-        .lab-container {
-
-            width: min(1150px, 92%);
-
-            margin: auto;
-        }
-
-
-        /* HERO */
-
-        .lab-hero {
-
-            padding: 85px 0 70px;
-
-            border-bottom:
-                1px solid var(--lab-border);
-        }
-
-
-        .lab-breadcrumb {
-
-            margin-bottom: 20px;
-
-            color: var(--lab-cyan);
-
-            font-size: 13px;
-
-            letter-spacing: 0.5px;
-        }
-
-
-        .lab-hero-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                1.35fr 0.65fr;
-
-            gap: 45px;
-
-            align-items: center;
-        }
-
-
-        .lab-badge {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 9px;
-
-            padding: 8px 13px;
-
-            margin-bottom: 18px;
-
-            border:
-                1px solid
-                rgba(67,209,158,0.3);
-
-            border-radius: 4px;
-
-            background:
-                rgba(67,209,158,0.05);
-
-            color: var(--lab-green);
-
-            font-size: 11px;
-
-            font-weight: bold;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-        }
-
-
-        .lab-hero h1 {
-
-            margin: 0 0 18px;
-
-            font-size:
-                clamp(38px, 5vw, 62px);
-
-            line-height: 1.05;
-        }
-
-
-        .lab-hero h1 span {
-
-            color: var(--lab-green);
-        }
-
-
-        .lab-description {
-
-            max-width: 720px;
-
-            color: var(--lab-muted);
-
-            font-size: 17px;
-
-            line-height: 1.8;
-        }
-
-
-        /* TERMINAL */
-
-        .lab-terminal {
-
-            padding: 22px;
-
-            border:
-                1px solid
-                var(--lab-border);
-
-            border-top:
-                2px solid
-                var(--lab-green);
-
-            border-radius: 7px;
-
-            background: #081018;
-
-            box-shadow:
-                0 20px 50px
-                rgba(0,0,0,0.3);
-        }
-
-
-        .terminal-head {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            margin-bottom: 18px;
-        }
-
-
-        .terminal-title {
-
-            color: var(--lab-text);
-
-            font-size: 12px;
-
-            font-weight: bold;
-
-            letter-spacing: 1px;
-        }
-
-
-        .terminal-status {
-
-            color: var(--lab-green);
-
-            font-size: 10px;
-        }
-
-
-        .terminal-line {
-
-            height: 1px;
-
-            margin: 15px 0;
-
-            background: var(--lab-border);
-        }
-
-
-        .terminal-code {
-
-            color: var(--lab-muted);
-
-            font-family:
-                Consolas,
-                monospace;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-        }
-
-
-        .terminal-code .green {
-            color: var(--lab-green);
-        }
-
-
-        .terminal-code .blue {
-            color: var(--lab-blue);
-        }
-
-
-        /* SECTION */
-
-        .lab-section {
-
-            padding: 70px 0;
-        }
-
-
-        .lab-heading {
-
-            margin-bottom: 30px;
-        }
-
-
-        .lab-heading h2 {
-
-            margin: 0 0 10px;
-
-            font-size: 32px;
-        }
-
-
-        .lab-heading p {
-
-            margin: 0;
-
-            color: var(--lab-muted);
-
-            line-height: 1.7;
-        }
-
-
-        /* GRID */
-
-        .lab-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 18px;
-        }
-
-
-        .lab-card {
-
-            padding: 25px;
-
-            min-height: 220px;
-
-            border:
-                1px solid
-                var(--lab-border);
-
-            border-radius: 7px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    var(--lab-panel-2),
-                    var(--lab-panel)
-                );
-
-            transition:
-                0.2s ease;
-        }
-
-
-        .lab-card:hover {
-
-            transform:
-                translateY(-4px);
-
-            border-color:
-                rgba(67,209,158,0.45);
-
-            box-shadow:
-                0 15px 35px
-                rgba(0,0,0,0.25);
-        }
-
-
-        .lab-number {
-
-            display: block;
-
-            margin-bottom: 13px;
-
-            color: var(--lab-green);
-
-            font-size: 11px;
-
-            font-weight: bold;
-
-            letter-spacing: 1px;
-        }
-
-
-        .lab-card h3 {
-
-            margin: 0 0 11px;
-
-            font-size: 18px;
-        }
-
-
-        .lab-card p {
-
-            margin: 0 0 20px;
-
-            color: var(--lab-muted);
-
-            font-size: 13px;
-
-            line-height: 1.65;
-        }
-
-
-        .lab-link {
-
-            display: inline-flex;
-
-            color: var(--lab-green);
-
-            font-size: 13px;
-
-            font-weight: bold;
-        }
-
-
-        .lab-link:hover {
-
-            color: var(--lab-cyan);
-        }
-
-
-        /* RESPONSIVE */
-
-        @media (max-width: 950px) {
-
-            .lab-hero-grid {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .lab-grid {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-        }
-
-
-        @media (max-width: 600px) {
-
-            .lab-container {
-
-                width: 92%;
-            }
-
-
-            .lab-hero {
-
-                padding: 60px 0 50px;
-            }
-
-
-            .lab-hero h1 {
-
-                font-size: 38px;
-            }
-
-
-            .lab-description {
-
-                font-size: 15px;
-            }
-
-
-            .lab-section {
-
-                padding: 50px 0;
-            }
-
-
-            .lab-heading h2 {
-
-                font-size: 27px;
-            }
-
-
-            .lab-grid {
-
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-
-        @media (max-width: 380px) {
-
-            .lab-container {
-
-                width: 94%;
-            }
-
-
-            .lab-hero h1 {
-
-                font-size: 33px;
-            }
-
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -605,15 +129,13 @@
 
             <div>
 
-                <div class="lab-badge">
-                    ● Hands-On Training
-                </div>
+                <div class="lab-badge">● Hands-On Training</div>
 
 
                 <h1>
-                    SOC /
-                    <span>Blue Team Labs</span>
-                </h1>
+ SOC /
+ <span>Blue Team Labs</span>
+ </h1>
 
 
                 <p class="lab-description">
@@ -703,8 +225,8 @@
         <div class="lab-heading">
 
             <h2>
-                Practical SOC / Blue Team Labs
-            </h2>
+ Practical SOC / Blue Team Labs
+ </h2>
 
             <p>
                 Select a lab to practice the corresponding
@@ -728,8 +250,8 @@
                 </span>
 
                 <h3>
-                    What is SOC?
-                </h3>
+ What is SOC?
+ </h3>
 
                 <p>
                     Explore the basic SOC environment,
@@ -755,8 +277,8 @@
                 </span>
 
                 <h3>
-                    SOC Analyst
-                </h3>
+ SOC Analyst
+ </h3>
 
                 <p>
                     Practice the basic workflow of a SOC
@@ -781,8 +303,8 @@
                 </span>
 
                 <h3>
-                    SIEM
-                </h3>
+ SIEM
+ </h3>
 
                 <p>
                     Practice centralized security event
@@ -807,8 +329,8 @@
                 </span>
 
                 <h3>
-                    Log Monitoring
-                </h3>
+ Log Monitoring
+ </h3>
 
                 <p>
                     Analyze sample security logs and identify
@@ -833,8 +355,8 @@
                 </span>
 
                 <h3>
-                    Alert Analysis
-                </h3>
+ Alert Analysis
+ </h3>
 
                 <p>
                     Investigate security alerts and determine
@@ -859,8 +381,8 @@
                 </span>
 
                 <h3>
-                    IOC
-                </h3>
+ IOC
+ </h3>
 
                 <p>
                     Identify and analyze common Indicators
@@ -885,8 +407,8 @@
                 </span>
 
                 <h3>
-                    Threat Intelligence
-                </h3>
+ Threat Intelligence
+ </h3>
 
                 <p>
                     Analyze threat intelligence information
@@ -911,8 +433,8 @@
                 </span>
 
                 <h3>
-                    Incident Detection
-                </h3>
+ Incident Detection
+ </h3>
 
                 <p>
                     Practice identifying potential incidents
@@ -937,8 +459,8 @@
                 </span>
 
                 <h3>
-                    Network Monitoring
-                </h3>
+ Network Monitoring
+ </h3>
 
                 <p>
                     Analyze network activity and identify
@@ -963,8 +485,8 @@
                 </span>
 
                 <h3>
-                    Endpoint Security
-                </h3>
+ Endpoint Security
+ </h3>
 
                 <p>
                     Practice identifying suspicious endpoint
@@ -989,8 +511,8 @@
                 </span>
 
                 <h3>
-                    Detection Rules
-                </h3>
+ Detection Rules
+ </h3>
 
                 <p>
                     Create and test basic detection logic
@@ -1015,8 +537,8 @@
                 </span>
 
                 <h3>
-                    Basic Threat Hunting
-                </h3>
+ Basic Threat Hunting
+ </h3>
 
                 <p>
                     Perform a basic proactive investigation

@@ -1,565 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Path Traversal Lab - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Path Traversal Lab - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        .lab-page {
-
-            min-height: calc(100vh - 80px);
-
-            padding: 65px 20px 90px;
-
-            background:
-                radial-gradient(
-                    circle at 12% 8%,
-                    rgba(0, 191, 255, .07),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 88% 12%,
-                    rgba(0, 255, 176, .055),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    180deg,
-                    #01050b 0%,
-                    #020914 50%,
-                    #01050b 100%
-                );
-        }
-
-        .lab-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: auto;
-        }
-
-        .lab-hero {
-
-            position: relative;
-
-            padding: 40px 35px;
-            margin-bottom: 24px;
-
-            border: 1px solid rgba(0, 191, 255, .16);
-            border-radius: 16px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(3, 20, 34, .98),
-                    rgba(2, 10, 20, .98)
-                );
-
-            overflow: hidden;
-        }
-
-        .lab-hero::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #00bfff,
-                    #00ffb0,
-                    transparent
-                );
-        }
-
-        .lab-kicker {
-
-            color: #00bfff;
-
-            font-size: 10px;
-            font-weight: 800;
-
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-
-            margin-bottom: 13px;
-        }
-
-        .lab-hero h1 {
-
-            margin: 0;
-
-            color: #fff;
-
-            font-size: 42px;
-        }
-
-        .lab-hero h1 span {
-
-            color: #00bfff;
-        }
-
-        .lab-hero p {
-
-            max-width: 760px;
-
-            margin: 15px 0 0;
-
-            color: #8fa5bb;
-
-            font-size: 13px;
-            line-height: 1.9;
-        }
-
-        .lab-status {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 10px;
-
-            margin-bottom: 20px;
-        }
-
-        .status-card {
-
-            padding: 15px;
-
-            border: 1px solid rgba(0, 191, 255, .1);
-            border-radius: 9px;
-
-            background: rgba(0, 191, 255, .025);
-        }
-
-        .status-card small {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #536a7f;
-
-            font-size: 9px;
-            letter-spacing: 1.4px;
-            text-transform: uppercase;
-        }
-
-        .status-card strong {
-
-            color: #00ffb0;
-
-            font-size: 11px;
-        }
-
-        .lab-card {
-
-            margin-bottom: 18px;
-
-            padding: 27px;
-
-            border: 1px solid rgba(0, 191, 255, .11);
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(5, 20, 34, .97),
-                    rgba(2, 11, 21, .97)
-                );
-        }
-
-        .lab-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            margin-bottom: 15px;
-        }
-
-        .lab-number {
-
-            width: 29px;
-            height: 29px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border: 1px solid rgba(0, 191, 255, .22);
-            border-radius: 7px;
-
-            color: #00bfff;
-
-            font-family: Consolas, monospace;
-
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .lab-heading h2 {
-
-            margin: 0;
-
-            color: #fff;
-
-            font-size: 20px;
-        }
-
-        .lab-card p {
-
-            color: #8fa5bb;
-
-            font-size: 12px;
-            line-height: 1.85;
-        }
-
-        /* SIMULATOR */
-
-        .simulator {
-
-            padding: 20px;
-
-            border: 1px solid rgba(0, 255, 176, .12);
-            border-radius: 10px;
-
-            background: #01060b;
-        }
-
-        .sim-label {
-
-            display: block;
-
-            margin-bottom: 9px;
-
-            color: #00bfff;
-
-            font-family: Consolas, monospace;
-
-            font-size: 10px;
-            font-weight: 800;
-
-            letter-spacing: 1px;
-        }
-
-        .path-input {
-
-            width: 100%;
-
-            padding: 13px 14px;
-
-            border: 1px solid rgba(0, 191, 255, .18);
-            border-radius: 7px;
-
-            outline: none;
-
-            color: #ccefff;
-            background: #020b14;
-
-            font-family: Consolas, monospace;
-
-            font-size: 12px;
-        }
-
-        .path-input:focus {
-
-            border-color: rgba(0, 191, 255, .55);
-        }
-
-        .sim-buttons {
-
-            display: flex;
-
-            gap: 9px;
-
-            margin-top: 12px;
-        }
-
-        .sim-button {
-
-            padding: 11px 17px;
-
-            border: 1px solid rgba(0, 191, 255, .25);
-            border-radius: 7px;
-
-            color: #ccefff;
-            background: rgba(0, 191, 255, .045);
-
-            cursor: pointer;
-
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .sim-button:hover {
-
-            border-color: rgba(0, 191, 255, .55);
-            background: rgba(0, 191, 255, .09);
-        }
-
-        .sim-output {
-
-            min-height: 100px;
-
-            margin-top: 15px;
-            padding: 15px;
-
-            border: 1px solid rgba(0, 255, 176, .08);
-            border-radius: 8px;
-
-            color: #71879b;
-            background: #02070c;
-
-            font-family: Consolas, monospace;
-
-            font-size: 11px;
-            line-height: 1.8;
-        }
-
-        .safe {
-            color: #00ffb0;
-        }
-
-        .danger {
-            color: #ffcc55;
-        }
-
-        /* MCQ */
-
-        .question {
-
-            margin-bottom: 18px;
-            padding: 18px;
-
-            border: 1px solid rgba(0, 191, 255, .09);
-            border-radius: 9px;
-
-            background: rgba(0, 191, 255, .018);
-        }
-
-        .question:last-child {
-            margin-bottom: 0;
-        }
-
-        .question-title {
-
-            margin-bottom: 12px;
-
-            color: #dce9f4;
-
-            font-size: 13px;
-            font-weight: 700;
-
-            line-height: 1.7;
-        }
-
-        .option {
-
-            display: block;
-
-            margin: 7px 0;
-
-            padding: 10px 12px;
-
-            border: 1px solid rgba(0, 191, 255, .07);
-            border-radius: 7px;
-
-            color: #71879b;
-
-            background: rgba(0, 0, 0, .15);
-
-            cursor: pointer;
-
-            font-size: 11px;
-        }
-
-        .option:hover {
-
-            border-color: rgba(0, 191, 255, .2);
-            color: #ccefff;
-        }
-
-        .option input {
-
-            margin-right: 8px;
-        }
-
-        .submit {
-
-            width: 100%;
-
-            margin-top: 18px;
-            padding: 13px;
-
-            border: 1px solid rgba(0, 255, 176, .3);
-            border-radius: 8px;
-
-            color: #c8fff0;
-            background: rgba(0, 255, 176, .05);
-
-            cursor: pointer;
-
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .submit:hover {
-
-            border-color: rgba(0, 255, 176, .55);
-            background: rgba(0, 255, 176, .09);
-        }
-
-        .result {
-
-            margin-top: 15px;
-            padding: 16px;
-
-            border-radius: 8px;
-
-            color: #9bb1c3;
-
-            background: rgba(0, 191, 255, .025);
-
-            font-family: Consolas, monospace;
-
-            font-size: 11px;
-            line-height: 1.7;
-        }
-
-        .lab-warning {
-
-            padding: 19px;
-
-            border: 1px solid rgba(255, 177, 0, .17);
-            border-radius: 9px;
-
-            background: rgba(255, 177, 0, .035);
-        }
-
-        .lab-warning strong {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            color: #ffc44d;
-
-            font-size: 12px;
-        }
-
-        .lab-warning span {
-
-            color: #899bad;
-
-            font-size: 11px;
-            line-height: 1.7;
-        }
-
-        .navigation {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 10px;
-
-            margin-top: 25px;
-        }
-
-        .navigation a {
-
-            padding: 14px;
-
-            border: 1px solid rgba(0, 191, 255, .09);
-            border-radius: 8px;
-
-            color: #71879b;
-
-            background: rgba(0, 191, 255, .02);
-
-            text-decoration: none;
-
-            text-align: center;
-
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .navigation a:hover {
-
-            color: #ccefff;
-
-            border-color: rgba(0, 191, 255, .25);
-        }
-
-        @media (max-width: 700px) {
-
-            .lab-status {
-                grid-template-columns: 1fr;
-            }
-
-            .lab-hero {
-                padding: 28px 20px;
-            }
-
-            .lab-hero h1 {
-                font-size: 31px;
-            }
-
-            .lab-card {
-                padding: 20px;
-            }
-
-            .navigation {
-                grid-template-columns: 1fr;
-            }
-
-            .sim-buttons {
-                flex-direction: column;
-            }
-
-            .sim-button {
-                width: 100%;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -631,8 +91,8 @@
         </div>
 
         <h1>
-            <span>Path Traversal</span> Lab
-        </h1>
+ <span>Path Traversal</span> Lab
+ </h1>
 
         <p>
             Practice identifying unsafe file-path handling through a
@@ -676,8 +136,8 @@
             </div>
 
             <h2>
-                Lab Objective
-            </h2>
+ Lab Objective
+ </h2>
 
         </div>
 
@@ -702,8 +162,8 @@
             </div>
 
             <h2>
-                Safe Path Validation Simulator
-            </h2>
+ Safe Path Validation Simulator
+ </h2>
 
         </div>
 
@@ -726,15 +186,15 @@
                     class="sim-button"
                     onclick="validatePath()"
                 >
-                    Analyze Path
-                </button>
+ Analyze Path
+ </button>
 
                 <button
                     class="sim-button"
                     onclick="loadSafePath()"
                 >
-                    Load Safe Example
-                </button>
+ Load Safe Example
+ </button>
 
             </div>
 
@@ -761,8 +221,8 @@
             </div>
 
             <h2>
-                What Should a Secure Application Do?
-            </h2>
+ What Should a Secure Application Do?
+ </h2>
 
         </div>
 
@@ -813,8 +273,8 @@
             </div>
 
             <h2>
-                Knowledge Check
-            </h2>
+ Knowledge Check
+ </h2>
 
         </div>
 
@@ -895,8 +355,8 @@
             class="submit"
             onclick="checkQuiz()"
         >
-            Submit Knowledge Check
-        </button>
+ Submit Knowledge Check
+ </button>
 
         <div
             id="quizResult"

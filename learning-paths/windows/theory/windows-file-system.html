@@ -1,812 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn CyberNexa | Windows File System with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>CyberNexa | Windows File System</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        .windows-learning-page {
-            width: 100%;
-            min-height: calc(100vh - 80px);
-            padding: 70px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(37, 99, 235, 0.12),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(14, 165, 233, 0.08),
-                    transparent 30%
-                ),
-                #02080d;
-        }
-
-        .windows-learning-container {
-            width: 100%;
-            max-width: 1050px;
-            margin: 0 auto;
-        }
-
-        .windows-topic-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .windows-topic-category {
-            display: inline-block;
-            margin-bottom: 14px;
-            color: #60a5fa;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-        }
-
-        .windows-topic-header h1 {
-            margin: 0;
-            color: #f8fafc;
-            font-size: 44px;
-            line-height: 1.2;
-            font-weight: 800;
-        }
-
-        .windows-topic-header h1 span {
-            color: #60a5fa;
-        }
-
-        .windows-topic-intro {
-            max-width: 760px;
-            margin: 18px auto 0;
-            color: #b6c2cc;
-            font-size: 15px;
-            line-height: 1.8;
-        }
-
-        .windows-badges {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 22px;
-        }
-
-        .windows-badge {
-            padding: 8px 13px;
-            border: 1px solid rgba(96, 165, 250, 0.20);
-            border-radius: 20px;
-            color: #bfdbfe;
-            background: rgba(96, 165, 250, 0.055);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-
-        .windows-topic-search {
-            display: flex;
-            align-items: center;
-            max-width: 650px;
-            margin: 25px auto 0;
-            gap: 10px;
-        }
-
-        .windows-topic-search input {
-            flex: 1;
-            min-width: 0;
-            padding: 13px 16px;
-            border: 1px solid rgba(96, 165, 250, 0.20);
-            border-radius: 9px;
-            outline: none;
-            color: #f8fafc;
-            background: rgba(96, 165, 250, 0.045);
-            font-size: 13px;
-            transition:
-                border-color 0.2s ease,
-                background 0.2s ease,
-                box-shadow 0.2s ease;
-        }
-
-        .windows-topic-search input::placeholder {
-            color: #7f909c;
-        }
-
-        .windows-topic-search input:focus {
-            border-color: rgba(96, 165, 250, 0.65);
-            background: rgba(96, 165, 250, 0.07);
-            box-shadow: 0 0 20px rgba(37, 99, 235, 0.10);
-        }
-
-        .windows-topic-search button {
-            padding: 13px 18px;
-            border: 1px solid rgba(96, 165, 250, 0.30);
-            border-radius: 9px;
-            color: #dbeafe;
-            background: rgba(96, 165, 250, 0.07);
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-        .windows-topic-search button:hover {
-            border-color: rgba(96, 165, 250, 0.70);
-            background: rgba(96, 165, 250, 0.13);
-            transform: translateY(-1px);
-        }
-
-        .windows-search-message {
-            min-height: 20px;
-            margin-top: 10px;
-            color: #60a5fa;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        .windows-card {
-            position: relative;
-            width: 100%;
-            margin-bottom: 22px;
-            padding: 30px;
-            border: 1px solid rgba(96, 165, 250, 0.15);
-            border-radius: 15px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 22, 38, 0.98),
-                    rgba(3, 13, 20, 0.98)
-                );
-
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.28);
-            overflow: hidden;
-
-            transition:
-                border-color 0.25s ease,
-                box-shadow 0.25s ease,
-                transform 0.25s ease;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .windows-card:hover {
-                border-color: rgba(96, 165, 250, 0.40);
-
-                box-shadow:
-                    0 18px 45px rgba(0, 0, 0, 0.32),
-                    0 0 30px rgba(37, 99, 235, 0.08);
-
-                transform: translateY(-2px);
-            }
-        }
-
-        .windows-card::after,
-        .windows-info-card::after,
-        .windows-command-card::after {
-
-            content: "";
-
-            position: absolute;
-            top: 0;
-            left: -120%;
-
-            width: 55%;
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    100deg,
-                    transparent,
-                    rgba(96, 165, 250, 0.05),
-                    rgba(255, 255, 255, 0.08),
-                    rgba(96, 165, 250, 0.05),
-                    transparent
-                );
-
-            transform: skewX(-18deg);
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .windows-card:hover::after,
-            .windows-info-card:hover::after,
-            .windows-command-card:hover::after {
-
-                animation: windowsLightSweep 0.75s ease forwards;
-            }
-        }
-
-        .mobile-sweep::after {
-            animation:
-                windowsMobileSweep 0.75s ease forwards !important;
-        }
-
-        @keyframes windowsLightSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-        @keyframes windowsMobileSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-        .windows-card-heading {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            margin-bottom: 18px;
-        }
-
-        .windows-icon {
-            width: 42px;
-            height: 42px;
-            flex-shrink: 0;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border: 1px solid rgba(96, 165, 250, 0.30);
-            border-radius: 10px;
-
-            color: #60a5fa;
-            background: rgba(96, 165, 250, 0.07);
-
-            font-size: 17px;
-            font-weight: 800;
-        }
-
-        .windows-card h2 {
-            margin: 0;
-            color: #f8fafc;
-            font-size: 21px;
-            font-weight: 750;
-        }
-
-        .windows-card h3 {
-            margin: 0 0 8px;
-            color: #f8fafc;
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .windows-card p {
-            margin: 0 0 14px;
-            color: #b6c2cc;
-            font-size: 14px;
-            line-height: 1.85;
-        }
-
-        .windows-card p:last-child {
-            margin-bottom: 0;
-        }
-
-        .windows-definition-box {
-            padding: 20px;
-            margin-top: 5px;
-
-            border-left: 3px solid #60a5fa;
-            border-radius: 0 10px 10px 0;
-
-            background: rgba(96, 165, 250, 0.055);
-        }
-
-        .windows-definition-box strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #f8fafc;
-            font-size: 14px;
-        }
-
-        .windows-definition-box span {
-            color: #c3cdd5;
-            font-size: 14px;
-            line-height: 1.8;
-        }
-
-        .windows-info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-top: 20px;
-        }
-
-        .windows-info-card {
-            position: relative;
-            padding: 20px;
-
-            border: 1px solid rgba(96, 165, 250, 0.14);
-            border-radius: 11px;
-
-            background: rgba(96, 165, 250, 0.035);
-            overflow: hidden;
-
-            transition:
-                border-color 0.2s ease,
-                background 0.2s ease,
-                transform 0.2s ease;
-        }
-
-        .windows-info-card:hover {
-            border-color: rgba(96, 165, 250, 0.35);
-            background: rgba(96, 165, 250, 0.06);
-            transform: translateY(-2px);
-        }
-
-        .windows-info-card p {
-            margin: 0;
-            color: #aebbc5;
-            font-size: 13px;
-            line-height: 1.75;
-        }
-
-        .windows-flow {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        .windows-flow-item {
-            padding: 12px 16px;
-
-            border: 1px solid rgba(96, 165, 250, 0.20);
-            border-radius: 9px;
-
-            color: #dbeafe;
-            background: rgba(96, 165, 250, 0.05);
-
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .windows-flow-arrow {
-            color: #60a5fa;
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .windows-command-box {
-            margin-top: 20px;
-            padding: 18px 20px;
-
-            border: 1px solid rgba(96, 165, 250, 0.15);
-            border-radius: 10px;
-
-            background: #01060a;
-            overflow-x: auto;
-        }
-
-        .windows-terminal-label {
-            display: block;
-            margin-bottom: 12px;
-
-            color: #64748b;
-            font-size: 10px;
-            font-weight: 700;
-
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .windows-command-box code {
-            color: #93c5fd;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-            line-height: 1.9;
-        }
-
-        .windows-command-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 13px;
-            margin-top: 20px;
-        }
-
-        .windows-command-card {
-            position: relative;
-            padding: 18px;
-
-            border: 1px solid rgba(96, 165, 250, 0.13);
-            border-radius: 10px;
-
-            background: rgba(96, 165, 250, 0.035);
-            overflow: hidden;
-        }
-
-        .windows-command-card code {
-            display: inline-block;
-            margin-bottom: 8px;
-
-            color: #60a5fa;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .windows-command-card p {
-            margin: 0;
-            color: #aebbc5;
-            font-size: 12px;
-            line-height: 1.7;
-        }
-
-        .windows-key-concepts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .windows-key-item {
-            padding: 10px 14px;
-
-            border: 1px solid rgba(96, 165, 250, 0.16);
-            border-radius: 8px;
-
-            color: #d7e4eb;
-            background: rgba(96, 165, 250, 0.04);
-
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .windows-comparison {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-top: 20px;
-        }
-
-        .windows-comparison-box {
-            padding: 20px;
-
-            border: 1px solid rgba(96, 165, 250, 0.14);
-            border-radius: 11px;
-
-            background: rgba(96, 165, 250, 0.035);
-        }
-
-        .windows-comparison-box h3 {
-            color: #60a5fa;
-            margin-bottom: 12px;
-        }
-
-        .windows-comparison-box ul {
-            margin: 0;
-            padding-left: 18px;
-        }
-
-        .windows-comparison-box li {
-            margin-bottom: 7px;
-            color: #aebbc5;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .windows-summary-list {
-            margin: 18px 0 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .windows-summary-list li {
-            position: relative;
-
-            padding: 9px 0 9px 23px;
-
-            color: #b6c2cc;
-            font-size: 13px;
-            line-height: 1.7;
-
-            border-bottom:
-                1px solid rgba(96, 165, 250, 0.07);
-        }
-
-        .windows-summary-list li:last-child {
-            border-bottom: none;
-        }
-
-        .windows-summary-list li::before {
-            content: "✓";
-
-            position: absolute;
-            left: 0;
-            top: 9px;
-
-            color: #60a5fa;
-            font-weight: 700;
-        }
-
-        .windows-search-highlight {
-            border-color:
-                rgba(96, 165, 250, 0.75) !important;
-
-            box-shadow:
-                0 0 25px rgba(37, 99, 235, 0.13) !important;
-
-            transform: translateY(-2px);
-        }
-
-        .windows-topic-navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            gap: 15px;
-            margin-top: 35px;
-        }
-
-        .windows-topic-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-
-            padding: 13px 18px;
-
-            border: 1px solid rgba(96, 165, 250, 0.25);
-            border-radius: 9px;
-
-            color: #dbeafe;
-            background: rgba(96, 165, 250, 0.05);
-
-            text-decoration: none;
-
-            font-size: 13px;
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-        .windows-topic-button:hover {
-            border-color: rgba(96, 165, 250, 0.65);
-            background: rgba(96, 165, 250, 0.10);
-            transform: translateY(-1px);
-        }
-
-        .windows-topic-button.practical-lab {
-            border-color: rgba(37, 99, 235, 0.40);
-            background: rgba(37, 99, 235, 0.09);
-        }
-
-        .windows-topic-button.practical-lab:hover {
-            border-color: rgba(96, 165, 250, 0.75);
-            background: rgba(37, 99, 235, 0.15);
-        }
-
-        .windows-topic-button span {
-            color: #60a5fa;
-            font-size: 17px;
-        }
-
-        @media (max-width: 800px) {
-
-            .windows-learning-page {
-                padding: 55px 15px 65px;
-            }
-
-            .windows-topic-header h1 {
-                font-size: 36px;
-            }
-
-            .windows-topic-intro {
-                font-size: 14px;
-            }
-        }
-
-        @media (max-width: 600px) {
-
-            .windows-learning-page {
-                padding: 45px 12px 55px;
-            }
-
-            .windows-topic-header {
-                margin-bottom: 35px;
-            }
-
-            .windows-topic-header h1 {
-                font-size: 30px;
-                line-height: 1.25;
-            }
-
-            .windows-topic-intro {
-                margin-top: 14px;
-                font-size: 13px;
-                line-height: 1.75;
-            }
-
-            .windows-card {
-                padding: 21px 18px;
-                margin-bottom: 16px;
-                border-radius: 12px;
-            }
-
-            .windows-card-heading {
-                gap: 10px;
-                margin-bottom: 15px;
-            }
-
-            .windows-icon {
-                width: 37px;
-                height: 37px;
-                font-size: 15px;
-            }
-
-            .windows-card h2 {
-                font-size: 18px;
-            }
-
-            .windows-card p {
-                font-size: 13px;
-                line-height: 1.8;
-            }
-
-            .windows-definition-box {
-                padding: 16px;
-            }
-
-            .windows-definition-box span {
-                font-size: 13px;
-            }
-
-            .windows-info-grid,
-            .windows-command-grid,
-            .windows-comparison {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .windows-flow {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .windows-flow-item {
-                width: 100%;
-            }
-
-            .windows-flow-arrow {
-                display: flex;
-                justify-content: center;
-                font-size: 0;
-            }
-
-            .windows-flow-arrow::after {
-                content: "↓";
-                color: #60a5fa;
-                font-size: 18px;
-            }
-
-            .windows-key-concepts {
-                gap: 7px;
-            }
-
-            .windows-key-item {
-                font-size: 11px;
-                padding: 9px 11px;
-            }
-
-            .windows-topic-search {
-                flex-direction: column;
-                width: 100%;
-                gap: 8px;
-            }
-
-            .windows-topic-search input {
-                width: 100%;
-            }
-
-            .windows-topic-search button {
-                width: 100%;
-            }
-
-            .windows-topic-navigation {
-                flex-direction: column;
-                align-items: stretch;
-                margin-top: 25px;
-            }
-
-            .windows-topic-button {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 380px) {
-
-            .windows-topic-header h1 {
-                font-size: 27px;
-            }
-
-            .windows-learning-page {
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-            .windows-card {
-                padding: 18px 15px;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -831,13 +44,11 @@
 
             <header class="windows-topic-header">
 
-                <div class="windows-topic-category">
-                    WINDOWS
-                </div>
+                <div class="windows-topic-category">WINDOWS</div>
 
                 <h1>
-                    Windows <span>File System</span>
-                </h1>
+ Windows <span>File System</span>
+ </h1>
 
                 <p class="windows-topic-intro">
 
@@ -849,23 +60,14 @@
 
                 </p>
 
-                <div class="windows-badges">
+                <div class="windows-badges"><div class="windows-badge">
+                        Beginner</div>
 
-                    <div class="windows-badge">
-                        Beginner
-                    </div>
+                    <div class="windows-badge">Theory</div>
 
-                    <div class="windows-badge">
-                        Theory
-                    </div>
+                    <div class="windows-badge">NTFS</div>
 
-                    <div class="windows-badge">
-                        NTFS
-                    </div>
-
-                    <div class="windows-badge">
-                        Practical Lab
-                    </div>
+                    <div class="windows-badge">Practical Lab</div>
 
                 </div>
 
@@ -883,8 +85,8 @@
                         type="button"
                         id="windowsSearchButton"
                     >
-                        🔍 Search
-                    </button>
+ Search
+ </button>
 
                 </div>
 
@@ -907,8 +109,8 @@
                     </div>
 
                     <h2>
-                        What is a File System?
-                    </h2>
+ What is a File System?
+ </h2>
 
                 </div>
 
@@ -943,8 +145,8 @@
                     </div>
 
                     <h2>
-                        Windows File System
-                    </h2>
+ Windows File System
+ </h2>
 
                 </div>
 
@@ -962,8 +164,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Files
-                        </h3>
+ Files
+ </h3>
 
                         <p>
                             Files contain data such as documents,
@@ -976,8 +178,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Directories
-                        </h3>
+ Directories
+ </h3>
 
                         <p>
                             Directories, commonly called folders,
@@ -989,8 +191,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Drives
-                        </h3>
+ Drives
+ </h3>
 
                         <p>
                             Drives provide storage locations such
@@ -1002,8 +204,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Paths
-                        </h3>
+ Paths
+ </h3>
 
                         <p>
                             A path identifies the location of a
@@ -1028,8 +230,8 @@
                     </div>
 
                     <h2>
-                        Windows Drives
-                    </h2>
+ Windows Drives
+ </h2>
 
                 </div>
 
@@ -1075,8 +277,8 @@
                     </div>
 
                     <h2>
-                        Windows Paths
-                    </h2>
+ Windows Paths
+ </h2>
 
                 </div>
 
@@ -1126,8 +328,8 @@
                     </div>
 
                     <h2>
-                        Important Windows Folders
-                    </h2>
+ Important Windows Folders
+ </h2>
 
                 </div>
 
@@ -1136,8 +338,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            C:\Windows
-                        </h3>
+ C:\Windows
+ </h3>
 
                         <p>
                             Contains important operating-system
@@ -1149,8 +351,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            C:\Users
-                        </h3>
+ C:\Users
+ </h3>
 
                         <p>
                             Contains user profiles and user-specific
@@ -1162,8 +364,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Program Files
-                        </h3>
+ Program Files
+ </h3>
 
                         <p>
                             Common location for installed
@@ -1175,8 +377,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            System32
-                        </h3>
+ System32
+ </h3>
 
                         <p>
                             Contains many important Windows system
@@ -1201,8 +403,8 @@
                     </div>
 
                     <h2>
-                        User Folders
-                    </h2>
+ User Folders
+ </h2>
 
                 </div>
 
@@ -1255,8 +457,8 @@
                     </div>
 
                     <h2>
-                        NTFS
-                    </h2>
+ NTFS
+ </h2>
 
                 </div>
 
@@ -1282,8 +484,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Permissions
-                        </h3>
+ Permissions
+ </h3>
 
                         <p>
                             NTFS supports access permissions that
@@ -1295,8 +497,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Metadata
-                        </h3>
+ Metadata
+ </h3>
 
                         <p>
                             File-system metadata stores information
@@ -1308,8 +510,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Reliability
-                        </h3>
+ Reliability
+ </h3>
 
                         <p>
                             NTFS includes mechanisms designed to
@@ -1321,8 +523,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Security
-                        </h3>
+ Security
+ </h3>
 
                         <p>
                             NTFS permissions are important when
@@ -1347,8 +549,8 @@
                     </div>
 
                     <h2>
-                        File Extensions
-                    </h2>
+ File Extensions
+ </h2>
 
                 </div>
 
@@ -1450,8 +652,8 @@
                     </div>
 
                     <h2>
-                        Basic File System Commands
-                    </h2>
+ Basic File System Commands
+ </h2>
 
                 </div>
 
@@ -1553,8 +755,8 @@
                     </div>
 
                     <h2>
-                        PowerShell File Commands
-                    </h2>
+ PowerShell File Commands
+ </h2>
 
                 </div>
 
@@ -1615,8 +817,8 @@
                     </div>
 
                     <h2>
-                        File Permissions
-                    </h2>
+ File Permissions
+ </h2>
 
                 </div>
 
@@ -1666,8 +868,8 @@
                     </div>
 
                     <h2>
-                        File System Security
-                    </h2>
+ File System Security
+ </h2>
 
                 </div>
 
@@ -1685,8 +887,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Sensitive Files
-                        </h3>
+ Sensitive Files
+ </h3>
 
                         <p>
                             Important configuration and system files
@@ -1698,8 +900,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Permissions
-                        </h3>
+ Permissions
+ </h3>
 
                         <p>
                             Incorrect permissions can allow unauthorized
@@ -1711,8 +913,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Logs
-                        </h3>
+ Logs
+ </h3>
 
                         <p>
                             Log files can provide useful information
@@ -1724,8 +926,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Executables
-                        </h3>
+ Executables
+ </h3>
 
                         <p>
                             Executable files should be treated carefully
@@ -1750,8 +952,8 @@
                     </div>
 
                     <h2>
-                        Simple File System Workflow
-                    </h2>
+ Simple File System Workflow
+ </h2>
 
                 </div>
 
@@ -1809,8 +1011,8 @@
                     </div>
 
                     <h2>
-                        Quick Summary
-                    </h2>
+ Quick Summary
+ </h2>
 
                 </div>
 
@@ -1871,8 +1073,8 @@
                     </div>
 
                     <h2>
-                        Lesson Completion
-                    </h2>
+ Lesson Completion
+ </h2>
 
                 </div>
 
@@ -1893,9 +1095,9 @@
                         data-dashboard-url="../learning-paths/windows/theory/windows-file-system.html"
                         data-status-id="windowsFileSystemCompletionStatus">
 
-                        ✓ Mark Lesson Complete
+ Mark Lesson Complete
 
-                    </button>
+ </button>
 
                     <p
                         id="windowsFileSystemCompletionStatus"
@@ -1916,17 +1118,17 @@
                     href="windows-basics.html"
                     class="windows-topic-button previous"
                 >
-                    <span>←</span>
-                    <strong>Previous: Windows Basics</strong>
-                </a>
+ <span>←</span>
+ <strong>Previous: Windows Basics</strong>
+ </a>
 
                 <a
                     href="../labs/lab02.html"
                     class="windows-topic-button practical-lab"
                 >
-                    <span>🧪</span>
-                    <strong>Perform Lab</strong>
-                </a>
+ <span></span>
+ <strong>Perform Lab</strong>
+ </a>
             </div>
 
 

@@ -1,1088 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn CyberNexa | Lab 01: Windows Basics Lab with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>CyberNexa | Lab 01: Windows Basics Lab</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        /* =====================================================
-           GLOBAL
-        ====================================================== */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-
-        /* =====================================================
-           MAIN PAGE
-        ====================================================== */
-
-        .windows-lab-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(59, 130, 246, 0.10),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(34, 211, 238, 0.07),
-                    transparent 30%
-                ),
-                #02080d;
-        }
-
-
-        .windows-lab-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-
-        /* =====================================================
-           HEADER
-        ====================================================== */
-
-        .windows-lab-header {
-
-            text-align: center;
-
-            margin-bottom: 50px;
-        }
-
-
-        .windows-lab-category {
-
-            display: inline-block;
-
-            margin-bottom: 14px;
-
-            color: #67e8f9;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-
-
-        .windows-lab-header h1 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 44px;
-
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-
-        .windows-lab-header h1 span {
-
-            color: #67e8f9;
-        }
-
-
-        .windows-lab-intro {
-
-            max-width: 760px;
-
-            margin: 18px auto 0;
-
-            color: #b6c2cc;
-
-            font-size: 15px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           MAIN CARD
-        ====================================================== */
-
-        .windows-lab-card {
-
-            position: relative;
-
-            width: 100%;
-
-            margin-bottom: 22px;
-
-            padding: 30px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.16);
-
-            border-radius: 15px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 25, 35, 0.98),
-                    rgba(3, 13, 20, 0.98)
-                );
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.28);
-
-            overflow: hidden;
-
-            transition:
-                border-color 0.25s ease,
-                box-shadow 0.25s ease,
-                transform 0.25s ease;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .windows-lab-card:hover {
-
-                border-color:
-                    rgba(103, 232, 249, 0.42);
-
-                box-shadow:
-                    0 18px 45px rgba(0, 0, 0, 0.32),
-                    0 0 28px rgba(103, 232, 249, 0.08);
-
-                transform:
-                    translateY(-2px);
-            }
-        }
-
-
-        /* =====================================================
-           SWEEP EFFECT
-        ====================================================== */
-
-        .windows-lab-card::after,
-        .windows-task-card::after,
-        .windows-command-card::after {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: -120%;
-
-            width: 55%;
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    100deg,
-                    transparent,
-                    rgba(103, 232, 249, 0.06),
-                    rgba(255, 255, 255, 0.10),
-                    rgba(103, 232, 249, 0.06),
-                    transparent
-                );
-
-            transform:
-                skewX(-18deg);
-
-            pointer-events: none;
-
-            opacity: 0;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .windows-lab-card:hover::after,
-            .windows-task-card:hover::after,
-            .windows-command-card:hover::after {
-
-                animation:
-                    windowsLabLightSweep 0.75s ease forwards;
-            }
-        }
-
-
-        .mobile-sweep::after {
-
-            animation:
-                windowsLabMobileSweep 0.75s ease forwards !important;
-        }
-
-
-        @keyframes windowsLabLightSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        @keyframes windowsLabMobileSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        /* =====================================================
-           CARD HEADING
-        ====================================================== */
-
-        .windows-lab-card-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-
-            margin-bottom: 18px;
-        }
-
-
-        .windows-lab-icon {
-
-            width: 42px;
-            height: 42px;
-
-            flex-shrink: 0;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.30);
-
-            border-radius: 10px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 18px;
-        }
-
-
-        .windows-lab-card h2 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 21px;
-
-            font-weight: 750;
-        }
-
-
-        .windows-lab-card h3 {
-
-            margin: 0 0 8px;
-
-            color: #f8fafc;
-
-            font-size: 16px;
-
-            font-weight: 700;
-        }
-
-
-        .windows-lab-card p {
-
-            margin: 0 0 14px;
-
-            color: #b6c2cc;
-
-            font-size: 14px;
-
-            line-height: 1.85;
-        }
-
-
-        .windows-lab-card p:last-child {
-
-            margin-bottom: 0;
-        }
-
-
-        /* =====================================================
-           OBJECTIVE BOX
-        ====================================================== */
-
-        .windows-objective-box {
-
-            padding: 20px;
-
-            margin-top: 5px;
-
-            border-left:
-                3px solid #67e8f9;
-
-            border-radius:
-                0 10px 10px 0;
-
-            background:
-                rgba(103, 232, 249, 0.055);
-        }
-
-
-        .windows-objective-box strong {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #f8fafc;
-
-            font-size: 14px;
-        }
-
-
-        .windows-objective-box span {
-
-            color: #c3cdd5;
-
-            font-size: 14px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           TASK GRID
-        ====================================================== */
-
-        .windows-task-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 14px;
-
-            margin-top: 20px;
-        }
-
-
-        .windows-task-card {
-
-            position: relative;
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.14);
-
-            border-radius: 11px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-
-            overflow: hidden;
-
-            transition:
-                border-color 0.2s ease,
-                background 0.2s ease,
-                transform 0.2s ease;
-        }
-
-
-        .windows-task-card:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.35);
-
-            background:
-                rgba(103, 232, 249, 0.06);
-
-            transform:
-                translateY(-2px);
-        }
-
-
-        .windows-task-number {
-
-            display: inline-flex;
-
-            align-items: center;
-            justify-content: center;
-
-            width: 30px;
-            height: 30px;
-
-            margin-bottom: 12px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.25);
-
-            border-radius: 8px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.06);
-
-            font-size: 12px;
-
-            font-weight: 700;
-        }
-
-
-        .windows-task-card p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-        }
-
-
-        /* =====================================================
-           COMMAND BOX
-        ====================================================== */
-
-        .windows-command-box {
-
-            margin-top: 20px;
-
-            padding: 18px 20px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.15);
-
-            border-radius: 10px;
-
-            background: #01060a;
-
-            overflow-x: auto;
-        }
-
-
-        .windows-command-box code {
-
-            color: #7dd3fc;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            line-height: 1.9;
-        }
-
-
-        /* =====================================================
-           COMMAND GRID
-        ====================================================== */
-
-        .windows-command-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 13px;
-
-            margin-top: 20px;
-        }
-
-
-        .windows-command-card {
-
-            position: relative;
-
-            padding: 18px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.13);
-
-            border-radius: 10px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-
-            overflow: hidden;
-        }
-
-
-        .windows-command-card code {
-
-            display: inline-block;
-
-            margin-bottom: 8px;
-
-            color: #67e8f9;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            font-weight: 700;
-        }
-
-
-        .windows-command-card p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-
-        /* =====================================================
-           STEPS
-        ====================================================== */
-
-        .windows-step-list {
-
-            margin: 18px 0 0;
-
-            padding: 0;
-
-            list-style: none;
-        }
-
-
-        .windows-step-list li {
-
-            position: relative;
-
-            padding:
-                12px 0 12px 32px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-
-            border-bottom:
-                1px solid rgba(103, 232, 249, 0.07);
-        }
-
-
-        .windows-step-list li:last-child {
-
-            border-bottom: none;
-        }
-
-
-        .windows-step-list li::before {
-
-            content: "✓";
-
-            position: absolute;
-
-            left: 0;
-
-            top: 12px;
-
-            width: 21px;
-            height: 21px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 11px;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           EXPECTED OUTPUT
-        ====================================================== */
-
-        .windows-output-box {
-
-            margin-top: 20px;
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(34, 211, 238, 0.16);
-
-            border-radius: 10px;
-
-            background:
-                rgba(34, 211, 238, 0.035);
-        }
-
-
-        .windows-output-box strong {
-
-            display: block;
-
-            margin-bottom: 10px;
-
-            color: #f8fafc;
-
-            font-size: 14px;
-        }
-
-
-        .windows-output-box code {
-
-            color: #7dd3fc;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           KEY CONCEPTS
-        ====================================================== */
-
-        .windows-key-concepts {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 20px;
-        }
-
-
-        .windows-key-item {
-
-            padding: 10px 14px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.16);
-
-            border-radius: 8px;
-
-            color: #d7e4eb;
-
-            background:
-                rgba(103, 232, 249, 0.04);
-
-            font-size: 12px;
-
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           CHECKLIST
-        ====================================================== */
-
-        .windows-checklist {
-
-            margin: 18px 0 0;
-
-            padding: 0;
-
-            list-style: none;
-        }
-
-
-        .windows-checklist li {
-
-            position: relative;
-
-            padding:
-                10px 0 10px 28px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-        }
-
-
-        .windows-checklist li::before {
-
-            content: "□";
-
-            position: absolute;
-
-            left: 0;
-
-            color: #67e8f9;
-
-            font-size: 17px;
-        }
-
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-
-        .windows-lab-navigation {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-top: 35px;
-        }
-
-
-        .windows-lab-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            padding: 13px 18px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.25);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-
-        .windows-lab-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.65);
-
-            background:
-                rgba(103, 232, 249, 0.10);
-
-            transform:
-                translateY(-1px);
-        }
-
-
-        .windows-lab-button span {
-
-            color: #67e8f9;
-
-            font-size: 17px;
-        }
-
-
-        .windows-lab-button.theory {
-
-            border-color:
-                rgba(59, 130, 246, 0.35);
-
-            background:
-                rgba(59, 130, 246, 0.07);
-        }
-
-
-        .windows-lab-button.theory:hover {
-
-            border-color:
-                rgba(59, 130, 246, 0.70);
-
-            background:
-                rgba(59, 130, 246, 0.13);
-        }
-
-
-        /* =====================================================
-           TABLET
-        ====================================================== */
-
-        @media (max-width: 800px) {
-
-            .windows-lab-page {
-
-                padding:
-                    55px 15px 65px;
-            }
-
-
-            .windows-lab-header h1 {
-
-                font-size: 36px;
-            }
-
-
-            .windows-lab-intro {
-
-                font-size: 14px;
-            }
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 600px) {
-
-            .windows-lab-page {
-
-                padding:
-                    45px 12px 55px;
-            }
-
-
-            .windows-lab-header {
-
-                margin-bottom: 35px;
-            }
-
-
-            .windows-lab-header h1 {
-
-                font-size: 30px;
-
-                line-height: 1.25;
-            }
-
-
-            .windows-lab-intro {
-
-                margin-top: 14px;
-
-                font-size: 13px;
-
-                line-height: 1.75;
-            }
-
-
-            .windows-lab-card {
-
-                padding:
-                    21px 18px;
-
-                margin-bottom: 16px;
-
-                border-radius: 12px;
-            }
-
-
-            .windows-lab-card-heading {
-
-                gap: 10px;
-
-                margin-bottom: 15px;
-            }
-
-
-            .windows-lab-icon {
-
-                width: 37px;
-                height: 37px;
-
-                font-size: 16px;
-            }
-
-
-            .windows-lab-card h2 {
-
-                font-size: 18px;
-            }
-
-
-            .windows-lab-card p {
-
-                font-size: 13px;
-
-                line-height: 1.8;
-            }
-
-
-            .windows-objective-box {
-
-                padding: 16px;
-            }
-
-
-            .windows-objective-box span {
-
-                font-size: 13px;
-            }
-
-
-            .windows-task-grid,
-            .windows-command-grid {
-
-                grid-template-columns: 1fr;
-
-                gap: 10px;
-            }
-
-
-            .windows-key-concepts {
-
-                gap: 7px;
-            }
-
-
-            .windows-key-item {
-
-                font-size: 11px;
-
-                padding:
-                    9px 11px;
-            }
-
-
-            .windows-lab-navigation {
-
-                flex-direction: column;
-
-                align-items: stretch;
-
-                margin-top: 25px;
-            }
-
-
-            .windows-lab-button {
-
-                width: 100%;
-
-                justify-content: center;
-            }
-        }
-
-
-        /* =====================================================
-           SMALL MOBILE
-        ====================================================== */
-
-        @media (max-width: 380px) {
-
-            .windows-lab-header h1 {
-
-                font-size: 27px;
-            }
-
-
-            .windows-lab-page {
-
-                padding-left: 10px;
-
-                padding-right: 10px;
-            }
-
-
-            .windows-lab-card {
-
-                padding:
-                    18px 15px;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -1182,9 +119,7 @@
 
             <header class="windows-lab-header">
 
-                <div class="windows-lab-category">
-                    WINDOWS PRACTICAL LAB
-                </div>
+                <div class="windows-lab-category">WINDOWS PRACTICAL LAB</div>
 
                 <h1>Windows Basics <span>Lab 01</span></h1>
 
@@ -1213,8 +148,8 @@
                     </div>
 
                     <h2>
-                        Lab Objective
-                    </h2>
+ Lab Objective
+ </h2>
 
                 </div>
 
@@ -1253,8 +188,8 @@
                     </div>
 
                     <h2>
-                        Lab Requirements
-                    </h2>
+ Lab Requirements
+ </h2>
 
                 </div>
 
@@ -1296,8 +231,8 @@
                     </div>
 
                     <h2>
-                        Lab Tasks
-                    </h2>
+ Lab Tasks
+ </h2>
 
                 </div>
 
@@ -1312,8 +247,8 @@
                         </div>
 
                         <h3>
-                            Check Windows Version
-                        </h3>
+ Check Windows Version
+ </h3>
 
                         <p>
 
@@ -1332,8 +267,8 @@
                         </div>
 
                         <h3>
-                            Check System Information
-                        </h3>
+ Check System Information
+ </h3>
 
                         <p>
 
@@ -1352,8 +287,8 @@
                         </div>
 
                         <h3>
-                            Identify Current User
-                        </h3>
+ Identify Current User
+ </h3>
 
                         <p>
 
@@ -1372,8 +307,8 @@
                         </div>
 
                         <h3>
-                            Check Network Configuration
-                        </h3>
+ Check Network Configuration
+ </h3>
 
                         <p>
 
@@ -1403,8 +338,8 @@
                     </div>
 
                     <h2>
-                        Step 1 — Open Command Prompt
-                    </h2>
+ Step 1 — Open Command Prompt
+ </h2>
 
                 </div>
 
@@ -1446,8 +381,8 @@
                     </div>
 
                     <h2>
-                        Step 2 — Check Windows Version
-                    </h2>
+ Step 2 — Check Windows Version
+ </h2>
 
                 </div>
 
@@ -1499,8 +434,8 @@
                     </div>
 
                     <h2>
-                        Step 3 — Check System Information
-                    </h2>
+ Step 3 — Check System Information
+ </h2>
 
                 </div>
 
@@ -1556,8 +491,8 @@
                     </div>
 
                     <h2>
-                        Step 4 — Check Current User
-                    </h2>
+ Step 4 — Check Current User
+ </h2>
 
                 </div>
 
@@ -1609,8 +544,8 @@
                     </div>
 
                     <h2>
-                        Step 5 — Check Network Configuration
-                    </h2>
+ Step 5 — Check Network Configuration
+ </h2>
 
                 </div>
 
@@ -1663,8 +598,8 @@
                     </div>
 
                     <h2>
-                        Basic Windows Commands
-                    </h2>
+ Basic Windows Commands
+ </h2>
 
                 </div>
 
@@ -1768,8 +703,8 @@
                     </div>
 
                     <h2>
-                        Cybersecurity Connection
-                    </h2>
+ Cybersecurity Connection
+ </h2>
 
                 </div>
 
@@ -1826,8 +761,8 @@
                     </div>
 
                     <h2>
-                        Lab Completion Checklist
-                    </h2>
+ Lab Completion Checklist
+ </h2>
 
                 </div>
 
@@ -1878,8 +813,8 @@
                     </div>
 
                     <h2>
-                        Key Takeaways
-                    </h2>
+ Key Takeaways
+ </h2>
 
                 </div>
 
@@ -1926,25 +861,25 @@
                     href="windows-labs.html"
                     class="windows-lab-button"
                 >
-                    <span>←</span>
-                    <strong>Previous: Windows Practical Labs</strong>
-                </a>
+ <span>←</span>
+ <strong>Previous: Windows Practical Labs</strong>
+ </a>
 
                 <a
                     href="../theory/windows-file-system.html"
                     class="windows-lab-button theory"
                 >
-                    <span>📘</span>
-                    <strong>Theory: File System</strong>
-                </a>
+ <span></span>
+ <strong>Theory: File System</strong>
+ </a>
 
                 <!-- <a
                     href="lab02.html"
                     class="windows-lab-button"
                 >
-                    <strong>Next: Lab 02: Windows File System</strong>
-                    <span>→</span>
-                </a> -->
+ <strong>Next: Lab 02: Windows File System</strong>
+ <span>→</span>
+ </a> -->
 
             </div>
 

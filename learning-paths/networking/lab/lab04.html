@@ -1,991 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn IP Addresses Practical Lab - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>IP Addresses Practical Lab - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-            width: 100%;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-            width: 100%;
-            background: #020714;
-        }
-
-        /* =====================================================
-           MAIN PAGE
-        ====================================================== */
-
-        .lab-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 65px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(0, 191, 255, 0.09),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(0, 100, 180, 0.06),
-                    transparent 30%
-                ),
-                #020714;
-        }
-
-        .lab-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-        /* =====================================================
-           HEADER
-        ====================================================== */
-
-        .lab-header {
-
-            text-align: center;
-
-            margin-bottom: 35px;
-        }
-
-        .lab-category {
-
-            display: inline-block;
-
-            margin-bottom: 12px;
-
-            color: #00bfff;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            letter-spacing: 2.5px;
-
-            text-transform: uppercase;
-        }
-
-        .lab-header h1 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 42px;
-
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-        .lab-header h1 span {
-
-            color: #00bfff;
-        }
-
-        .lab-intro {
-
-            max-width: 760px;
-
-            margin: 15px auto 0;
-
-            color: #91a4bd;
-
-            font-size: 13px;
-
-            line-height: 1.8;
-        }
-
-        /* =====================================================
-           PROGRESS
-        ====================================================== */
-
-        .lab-progress {
-
-            margin-bottom: 25px;
-
-            padding: 15px 18px;
-
-            border: 1px solid rgba(0, 191, 255, 0.16);
-
-            border-radius: 10px;
-
-            background: rgba(0, 191, 255, 0.035);
-        }
-
-        .lab-progress-top {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            margin-bottom: 9px;
-        }
-
-        .lab-progress-title {
-
-            color: #ffffff;
-
-            font-size: 11px;
-
-            font-weight: 700;
-        }
-
-        .lab-progress-count {
-
-            color: #00bfff;
-
-            font-size: 10px;
-
-            font-weight: 800;
-        }
-
-        .lab-progress-track {
-
-            width: 100%;
-
-            height: 4px;
-
-            overflow: hidden;
-
-            border-radius: 10px;
-
-            background: rgba(0, 191, 255, 0.10);
-        }
-
-        .lab-progress-bar {
-
-            width: 62%;
-
-            height: 100%;
-
-            background: linear-gradient(
-                90deg,
-                #00bfff,
-                #60a5fa
-            );
-        }
-
-        /* =====================================================
-           LAB INFO
-        ====================================================== */
-
-        .lab-info-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 10px;
-
-            margin-bottom: 22px;
-        }
-
-        .lab-info-card {
-
-            padding: 15px;
-
-            border: 1px solid rgba(0, 191, 255, 0.14);
-
-            border-radius: 10px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 26, 51, 0.96),
-                    rgba(3, 16, 32, 0.96)
-                );
-        }
-
-        .lab-info-icon {
-
-            margin-bottom: 7px;
-
-            color: #00bfff;
-
-            font-size: 18px;
-        }
-
-        .lab-info-label {
-
-            margin-bottom: 4px;
-
-            color: #71849a;
-
-            font-size: 8px;
-
-            font-weight: 800;
-
-            letter-spacing: 1.3px;
-
-            text-transform: uppercase;
-        }
-
-        .lab-info-value {
-
-            color: #e5f6ff;
-
-            font-size: 11px;
-
-            font-weight: 700;
-        }
-
-        /* =====================================================
-           CONTENT CARD
-        ====================================================== */
-
-        .lab-card {
-
-            width: 100%;
-
-            margin-bottom: 18px;
-
-            padding: 27px;
-
-            border: 1px solid rgba(0, 191, 255, 0.16);
-
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 26, 51, 0.96),
-                    rgba(3, 16, 32, 0.96)
-                );
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.20);
-        }
-
-        .lab-card-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            margin-bottom: 16px;
-        }
-
-        .lab-icon {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            width: 34px;
-
-            height: 34px;
-
-            flex-shrink: 0;
-
-            border: 1px solid rgba(0, 191, 255, 0.25);
-
-            border-radius: 8px;
-
-            color: #00bfff;
-
-            background: rgba(0, 191, 255, 0.06);
-
-            font-size: 15px;
-
-            font-weight: 800;
-        }
-
-        .lab-card-heading h2 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 17px;
-
-            font-weight: 750;
-        }
-
-        .lab-card p {
-
-            margin: 0 0 14px;
-
-            color: #a5b5c7;
-
-            font-size: 11px;
-
-            line-height: 1.75;
-        }
-
-        /* =====================================================
-           OBJECTIVE
-        ====================================================== */
-
-        .objective-box {
-
-            padding: 17px;
-
-            border-left: 3px solid #00bfff;
-
-            border-radius: 8px;
-
-            background: rgba(0, 191, 255, 0.045);
-        }
-
-        .objective-box strong {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #67e8f9;
-
-            font-size: 11px;
-        }
-
-        .objective-box span {
-
-            color: #a5b5c7;
-
-            font-size: 10px;
-
-            line-height: 1.7;
-        }
-
-        /* =====================================================
-           IP ADDRESS TYPES
-        ====================================================== */
-
-        .ip-type-list {
-
-            display: grid;
-
-            gap: 9px;
-
-            margin-top: 15px;
-        }
-
-        .ip-type {
-
-            display: grid;
-
-            grid-template-columns: 42px 1fr auto;
-
-            align-items: center;
-
-            gap: 12px;
-
-            padding: 13px;
-
-            border: 1px solid rgba(0, 191, 255, 0.12);
-
-            border-radius: 8px;
-
-            background: rgba(0, 191, 255, 0.025);
-        }
-
-        .ip-number {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            width: 30px;
-
-            height: 30px;
-
-            border-radius: 7px;
-
-            color: #00bfff;
-
-            background: rgba(0, 191, 255, 0.08);
-
-            font-size: 11px;
-
-            font-weight: 800;
-        }
-
-        .ip-content h3 {
-
-            margin: 0 0 3px;
-
-            color: #f8fafc;
-
-            font-size: 11px;
-        }
-
-        .ip-content p {
-
-            margin: 0;
-
-            color: #91a4bd;
-
-            font-size: 9px;
-
-            line-height: 1.5;
-        }
-
-        .ip-tag {
-
-            color: #67e8f9;
-
-            font-size: 8px;
-
-            font-weight: 800;
-
-            text-align: right;
-        }
-
-        /* =====================================================
-           PRACTICAL STEPS
-        ====================================================== */
-
-        .step {
-
-            margin-bottom: 15px;
-
-            padding: 16px;
-
-            border: 1px solid rgba(0, 191, 255, 0.12);
-
-            border-radius: 9px;
-
-            background: rgba(0, 191, 255, 0.025);
-        }
-
-        .step:last-child {
-
-            margin-bottom: 0;
-        }
-
-        .step-title {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 9px;
-
-            margin-bottom: 9px;
-        }
-
-        .step-number {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            width: 25px;
-
-            height: 25px;
-
-            border-radius: 6px;
-
-            color: #020714;
-
-            background: #00bfff;
-
-            font-size: 9px;
-
-            font-weight: 900;
-        }
-
-        .step-title h3 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 12px;
-        }
-
-        .step p {
-
-            margin-bottom: 10px;
-        }
-
-        /* =====================================================
-           COMMAND BOX
-        ====================================================== */
-
-        .command-box {
-
-            position: relative;
-
-            margin: 10px 0;
-
-            padding: 14px 45px 14px 14px;
-
-            overflow-x: auto;
-
-            border: 1px solid rgba(0, 191, 255, 0.16);
-
-            border-radius: 8px;
-
-            background: #010a12;
-        }
-
-        .command-box code {
-
-            color: #67e8f9;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 10px;
-
-            white-space: nowrap;
-        }
-
-        .copy-button {
-
-            position: absolute;
-
-            top: 8px;
-
-            right: 8px;
-
-            padding: 5px 8px;
-
-            border: 1px solid rgba(0, 191, 255, 0.20);
-
-            border-radius: 5px;
-
-            color: #67e8f9;
-
-            background: rgba(0, 191, 255, 0.05);
-
-            font-size: 8px;
-
-            cursor: pointer;
-        }
-
-        .copy-button:hover {
-
-            background: rgba(0, 191, 255, 0.12);
-        }
-
-        /* =====================================================
-           OUTPUT
-        ====================================================== */
-
-        .output-box {
-
-            margin-top: 10px;
-
-            padding: 14px;
-
-            border: 1px solid rgba(34, 197, 94, 0.15);
-
-            border-radius: 8px;
-
-            background: rgba(34, 197, 94, 0.025);
-        }
-
-        .output-label {
-
-            margin-bottom: 7px;
-
-            color: #86efac;
-
-            font-size: 8px;
-
-            font-weight: 800;
-
-            letter-spacing: 1.2px;
-
-            text-transform: uppercase;
-        }
-
-        .output-box pre {
-
-            margin: 0;
-
-            overflow-x: auto;
-
-            color: #b8f7ca;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 9px;
-
-            line-height: 1.6;
-        }
-
-        /* =====================================================
-           IP TABLE
-        ====================================================== */
-
-        .ip-table-wrapper {
-
-            width: 100%;
-
-            overflow-x: auto;
-
-            margin-top: 14px;
-        }
-
-        .ip-table {
-
-            width: 100%;
-
-            min-width: 600px;
-
-            border-collapse: collapse;
-        }
-
-        .ip-table th {
-
-            padding: 11px;
-
-            border: 1px solid rgba(0, 191, 255, 0.12);
-
-            color: #67e8f9;
-
-            background: rgba(0, 191, 255, 0.05);
-
-            font-size: 9px;
-
-            text-align: left;
-        }
-
-        .ip-table td {
-
-            padding: 11px;
-
-            border: 1px solid rgba(0, 191, 255, 0.10);
-
-            color: #a5b5c7;
-
-            background: rgba(0, 191, 255, 0.02);
-
-            font-size: 9px;
-        }
-
-        /* =====================================================
-           CHECKLIST
-        ====================================================== */
-
-        .checklist {
-
-            display: grid;
-
-            gap: 8px;
-
-            margin-top: 14px;
-        }
-
-        .check-item {
-
-            display: flex;
-
-            align-items: flex-start;
-
-            gap: 9px;
-
-            padding: 10px;
-
-            border: 1px solid rgba(0, 191, 255, 0.10);
-
-            border-radius: 7px;
-
-            background: rgba(0, 191, 255, 0.025);
-
-            cursor: pointer;
-        }
-
-        .check-item input {
-
-            margin-top: 2px;
-
-            accent-color: #00bfff;
-
-            cursor: pointer;
-        }
-
-        .check-item span {
-
-            color: #a5b5c7;
-
-            font-size: 10px;
-
-            line-height: 1.5;
-        }
-
-        .check-item:has(input:checked) span {
-
-            color: #67e8f9;
-        }
-
-        /* =====================================================
-           OBSERVATION
-        ====================================================== */
-
-        .observation-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 10px;
-
-            margin-top: 13px;
-        }
-
-        .observation-card {
-
-            padding: 14px;
-
-            border: 1px solid rgba(0, 191, 255, 0.11);
-
-            border-radius: 8px;
-
-            background: rgba(0, 191, 255, 0.025);
-        }
-
-        .observation-card h3 {
-
-            margin: 0 0 6px;
-
-            color: #67e8f9;
-
-            font-size: 10px;
-        }
-
-        .observation-card p {
-
-            margin: 0;
-
-            font-size: 9px;
-        }
-
-        /* =====================================================
-           IMPORTANT NOTE
-        ====================================================== */
-
-        .lab-note {
-
-            margin-top: 18px;
-
-            padding: 17px;
-
-            border: 1px solid rgba(96, 165, 250, 0.18);
-
-            border-radius: 9px;
-
-            background: rgba(96, 165, 250, 0.035);
-        }
-
-        .lab-note h2 {
-
-            margin: 0 0 8px;
-
-            color: #ffffff;
-
-            font-size: 13px;
-        }
-
-        .lab-note p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 10px;
-
-            line-height: 1.7;
-        }
-
-        /* =====================================================
-           COMPLETION
-        ====================================================== */
-
-        .completion-box {
-
-            margin-top: 18px;
-
-            padding: 20px;
-
-            border: 1px solid rgba(34, 197, 94, 0.20);
-
-            border-radius: 10px;
-
-            background: rgba(34, 197, 94, 0.035);
-
-            text-align: center;
-        }
-
-        .completion-box h2 {
-
-            margin: 0 0 7px;
-
-            color: #86efac;
-
-            font-size: 14px;
-        }
-
-        .completion-box p {
-
-            margin: 0;
-
-            color: #9fb3a5;
-
-            font-size: 10px;
-
-            line-height: 1.6;
-        }
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-
-        .lab-navigation {
-
-            display: flex;
-
-            gap: 9px;
-
-            margin-top: 22px;
-        }
-
-        .lab-button {
-
-            flex: 1;
-
-            padding: 13px;
-
-            border: 1px solid rgba(0, 191, 255, 0.16);
-
-            border-radius: 8px;
-
-            color: #dbeafe;
-
-            background: rgba(0, 191, 255, 0.035);
-
-            text-decoration: none;
-
-            text-align: center;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-            transition: 0.2s ease;
-        }
-
-        .lab-button:hover {
-
-            border-color: rgba(0, 191, 255, 0.50);
-
-            background: rgba(0, 191, 255, 0.08);
-        }
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 700px) {
-
-            .lab-page {
-
-                padding: 45px 10px 55px;
-            }
-
-            .lab-header h1 {
-
-                font-size: 30px;
-            }
-
-            .lab-intro {
-
-                font-size: 11px;
-            }
-
-            .lab-info-grid {
-
-                grid-template-columns: 1fr;
-            }
-
-            .lab-card {
-
-                padding: 18px;
-            }
-
-            .lab-card-heading h2 {
-
-                font-size: 14px;
-            }
-
-            .ip-type {
-
-                grid-template-columns: 35px 1fr;
-            }
-
-            .ip-tag {
-
-                grid-column: 2;
-
-                text-align: left;
-            }
-
-            .observation-grid {
-
-                grid-template-columns: 1fr;
-            }
-
-            .lab-navigation {
-
-                flex-direction: column;
-            }
-
-            .lab-button {
-
-                width: 100%;
-            }
-
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -1083,13 +117,11 @@
 
 <header class="lab-header">
 
-    <div class="lab-category">
-        NETWORKING PRACTICAL
-    </div>
+    <div class="lab-category">NETWORKING PRACTICAL</div>
 
     <h1>
-        IP Addresses <span>Practical Lab</span>
-    </h1>
+ IP Addresses <span>Practical Lab</span>
+ </h1>
 
     <p class="lab-intro">
 
@@ -1202,8 +234,8 @@
         </div>
 
         <h2>
-            Lab Objective
-        </h2>
+ Lab Objective
+ </h2>
 
     </div>
 
@@ -1241,8 +273,8 @@
         </div>
 
         <h2>
-            IP Address Concepts
-        </h2>
+ IP Address Concepts
+ </h2>
 
     </div>
 
@@ -1264,8 +296,8 @@
             <div class="ip-content">
 
                 <h3>
-                    IPv4
-                </h3>
+ IPv4
+ </h3>
 
                 <p>
                     Uses a 32-bit address written in four decimal
@@ -1290,8 +322,8 @@
             <div class="ip-content">
 
                 <h3>
-                    IPv6
-                </h3>
+ IPv6
+ </h3>
 
                 <p>
                     Uses a 128-bit address and provides a much
@@ -1316,8 +348,8 @@
             <div class="ip-content">
 
                 <h3>
-                    Private IP Address
-                </h3>
+ Private IP Address
+ </h3>
 
                 <p>
                     Used inside local networks and is not directly
@@ -1342,8 +374,8 @@
             <div class="ip-content">
 
                 <h3>
-                    Public IP Address
-                </h3>
+ Public IP Address
+ </h3>
 
                 <p>
                     Identifies a network or device on the public
@@ -1368,8 +400,8 @@
             <div class="ip-content">
 
                 <h3>
-                    Static and Dynamic IP
-                </h3>
+ Static and Dynamic IP
+ </h3>
 
                 <p>
                     A static IP remains manually assigned, while
@@ -1403,8 +435,8 @@
         </div>
 
         <h2>
-            Private IPv4 Address Ranges
-        </h2>
+ Private IPv4 Address Ranges
+ </h2>
 
     </div>
 
@@ -1527,8 +559,8 @@
         </div>
 
         <h2>
-            Identify Your IPv4 Address
-        </h2>
+ Identify Your IPv4 Address
+ </h2>
 
     </div>
 
@@ -1541,8 +573,8 @@
             </div>
 
             <h3>
-                Use ipconfig
-            </h3>
+ Use ipconfig
+ </h3>
 
         </div>
 
@@ -1560,8 +592,8 @@
                 class="copy-button"
                 onclick="copyCommand('command1', this)"
             >
-                Copy
-            </button>
+ Copy
+ </button>
 
         </div>
 
@@ -1601,8 +633,8 @@ Default Gateway . . . . . : 192.168.1.1</pre>
         </div>
 
         <h2>
-            View Detailed IP Configuration
-        </h2>
+ View Detailed IP Configuration
+ </h2>
 
     </div>
 
@@ -1615,8 +647,8 @@ Default Gateway . . . . . : 192.168.1.1</pre>
             </div>
 
             <h3>
-                Use ipconfig /all
-            </h3>
+ Use ipconfig /all
+ </h3>
 
         </div>
 
@@ -1635,8 +667,8 @@ Default Gateway . . . . . : 192.168.1.1</pre>
                 class="copy-button"
                 onclick="copyCommand('command2', this)"
             >
-                Copy
-            </button>
+ Copy
+ </button>
 
         </div>
 
@@ -1680,8 +712,8 @@ Physical Address</pre>
         </div>
 
         <h2>
-            Identify Your Default Gateway
-        </h2>
+ Identify Your Default Gateway
+ </h2>
 
     </div>
 
@@ -1694,8 +726,8 @@ Physical Address</pre>
             </div>
 
             <h3>
-                Observe the Gateway
-            </h3>
+ Observe the Gateway
+ </h3>
 
         </div>
 
@@ -1714,8 +746,8 @@ Physical Address</pre>
                 class="copy-button"
                 onclick="copyCommand('command3', this)"
             >
-                Copy
-            </button>
+ Copy
+ </button>
 
         </div>
 
@@ -1755,8 +787,8 @@ Gateway                192.168.1.1</pre>
         </div>
 
         <h2>
-            Test Your IP Connectivity
-        </h2>
+ Test Your IP Connectivity
+ </h2>
 
     </div>
 
@@ -1769,8 +801,8 @@ Gateway                192.168.1.1</pre>
             </div>
 
             <h3>
-                Ping the Default Gateway
-            </h3>
+ Ping the Default Gateway
+ </h3>
 
         </div>
 
@@ -1789,8 +821,8 @@ Gateway                192.168.1.1</pre>
                 class="copy-button"
                 onclick="copyCommand('command4', this)"
             >
-                Copy
-            </button>
+ Copy
+ </button>
 
         </div>
 
@@ -1828,8 +860,8 @@ Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64</pre>
         </div>
 
         <h2>
-            Check Public IP Information
-        </h2>
+ Check Public IP Information
+ </h2>
 
     </div>
 
@@ -1842,8 +874,8 @@ Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64</pre>
             </div>
 
             <h3>
-                Understand Local and Public Addressing
-            </h3>
+ Understand Local and Public Addressing
+ </h3>
 
         </div>
 
@@ -1863,8 +895,8 @@ Reply from 192.168.1.1: bytes=32 time&lt;1ms TTL=64</pre>
                 class="copy-button"
                 onclick="copyCommand('command5', this)"
             >
-                Copy
-            </button>
+ Copy
+ </button>
 
         </div>
 
@@ -1910,8 +942,8 @@ Default Gateway: 192.168.1.1</pre>
         </div>
 
         <h2>
-            Practical Observations
-        </h2>
+ Practical Observations
+ </h2>
 
     </div>
 
@@ -1921,8 +953,8 @@ Default Gateway: 192.168.1.1</pre>
         <div class="observation-card">
 
             <h3>
-                IPv4
-            </h3>
+ IPv4
+ </h3>
 
             <p>
                 IPv4 uses 32-bit addresses and is commonly
@@ -1935,8 +967,8 @@ Default Gateway: 192.168.1.1</pre>
         <div class="observation-card">
 
             <h3>
-                IPv6
-            </h3>
+ IPv6
+ </h3>
 
             <p>
                 IPv6 uses 128-bit addresses and provides a
@@ -1949,8 +981,8 @@ Default Gateway: 192.168.1.1</pre>
         <div class="observation-card">
 
             <h3>
-                Private IP
-            </h3>
+ Private IP
+ </h3>
 
             <p>
                 Private addresses are used inside local
@@ -1964,8 +996,8 @@ Default Gateway: 192.168.1.1</pre>
         <div class="observation-card">
 
             <h3>
-                Default Gateway
-            </h3>
+ Default Gateway
+ </h3>
 
             <p>
                 The default gateway normally provides the
@@ -1978,8 +1010,8 @@ Default Gateway: 192.168.1.1</pre>
         <div class="observation-card">
 
             <h3>
-                Subnet Mask
-            </h3>
+ Subnet Mask
+ </h3>
 
             <p>
                 The subnet mask helps determine which part
@@ -1993,8 +1025,8 @@ Default Gateway: 192.168.1.1</pre>
         <div class="observation-card">
 
             <h3>
-                DHCP
-            </h3>
+ DHCP
+ </h3>
 
             <p>
                 DHCP can automatically provide devices with
@@ -2022,8 +1054,8 @@ Default Gateway: 192.168.1.1</pre>
         </div>
 
         <h2>
-            Lab Completion Checklist
-        </h2>
+ Lab Completion Checklist
+ </h2>
 
     </div>
 
@@ -2126,8 +1158,8 @@ Default Gateway: 192.168.1.1</pre>
 <section class="lab-note">
 
     <h2>
-        🧪 Lab Safety
-    </h2>
+ Lab Safety
+ </h2>
 
     <p>
         Perform networking exercises only on systems and
@@ -2147,8 +1179,8 @@ Default Gateway: 192.168.1.1</pre>
 <section class="completion-box">
 
     <h2>
-        ✓ Lab 04 Completed
-    </h2>
+ Lab 04 Completed
+ </h2>
 
     <p>
         You have practiced identifying IP addressing
@@ -2170,24 +1202,24 @@ Default Gateway: 192.168.1.1</pre>
         href="lab03.html"
         class="lab-button"
     >
-        ← Previous: Lab 
-    </a>
+ ← Previous: Lab 
+ </a>
 
 
     <a
         href="../theory/ipv4-ipv6.html"
         class="lab-button"
     >
-         ☰ IPv4 & IPv6
-    </a>
+ IPv4 & IPv6
+ </a>
 <!-- 
 
     <a
-        href="lab05.html"
+        href="lab05-ipv4.html"
         class="lab-button"
     >
-        Next: Lab 05 →
-    </a> -->
+ Next: Lab 05 →
+ </a> -->
 
 </div>
 

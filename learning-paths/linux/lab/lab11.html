@@ -1,1312 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Linux Bash Basics Lab - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Linux Bash Basics Lab - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        /* =====================================================
-           GLOBAL
-        ====================================================== */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-
-        /* =====================================================
-           MAIN LAB PAGE
-        ====================================================== */
-
-        .lab-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(34, 211, 238, 0.08),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(59, 130, 246, 0.07),
-                    transparent 30%
-                ),
-                #02080d;
-        }
-
-
-        .lab-container {
-
-            width: 100%;
-            max-width: 1000px;
-
-            margin: 0 auto;
-        }
-
-
-        /* =====================================================
-           LAB HEADER
-        ====================================================== */
-
-        .lab-header {
-
-            text-align: center;
-
-            margin-bottom: 45px;
-        }
-
-
-        .lab-category {
-
-            display: inline-block;
-
-            margin-bottom: 13px;
-
-            color: #67e8f9;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-
-
-        .lab-header h1 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 42px;
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-
-        .lab-header h1 span {
-
-            color: #67e8f9;
-        }
-
-
-        .lab-intro {
-
-            max-width: 750px;
-
-            margin: 17px auto 0;
-
-            color: #b6c2cc;
-
-            font-size: 14px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           LAB INFO
-        ====================================================== */
-
-        .lab-info {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 12px;
-
-            margin-bottom: 25px;
-        }
-
-
-        .lab-info-card {
-
-            padding: 16px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.14);
-
-            border-radius: 10px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-
-            text-align: center;
-        }
-
-
-        .lab-info-card strong {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #67e8f9;
-
-            font-size: 11px;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-        }
-
-
-        .lab-info-card span {
-
-            color: #dbeafe;
-
-            font-size: 13px;
-        }
-
-
-        /* =====================================================
-           LAB CARD
-        ====================================================== */
-
-        .lab-card {
-
-            position: relative;
-
-            width: 100%;
-
-            margin-bottom: 20px;
-
-            padding: 28px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.16);
-
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 25, 35, 0.98),
-                    rgba(3, 13, 20, 0.98)
-                );
-
-            box-shadow:
-                0 15px 40px
-                rgba(0, 0, 0, 0.28);
-
-            overflow: hidden;
-
-            transition:
-                border-color 0.25s ease,
-                box-shadow 0.25s ease,
-                transform 0.25s ease;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .lab-card:hover {
-
-                border-color:
-                    rgba(103, 232, 249, 0.40);
-
-                box-shadow:
-                    0 18px 45px
-                    rgba(0, 0, 0, 0.32),
-                    0 0 28px
-                    rgba(103, 232, 249, 0.08);
-
-                transform:
-                    translateY(-2px);
-            }
-        }
-
-
-        /* =====================================================
-           LIGHT SWEEP
-        ====================================================== */
-
-        .lab-card::after {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: -120%;
-
-            width: 55%;
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    100deg,
-                    transparent,
-                    rgba(103, 232, 249, 0.06),
-                    rgba(255, 255, 255, 0.10),
-                    rgba(103, 232, 249, 0.06),
-                    transparent
-                );
-
-            transform:
-                skewX(-18deg);
-
-            pointer-events: none;
-
-            opacity: 0;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .lab-card:hover::after {
-
-                animation:
-                    labLightSweep 0.75s ease forwards;
-            }
-        }
-
-
-        .mobile-sweep::after {
-
-            animation:
-                labMobileSweep 0.75s ease forwards !important;
-        }
-
-
-        @keyframes labLightSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        @keyframes labMobileSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        /* =====================================================
-           CARD HEADING
-        ====================================================== */
-
-        .lab-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-
-            margin-bottom: 17px;
-        }
-
-
-        .lab-icon {
-
-            width: 42px;
-            height: 42px;
-
-            flex-shrink: 0;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.30);
-
-            border-radius: 10px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 17px;
-
-            font-weight: 700;
-        }
-
-
-        .lab-card h2 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 20px;
-
-            font-weight: 750;
-        }
-
-
-        .lab-card p {
-
-            margin: 0 0 13px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.85;
-        }
-
-
-        .lab-card p:last-child {
-
-            margin-bottom: 0;
-        }
-
-
-        /* =====================================================
-           STEP NUMBER
-        ====================================================== */
-
-        .step-number {
-
-            display: inline-flex;
-
-            align-items: center;
-            justify-content: center;
-
-            width: 30px;
-            height: 30px;
-
-            margin-bottom: 13px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.30);
-
-            border-radius: 8px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.06);
-
-            font-size: 12px;
-
-            font-weight: 800;
-        }
-
-
-        /* =====================================================
-           INSTRUCTION BOX
-        ====================================================== */
-
-        .instruction-box {
-
-            margin-top: 15px;
-
-            padding: 17px 19px;
-
-            border-left:
-                3px solid #67e8f9;
-
-            border-radius:
-                0 9px 9px 0;
-
-            background:
-                rgba(103, 232, 249, 0.055);
-        }
-
-
-        .instruction-box strong {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            color: #f8fafc;
-
-            font-size: 13px;
-        }
-
-
-        .instruction-box span {
-
-            color: #c3cdd5;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-        }
-
-
-        /* =====================================================
-           TERMINAL
-        ====================================================== */
-
-        .terminal-box {
-
-            position: relative;
-
-            margin-top: 17px;
-
-            padding: 17px 18px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.15);
-
-            border-radius: 10px;
-
-            background: #01060a;
-
-            overflow-x: auto;
-        }
-
-
-        .terminal-header {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 10px;
-
-            margin-bottom: 13px;
-        }
-
-
-        .terminal-title {
-
-            color: #71808c;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 11px;
-        }
-
-
-        .copy-button {
-
-            padding: 7px 11px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.22);
-
-            border-radius: 7px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            cursor: pointer;
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-
-        .copy-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.60);
-
-            background:
-                rgba(103, 232, 249, 0.10);
-        }
-
-
-        .terminal-box pre {
-
-            margin: 0;
-
-            white-space: pre-wrap;
-
-            color: #7dd3fc;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            line-height: 1.8;
-        }
-
-
-        .terminal-box code {
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-        }
-
-
-        /* =====================================================
-           EXPECTED RESULT
-        ====================================================== */
-
-        .expected-box {
-
-            margin-top: 15px;
-
-            padding: 15px 17px;
-
-            border:
-                1px solid
-                rgba(34, 197, 94, 0.18);
-
-            border-left:
-                3px solid #4ade80;
-
-            border-radius:
-                0 9px 9px 0;
-
-            background:
-                rgba(34, 197, 94, 0.045);
-        }
-
-
-        .expected-box strong {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #86efac;
-
-            font-size: 12px;
-
-            text-transform: uppercase;
-
-            letter-spacing: 1px;
-        }
-
-
-        .expected-box span {
-
-            color: #b9c7c0;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-
-        /* =====================================================
-           SAFETY NOTE
-        ====================================================== */
-
-        .safety-box {
-
-            margin-top: 15px;
-
-            padding: 16px 18px;
-
-            border:
-                1px solid
-                rgba(250, 204, 21, 0.18);
-
-            border-left:
-                3px solid #facc15;
-
-            border-radius:
-                0 9px 9px 0;
-
-            background:
-                rgba(250, 204, 21, 0.045);
-        }
-
-
-        .safety-box strong {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #fde68a;
-
-            font-size: 12px;
-
-            text-transform: uppercase;
-
-            letter-spacing: 1px;
-        }
-
-
-        .safety-box span {
-
-            color: #c7c5b5;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-
-        /* =====================================================
-           COMMAND GRID
-        ====================================================== */
-
-        .command-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 12px;
-
-            margin-top: 18px;
-        }
-
-
-        .command-card {
-
-            padding: 16px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.13);
-
-            border-radius: 9px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-        }
-
-
-        .command-card code {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            color: #67e8f9;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 12px;
-
-            font-weight: 700;
-        }
-
-
-        .command-card span {
-
-            color: #aebbc5;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-
-        /* =====================================================
-           FLOW
-        ====================================================== */
-
-        .lab-flow {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            flex-wrap: wrap;
-
-            gap: 9px;
-
-            margin-top: 20px;
-        }
-
-
-        .flow-item {
-
-            padding: 11px 14px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.18);
-
-            border-radius: 8px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.045);
-
-            font-size: 11px;
-
-            font-weight: 600;
-
-            text-align: center;
-        }
-
-
-        .flow-arrow {
-
-            color: #67e8f9;
-
-            font-size: 16px;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           KEY POINTS
-        ====================================================== */
-
-        .key-points {
-
-            margin: 17px 0 0;
-
-            padding: 0;
-
-            list-style: none;
-        }
-
-
-        .key-points li {
-
-            position: relative;
-
-            padding:
-                8px 0 8px 22px;
-
-            color: #b6c2cc;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-
-            border-bottom:
-                1px solid
-                rgba(103, 232, 249, 0.06);
-        }
-
-
-        .key-points li:last-child {
-
-            border-bottom: none;
-        }
-
-
-        .key-points li::before {
-
-            content: "✓";
-
-            position: absolute;
-
-            left: 0;
-
-            top: 8px;
-
-            color: #67e8f9;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           COMPLETION
-        ====================================================== */
-
-        .completion-card {
-
-            text-align: center;
-
-            padding: 30px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.22);
-
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(8, 31, 42, 0.98),
-                    rgba(3, 14, 21, 0.98)
-                );
-
-            margin-bottom: 25px;
-        }
-
-
-        .completion-icon {
-
-            width: 50px;
-            height: 50px;
-
-            margin: 0 auto 13px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.35);
-
-            border-radius: 50%;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 21px;
-        }
-
-
-        .completion-card h2 {
-
-            margin: 0 0 9px;
-
-            color: #f8fafc;
-
-            font-size: 21px;
-        }
-
-
-        .completion-card p {
-
-            max-width: 650px;
-
-            margin: 0 auto;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.8;
-        }
-
-
-        .complete-button {
-
-            margin-top: 18px;
-
-            padding: 11px 18px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.30);
-
-            border-radius: 8px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.06);
-
-            cursor: pointer;
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-
-        .complete-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.65);
-
-            background:
-                rgba(103, 232, 249, 0.12);
-        }
-
-
-        .completion-status {
-
-            display: none;
-
-            margin-top: 12px;
-
-            color: #86efac;
-
-            font-size: 12px;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-
-        .lab-navigation {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-top: 30px;
-        }
-
-
-        .lab-nav-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 9px;
-
-            padding: 12px 17px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.24);
-
-            border-radius: 8px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            text-decoration: none;
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-
-        .lab-nav-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.60);
-
-            background:
-                rgba(103, 232, 249, 0.10);
-
-            transform:
-                translateY(-1px);
-        }
-
-
-        .lab-nav-button span {
-
-            color: #67e8f9;
-
-            font-size: 16px;
-        }
-
-
-        /* =====================================================
-           TABLET
-        ====================================================== */
-
-        @media (max-width: 800px) {
-
-            .lab-page {
-
-                padding:
-                    55px 15px 65px;
-            }
-
-
-            .lab-header h1 {
-
-                font-size: 35px;
-            }
-
-
-            .lab-info {
-
-                grid-template-columns:
-                    repeat(3, 1fr);
-            }
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 600px) {
-
-            .lab-page {
-
-                padding:
-                    45px 12px 55px;
-            }
-
-
-            .lab-header {
-
-                margin-bottom: 35px;
-            }
-
-
-            .lab-header h1 {
-
-                font-size: 29px;
-
-                line-height: 1.25;
-            }
-
-
-            .lab-intro {
-
-                font-size: 13px;
-
-                line-height: 1.75;
-            }
-
-
-            .lab-info {
-
-                grid-template-columns: 1fr;
-
-                gap: 8px;
-            }
-
-
-            .lab-card {
-
-                padding:
-                    21px 18px;
-
-                margin-bottom: 15px;
-
-                border-radius: 12px;
-            }
-
-
-            .lab-heading {
-
-                gap: 10px;
-            }
-
-
-            .lab-icon {
-
-                width: 37px;
-                height: 37px;
-
-                font-size: 15px;
-            }
-
-
-            .lab-card h2 {
-
-                font-size: 18px;
-            }
-
-
-            .lab-card p {
-
-                font-size: 13px;
-
-                line-height: 1.8;
-            }
-
-
-            .command-grid {
-
-                grid-template-columns: 1fr;
-
-                gap: 9px;
-            }
-
-
-            .lab-flow {
-
-                flex-direction: column;
-
-                align-items: stretch;
-            }
-
-
-            .flow-item {
-
-                width: 100%;
-            }
-
-
-            .flow-arrow {
-
-                display: flex;
-
-                justify-content: center;
-
-                font-size: 0;
-            }
-
-
-            .flow-arrow::after {
-
-                content: "↓";
-
-                color: #67e8f9;
-
-                font-size: 17px;
-            }
-
-
-            .terminal-box {
-
-                padding:
-                    15px;
-            }
-
-
-            .terminal-box pre {
-
-                font-size: 12px;
-            }
-
-
-            .terminal-header {
-
-                align-items: flex-start;
-            }
-
-
-            .lab-navigation {
-
-                flex-direction: column;
-
-                align-items: stretch;
-            }
-
-
-            .lab-nav-button {
-
-                width: 100%;
-
-                justify-content: center;
-            }
-
-
-            .completion-card {
-
-                padding:
-                    25px 18px;
-            }
-        }
-
-
-        /* =====================================================
-           SMALL MOBILE
-        ====================================================== */
-
-        @media (max-width: 380px) {
-
-            .lab-header h1 {
-
-                font-size: 26px;
-            }
-
-
-            .lab-page {
-
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-
-            .lab-card {
-
-                padding:
-                    18px 15px;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -1406,13 +119,11 @@
 
             <header class="lab-header">
 
-                <div class="lab-category">
-                    LINUX PRACTICAL LAB
-                </div>
+                <div class="lab-category">LINUX PRACTICAL LAB</div>
 
                 <h1>
-                    Lab 11 - <span>Bash Basics</span>
-                </h1>
+ Lab 11 - <span>Bash Basics</span>
+ </h1>
 
                 <p class="lab-intro">
 
@@ -1478,8 +189,8 @@
                     </div>
 
                     <h2>
-                        Lab Objective
-                    </h2>
+ Lab Objective
+ </h2>
 
                 </div>
 
@@ -1530,8 +241,8 @@
                     </div>
 
                     <h2>
-                        Check the Bash Shell
-                    </h2>
+ Check the Bash Shell
+ </h2>
 
                 </div>
 
@@ -1556,8 +267,8 @@
                             class="copy-button"
                             onclick="copyCommand(this, 'echo $SHELL')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -1619,8 +330,8 @@
                     </div>
 
                     <h2>
-                        Display Text with echo
-                    </h2>
+ Display Text with echo
+ </h2>
 
                 </div>
 
@@ -1645,8 +356,8 @@
                             class="copy-button"
                             onclick="copyCommand(this, 'echo &quot;Hello CyberNexa&quot;')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -1695,8 +406,8 @@
                     </div>
 
                     <h2>
-                        Create and Use a Variable
-                    </h2>
+ Create and Use a Variable
+ </h2>
 
                 </div>
 
@@ -1721,8 +432,8 @@
                             class="copy-button"
                             onclick="copyCommand(this, 'name=&quot;Gul&quot;\necho $name')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -1786,8 +497,8 @@ echo $name</code></pre>
                     </div>
 
                     <h2>
-                        Take User Input
-                    </h2>
+ Take User Input
+ </h2>
 
                 </div>
 
@@ -1812,8 +523,8 @@ echo $name</code></pre>
                             class="copy-button"
                             onclick="copyCommand(this, 'read -p &quot;Enter your name: &quot; name\necho &quot;Hello $name&quot;')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -1877,8 +588,8 @@ echo "Hello $name"</code></pre>
                     </div>
 
                     <h2>
-                        Perform Arithmetic Operations
-                    </h2>
+ Perform Arithmetic Operations
+ </h2>
 
                 </div>
 
@@ -1903,8 +614,8 @@ echo "Hello $name"</code></pre>
                             class="copy-button"
                             onclick="copyCommand(this, 'a=10\nb=5\nsum=$((a+b))\necho $sum')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -1976,8 +687,8 @@ echo $sum</code></pre>
                     </div>
 
                     <h2>
-                        Use an if Statement
-                    </h2>
+ Use an if Statement
+ </h2>
 
                 </div>
 
@@ -2002,8 +713,8 @@ echo $sum</code></pre>
                             class="copy-button"
                             onclick="copyCommand(this, 'age=20\nif [ $age -ge 18 ]; then\n    echo &quot;Adult&quot;\nelse\n    echo &quot;Minor&quot;\nfi')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -2071,8 +782,8 @@ fi</code></pre>
                     </div>
 
                     <h2>
-                        Use a for Loop
-                    </h2>
+ Use a for Loop
+ </h2>
 
                 </div>
 
@@ -2097,8 +808,8 @@ fi</code></pre>
                             class="copy-button"
                             onclick="copyCommand(this, 'for i in 1 2 3 4 5; do\n    echo &quot;Number: $i&quot;\ndone')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -2146,8 +857,8 @@ done</code></pre>
                     </div>
 
                     <h2>
-                        Use a while Loop
-                    </h2>
+ Use a while Loop
+ </h2>
 
                 </div>
 
@@ -2172,8 +883,8 @@ done</code></pre>
                             class="copy-button"
                             onclick="copyCommand(this, 'count=1\nwhile [ $count -le 5 ]; do\n    echo &quot;Count: $count&quot;\n    ((count++))\ndone')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -2240,8 +951,8 @@ done</code></pre>
                     </div>
 
                     <h2>
-                        Create a Bash Function
-                    </h2>
+ Create a Bash Function
+ </h2>
 
                 </div>
 
@@ -2266,8 +977,8 @@ done</code></pre>
                             class="copy-button"
                             onclick="copyCommand(this, 'greet() {\n    echo &quot;Welcome to CyberNexa&quot;\n}\ngreet')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -2333,8 +1044,8 @@ greet</code></pre>
                     </div>
 
                     <h2>
-                        Create a Bash Script File
-                    </h2>
+ Create a Bash Script File
+ </h2>
 
                 </div>
 
@@ -2359,8 +1070,8 @@ greet</code></pre>
                             class="copy-button"
                             onclick="copyCommand(this, 'nano hello.sh')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -2397,8 +1108,8 @@ greet</code></pre>
                             class="copy-button"
                             onclick="copyCommand(this, '#!/bin/bash\necho &quot;Hello from CyberNexa&quot;')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -2446,8 +1157,8 @@ echo "Hello from CyberNexa"</code></pre>
                     </div>
 
                     <h2>
-                        Give Execute Permission
-                    </h2>
+ Give Execute Permission
+ </h2>
 
                 </div>
 
@@ -2472,8 +1183,8 @@ echo "Hello from CyberNexa"</code></pre>
                             class="copy-button"
                             onclick="copyCommand(this, 'chmod +x hello.sh')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -2534,8 +1245,8 @@ echo "Hello from CyberNexa"</code></pre>
                     </div>
 
                     <h2>
-                        Execute the Bash Script
-                    </h2>
+ Execute the Bash Script
+ </h2>
 
                 </div>
 
@@ -2560,8 +1271,8 @@ echo "Hello from CyberNexa"</code></pre>
                             class="copy-button"
                             onclick="copyCommand(this, './hello.sh')"
                         >
-                            Copy
-                        </button>
+ Copy
+ </button>
 
                     </div>
 
@@ -2625,8 +1336,8 @@ echo "Hello from CyberNexa"</code></pre>
                     </div>
 
                     <h2>
-                        Important Bash Basics
-                    </h2>
+ Important Bash Basics
+ </h2>
 
                 </div>
 
@@ -2783,8 +1494,8 @@ echo "Hello from CyberNexa"</code></pre>
                     </div>
 
                     <h2>
-                        Basic Bash Scripting Workflow
-                    </h2>
+ Basic Bash Scripting Workflow
+ </h2>
 
                 </div>
 
@@ -2854,8 +1565,8 @@ echo "Hello from CyberNexa"</code></pre>
                     </div>
 
                     <h2>
-                        Why Bash Matters in Cybersecurity
-                    </h2>
+ Why Bash Matters in Cybersecurity
+ </h2>
 
                 </div>
 
@@ -2923,8 +1634,8 @@ echo "Hello from CyberNexa"</code></pre>
                     </div>
 
                     <h2>
-                        Practical Task
-                    </h2>
+ Practical Task
+ </h2>
 
                 </div>
 
@@ -3016,8 +1727,8 @@ echo "Hello from CyberNexa"</code></pre>
                     </div>
 
                     <h2>
-                        Bash Safety Note
-                    </h2>
+ Bash Safety Note
+ </h2>
 
                 </div>
 
@@ -3065,8 +1776,8 @@ echo "Hello from CyberNexa"</code></pre>
 
 
                 <h2>
-                    Lab Completion
-                </h2>
+ Lab Completion
+ </h2>
 
 
                 <p>
@@ -3086,8 +1797,8 @@ echo "Hello from CyberNexa"</code></pre>
                     class="complete-button"
                     onclick="completeLab()"
                 >
-                    Mark Lab as Completed
-                </button>
+ Mark Lab as Completed
+ </button>
 
 
                 <div
@@ -3113,15 +1824,15 @@ echo "Hello from CyberNexa"</code></pre>
                     class="lab-nav-button"
                 >
 
-                    <span>
-                        ←
-                    </span>
+ <span>
+ ←
+ </span>
 
-                    <strong>
-                        Previous: Networking Commands
-                    </strong>
+ <strong>
+ Previous: Networking Commands
+ </strong>
 
-                </a>
+ </a>
 
 
                 <a
@@ -3129,15 +1840,15 @@ echo "Hello from CyberNexa"</code></pre>
                     class="lab-nav-button"
                 >
 
-                    <strong>
-                        Next Topic: Linux Security
-                    </strong>
+ <strong>
+ Next Topic: Linux Security
+ </strong>
 
-                    <span>
-                        →
-                    </span>
+ <span>
+ →
+ </span>
 
-                </a>
+ </a>
 
 
             </div>

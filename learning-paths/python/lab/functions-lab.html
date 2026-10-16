@@ -1,339 +1,23 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Python Functions Lab with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
     <title>Python Functions Lab | CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background:
-                radial-gradient(circle at top right, rgba(0, 230, 138, 0.08), transparent 35%),
-                #020b16;
-            color: #dce9f7;
-            font-family: Inter, Arial, sans-serif;
-        }
-
-        .navbar {
-            border-bottom: 1px solid rgba(0, 202, 255, 0.15);
-            background: #020b16;
-        }
-
-        .nav-container {
-            max-width: 1480px;
-            margin: auto;
-            padding: 16px 32px;
-        }
-
-        .brand {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            color: white;
-            text-decoration: none;
-        }
-
-        .brand-name {
-            font-size: 21px;
-            font-weight: 900;
-        }
-
-        .brand-name span {
-            color: #00caff;
-        }
-
-        .brand-tagline {
-            color: #8497ad;
-            font-size: 10px;
-        }
-
-        .lab-page {
-            max-width: 1000px;
-            margin: auto;
-            padding: 35px 25px 70px;
-        }
-
-        .breadcrumb {
-            color: #8194aa;
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
-
-        .hero {
-            padding: 28px;
-            border: 1px solid rgba(0, 230, 138, 0.25);
-            border-left: 4px solid #00e68a;
-            border-radius: 10px;
-            background: linear-gradient(
-                135deg,
-                rgba(4, 37, 36, 0.95),
-                rgba(3, 15, 31, 0.98)
-            );
-        }
-
-        .label {
-            color: #00e68a;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 2px;
-        }
-
-        .hero h1 {
-            margin: 8px 0;
-            color: white;
-            font-size: 36px;
-        }
-
-        .hero p {
-            color: #aabccc;
-            font-size: 13px;
-        }
-
-        .lab-info {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 20px 0;
-        }
-
-        .info-card {
-            padding: 16px;
-            border: 1px solid rgba(0, 202, 255, 0.14);
-            border-radius: 8px;
-            background: rgba(5, 20, 37, 0.85);
-        }
-
-        .info-card strong {
-            display: block;
-            color: #00caff;
-            font-size: 12px;
-            margin-bottom: 4px;
-        }
-
-        .info-card span {
-            color: #9eb1c5;
-            font-size: 11px;
-        }
-
-        .lab-section {
-            margin-top: 18px;
-            padding: 24px;
-            border: 1px solid rgba(0, 202, 255, 0.13);
-            border-radius: 9px;
-            background: rgba(5, 20, 37, 0.82);
-        }
-
-        .lab-section h2 {
-            margin: 0 0 10px;
-            color: white;
-            font-size: 20px;
-        }
-
-        .lab-section p {
-            color: #aebed0;
-            font-size: 13px;
-        }
-
-        .task {
-            margin: 12px 0;
-            padding: 14px;
-            border: 1px solid rgba(0, 202, 255, 0.12);
-            border-radius: 7px;
-            background: #030e1b;
-        }
-
-        .task strong {
-            color: #00caff;
-        }
-
-        .code-editor {
-            width: 100%;
-            min-height: 300px;
-            resize: vertical;
-            padding: 17px;
-            border: 1px solid rgba(0, 202, 255, 0.22);
-            border-radius: 7px;
-            outline: none;
-            background: #010811;
-            color: #8fe7ff;
-            font-family: Consolas, monospace;
-            font-size: 13px;
-        }
-
-        .code-editor:focus {
-            border-color: #00caff;
-            box-shadow: 0 0 15px rgba(0, 202, 255, 0.08);
-        }
-
-        .buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .btn {
-            padding: 10px 18px;
-            border: 1px solid #00e68a;
-            border-radius: 6px;
-            background: rgba(0, 230, 138, 0.06);
-            color: #00e68a;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .btn:hover {
-            background: #00e68a;
-            color: #02100b;
-        }
-
-        .btn.secondary {
-            border-color: rgba(0, 202, 255, 0.5);
-            color: #00caff;
-        }
-
-        .output {
-            min-height: 100px;
-            margin-top: 15px;
-            padding: 15px;
-            border-left: 3px solid #00e68a;
-            border-radius: 5px;
-            background: #010811;
-            color: #8fffc9;
-            font-family: Consolas, monospace;
-            font-size: 12px;
-            white-space: pre-wrap;
-        }
-
-        .completion {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 18px;
-            color: #aebed0;
-            font-size: 12px;
-        }
-
-        .completion input {
-            accent-color: #00e68a;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 25px;
-        }
-
-        .navigation a {
-            padding: 10px 15px;
-            border: 1px solid rgba(0, 202, 255, 0.18);
-            border-radius: 6px;
-            color: #00caff;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .navigation a:hover {
-            border-color: #00caff;
-        }
-
-        .footer {
-            border-top: 1px solid rgba(0, 202, 255, 0.15);
-            background: #010812;
-        }
-
-        .footer-container {
-            max-width: 1480px;
-            margin: auto;
-            padding: 28px 32px;
-            display: flex;
-            justify-content: space-between;
-            gap: 25px;
-        }
-
-        .footer-brand {
-            color: white;
-            font-size: 20px;
-            font-weight: 900;
-        }
-
-        .footer-brand span {
-            color: #00caff;
-        }
-
-        .footer-container p {
-            color: #71869d;
-            font-size: 11px;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 18px;
-        }
-
-        .footer-links a {
-            color: #8da1b7;
-            text-decoration: none;
-            font-size: 11px;
-        }
-
-        .copyright {
-            padding: 13px;
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            color: #60748a;
-            font-size: 10px;
-        }
-
-        @media (max-width: 700px) {
-
-            .lab-page {
-                padding: 25px 15px 55px;
-            }
-
-            .hero h1 {
-                font-size: 29px;
-            }
-
-            .lab-info {
-                grid-template-columns: 1fr;
-            }
-
-            .buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
-            .navigation {
-                flex-direction: column;
-            }
-
-            .navigation a {
-                text-align: center;
-            }
-
-            .footer-container {
-                flex-direction: column;
-                padding: 25px 18px;
-            }
-        }
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 </head>
 
 <body>
@@ -467,12 +151,12 @@ print(check_port(80))</textarea>
         <div class="buttons">
 
             <button class="btn" onclick="showExpectedOutput()">
-                Show Expected Output
-            </button>
+ Show Expected Output
+ </button>
 
             <button class="btn secondary" onclick="copyCode()">
-                Copy Code
-            </button>
+ Copy Code
+ </button>
 
         </div>
 

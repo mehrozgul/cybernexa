@@ -1,872 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07101e">
 
 <title>Incident Response Lifecycle Lab | CyberNexa</title>
 
 <meta name="description"
       content="Practice the complete Incident Response Lifecycle using a simulated cybersecurity incident.">
 
-<link rel="stylesheet" href="../../../css/base.css">
-<link rel="stylesheet" href="../../../css/navbar.css">
-<link rel="stylesheet" href="../../../css/footer.css">
-
-<style>
-
-/* =========================================================
-   CYBERNEXA INCIDENT RESPONSE LIFECYCLE LAB
-   EXISTING PRACTICAL LAB DESIGN
-   ========================================================= */
-
-:root {
-    --ir-bg: #080d14;
-    --ir-panel: #0d141d;
-    --ir-panel-2: #111b26;
-
-    --ir-red: #ff4d5a;
-    --ir-orange: #ff9f43;
-    --ir-yellow: #ffd166;
-    --ir-green: #43d19e;
-    --ir-blue: #42a5ff;
-
-    --ir-text: #edf5fb;
-    --ir-muted: #91a4b5;
-
-    --ir-border: #20303e;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    overflow-x: hidden;
-}
-
-body {
-    margin: 0;
-
-    background:
-        radial-gradient(
-            circle at 15% 15%,
-            rgba(255, 77, 90, 0.09),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 85% 25%,
-            rgba(255, 159, 67, 0.07),
-            transparent 28%
-        ),
-        var(--ir-bg);
-
-    color: var(--ir-text);
-
-    font-family: Arial, Helvetica, sans-serif;
-
-    overflow-x: hidden;
-}
-
-a {
-    text-decoration: none;
-}
-
-.ir-container {
-    width: min(1150px, 92%);
-    margin: auto;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.navbar {
-    width: 100%;
-    overflow: hidden;
-}
-
-.nav-container {
-    width: min(1150px, 92%);
-    margin: auto;
-
-    display: flex;
-    align-items: center;
-
-    min-height: 70px;
-}
-
-.brand {
-    display: flex;
-
-    align-items: center;
-
-    max-width: 100%;
-
-    min-width: 0;
-}
-
-.brand-logo {
-    flex-shrink: 0;
-}
-
-.brand-text {
-    min-width: 0;
-}
-
-.brand-name,
-.brand-tagline {
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-}
-
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.ir-hero {
-    position: relative;
-
-    overflow: hidden;
-
-    padding: 80px 0 65px;
-
-    border-bottom: 1px solid var(--ir-border);
-}
-
-.ir-hero::after {
-    content: "";
-
-    position: absolute;
-
-    width: 420px;
-    height: 420px;
-
-    right: -180px;
-    top: -180px;
-
-    border: 1px solid rgba(255, 77, 90, 0.12);
-
-    border-radius: 50%;
-
-    box-shadow:
-        0 0 0 40px rgba(255, 77, 90, 0.025),
-        0 0 0 80px rgba(255, 77, 90, 0.015);
-}
-
-.ir-breadcrumb {
-    color: var(--ir-orange);
-
-    font-size: 13px;
-
-    margin-bottom: 20px;
-}
-
-.ir-hero-grid {
-    display: grid;
-
-    grid-template-columns: 1.3fr 0.7fr;
-
-    gap: 40px;
-
-    align-items: center;
-}
-
-.ir-alert {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    padding: 8px 13px;
-
-    margin-bottom: 18px;
-
-    border: 1px solid rgba(255, 77, 90, 0.35);
-
-    border-radius: 4px;
-
-    background: rgba(255, 77, 90, 0.06);
-
-    color: var(--ir-red);
-
-    font-size: 12px;
-
-    font-weight: bold;
-
-    letter-spacing: 1px;
-
-    text-transform: uppercase;
-}
-
-.ir-pulse {
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background: var(--ir-red);
-
-    box-shadow:
-        0 0 12px rgba(255, 77, 90, 0.8);
-}
-
-.ir-hero h1 {
-    margin: 0 0 18px;
-
-    font-size: clamp(38px, 5vw, 60px);
-
-    line-height: 1.05;
-}
-
-.ir-hero h1 span {
-    color: var(--ir-red);
-}
-
-.ir-hero-description {
-    max-width: 720px;
-
-    color: var(--ir-muted);
-
-    font-size: 17px;
-
-    line-height: 1.8;
-}
-
-
-/* =========================================================
-   LAB STATUS
-========================================================= */
-
-.ir-status-panel {
-    padding: 24px;
-
-    border: 1px solid var(--ir-border);
-
-    border-top: 2px solid var(--ir-red);
-
-    border-radius: 7px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(17, 27, 38, 0.98),
-            rgba(9, 14, 21, 0.98)
-        );
-
-    box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.28);
-}
-
-.ir-status-header {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 18px;
-}
-
-.ir-status-header strong {
-    font-size: 13px;
-
-    letter-spacing: 1px;
-}
-
-.ir-live {
-    color: var(--ir-red);
-
-    font-size: 11px;
-}
-
-.ir-divider {
-    height: 1px;
-
-    background: var(--ir-border);
-
-    margin: 15px 0;
-}
-
-.ir-status-row {
-    display: flex;
-
-    justify-content: space-between;
-
-    padding: 8px 0;
-
-    color: var(--ir-muted);
-
-    font-size: 13px;
-}
-
-.ir-status-row strong {
-    color: var(--ir-text);
-
-    font-weight: normal;
-}
-
-.ir-severity {
-    color: var(--ir-orange) !important;
-}
-
-
-/* =========================================================
-   LAB SECTION
-========================================================= */
-
-.ir-section {
-    padding: 65px 0;
-}
-
-.ir-section-title {
-    margin-bottom: 28px;
-}
-
-.ir-section-title h2 {
-    margin: 0 0 10px;
-
-    font-size: 32px;
-}
-
-.ir-section-title p {
-    color: var(--ir-muted);
-
-    line-height: 1.7;
-}
-
-
-/* =========================================================
-   INCIDENT SCENARIO
-========================================================= */
-
-.ir-scenario {
-    padding: 28px;
-
-    border: 1px solid var(--ir-border);
-
-    border-left: 3px solid var(--ir-red);
-
-    border-radius: 7px;
-
-    background: var(--ir-panel);
-}
-
-.ir-scenario h3 {
-    margin-top: 0;
-
-    color: var(--ir-red);
-}
-
-.ir-scenario p {
-    color: var(--ir-muted);
-
-    line-height: 1.8;
-}
-
-.ir-alert-data {
-    margin-top: 20px;
-
-    padding: 18px;
-
-    border: 1px solid rgba(255, 77, 90, 0.25);
-
-    border-radius: 6px;
-
-    background: rgba(255, 77, 90, 0.04);
-}
-
-.ir-alert-data div {
-    padding: 7px 0;
-
-    color: var(--ir-muted);
-
-    font-size: 14px;
-}
-
-.ir-alert-data strong {
-    color: var(--ir-text);
-}
-
-
-/* =========================================================
-   PHASE CARDS
-========================================================= */
-
-.ir-phase-list {
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 18px;
-}
-
-.ir-phase-card {
-    padding: 24px;
-
-    border: 1px solid var(--ir-border);
-
-    border-radius: 7px;
-
-    background: var(--ir-panel);
-}
-
-.ir-phase-card h3 {
-    margin: 0 0 12px;
-
-    color: var(--ir-text);
-
-    font-size: 18px;
-}
-
-.ir-phase-card p {
-    color: var(--ir-muted);
-
-    line-height: 1.7;
-
-    font-size: 14px;
-}
-
-.ir-phase-card label {
-    display: flex;
-
-    gap: 10px;
-
-    align-items: flex-start;
-
-    margin-top: 15px;
-
-    color: var(--ir-muted);
-
-    font-size: 13px;
-
-    line-height: 1.5;
-
-    cursor: pointer;
-}
-
-.ir-phase-card input {
-    margin-top: 3px;
-
-    accent-color: var(--ir-red);
-}
-
-
-/* =========================================================
-   TASK PANEL
-========================================================= */
-
-.ir-task {
-    margin-top: 18px;
-
-    padding: 18px;
-
-    border: 1px solid var(--ir-border);
-
-    border-radius: 6px;
-
-    background: var(--ir-panel-2);
-}
-
-.ir-task-title {
-    color: var(--ir-orange);
-
-    font-size: 12px;
-
-    font-weight: bold;
-
-    letter-spacing: 1px;
-
-    margin-bottom: 10px;
-}
-
-.ir-task p {
-    margin: 0;
-
-    color: var(--ir-muted);
-
-    font-size: 14px;
-
-    line-height: 1.7;
-}
-
-
-/* =========================================================
-   OUTPUT
-========================================================= */
-
-.ir-output {
-    margin-top: 25px;
-
-    padding: 25px;
-
-    border: 1px solid rgba(67, 209, 158, 0.25);
-
-    border-radius: 7px;
-
-    background: rgba(67, 209, 158, 0.035);
-}
-
-.ir-output h3 {
-    margin-top: 0;
-
-    color: var(--ir-green);
-}
-
-.ir-output-line {
-    padding: 8px 0;
-
-    color: var(--ir-muted);
-
-    font-size: 14px;
-}
-
-.ir-output-line strong {
-    color: var(--ir-text);
-}
-
-
-/* =========================================================
-   BUTTON
-========================================================= */
-
-.ir-button {
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    margin-top: 20px;
-
-    padding: 12px 20px;
-
-    border: 1px solid rgba(255, 77, 90, 0.4);
-
-    border-radius: 5px;
-
-    background: rgba(255, 77, 90, 0.05);
-
-    color: var(--ir-red);
-
-    font-size: 13px;
-
-    cursor: pointer;
-
-    transition: 0.2s ease;
-}
-
-.ir-button:hover {
-    background: rgba(255, 77, 90, 0.12);
-}
-
-
-/* =========================================================
-   COMPLETION
-========================================================= */
-
-.ir-completion {
-    margin-top: 30px;
-
-    padding: 28px;
-
-    border: 1px solid rgba(67, 209, 158, 0.25);
-
-    border-radius: 7px;
-
-    background: rgba(67, 209, 158, 0.035);
-}
-
-.ir-completion h2 {
-    margin-top: 0;
-
-    color: var(--ir-green);
-}
-
-.ir-completion p {
-    color: var(--ir-muted);
-
-    line-height: 1.8;
-}
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-.ir-topic-nav {
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    margin-top: 35px;
-}
-
-.ir-nav-button {
-    display: inline-flex;
-
-    align-items: center;
-
-    padding: 12px 17px;
-
-    border: 1px solid var(--ir-border);
-
-    border-radius: 5px;
-
-    color: var(--ir-muted);
-
-    font-size: 13px;
-
-    transition: 0.2s ease;
-}
-
-.ir-nav-button:hover {
-    color: var(--ir-red);
-
-    border-color: rgba(255, 77, 90, 0.4);
-}
-
-.ir-lab-button {
-    border-color: rgba(255, 77, 90, 0.35);
-
-    color: var(--ir-red);
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width: 950px) {
-
-    .nav-container {
-        width: 92%;
-    }
-
-    .ir-hero-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .ir-phase-list {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .ir-example {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-@media (max-width: 768px) {
-
-    .nav-container {
-        width: 94%;
-
-        min-height: 64px;
-
-        padding: 8px 0;
-    }
-
-    .brand-logo svg {
-        width: 38px;
-        height: 46px;
-    }
-
-    .brand-name {
-        font-size: 19px;
-    }
-
-    .brand-tagline {
-        font-size: 9px;
-    }
-
-    .ir-hero {
-        padding: 65px 0 50px;
-    }
-
-    .ir-section {
-        padding: 55px 0;
-    }
-
-    .ir-phase-list {
-        grid-template-columns: 1fr;
-    }
-
-    .footer {
-        width: 100%;
-        overflow: hidden;
-    }
-
-    .footer-container {
-        width: 92%;
-
-        margin: 0 auto;
-
-        display: flex;
-
-        flex-direction: column;
-
-        gap: 25px;
-    }
-
-    .footer-links {
-        display: flex;
-
-        flex-wrap: wrap;
-
-        gap: 10px 18px;
-    }
-
-    .copyright {
-        width: 92%;
-
-        margin: auto;
-
-        line-height: 1.6;
-    }
-}
-
-
-@media (max-width: 600px) {
-
-    .nav-container {
-        width: 92%;
-    }
-
-    .brand-logo svg {
-        width: 34px;
-        height: 42px;
-    }
-
-    .brand-name {
-        font-size: 17px;
-    }
-
-    .brand-tagline {
-        font-size: 8px;
-    }
-
-    .ir-hero {
-        padding: 55px 0 45px;
-    }
-
-    .ir-breadcrumb {
-        font-size: 11px;
-
-        line-height: 1.6;
-    }
-
-    .ir-hero h1 {
-        font-size: clamp(34px, 10vw, 48px);
-    }
-
-    .ir-hero-description {
-        font-size: 15px;
-
-        line-height: 1.7;
-    }
-
-    .ir-status-panel {
-        padding: 20px;
-    }
-
-    .ir-status-row {
-        font-size: 12px;
-
-        gap: 15px;
-    }
-
-    .ir-status-row strong {
-        text-align: right;
-    }
-
-    .ir-section {
-        padding: 50px 0;
-    }
-
-    .ir-section-title h2 {
-        font-size: 26px;
-    }
-
-    .ir-scenario,
-    .ir-completion {
-        padding: 22px;
-    }
-
-    .ir-topic-nav {
-        flex-direction: column;
-
-        gap: 10px;
-    }
-
-    .ir-nav-button {
-        width: 100%;
-
-        justify-content: center;
-
-        text-align: center;
-    }
-
-    .footer-links {
-        display: grid;
-
-        grid-template-columns: 1fr 1fr;
-
-        gap: 12px 18px;
-    }
-
-    .footer-links a {
-        white-space: normal;
-
-        font-size: 13px;
-    }
-
-    .copyright {
-        font-size: 11px;
-
-        text-align: center;
-    }
-}
-
-
-@media (max-width: 380px) {
-
-    .nav-container {
-        width: 94%;
-    }
-
-    .brand-logo svg {
-        width: 30px;
-        height: 38px;
-    }
-
-    .brand-name {
-        font-size: 15px;
-    }
-
-    .brand-tagline {
-        font-size: 7px;
-    }
-
-    .ir-container {
-        width: 94%;
-    }
-
-    .footer-links {
-        grid-template-columns: 1fr;
-    }
-}
-
-</style>
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 </head>
 
 
@@ -976,8 +129,8 @@ a {
 
 
             <h1>
-                Incident Response <span>Lifecycle Lab</span>
-            </h1>
+ Incident Response <span>Lifecycle Lab</span>
+ </h1>
 
 
             <p class="ir-hero-description">
@@ -1065,7 +218,7 @@ a {
 
     <div class="ir-scenario">
 
-        <h3>🎯 Your Mission</h3>
+        <h3>Your Mission</h3>
 
         <p>
 
@@ -1213,7 +366,7 @@ a {
 
     <div class="ir-scenario">
 
-        <h3>🚨 Alert Detected</h3>
+        <h3>Alert Detected</h3>
 
         <p>
 
@@ -1273,7 +426,7 @@ a {
 
     <div class="ir-scenario">
 
-        <h3>🔎 Investigation</h3>
+        <h3>Investigation</h3>
 
         <p>
 
@@ -1360,7 +513,7 @@ a {
 
     <div class="ir-scenario">
 
-        <h3>🛡️ Containment Actions</h3>
+        <h3>Containment Actions</h3>
 
         <p>
 
@@ -1428,7 +581,7 @@ a {
 
     <div class="ir-scenario">
 
-        <h3>🧹 Remove the Threat</h3>
+        <h3>Remove the Threat</h3>
 
         <p>
 
@@ -1496,7 +649,7 @@ a {
 
     <div class="ir-scenario">
 
-        <h3>🔄 Restore Normal Operation</h3>
+        <h3>Restore Normal Operation</h3>
 
         <p>
 
@@ -1565,7 +718,7 @@ a {
 
     <div class="ir-scenario">
 
-        <h3>📝 Lessons Learned</h3>
+        <h3>Lessons Learned</h3>
 
         <p>
 
@@ -1670,9 +823,9 @@ a {
             class="ir-button"
             onclick="completeLab()">
 
-            Mark Lab Complete
+ Mark Lab Complete
 
-        </button>
+ </button>
 
     </div>
 
@@ -1682,7 +835,7 @@ a {
         id="completionBox"
         style="display:none;">
 
-        <h2>✓ Lab Completed</h2>
+        <h2>Lab Completed</h2>
 
         <p>
 
@@ -1714,16 +867,16 @@ a {
         <a href="log-investigation-lab.html"
            class="ir-nav-button">
 
-            ← Lab: Log Investigation
+ ← Lab: Log Investigation
 
-        </a>
+ </a>
 
         <a href="../theory/incident-response.html"
            class="ir-nav-button">
 
-            Back to Incident Response
+ Back to Incident Response
 
-        </a>
+ </a>
 
 
     </div>

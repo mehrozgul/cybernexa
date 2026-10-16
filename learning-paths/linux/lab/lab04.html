@@ -1,1155 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Linux Users & Groups Practical Lab - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Linux Users & Groups Practical Lab - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        /* =====================================================
-           GLOBAL
-        ====================================================== */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-
-        /* =====================================================
-           MAIN PAGE
-        ====================================================== */
-
-        .linux-learning-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(34, 211, 238, 0.08),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(59, 130, 246, 0.07),
-                    transparent 30%
-                ),
-                #02080d;
-        }
-
-
-        .linux-learning-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-
-        /* =====================================================
-           HEADER
-        ====================================================== */
-
-        .linux-topic-header {
-
-            text-align: center;
-
-            margin-bottom: 35px;
-        }
-
-
-        .linux-topic-category {
-
-            display: inline-block;
-
-            margin-bottom: 14px;
-
-            color: #67e8f9;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-
-
-        .linux-topic-header h1 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 44px;
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-
-        .linux-topic-header h1 span {
-
-            color: #67e8f9;
-        }
-
-
-        .linux-topic-intro {
-
-            max-width: 760px;
-
-            margin: 18px auto 0;
-
-            color: #b6c2cc;
-
-            font-size: 15px;
-            line-height: 1.8;
-        }
-
-
-        .linux-topic-badge {
-
-            display: inline-block;
-
-            margin-top: 20px;
-
-            padding: 8px 14px;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.25);
-
-            border-radius: 20px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-        }
-
-
-        /* =====================================================
-           MAIN CARD
-        ====================================================== */
-
-        .linux-card {
-
-            position: relative;
-
-            width: 100%;
-
-            margin-bottom: 22px;
-
-            padding: 30px;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.16);
-
-            border-radius: 15px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 25, 35, 0.98),
-                    rgba(3, 13, 20, 0.98)
-                );
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.28);
-
-            overflow: hidden;
-
-            transition:
-                border-color 0.25s ease,
-                box-shadow 0.25s ease,
-                transform 0.25s ease;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .linux-card:hover {
-
-                border-color:
-                    rgba(103, 232, 249, 0.42);
-
-                box-shadow:
-                    0 18px 45px rgba(0, 0, 0, 0.32),
-                    0 0 28px rgba(103, 232, 249, 0.08);
-
-                transform: translateY(-2px);
-            }
-        }
-
-
-        /* =====================================================
-           LIGHT SWEEP
-        ====================================================== */
-
-        .linux-card::after {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: -120%;
-
-            width: 55%;
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    100deg,
-                    transparent,
-                    rgba(103, 232, 249, 0.06),
-                    rgba(255, 255, 255, 0.10),
-                    rgba(103, 232, 249, 0.06),
-                    transparent
-                );
-
-            transform: skewX(-18deg);
-
-            pointer-events: none;
-
-            opacity: 0;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .linux-card:hover::after {
-
-                animation:
-                    linuxLightSweep 0.75s ease forwards;
-            }
-        }
-
-
-        .mobile-sweep::after {
-
-            animation:
-                linuxMobileSweep 0.75s ease forwards !important;
-        }
-
-
-        @keyframes linuxLightSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        @keyframes linuxMobileSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        /* =====================================================
-           CARD HEADING
-        ====================================================== */
-
-        .linux-card-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-
-            margin-bottom: 18px;
-        }
-
-
-        .linux-icon {
-
-            width: 42px;
-            height: 42px;
-
-            flex-shrink: 0;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.30);
-
-            border-radius: 10px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-
-        .linux-card h2 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 21px;
-
-            font-weight: 750;
-        }
-
-
-        .linux-card h3 {
-
-            margin: 0 0 9px;
-
-            color: #f8fafc;
-
-            font-size: 16px;
-        }
-
-
-        .linux-card p {
-
-            margin: 0 0 14px;
-
-            color: #b6c2cc;
-
-            font-size: 14px;
-
-            line-height: 1.85;
-        }
-
-
-        .linux-card p:last-child {
-
-            margin-bottom: 0;
-        }
-
-
-        /* =====================================================
-           OBJECTIVE
-        ====================================================== */
-
-        .linux-objective {
-
-            padding: 20px;
-
-            margin-top: 5px;
-
-            border-left: 3px solid #67e8f9;
-
-            border-radius:
-                0 10px 10px 0;
-
-            background:
-                rgba(103, 232, 249, 0.055);
-        }
-
-
-        .linux-objective strong {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #f8fafc;
-
-            font-size: 14px;
-        }
-
-
-        .linux-objective span {
-
-            color: #c3cdd5;
-
-            font-size: 14px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           REQUIREMENTS GRID
-        ====================================================== */
-
-        .linux-user-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 14px;
-
-            margin-top: 20px;
-        }
-
-
-        .linux-user-card {
-
-            padding: 20px;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.14);
-
-            border-radius: 11px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-        }
-
-
-        .linux-number {
-
-            display: inline-flex;
-
-            align-items: center;
-            justify-content: center;
-
-            width: 30px;
-            height: 30px;
-
-            margin-bottom: 12px;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.30);
-
-            border-radius: 50%;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 11px;
-
-            font-weight: 700;
-        }
-
-
-        .linux-user-card p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-        }
-
-
-        /* =====================================================
-           COMMAND BOX
-        ====================================================== */
-
-        .linux-command-box {
-
-            position: relative;
-
-            margin-top: 18px;
-
-            padding: 18px 20px;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.15);
-
-            border-radius: 10px;
-
-            background: #01060a;
-
-            overflow-x: auto;
-        }
-
-
-        .linux-command-box code {
-
-            color: #7dd3fc;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            line-height: 1.9;
-
-            white-space: pre;
-        }
-
-
-        /* =====================================================
-           COPY BUTTON
-        ====================================================== */
-
-        .linux-copy-button {
-
-            position: absolute;
-
-            top: 10px;
-            right: 10px;
-
-            padding: 6px 10px;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.20);
-
-            border-radius: 6px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            font-size: 10px;
-
-            cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-
-        .linux-copy-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.55);
-
-            background:
-                rgba(103, 232, 249, 0.10);
-        }
-
-
-        /* =====================================================
-           OUTPUT BOX
-        ====================================================== */
-
-        .linux-output-box {
-
-            margin-top: 15px;
-
-            padding: 18px 20px;
-
-            border: 1px solid
-                rgba(74, 222, 128, 0.16);
-
-            border-radius: 10px;
-
-            background:
-                rgba(74, 222, 128, 0.025);
-
-            overflow-x: auto;
-        }
-
-
-        .linux-output-label {
-
-            margin-bottom: 9px;
-
-            color: #86efac;
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-        }
-
-
-        .linux-output-box pre {
-
-            margin: 0;
-
-            color: #b8e8c7;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           WARNING
-        ====================================================== */
-
-        .linux-warning-box {
-
-            margin-top: 18px;
-
-            padding: 17px 20px;
-
-            border: 1px solid
-                rgba(251, 191, 36, 0.18);
-
-            border-left: 3px solid #fbbf24;
-
-            border-radius:
-                0 10px 10px 0;
-
-            background:
-                rgba(251, 191, 36, 0.035);
-        }
-
-
-        .linux-warning-box strong {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            color: #fbbf24;
-
-            font-size: 13px;
-        }
-
-
-        .linux-warning-box p {
-
-            margin: 0;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-        }
-
-
-        /* =====================================================
-           PRACTICAL TASK
-        ====================================================== */
-
-        .linux-task-list {
-
-            margin: 18px 0 0;
-
-            padding: 0;
-
-            list-style: none;
-        }
-
-
-        .linux-task-list li {
-
-            position: relative;
-
-            padding:
-                10px 0 10px 25px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-
-            border-bottom: 1px solid
-                rgba(103, 232, 249, 0.07);
-        }
-
-
-        .linux-task-list li:last-child {
-
-            border-bottom: none;
-        }
-
-
-        .linux-task-list li::before {
-
-            content: "✓";
-
-            position: absolute;
-
-            left: 0;
-            top: 10px;
-
-            color: #67e8f9;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           FLOW
-        ====================================================== */
-
-        .linux-flow {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 22px;
-        }
-
-
-        .linux-flow-item {
-
-            padding: 12px 16px;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.20);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-            text-align: center;
-        }
-
-
-        .linux-flow-arrow {
-
-            color: #67e8f9;
-
-            font-size: 18px;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           RESULT
-        ====================================================== */
-
-        .linux-result-box {
-
-            padding: 20px;
-
-            margin-top: 18px;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.18);
-
-            border-radius: 11px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-        }
-
-
-        .linux-result-box strong {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #67e8f9;
-
-            font-size: 14px;
-        }
-
-
-        .linux-result-box p {
-
-            margin: 0;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           KEY CONCEPTS
-        ====================================================== */
-
-        .linux-key-concepts {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 20px;
-        }
-
-
-        .linux-key-item {
-
-            padding: 10px 14px;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.16);
-
-            border-radius: 8px;
-
-            color: #d7e4eb;
-
-            background:
-                rgba(103, 232, 249, 0.04);
-
-            font-size: 12px;
-
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-
-        .linux-topic-navigation {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-top: 35px;
-        }
-
-
-        .linux-topic-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            padding: 13px 18px;
-
-            border: 1px solid
-                rgba(103, 232, 249, 0.25);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-
-        .linux-topic-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.65);
-
-            background:
-                rgba(103, 232, 249, 0.10);
-
-            transform: translateY(-1px);
-        }
-
-
-        .linux-topic-button span {
-
-            color: #67e8f9;
-
-            font-size: 17px;
-        }
-
-
-        /* =====================================================
-           TABLET
-        ====================================================== */
-
-        @media (max-width: 800px) {
-
-            .linux-learning-page {
-
-                padding:
-                    55px 15px 65px;
-            }
-
-
-            .linux-topic-header h1 {
-
-                font-size: 36px;
-            }
-
-
-            .linux-topic-intro {
-
-                font-size: 14px;
-            }
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 600px) {
-
-            .linux-learning-page {
-
-                padding:
-                    45px 12px 55px;
-            }
-
-
-            .linux-topic-header {
-
-                margin-bottom: 30px;
-            }
-
-
-            .linux-topic-header h1 {
-
-                font-size: 30px;
-
-                line-height: 1.25;
-            }
-
-
-            .linux-topic-intro {
-
-                margin-top: 14px;
-
-                font-size: 13px;
-
-                line-height: 1.75;
-            }
-
-
-            .linux-card {
-
-                padding:
-                    21px 18px;
-
-                margin-bottom: 16px;
-
-                border-radius: 12px;
-            }
-
-
-            .linux-card-heading {
-
-                gap: 10px;
-
-                margin-bottom: 15px;
-            }
-
-
-            .linux-icon {
-
-                width: 37px;
-                height: 37px;
-
-                font-size: 14px;
-            }
-
-
-            .linux-card h2 {
-
-                font-size: 18px;
-            }
-
-
-            .linux-card p {
-
-                font-size: 13px;
-
-                line-height: 1.8;
-            }
-
-
-            .linux-user-grid {
-
-                grid-template-columns: 1fr;
-
-                gap: 10px;
-            }
-
-
-            .linux-flow {
-
-                flex-direction: column;
-
-                align-items: stretch;
-            }
-
-
-            .linux-flow-item {
-
-                width: 100%;
-            }
-
-
-            .linux-flow-arrow {
-
-                display: flex;
-
-                justify-content: center;
-
-                font-size: 0;
-            }
-
-
-            .linux-flow-arrow::after {
-
-                content: "↓";
-
-                color: #67e8f9;
-
-                font-size: 18px;
-            }
-
-
-            .linux-key-concepts {
-
-                gap: 7px;
-            }
-
-
-            .linux-key-item {
-
-                font-size: 11px;
-
-                padding: 9px 11px;
-            }
-
-
-            .linux-topic-navigation {
-
-                flex-direction: column;
-
-                align-items: stretch;
-
-                margin-top: 25px;
-            }
-
-
-            .linux-topic-button {
-
-                width: 100%;
-
-                justify-content: center;
-            }
-        }
-
-
-        /* =====================================================
-           SMALL MOBILE
-        ====================================================== */
-
-        @media (max-width: 380px) {
-
-            .linux-topic-header h1 {
-
-                font-size: 27px;
-            }
-
-
-            .linux-learning-page {
-
-                padding-left: 10px;
-
-                padding-right: 10px;
-            }
-
-
-            .linux-card {
-
-                padding:
-                    18px 15px;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -1249,13 +119,11 @@
 
             <header class="linux-topic-header">
 
-                <div class="linux-topic-category">
-                    LINUX PRACTICAL LAB
-                </div>
+                <div class="linux-topic-category">LINUX PRACTICAL LAB</div>
 
                 <h1>
-                    Lab 04 - <span>Users &amp; Groups</span>
-                </h1>
+ Lab 04 - <span>Users &amp; Groups</span>
+ </h1>
 
                 <p class="linux-topic-intro">
 
@@ -1265,9 +133,7 @@
 
                 </p>
 
-                <div class="linux-topic-badge">
-                    Hands-On Lab • Beginner
-                </div>
+                <div class="linux-topic-badge">Hands-On Lab • Beginner</div>
 
             </header>
 
@@ -1286,8 +152,8 @@
                     </div>
 
                     <h2>
-                        Lab Objective
-                    </h2>
+ Lab Objective
+ </h2>
 
                 </div>
 
@@ -1326,8 +192,8 @@
                     </div>
 
                     <h2>
-                        Lab Requirements
-                    </h2>
+ Lab Requirements
+ </h2>
 
                 </div>
 
@@ -1342,8 +208,8 @@
                         </div>
 
                         <h3>
-                            Linux System
-                        </h3>
+ Linux System
+ </h3>
 
                         <p>
                             Ubuntu, Kali Linux, Debian or another
@@ -1360,8 +226,8 @@
                         </div>
 
                         <h3>
-                            Terminal
-                        </h3>
+ Terminal
+ </h3>
 
                         <p>
                             Open the Linux Terminal to execute
@@ -1378,8 +244,8 @@
                         </div>
 
                         <h3>
-                            Sudo Access
-                        </h3>
+ Sudo Access
+ </h3>
 
                         <p>
                             Your account should have permission to
@@ -1396,8 +262,8 @@
                         </div>
 
                         <h3>
-                            Basic Linux Knowledge
-                        </h3>
+ Basic Linux Knowledge
+ </h3>
 
                         <p>
                             You should know how to open a terminal
@@ -1425,8 +291,8 @@
                     </div>
 
                     <h2>
-                        Step 1 — Check Current User
-                    </h2>
+ Step 1 — Check Current User
+ </h2>
 
                 </div>
 
@@ -1445,8 +311,8 @@
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>whoami</code>
 
@@ -1480,8 +346,8 @@
                     </div>
 
                     <h2>
-                        Step 2 — Check User Information
-                    </h2>
+ Step 2 — Check User Information
+ </h2>
 
                 </div>
 
@@ -1500,8 +366,8 @@
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>id</code>
 
@@ -1535,8 +401,8 @@
                     </div>
 
                     <h2>
-                        Step 3 — Create a New User
-                    </h2>
+ Step 3 — Create a New User
+ </h2>
 
                 </div>
 
@@ -1555,8 +421,8 @@
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>sudo useradd labuser</code>
 
@@ -1595,8 +461,8 @@
                     </div>
 
                     <h2>
-                        Step 4 — Set User Password
-                    </h2>
+ Step 4 — Set User Password
+ </h2>
 
                 </div>
 
@@ -1615,8 +481,8 @@
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>sudo passwd labuser</code>
 
@@ -1652,8 +518,8 @@ passwd: password updated successfully</pre>
                     </div>
 
                     <h2>
-                        Step 5 — Create a Group
-                    </h2>
+ Step 5 — Create a Group
+ </h2>
 
                 </div>
 
@@ -1672,8 +538,8 @@ passwd: password updated successfully</pre>
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>sudo groupadd developers</code>
 
@@ -1707,8 +573,8 @@ passwd: password updated successfully</pre>
                     </div>
 
                     <h2>
-                        Step 6 — Add User to Group
-                    </h2>
+ Step 6 — Add User to Group
+ </h2>
 
                 </div>
 
@@ -1727,8 +593,8 @@ passwd: password updated successfully</pre>
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>sudo usermod -aG developers labuser</code>
 
@@ -1768,8 +634,8 @@ passwd: password updated successfully</pre>
                     </div>
 
                     <h2>
-                        Step 7 — Verify Group Membership
-                    </h2>
+ Step 7 — Verify Group Membership
+ </h2>
 
                 </div>
 
@@ -1788,8 +654,8 @@ passwd: password updated successfully</pre>
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>groups labuser</code>
 
@@ -1823,8 +689,8 @@ passwd: password updated successfully</pre>
                     </div>
 
                     <h2>
-                        Step 8 — Check UID and GID
-                    </h2>
+ Step 8 — Check UID and GID
+ </h2>
 
                 </div>
 
@@ -1844,8 +710,8 @@ passwd: password updated successfully</pre>
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>id labuser</code>
 
@@ -1879,8 +745,8 @@ passwd: password updated successfully</pre>
                     </div>
 
                     <h2>
-                        Step 9 — View User Database
-                    </h2>
+ Step 9 — View User Database
+ </h2>
 
                 </div>
 
@@ -1899,8 +765,8 @@ passwd: password updated successfully</pre>
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>grep '^labuser:' /etc/passwd</code>
 
@@ -1934,8 +800,8 @@ passwd: password updated successfully</pre>
                     </div>
 
                     <h2>
-                        Step 10 — View Group Database
-                    </h2>
+ Step 10 — View Group Database
+ </h2>
 
                 </div>
 
@@ -1954,8 +820,8 @@ passwd: password updated successfully</pre>
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>getent group developers</code>
 
@@ -1989,8 +855,8 @@ passwd: password updated successfully</pre>
                     </div>
 
                     <h2>
-                        Practical Workflow
-                    </h2>
+ Practical Workflow
+ </h2>
 
                 </div>
 
@@ -2052,8 +918,8 @@ passwd: password updated successfully</pre>
                     </div>
 
                     <h2>
-                        Your Practical Task
-                    </h2>
+ Your Practical Task
+ </h2>
 
                 </div>
 
@@ -2116,8 +982,8 @@ passwd: password updated successfully</pre>
                     </div>
 
                     <h2>
-                        Final Verification
-                    </h2>
+ Final Verification
+ </h2>
 
                 </div>
 
@@ -2136,8 +1002,8 @@ passwd: password updated successfully</pre>
                         class="linux-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>id student01
 groups student01
@@ -2181,8 +1047,8 @@ grep '^student01:' /etc/passwd</code>
                     </div>
 
                     <h2>
-                        Cybersecurity Connection
-                    </h2>
+ Cybersecurity Connection
+ </h2>
 
                 </div>
 
@@ -2238,8 +1104,8 @@ grep '^student01:' /etc/passwd</code>
                     </div>
 
                     <h2>
-                        Lab Summary
-                    </h2>
+ Lab Summary
+ </h2>
 
                 </div>
 
@@ -2299,15 +1165,15 @@ grep '^student01:' /etc/passwd</code>
                     class="linux-topic-button previous"
                 >
 
-                    <span>
-                        ←
-                    </span>
+ <span>
+ ←
+ </span>
 
-                    <strong>
-                        Previous: Linux Commands
-                    </strong>
+ <strong>
+ Previous: Linux Commands
+ </strong>
 
-                </a>
+ </a>
 
 
                 <a
@@ -2315,15 +1181,15 @@ grep '^student01:' /etc/passwd</code>
                     class="linux-topic-button next"
                 >
 
-                    <strong>
-                        Next Topic: File Permissions
-                    </strong>
+ <strong>
+ Next Topic: File Permissions
+ </strong>
 
-                    <span>
-                        →
-                    </span>
+ <span>
+ →
+ </span>
 
-                </a>
+ </a>
 
             </div>
 

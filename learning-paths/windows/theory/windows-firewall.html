@@ -1,811 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn CyberNexa | Windows Firewall with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>CyberNexa | Windows Firewall</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* =====================================================
-           MAIN PAGE
-        ====================================================== */
-
-        .windows-learning-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(37, 99, 235, 0.12),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(14, 165, 233, 0.08),
-                    transparent 30%
-                ),
-                #02080d;
-        }
-
-        .windows-learning-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-        /* =====================================================
-           HEADER
-        ====================================================== */
-
-        .windows-topic-header {
-
-            text-align: center;
-
-            margin-bottom: 50px;
-        }
-
-        .windows-topic-category {
-
-            display: inline-block;
-
-            margin-bottom: 14px;
-
-            color: #60a5fa;
-
-            font-size: 11px;
-            font-weight: 800;
-
-            letter-spacing: 2.5px;
-
-            text-transform: uppercase;
-        }
-
-        .windows-topic-header h1 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 44px;
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-        .windows-topic-header h1 span {
-
-            color: #60a5fa;
-        }
-
-        .windows-topic-intro {
-
-            max-width: 760px;
-
-            margin: 18px auto 0;
-
-            color: #b6c2cc;
-
-            font-size: 15px;
-
-            line-height: 1.8;
-        }
-
-        /* =====================================================
-           BADGES
-        ====================================================== */
-
-        .windows-badges {
-
-            display: flex;
-
-            justify-content: center;
-
-            flex-wrap: wrap;
-
-            gap: 8px;
-
-            margin-top: 22px;
-        }
-
-        .windows-badge {
-
-            padding: 8px 13px;
-
-            border: 1px solid rgba(96, 165, 250, 0.20);
-
-            border-radius: 20px;
-
-            color: #bfdbfe;
-
-            background: rgba(96, 165, 250, 0.055);
-
-            font-size: 11px;
-
-            font-weight: 700;
-        }
-
-        /* =====================================================
-           SEARCH
-        ====================================================== */
-
-        .windows-topic-search {
-
-            display: flex;
-
-            align-items: center;
-
-            max-width: 650px;
-
-            margin: 25px auto 0;
-
-            gap: 10px;
-        }
-
-        .windows-topic-search input {
-
-            flex: 1;
-
-            min-width: 0;
-
-            padding: 13px 16px;
-
-            border: 1px solid rgba(96, 165, 250, 0.20);
-
-            border-radius: 9px;
-
-            outline: none;
-
-            color: #f8fafc;
-
-            background: rgba(96, 165, 250, 0.045);
-
-            font-size: 13px;
-        }
-
-        .windows-topic-search input::placeholder {
-
-            color: #7f909c;
-        }
-
-        .windows-topic-search input:focus {
-
-            border-color: rgba(96, 165, 250, 0.65);
-
-            background: rgba(96, 165, 250, 0.07);
-
-            box-shadow:
-                0 0 20px rgba(37, 99, 235, 0.10);
-        }
-
-        .windows-topic-search button {
-
-            padding: 13px 18px;
-
-            border: 1px solid rgba(96, 165, 250, 0.30);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background: rgba(96, 165, 250, 0.07);
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            cursor: pointer;
-        }
-
-        .windows-topic-search button:hover {
-
-            border-color: rgba(96, 165, 250, 0.70);
-
-            background: rgba(96, 165, 250, 0.13);
-        }
-
-        .windows-search-message {
-
-            min-height: 20px;
-
-            margin-top: 10px;
-
-            color: #60a5fa;
-
-            font-size: 12px;
-
-            text-align: center;
-        }
-
-        /* =====================================================
-           CARDS
-        ====================================================== */
-
-        .windows-card {
-
-            position: relative;
-
-            width: 100%;
-
-            margin-bottom: 22px;
-
-            padding: 30px;
-
-            border: 1px solid rgba(96, 165, 250, 0.15);
-
-            border-radius: 15px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 22, 38, 0.98),
-                    rgba(3, 13, 20, 0.98)
-                );
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.28);
-
-            overflow: hidden;
-
-            transition:
-                border-color 0.25s ease,
-                box-shadow 0.25s ease,
-                transform 0.25s ease;
-        }
-
-        .windows-card:hover {
-
-            border-color: rgba(96, 165, 250, 0.40);
-
-            box-shadow:
-                0 18px 45px rgba(0, 0, 0, 0.32),
-                0 0 30px rgba(37, 99, 235, 0.08);
-
-            transform: translateY(-2px);
-        }
-
-        .windows-card-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-
-            margin-bottom: 18px;
-        }
-
-        .windows-icon {
-
-            width: 42px;
-            height: 42px;
-
-            flex-shrink: 0;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border: 1px solid rgba(96, 165, 250, 0.30);
-
-            border-radius: 10px;
-
-            color: #60a5fa;
-
-            background: rgba(96, 165, 250, 0.07);
-
-            font-size: 17px;
-
-            font-weight: 800;
-        }
-
-        .windows-card h2 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 21px;
-
-            font-weight: 750;
-        }
-
-        .windows-card h3 {
-
-            margin: 0 0 8px;
-
-            color: #f8fafc;
-
-            font-size: 16px;
-        }
-
-        .windows-card p {
-
-            margin: 0 0 14px;
-
-            color: #b6c2cc;
-
-            font-size: 14px;
-
-            line-height: 1.85;
-        }
-
-        .windows-definition-box {
-
-            padding: 20px;
-
-            margin-top: 5px;
-
-            border-left: 3px solid #60a5fa;
-
-            border-radius: 0 10px 10px 0;
-
-            background: rgba(96, 165, 250, 0.055);
-        }
-
-        .windows-definition-box strong {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #f8fafc;
-
-            font-size: 14px;
-        }
-
-        .windows-definition-box span {
-
-            color: #c3cdd5;
-
-            font-size: 14px;
-
-            line-height: 1.8;
-        }
-
-        /* =====================================================
-           INFO GRID
-        ====================================================== */
-
-        .windows-info-grid {
-
-            display: grid;
-
-            grid-template-columns: repeat(2, 1fr);
-
-            gap: 14px;
-
-            margin-top: 20px;
-        }
-
-        .windows-info-card {
-
-            padding: 20px;
-
-            border: 1px solid rgba(96, 165, 250, 0.14);
-
-            border-radius: 11px;
-
-            background: rgba(96, 165, 250, 0.035);
-        }
-
-        .windows-info-card p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-        }
-
-        /* =====================================================
-           FLOW
-        ====================================================== */
-
-        .windows-flow {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 22px;
-        }
-
-        .windows-flow-item {
-
-            padding: 12px 16px;
-
-            border: 1px solid rgba(96, 165, 250, 0.20);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background: rgba(96, 165, 250, 0.05);
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-            text-align: center;
-        }
-
-        .windows-flow-arrow {
-
-            color: #60a5fa;
-
-            font-size: 18px;
-
-            font-weight: 700;
-        }
-
-        /* =====================================================
-           KEY CONCEPTS
-        ====================================================== */
-
-        .windows-key-concepts {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 20px;
-        }
-
-        .windows-key-item {
-
-            padding: 10px 14px;
-
-            border: 1px solid rgba(96, 165, 250, 0.16);
-
-            border-radius: 8px;
-
-            color: #d7e4eb;
-
-            background: rgba(96, 165, 250, 0.04);
-
-            font-size: 12px;
-
-            font-weight: 600;
-        }
-
-        /* =====================================================
-           COMMAND BOX
-        ====================================================== */
-
-        .windows-command-box {
-
-            margin-top: 20px;
-
-            padding: 18px 20px;
-
-            border: 1px solid rgba(96, 165, 250, 0.15);
-
-            border-radius: 10px;
-
-            background: #01060a;
-
-            overflow-x: auto;
-        }
-
-        .windows-terminal-label {
-
-            display: block;
-
-            margin-bottom: 12px;
-
-            color: #64748b;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-            letter-spacing: 1.5px;
-
-            text-transform: uppercase;
-        }
-
-        .windows-command-box code {
-
-            color: #93c5fd;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            line-height: 1.9;
-        }
-
-        /* =====================================================
-           COMPARISON
-        ====================================================== */
-
-        .windows-comparison {
-
-            display: grid;
-
-            grid-template-columns: repeat(2, 1fr);
-
-            gap: 14px;
-
-            margin-top: 20px;
-        }
-
-        .windows-comparison-box {
-
-            padding: 20px;
-
-            border: 1px solid rgba(96, 165, 250, 0.14);
-
-            border-radius: 11px;
-
-            background: rgba(96, 165, 250, 0.035);
-        }
-
-        .windows-comparison-box h3 {
-
-            color: #60a5fa;
-
-            margin-bottom: 12px;
-        }
-
-        .windows-comparison-box ul {
-
-            margin: 0;
-
-            padding-left: 18px;
-        }
-
-        .windows-comparison-box li {
-
-            margin-bottom: 7px;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.6;
-        }
-
-        /* =====================================================
-           SUMMARY
-        ====================================================== */
-
-        .windows-summary-list {
-
-            margin: 18px 0 0;
-
-            padding: 0;
-
-            list-style: none;
-        }
-
-        .windows-summary-list li {
-
-            position: relative;
-
-            padding: 9px 0 9px 23px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-
-            border-bottom:
-                1px solid rgba(96, 165, 250, 0.07);
-        }
-
-        .windows-summary-list li::before {
-
-            content: "✓";
-
-            position: absolute;
-
-            left: 0;
-
-            top: 9px;
-
-            color: #60a5fa;
-
-            font-weight: 700;
-        }
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-
-        .windows-topic-navigation {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-top: 35px;
-        }
-
-        .windows-topic-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            padding: 13px 18px;
-
-            border: 1px solid rgba(96, 165, 250, 0.25);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background: rgba(96, 165, 250, 0.05);
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 700;
-        }
-
-        .windows-topic-button:hover {
-
-            border-color: rgba(96, 165, 250, 0.65);
-
-            background: rgba(96, 165, 250, 0.10);
-
-            transform: translateY(-1px);
-        }
-
-        .windows-topic-button.practical-lab {
-
-            border-color: rgba(37, 99, 235, 0.40);
-
-            background: rgba(37, 99, 235, 0.09);
-        }
-
-        .windows-topic-button span {
-
-            color: #60a5fa;
-
-            font-size: 17px;
-        }
-
-        .windows-search-highlight {
-
-            border-color:
-                rgba(96, 165, 250, 0.75) !important;
-
-            box-shadow:
-                0 0 25px rgba(37, 99, 235, 0.13) !important;
-        }
-
-        /* =====================================================
-           RESPONSIVE
-        ====================================================== */
-
-        @media (max-width: 800px) {
-
-            .windows-learning-page {
-                padding: 55px 15px 65px;
-            }
-
-            .windows-topic-header h1 {
-                font-size: 36px;
-            }
-        }
-
-        @media (max-width: 600px) {
-
-            .windows-learning-page {
-                padding: 45px 12px 55px;
-            }
-
-            .windows-topic-header h1 {
-                font-size: 30px;
-            }
-
-            .windows-card {
-                padding: 21px 18px;
-                margin-bottom: 16px;
-            }
-
-            .windows-info-grid,
-            .windows-comparison {
-                grid-template-columns: 1fr;
-            }
-
-            .windows-flow {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .windows-flow-item {
-                width: 100%;
-            }
-
-            .windows-flow-arrow {
-                text-align: center;
-            }
-
-            .windows-topic-search {
-                flex-direction: column;
-            }
-
-            .windows-topic-search input,
-            .windows-topic-search button {
-                width: 100%;
-            }
-
-            .windows-topic-navigation {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .windows-topic-button {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 380px) {
-
-            .windows-topic-header h1 {
-                font-size: 27px;
-            }
-
-            .windows-card {
-                padding: 18px 15px;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -829,13 +43,11 @@
 
             <header class="windows-topic-header">
 
-                <div class="windows-topic-category">
-                    WINDOWS
-                </div>
+                <div class="windows-topic-category">WINDOWS</div>
 
                 <h1>
-                    Windows <span>Firewall</span>
-                </h1>
+ Windows <span>Firewall</span>
+ </h1>
 
                 <p class="windows-topic-intro">
 
@@ -846,23 +58,14 @@
 
                 </p>
 
-                <div class="windows-badges">
+                <div class="windows-badges"><div class="windows-badge">
+                        Beginner</div>
 
-                    <div class="windows-badge">
-                        Beginner
-                    </div>
+                    <div class="windows-badge">Theory</div>
 
-                    <div class="windows-badge">
-                        Theory
-                    </div>
+                    <div class="windows-badge">Network Security</div>
 
-                    <div class="windows-badge">
-                        Network Security
-                    </div>
-
-                    <div class="windows-badge">
-                        Practical Lab
-                    </div>
+                    <div class="windows-badge">Practical Lab</div>
 
                 </div>
 
@@ -882,8 +85,8 @@
                         type="button"
                         id="windowsSearchButton"
                     >
-                        🔍 Search
-                    </button>
+ Search
+ </button>
 
                 </div>
 
@@ -906,8 +109,8 @@
                     </div>
 
                     <h2>
-                        What is Windows Firewall?
-                    </h2>
+ What is Windows Firewall?
+ </h2>
 
                 </div>
 
@@ -942,8 +145,8 @@
                     </div>
 
                     <h2>
-                        Why is Windows Firewall Important?
-                    </h2>
+ Why is Windows Firewall Important?
+ </h2>
 
                 </div>
 
@@ -990,8 +193,8 @@
                     </div>
 
                     <h2>
-                        How Windows Firewall Works
-                    </h2>
+ How Windows Firewall Works
+ </h2>
 
                 </div>
 
@@ -1049,8 +252,8 @@
                     </div>
 
                     <h2>
-                        Windows Firewall Profiles
-                    </h2>
+ Windows Firewall Profiles
+ </h2>
 
                 </div>
 
@@ -1067,8 +270,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Domain
-                        </h3>
+ Domain
+ </h3>
 
                         <p>
 
@@ -1082,8 +285,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Private
-                        </h3>
+ Private
+ </h3>
 
                         <p>
 
@@ -1097,8 +300,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Public
-                        </h3>
+ Public
+ </h3>
 
                         <p>
 
@@ -1125,8 +328,8 @@
                     </div>
 
                     <h2>
-                        Inbound Traffic
-                    </h2>
+ Inbound Traffic
+ </h2>
 
                 </div>
 
@@ -1176,8 +379,8 @@
                     </div>
 
                     <h2>
-                        Outbound Traffic
-                    </h2>
+ Outbound Traffic
+ </h2>
 
                 </div>
 
@@ -1227,8 +430,8 @@
                     </div>
 
                     <h2>
-                        Firewall Rules
-                    </h2>
+ Firewall Rules
+ </h2>
 
                 </div>
 
@@ -1246,8 +449,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Allow Rule
-                        </h3>
+ Allow Rule
+ </h3>
 
                         <p>
                             Allows traffic that matches the rule
@@ -1259,8 +462,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Block Rule
-                        </h3>
+ Block Rule
+ </h3>
 
                         <p>
                             Blocks traffic that matches the
@@ -1272,8 +475,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Inbound Rule
-                        </h3>
+ Inbound Rule
+ </h3>
 
                         <p>
                             Controls incoming network traffic.
@@ -1284,8 +487,8 @@
                     <div class="windows-info-card">
 
                         <h3>
-                            Outbound Rule
-                        </h3>
+ Outbound Rule
+ </h3>
 
                         <p>
                             Controls outgoing network traffic.
@@ -1309,8 +512,8 @@
                     </div>
 
                     <h2>
-                        Firewall and Network Ports
-                    </h2>
+ Firewall and Network Ports
+ </h2>
 
                 </div>
 
@@ -1366,8 +569,8 @@
                     </div>
 
                     <h2>
-                        Managing Windows Firewall
-                    </h2>
+ Managing Windows Firewall
+ </h2>
 
                 </div>
 
@@ -1413,8 +616,8 @@
                     </div>
 
                     <h2>
-                        Windows Firewall with PowerShell
-                    </h2>
+ Windows Firewall with PowerShell
+ </h2>
 
                 </div>
 
@@ -1463,8 +666,8 @@
                     </div>
 
                     <h2>
-                        Firewall Security Concepts
-                    </h2>
+ Firewall Security Concepts
+ </h2>
 
                 </div>
 
@@ -1514,8 +717,8 @@
                     </div>
 
                     <h2>
-                        Why Windows Firewall Matters in Cybersecurity
-                    </h2>
+ Why Windows Firewall Matters in Cybersecurity
+ </h2>
 
                 </div>
 
@@ -1568,8 +771,8 @@
                     </div>
 
                     <h2>
-                        Quick Summary
-                    </h2>
+ Quick Summary
+ </h2>
 
                 </div>
 
@@ -1630,8 +833,8 @@
                     </div>
 
                     <h2>
-                        Lesson Completion
-                    </h2>
+ Lesson Completion
+ </h2>
 
                 </div>
 
@@ -1652,9 +855,9 @@
                         data-dashboard-url="../learning-paths/windows-basics/theory/windows-firewall.html"
                         data-status-id="windowsFirewallCompletionStatus">
 
-                        ✓ Mark Lesson Complete
+ Mark Lesson Complete
 
-                    </button>
+ </button>
 
                     <p
                         id="windowsFirewallCompletionStatus"
@@ -1675,17 +878,17 @@
                     href="event-viewer.html"
                     class="windows-topic-button previous"
                 >
-                    <span>←</span>
-                    <strong>Previous: Event Viewer</strong>
-                </a>
+ <span>←</span>
+ <strong>Previous: Event Viewer</strong>
+ </a>
 
                 <a
                     href="../labs/lab09.html"
                     class="windows-topic-button practical-lab"
                 >
-                    <span>🧪</span>
-                    <strong>Perform Lab</strong>
-                </a>
+ <span></span>
+ <strong>Perform Lab</strong>
+ </a>
             </div>
 
         </div>

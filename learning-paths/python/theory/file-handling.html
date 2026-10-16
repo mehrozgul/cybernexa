@@ -1,417 +1,22 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Python File Handling with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-<link rel="stylesheet" href="../../../css/navbar.css">
-<link rel="stylesheet" href="../../../css/footer.css">
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
     <title>Python File Handling | CyberNexa</title>
-
-    <style>
-        /* =====================================================
-           CYBERNEXA PYTHON FILE HANDLING
-           PAGE CSS
-        ===================================================== */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background:
-                radial-gradient(circle at top right, rgba(0, 190, 255, 0.08), transparent 30%),
-                #030b16;
-            color: #dce8f5;
-            font-family: Arial, sans-serif;
-            line-height: 1.7;
-        }
-
-        .navbar {
-            width: 100%;
-            border-bottom: 1px solid rgba(0, 202, 255, 0.18);
-            background: rgba(3, 12, 25, 0.96);
-        }
-
-        .nav-container {
-            max-width: 1480px;
-            margin: auto;
-            padding: 16px 32px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: white;
-            text-decoration: none;
-        }
-
-        .brand-logo {
-            width: 38px;
-            height: 45px;
-            color: #00caff;
-        }
-
-        .brand-logo svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .brand-name {
-            font-size: 21px;
-            font-weight: 900;
-        }
-
-        .brand-name span {
-            color: #00caff;
-        }
-
-        .brand-tagline {
-            color: #7f94aa;
-            font-size: 10px;
-            letter-spacing: 0.5px;
-        }
-
-        /* =====================================================
-           ARTICLE
-        ===================================================== */
-
-        .article-page {
-            width: 100%;
-            max-width: 1050px;
-            margin: auto;
-            padding: 35px 25px 70px;
-        }
-
-        .article-breadcrumb {
-            color: #6f849a;
-            font-size: 12px;
-            margin-bottom: 25px;
-        }
-
-        .article-breadcrumb span {
-            color: #00caff;
-            padding: 0 8px;
-        }
-
-        .article-header {
-            padding: 32px;
-            border: 1px solid rgba(0, 202, 255, 0.25);
-            border-left: 4px solid #00caff;
-            border-radius: 10px;
-            background: linear-gradient(
-                135deg,
-                rgba(8, 29, 52, 0.96),
-                rgba(3, 15, 29, 0.96)
-            );
-            margin-bottom: 25px;
-        }
-
-        .article-label {
-            color: #00caff;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 2px;
-        }
-
-        .article-header h1 {
-            color: #ffffff;
-            font-size: 36px;
-            margin: 10px 0;
-        }
-
-        .article-header p {
-            color: #9fb1c5;
-            margin: 0;
-            font-size: 14px;
-        }
-
-        .article-section {
-            margin-bottom: 22px;
-            padding: 27px;
-            border: 1px solid rgba(0, 202, 255, 0.12);
-            border-radius: 9px;
-            background: rgba(5, 19, 35, 0.88);
-        }
-
-        .article-section h2 {
-            color: #ffffff;
-            font-size: 21px;
-            margin-top: 0;
-            margin-bottom: 12px;
-        }
-
-        .article-section h2::before {
-            content: "// ";
-            color: #00caff;
-        }
-
-        .article-section p {
-            color: #aabbd0;
-            font-size: 14px;
-        }
-
-        /* =====================================================
-           CODE
-        ===================================================== */
-
-        .code-block {
-            margin: 18px 0;
-            border: 1px solid rgba(0, 202, 255, 0.22);
-            border-radius: 7px;
-            overflow-x: auto;
-            background: #020810;
-        }
-
-        .code-block pre {
-            margin: 0;
-            padding: 18px;
-            color: #7ee7ff;
-            font-family: Consolas, monospace;
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-        .output-box {
-            padding: 13px 16px;
-            margin-top: 12px;
-            border-left: 3px solid #00e68a;
-            background: rgba(0, 230, 138, 0.06);
-            color: #7fffc0;
-            font-family: Consolas, monospace;
-            font-size: 13px;
-        }
-
-        /* =====================================================
-           CONCEPT CARDS
-        ===================================================== */
-
-        .concept-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-top: 18px;
-        }
-
-        .concept-card {
-            padding: 18px;
-            border: 1px solid rgba(0, 202, 255, 0.16);
-            border-radius: 8px;
-            background: rgba(0, 202, 255, 0.035);
-        }
-
-        .concept-card h3 {
-            color: #00caff;
-            font-size: 15px;
-            margin-top: 0;
-        }
-
-        .concept-card p {
-            font-size: 12px;
-            margin-bottom: 0;
-        }
-
-        .concept-card pre {
-            background: #020810;
-            padding: 10px;
-            overflow-x: auto;
-            color: #7ee7ff;
-            font-size: 11px;
-        }
-
-        /* =====================================================
-           LIST
-        ===================================================== */
-
-        .article-list {
-            padding-left: 22px;
-            color: #aabbd0;
-            font-size: 14px;
-        }
-
-        .article-list li {
-            margin-bottom: 7px;
-        }
-
-        .article-list li::marker {
-            color: #00caff;
-        }
-
-        /* =====================================================
-           LAB
-        ===================================================== */
-
-        .article-lab {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            padding: 25px;
-            margin-top: 25px;
-            border: 1px solid rgba(0, 230, 138, 0.35);
-            border-left: 4px solid #00e68a;
-            border-radius: 9px;
-            background: rgba(0, 230, 138, 0.045);
-        }
-
-        .article-lab h2 {
-            color: white;
-            margin: 7px 0;
-        }
-
-        .article-lab p {
-            color: #9fb1c5;
-            margin: 0;
-            font-size: 13px;
-        }
-
-        .article-lab a {
-            flex-shrink: 0;
-            padding: 10px 18px;
-            border: 1px solid #00e68a;
-            border-radius: 22px;
-            color: #00e68a;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .article-lab a:hover {
-            background: #00e68a;
-            color: #02100a;
-        }
-/* LESSON COMPLETION BUTTON */
-#lesson-completion .lab-button {
-    padding: 10px 18px;
-    border: 1px solid #00e68a;
-    border-radius: 22px;
-    background: transparent;
-    color: #00e68a;
-    font-size: 12px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-#lesson-completion .lab-button:hover {
-    background: #00e68a;
-    color: #02100a;
-}
-        /* =====================================================
-           FOOTER
-        ===================================================== */
-
-        .footer {
-            border-top: 1px solid rgba(0, 202, 255, 0.15);
-            background: #020914;
-            padding: 35px 25px 20px;
-        }
-
-        .footer-container {
-            max-width: 1050px;
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            gap: 25px;
-        }
-
-        .footer-brand {
-            color: white;
-            font-size: 20px;
-            font-weight: 900;
-        }
-
-        .footer-brand span {
-            color: #00caff;
-        }
-
-        .footer-container p {
-            color: #6f849a;
-            font-size: 11px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 18px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: #8da2b8;
-            text-decoration: none;
-            font-size: 11px;
-        }
-
-        .footer-links a:hover {
-            color: #00caff;
-        }
-
-        .copyright {
-            max-width: 1050px;
-            margin: 25px auto 0;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            text-align: center;
-            color: #52667b;
-            font-size: 10px;
-        }
-
-        /* =====================================================
-           MOBILE
-        ===================================================== */
-
-        @media (max-width: 700px) {
-
-            .nav-container {
-                padding: 14px 18px;
-            }
-
-            .article-page {
-                padding: 25px 15px 55px;
-            }
-
-            .article-header {
-                padding: 23px 20px;
-            }
-
-            .article-header h1 {
-                font-size: 28px;
-            }
-
-            .article-section {
-                padding: 20px;
-            }
-
-            .concept-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .article-lab {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .article-lab a {
-                width: 100%;
-                text-align: center;
-            }
-
-            .article-navigation {
-                flex-direction: column;
-            }
-
-            .article-navigation a {
-                text-align: center;
-            }
-
-            .footer-container {
-                flex-direction: column;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -439,8 +44,8 @@
         </div>
 
         <h1>
-            Python File Handling
-        </h1>
+ Python File Handling
+ </h1>
 
         <p>
             Learn how Python reads, creates, writes and manages files
@@ -844,8 +449,8 @@ except FileNotFoundError:
         data-lesson-id="file-handling"
         data-dashboard-url="../learning-paths/python/theory/file-handling.html"
         data-status-id="fileHandlingCompletionStatus">
-        Mark Lesson as Completed
-    </button>
+ Mark Lesson as Completed
+ </button>
 
     <p
         id="fileHandlingCompletionStatus"
@@ -866,8 +471,8 @@ except FileNotFoundError:
             </span>
 
             <h2>
-                Practice Python File Handling
-            </h2>
+ Practice Python File Handling
+ </h2>
 
             <p>
                 Read a security log, detect failed login activity

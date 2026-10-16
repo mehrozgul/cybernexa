@@ -1,699 +1,21 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Lab 01 - Linux Basics with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
     <title>Lab 01 - Linux Basics | CyberNexa</title>
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-    <style>
-        /* =====================================================
-           GLOBAL
-        ====================================================== */
-        * {
-            box-sizing: border-box;
-        }
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-        body {
-            margin: 0;
-            overflow-x: hidden;
-            background: #02080d;
-        }
-        /* =====================================================
-           MAIN
-        ====================================================== */
-        .lab-page {
-            width: 100%;
-            min-height: calc(100vh - 80px);
-            padding: 65px 20px 80px;
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(34, 211, 238, 0.08),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(59, 130, 246, 0.07),
-                    transparent 30%
-                ),
-                #02080d;
-        }
-        .lab-container {
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        /* =====================================================
-           HEADER
-        ====================================================== */
-        .lab-header {
-            text-align: center;
-            margin-bottom: 45px;
-        }
-        .lab-label {
-            display: inline-block;
-            margin-bottom: 12px;
-            color: #67e8f9;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        .lab-header h1 {
-            margin: 0;
-            color: #f8fafc;
-            font-size: 42px;
-            font-weight: 800;
-            line-height: 1.2;
-        }
-        .lab-header h1 span {
-            color: #67e8f9;
-        }
-        .lab-intro {
-            max-width: 720px;
-            margin: 16px auto 0;
-            color: #b6c2cc;
-            font-size: 14px;
-            line-height: 1.8;
-        }
-        /* =====================================================
-           INFO BAR
-        ====================================================== */
-        .lab-info {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 12px;
-
-            margin-bottom: 25px;
-        }
-
-
-        .info-box {
-
-            padding: 16px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.15);
-
-            border-radius: 10px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-
-            text-align: center;
-        }
-
-
-        .info-box strong {
-
-            display: block;
-
-            margin-bottom: 5px;
-
-            color: #67e8f9;
-
-            font-size: 11px;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-        }
-
-
-        .info-box span {
-
-            color: #dbeafe;
-
-            font-size: 13px;
-        }
-
-
-        /* =====================================================
-           LAB CARD
-        ====================================================== */
-
-        .lab-card {
-
-            position: relative;
-
-            margin-bottom: 18px;
-
-            padding: 25px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.15);
-
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 25, 35, 0.98),
-                    rgba(3, 13, 20, 0.98)
-                );
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.25);
-        }
-
-
-        .step-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            margin-bottom: 17px;
-        }
-
-
-        .step-number {
-
-            width: 38px;
-
-            height: 38px;
-
-            flex-shrink: 0;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.35);
-
-            border-radius: 9px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 13px;
-
-            font-weight: 800;
-        }
-
-
-        .step-heading h2 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 19px;
-
-            font-weight: 750;
-        }
-
-
-        .step-description {
-
-            margin: 0 0 15px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           INSTRUCTION
-        ====================================================== */
-
-        .instruction-box {
-
-            margin-bottom: 15px;
-
-            padding: 15px;
-
-            border-left:
-                3px solid #67e8f9;
-
-            border-radius:
-                0 8px 8px 0;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-        }
-
-
-        .instruction-box strong {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #f8fafc;
-
-            font-size: 13px;
-        }
-
-
-        .instruction-box span {
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-        }
-
-
-        /* =====================================================
-           COMMAND AREA
-        ====================================================== */
-
-        .command-wrapper {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            margin-top: 12px;
-        }
-
-
-        .command-box {
-
-            flex: 1;
-
-            min-width: 0;
-
-            padding: 14px 16px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.16);
-
-            border-radius: 9px;
-
-            background: #01060a;
-
-            overflow-x: auto;
-        }
-
-
-        .command-box code {
-
-            color: #7dd3fc;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            white-space: nowrap;
-        }
-
-
-        .copy-button {
-
-            flex-shrink: 0;
-
-            padding: 12px 15px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.25);
-
-            border-radius: 8px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-            cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-
-        .copy-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.65);
-
-            background:
-                rgba(103, 232, 249, 0.13);
-        }
-
-
-        .copy-button.copied {
-
-            color: #67e8f9;
-
-            border-color:
-                rgba(103, 232, 249, 0.60);
-        }
-
-
-        /* =====================================================
-           EXPECTED RESULT
-        ====================================================== */
-
-        .expected-result {
-
-            margin-top: 14px;
-
-            padding: 13px 15px;
-
-            border:
-                1px solid rgba(34, 197, 94, 0.15);
-
-            border-radius: 8px;
-
-            background:
-                rgba(34, 197, 94, 0.035);
-
-            color: #b6c2cc;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-
-        .expected-result strong {
-
-            color: #86efac;
-        }
-
-
-        /* =====================================================
-           IMPORTANT NOTE
-        ====================================================== */
-
-        .note-box {
-
-            margin-top: 20px;
-
-            padding: 15px;
-
-            border:
-                1px solid rgba(250, 204, 21, 0.18);
-
-            border-radius: 9px;
-
-            background:
-                rgba(250, 204, 21, 0.035);
-
-            color: #cbd5e1;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-
-
-        .note-box strong {
-
-            color: #fde68a;
-        }
-
-
-        /* =====================================================
-           COMPLETION
-        ====================================================== */
-
-        .completion-card {
-
-            margin-top: 30px;
-
-            padding: 30px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.20);
-
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(103, 232, 249, 0.055),
-                    rgba(3, 13, 20, 0.98)
-                );
-
-            text-align: center;
-        }
-
-
-        .completion-card h2 {
-
-            margin: 0 0 10px;
-
-            color: #f8fafc;
-
-            font-size: 22px;
-        }
-
-
-        .completion-card p {
-
-            margin: 0 auto 20px;
-
-            max-width: 600px;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-        }
-
-
-        .complete-button {
-
-            padding: 13px 22px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.35);
-
-            border-radius: 9px;
-
-            color: #021014;
-
-            background: #67e8f9;
-
-            font-size: 13px;
-
-            font-weight: 800;
-
-            cursor: pointer;
-
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
-        }
-
-
-        .complete-button:hover {
-
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 8px 25px rgba(103, 232, 249, 0.18);
-        }
-
-
-        .complete-button.completed {
-
-            color: #86efac;
-
-            background:
-                rgba(34, 197, 94, 0.10);
-
-            border-color:
-                rgba(34, 197, 94, 0.40);
-
-            cursor: default;
-
-            box-shadow: none;
-        }
-
-
-        .completion-message {
-
-            min-height: 20px;
-
-            margin-top: 15px;
-
-            color: #67e8f9;
-
-            font-size: 12px;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-
-        .lab-navigation {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            gap: 15px;
-
-            margin-top: 25px;
-        }
-
-
-        .lab-nav-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 8px;
-
-            padding: 12px 17px;
-
-            border:
-                1px solid rgba(103, 232, 249, 0.20);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.045);
-
-            text-decoration: none;
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-
-        .lab-nav-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.55);
-
-            background:
-                rgba(103, 232, 249, 0.09);
-        }
-
-
-        .lab-nav-button span {
-
-            color: #67e8f9;
-
-            font-size: 16px;
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 700px) {
-
-            .lab-page {
-
-                padding:
-                    45px 12px 60px;
-            }
-
-
-            .lab-header h1 {
-
-                font-size: 31px;
-            }
-
-
-            .lab-intro {
-
-                font-size: 13px;
-            }
-
-
-            .lab-info {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .lab-card {
-
-                padding: 19px 16px;
-            }
-
-
-            .step-heading h2 {
-
-                font-size: 17px;
-            }
-
-
-            .command-wrapper {
-
-                flex-direction: column;
-
-                align-items: stretch;
-            }
-
-
-            .command-box {
-
-                width: 100%;
-            }
-
-
-            .copy-button {
-
-                width: 100%;
-            }
-
-
-            .lab-navigation {
-
-                flex-direction: column;
-            }
-
-
-            .lab-nav-button {
-
-                width: 100%;
-            }
-
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -798,8 +120,8 @@
                 </div>
 
                 <h1>
-                    Lab 01 — <span>Linux Basics</span>
-                </h1>
+ Lab 01 — <span>Linux Basics</span>
+ </h1>
 
                 <p class="lab-intro">
 
@@ -863,8 +185,8 @@
                     </div>
 
                     <h2>
-                        Open the Linux Terminal
-                    </h2>
+ Open the Linux Terminal
+ </h2>
 
                 </div>
 
@@ -912,8 +234,8 @@
                     </div>
 
                     <h2>
-                        Check the Current User
-                    </h2>
+ Check the Current User
+ </h2>
 
                 </div>
 
@@ -950,8 +272,8 @@
                         class="copy-button"
                         data-command="whoami"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                 </div>
 
@@ -982,8 +304,8 @@
                     </div>
 
                     <h2>
-                        Check Your Current Directory
-                    </h2>
+ Check Your Current Directory
+ </h2>
 
                 </div>
 
@@ -1019,8 +341,8 @@
                         class="copy-button"
                         data-command="pwd"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                 </div>
 
@@ -1051,8 +373,8 @@
                     </div>
 
                     <h2>
-                        List Files and Directories
-                    </h2>
+ List Files and Directories
+ </h2>
 
                 </div>
 
@@ -1088,8 +410,8 @@
                         class="copy-button"
                         data-command="ls"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                 </div>
 
@@ -1120,8 +442,8 @@
                     </div>
 
                     <h2>
-                        Create a Lab Directory
-                    </h2>
+ Create a Lab Directory
+ </h2>
 
                 </div>
 
@@ -1160,8 +482,8 @@
                         class="copy-button"
                         data-command="mkdir cybernexa-lab"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                 </div>
 
@@ -1192,8 +514,8 @@
                     </div>
 
                     <h2>
-                        Enter the New Directory
-                    </h2>
+ Enter the New Directory
+ </h2>
 
                 </div>
 
@@ -1229,8 +551,8 @@
                         class="copy-button"
                         data-command="cd cybernexa-lab"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                 </div>
 
@@ -1261,8 +583,8 @@
                     </div>
 
                     <h2>
-                        Create a File
-                    </h2>
+ Create a File
+ </h2>
 
                 </div>
 
@@ -1299,8 +621,8 @@
                         class="copy-button"
                         data-command="touch notes.txt"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                 </div>
 
@@ -1331,8 +653,8 @@
                     </div>
 
                     <h2>
-                        Verify the File
-                    </h2>
+ Verify the File
+ </h2>
 
                 </div>
 
@@ -1368,8 +690,8 @@
                         class="copy-button"
                         data-command="ls"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                 </div>
 
@@ -1400,8 +722,8 @@
                     </div>
 
                     <h2>
-                        Verify Your Final Location
-                    </h2>
+ Verify Your Final Location
+ </h2>
 
                 </div>
 
@@ -1438,8 +760,8 @@
                         class="copy-button"
                         data-command="pwd"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                 </div>
 
@@ -1483,8 +805,8 @@
             <section class="completion-card">
 
                 <h2>
-                    Lab 01 Completion
-                </h2>
+ Lab 01 Completion
+ </h2>
 
                 <p>
 
@@ -1500,8 +822,8 @@
                     id="completeLabButton"
                     class="complete-button"
                 >
-                    ✓ Mark Lab 01 as Complete
-                </button>
+ Mark Lab 01 as Complete
+ </button>
 
 
                 <div
@@ -1524,11 +846,11 @@
                     class="lab-nav-button"
                 >
 
-                    <span>←</span>
+ <span>←</span>
 
-                    Back to Labs Hub
+ Back to Labs Hub
 
-                </a>
+ </a>
 
 
                 <a
@@ -1536,11 +858,11 @@
                     class="lab-nav-button"
                 >
 
-                    Next Topic: Linux File System
+ Next Topic: Linux File System
 
-                    <span>→</span>
+ <span>→</span>
 
-                </a>
+ </a>
 
             </div>
 

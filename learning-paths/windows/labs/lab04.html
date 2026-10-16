@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,691 +9,20 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
+    <meta name="description" content="Learn CyberNexa | Lab 04: Windows PowerShell Lab with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
 
     <title>CyberNexa | Lab 04: Windows PowerShell Lab</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        .windows-learning-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(37, 99, 235, 0.12),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(14, 165, 233, 0.08),
-                    transparent 30%
-                ),
-                #02080d;
-        }
-
-        .windows-learning-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-        .windows-topic-header {
-
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .windows-topic-category {
-
-            display: inline-block;
-
-            margin-bottom: 14px;
-
-            color: #60a5fa;
-
-            font-size: 11px;
-            font-weight: 800;
-
-            letter-spacing: 2.5px;
-
-            text-transform: uppercase;
-        }
-
-        .windows-topic-header h1 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 44px;
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-        .windows-topic-header h1 span {
-            color: #60a5fa;
-        }
-
-        .windows-topic-intro {
-
-            max-width: 760px;
-
-            margin: 18px auto 0;
-
-            color: #b6c2cc;
-
-            font-size: 15px;
-            line-height: 1.8;
-        }
-
-        .windows-badges {
-
-            display: flex;
-
-            justify-content: center;
-            flex-wrap: wrap;
-
-            gap: 8px;
-
-            margin-top: 22px;
-        }
-
-        .windows-badge {
-
-            padding: 8px 13px;
-
-            border: 1px solid rgba(96, 165, 250, 0.20);
-
-            border-radius: 20px;
-
-            color: #bfdbfe;
-
-            background:
-                rgba(96, 165, 250, 0.055);
-
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .windows-card {
-
-            position: relative;
-
-            width: 100%;
-
-            margin-bottom: 22px;
-
-            padding: 30px;
-
-            border: 1px solid rgba(96, 165, 250, 0.15);
-
-            border-radius: 15px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 22, 38, 0.98),
-                    rgba(3, 13, 20, 0.98)
-                );
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.28);
-
-            overflow: hidden;
-        }
-
-        .windows-card:hover {
-
-            border-color:
-                rgba(96, 165, 250, 0.40);
-
-            box-shadow:
-                0 18px 45px rgba(0, 0, 0, 0.32),
-                0 0 30px rgba(37, 99, 235, 0.08);
-
-            transform: translateY(-2px);
-        }
-
-        .windows-card-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-
-            margin-bottom: 18px;
-        }
-
-        .windows-icon {
-
-            width: 42px;
-            height: 42px;
-
-            flex-shrink: 0;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border: 1px solid
-                rgba(96, 165, 250, 0.30);
-
-            border-radius: 10px;
-
-            color: #60a5fa;
-
-            background:
-                rgba(96, 165, 250, 0.07);
-
-            font-size: 16px;
-
-            font-weight: 800;
-        }
-
-        .windows-card h2 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 21px;
-
-            font-weight: 750;
-        }
-
-        .windows-card h3 {
-
-            margin: 0 0 8px;
-
-            color: #f8fafc;
-
-            font-size: 16px;
-
-            font-weight: 700;
-        }
-
-        .windows-card p {
-
-            margin: 0 0 14px;
-
-            color: #b6c2cc;
-
-            font-size: 14px;
-
-            line-height: 1.85;
-        }
-
-        .windows-definition-box {
-
-            padding: 20px;
-
-            margin-top: 5px;
-
-            border-left: 3px solid #60a5fa;
-
-            border-radius:
-                0 10px 10px 0;
-
-            background:
-                rgba(96, 165, 250, 0.055);
-        }
-
-        .windows-definition-box strong {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #f8fafc;
-
-            font-size: 14px;
-        }
-
-        .windows-definition-box span {
-
-            color: #c3cdd5;
-
-            font-size: 14px;
-
-            line-height: 1.8;
-        }
-
-        .windows-command-box {
-
-            margin-top: 20px;
-
-            padding: 18px 20px;
-
-            border: 1px solid
-                rgba(96, 165, 250, 0.15);
-
-            border-radius: 10px;
-
-            background: #01060a;
-
-            overflow-x: auto;
-        }
-
-        .windows-terminal-label {
-
-            display: block;
-
-            margin-bottom: 12px;
-
-            color: #64748b;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-            letter-spacing: 1.5px;
-
-            text-transform: uppercase;
-        }
-
-        .windows-command-box code {
-
-            color: #93c5fd;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            line-height: 1.9;
-        }
-
-        .windows-step {
-
-            display: flex;
-
-            gap: 15px;
-
-            align-items: flex-start;
-
-            margin-top: 18px;
-        }
-
-        .windows-step-number {
-
-            width: 34px;
-            height: 34px;
-
-            flex-shrink: 0;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            color: #dbeafe;
-
-            background:
-                rgba(37, 99, 235, 0.16);
-
-            border:
-                1px solid rgba(96, 165, 250, 0.30);
-
-            font-size: 12px;
-
-            font-weight: 800;
-        }
-
-        .windows-step-content {
-
-            flex: 1;
-        }
-
-        .windows-step-content strong {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #f8fafc;
-
-            font-size: 14px;
-        }
-
-        .windows-step-content p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-        }
-
-        .windows-result {
-
-            margin-top: 18px;
-
-            padding: 17px 20px;
-
-            border: 1px solid
-                rgba(96, 165, 250, 0.14);
-
-            border-radius: 10px;
-
-            background:
-                rgba(96, 165, 250, 0.035);
-        }
-
-        .windows-result strong {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #60a5fa;
-
-            font-size: 13px;
-        }
-
-        .windows-result p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-        }
-
-        .windows-key-concepts {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 20px;
-        }
-
-        .windows-key-item {
-
-            padding: 10px 14px;
-
-            border: 1px solid
-                rgba(96, 165, 250, 0.16);
-
-            border-radius: 8px;
-
-            color: #d7e4eb;
-
-            background:
-                rgba(96, 165, 250, 0.04);
-
-            font-size: 12px;
-
-            font-weight: 600;
-        }
-
-        .windows-summary-list {
-
-            margin: 18px 0 0;
-
-            padding: 0;
-
-            list-style: none;
-        }
-
-        .windows-summary-list li {
-
-            position: relative;
-
-            padding:
-                9px 0 9px 23px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-
-            border-bottom:
-                1px solid
-                rgba(96, 165, 250, 0.07);
-        }
-
-        .windows-summary-list li:last-child {
-            border-bottom: none;
-        }
-
-        .windows-summary-list li::before {
-
-            content: "✓";
-
-            position: absolute;
-
-            left: 0;
-            top: 9px;
-
-            color: #60a5fa;
-
-            font-weight: 700;
-        }
-
-        .windows-topic-navigation {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-top: 35px;
-        }
-
-        .windows-topic-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            padding: 13px 18px;
-
-            border:
-                1px solid
-                rgba(96, 165, 250, 0.25);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(96, 165, 250, 0.05);
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 700;
-        }
-
-        .windows-topic-button:hover {
-
-            border-color:
-                rgba(96, 165, 250, 0.65);
-
-            background:
-                rgba(96, 165, 250, 0.10);
-        }
-
-        .windows-topic-button span {
-
-            color: #60a5fa;
-
-            font-size: 17px;
-        }
-
-        .windows-topic-button.theory {
-
-            border-color:
-                rgba(37, 99, 235, 0.40);
-
-            background:
-                rgba(37, 99, 235, 0.09);
-        }
-
-        @media (max-width: 800px) {
-
-            .windows-learning-page {
-                padding: 55px 15px 65px;
-            }
-
-            .windows-topic-header h1 {
-                font-size: 36px;
-            }
-        }
-
-        @media (max-width: 600px) {
-
-            .windows-learning-page {
-                padding: 45px 12px 55px;
-            }
-
-            .windows-topic-header h1 {
-                font-size: 30px;
-            }
-
-            .windows-topic-intro {
-                font-size: 13px;
-            }
-
-            .windows-card {
-                padding: 21px 18px;
-            }
-
-            .windows-card h2 {
-                font-size: 18px;
-            }
-
-            .windows-card p {
-                font-size: 13px;
-            }
-
-            .windows-topic-navigation {
-
-                flex-direction: column;
-
-                align-items: stretch;
-            }
-
-            .windows-topic-button {
-
-                width: 100%;
-
-                justify-content: center;
-            }
-        }
-
-    
-        /* =====================================================
-           STANDARDIZED LAB NAVIGATION
-        ====================================================== */
-
-        .windows-lab-navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .windows-lab-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 13px 20px;
-            border: 1px solid rgba(103, 232, 249, 0.25);
-            border-radius: 9px;
-            color: #dbeafe;
-            background: rgba(103, 232, 249, 0.05);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 700;
-            transition: all 0.2s ease;
-        }
-
-        .windows-lab-button:hover {
-            border-color: rgba(103, 232, 249, 0.65);
-            background: rgba(103, 232, 249, 0.12);
-            color: #ffffff;
-            transform: translateY(-1px);
-        }
-
-        .windows-lab-button span {
-            color: #67e8f9;
-            font-size: 16px;
-        }
-
-        .windows-lab-button.theory {
-            border-color: rgba(96, 165, 250, 0.35);
-            background: rgba(96, 165, 250, 0.08);
-            color: #93c5fd;
-        }
-
-        .windows-lab-button.theory:hover {
-            border-color: rgba(96, 165, 250, 0.75);
-            background: rgba(96, 165, 250, 0.16);
-            color: #ffffff;
-        }
-
-        @media (max-width: 650px) {
-            .windows-lab-navigation {
-                flex-direction: column;
-                align-items: stretch;
-                margin-top: 25px;
-            }
-
-            .windows-lab-button {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -779,9 +108,7 @@
 
 <header class="windows-topic-header">
 
-    <div class="windows-topic-category">
-        WINDOWS LAB
-    </div>
+    <div class="windows-topic-category">WINDOWS LAB</div>
 
     <h1>Windows PowerShell <span>Lab 04</span></h1>
 
@@ -794,9 +121,7 @@
 
     </p>
 
-    <div class="windows-badges">
-
-        <div class="windows-badge">Lab 03</div>
+    <div class="windows-badges"><div class="windows-badge">Lab 03</div>
         <div class="windows-badge">Beginner</div>
         <div class="windows-badge">PowerShell</div>
         <div class="windows-badge">Hands-On</div>
@@ -816,8 +141,8 @@
         <div class="windows-icon">🎯</div>
 
         <h2>
-            Lab Objective
-        </h2>
+ Lab Objective
+ </h2>
 
     </div>
 
@@ -865,8 +190,8 @@
         <div class="windows-icon">✓</div>
 
         <h2>
-            Requirements
-        </h2>
+ Requirements
+ </h2>
 
     </div>
 
@@ -902,8 +227,8 @@
         <div class="windows-icon">01</div>
 
         <h2>
-            Step 1 — Open PowerShell
-        </h2>
+ Step 1 — Open PowerShell
+ </h2>
 
     </div>
 
@@ -954,8 +279,8 @@
         <div class="windows-icon">02</div>
 
         <h2>
-            Step 2 — Check Current Location
-        </h2>
+ Step 2 — Check Current Location
+ </h2>
 
     </div>
 
@@ -999,8 +324,8 @@
         <div class="windows-icon">03</div>
 
         <h2>
-            Step 3 — List Files and Folders
-        </h2>
+ Step 3 — List Files and Folders
+ </h2>
 
     </div>
 
@@ -1045,8 +370,8 @@
         <div class="windows-icon">04</div>
 
         <h2>
-            Step 4 — Create a Lab Directory
-        </h2>
+ Step 4 — Create a Lab Directory
+ </h2>
 
     </div>
 
@@ -1090,8 +415,8 @@
         <div class="windows-icon">05</div>
 
         <h2>
-            Step 5 — Enter the Lab Directory
-        </h2>
+ Step 5 — Enter the Lab Directory
+ </h2>
 
     </div>
 
@@ -1123,8 +448,8 @@
         <div class="windows-icon">06</div>
 
         <h2>
-            Step 6 — Create a File
-        </h2>
+ Step 6 — Create a File
+ </h2>
 
     </div>
 
@@ -1168,8 +493,8 @@
         <div class="windows-icon">07</div>
 
         <h2>
-            Step 7 — View Running Processes
-        </h2>
+ Step 7 — View Running Processes
+ </h2>
 
     </div>
 
@@ -1217,8 +542,8 @@
         <div class="windows-icon">08</div>
 
         <h2>
-            Step 8 — View Windows Services
-        </h2>
+ Step 8 — View Windows Services
+ </h2>
 
     </div>
 
@@ -1265,8 +590,8 @@
         <div class="windows-icon">09</div>
 
         <h2>
-            Step 9 — Collect System Information
-        </h2>
+ Step 9 — Collect System Information
+ </h2>
 
     </div>
 
@@ -1298,8 +623,8 @@
         <div class="windows-icon">10</div>
 
         <h2>
-            Step 10 — Use PowerShell Help
-        </h2>
+ Step 10 — Use PowerShell Help
+ </h2>
 
     </div>
 
@@ -1343,8 +668,8 @@
         <div class="windows-icon">🧪</div>
 
         <h2>
-            Mini Practical Task
-        </h2>
+ Mini Practical Task
+ </h2>
 
     </div>
 
@@ -1389,8 +714,8 @@
         <div class="windows-icon">🔐</div>
 
         <h2>
-            Cybersecurity Connection
-        </h2>
+ Cybersecurity Connection
+ </h2>
 
     </div>
 
@@ -1415,8 +740,8 @@
         <div class="windows-icon">✓</div>
 
         <h2>
-            Lab Completion Checklist
-        </h2>
+ Lab Completion Checklist
+ </h2>
 
     </div>
 
@@ -1471,25 +796,25 @@
                     href="lab03.html"
                     class="windows-lab-button"
                 >
-                    <span>←</span>
-                    <strong>Previous: Lab 03: Command Prompt</strong>
-                </a>
+ <span>←</span>
+ <strong>Previous: Lab 03: Command Prompt</strong>
+ </a>
 
                 <a
                     href="../theory/users-groups.html"
                     class="windows-lab-button theory"
                 >
-                    <span>📘</span>
-                    <strong>Theory: Users & Groups</strong>
-                </a>
+ <span></span>
+ <strong>Theory: Users & Groups</strong>
+ </a>
 
                 <!-- <a
                     href="lab05.html"
                     class="windows-lab-button"
                 >
-                    <strong>Next: Lab 05: Users & Groups</strong>
-                    <span>→</span>
-                </a> -->
+ <strong>Next: Lab 05: Users & Groups</strong>
+ <span>→</span>
+ </a> -->
 
             </div>
 

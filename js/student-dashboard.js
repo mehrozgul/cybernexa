@@ -206,21 +206,49 @@
                 const top = makeElement("div", "path-card-top");
 
                 let iconClass = "security-icon";
-                let iconText = "⬡";
+                const iconSpan = makeElement("span", "path-icon " + iconClass);
+                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svg.setAttribute("viewBox", "0 0 24 24");
+                svg.setAttribute("width", "18");
+                svg.setAttribute("height", "18");
+                svg.setAttribute("fill", "none");
+                svg.setAttribute("stroke", "currentColor");
+                svg.setAttribute("stroke-width", "2");
+                svg.setAttribute("aria-hidden", "true");
 
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
                 if (course.id === "linux") {
                     iconClass = "linux-icon";
-                    iconText = "⌘";
+                    iconSpan.className = "path-icon " + iconClass;
+                    path.setAttribute("d", "M8 21h8M12 17v4M7 9h10M7 12h5");
+                    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    rect.setAttribute("x", "3");
+                    rect.setAttribute("y", "4");
+                    rect.setAttribute("width", "18");
+                    rect.setAttribute("height", "13");
+                    rect.setAttribute("rx", "2");
+                    svg.appendChild(rect);
                 } else if (course.id === "networking") {
                     iconClass = "network-icon";
-                    iconText = "↗";
+                    iconSpan.className = "path-icon " + iconClass;
+                    path.setAttribute("d", "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20");
+                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    circle.setAttribute("cx", "12");
+                    circle.setAttribute("cy", "12");
+                    circle.setAttribute("r", "10");
+                    svg.appendChild(circle);
                 } else if (course.id === "windows") {
                     iconClass = "windows-icon";
-                    iconText = "▦";
+                    iconSpan.className = "path-icon " + iconClass;
+                    path.setAttribute("d", "M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18");
+                } else {
+                    path.setAttribute("d", "M12 2 20 5v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3Z");
                 }
+                svg.appendChild(path);
+                iconSpan.appendChild(svg);
 
                 top.append(
-                    makeElement("span", "path-icon " + iconClass, iconText),
+                    iconSpan,
                     makeElement(
                         "span",
                         "path-tag",

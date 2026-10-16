@@ -1,591 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Path Traversal - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Path Traversal - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        .ws-page {
-            min-height: calc(100vh - 80px);
-            padding: 65px 20px 90px;
-
-            background:
-                radial-gradient(circle at 12% 8%,
-                    rgba(0, 191, 255, .07),
-                    transparent 28%),
-                radial-gradient(circle at 88% 12%,
-                    rgba(0, 255, 176, .055),
-                    transparent 30%),
-                linear-gradient(
-                    180deg,
-                    #01050b 0%,
-                    #020914 50%,
-                    #01050b 100%
-                );
-        }
-
-        .ws-container {
-            width: 100%;
-            max-width: 1050px;
-            margin: auto;
-        }
-
-        /* HERO */
-
-        .ws-hero {
-            position: relative;
-            padding: 42px 35px;
-            margin-bottom: 24px;
-
-            border: 1px solid rgba(0, 191, 255, .16);
-            border-radius: 16px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(3, 20, 34, .98),
-                    rgba(2, 10, 20, .98)
-                );
-
-            overflow: hidden;
-        }
-
-        .ws-hero::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #00bfff,
-                    #00ffb0,
-                    transparent
-                );
-        }
-
-        .ws-hero-grid {
-            display: grid;
-            grid-template-columns:
-                minmax(0, 1.55fr)
-                minmax(250px, .75fr);
-
-            gap: 35px;
-            align-items: center;
-        }
-
-        .ws-kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-
-            margin-bottom: 14px;
-
-            color: #00bfff;
-
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-        }
-
-        .ws-kicker::before {
-            content: "";
-
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-            background: #00bfff;
-
-            box-shadow:
-                0 0 12px rgba(0, 191, 255, .7);
-        }
-
-        .ws-hero h1 {
-            margin: 0;
-
-            color: #fff;
-
-            font-size: 46px;
-            line-height: 1.12;
-            letter-spacing: -1px;
-        }
-
-        .ws-hero h1 span {
-            color: #00bfff;
-        }
-
-        .ws-description {
-            max-width: 700px;
-            margin: 17px 0 0;
-
-            color: #8fa5bb;
-
-            font-size: 14px;
-            line-height: 1.9;
-        }
-
-        /* TERMINAL */
-
-        .terminal {
-            padding: 18px;
-
-            border: 1px solid rgba(0, 191, 255, .15);
-            border-radius: 11px;
-
-            background: rgba(0, 0, 0, .35);
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-        }
-
-        .terminal-top {
-            display: flex;
-            gap: 6px;
-
-            padding-bottom: 12px;
-            margin-bottom: 13px;
-
-            border-bottom:
-                1px solid rgba(0, 191, 255, .08);
-        }
-
-        .terminal-dot {
-            width: 7px;
-            height: 7px;
-
-            border-radius: 50%;
-            background: #405263;
-        }
-
-        .terminal-title {
-            margin-left: auto;
-
-            color: #52687c;
-
-            font-size: 9px;
-            letter-spacing: 1px;
-        }
-
-        .terminal-line {
-            margin-bottom: 9px;
-
-            color: #71879b;
-
-            font-size: 11px;
-        }
-
-        .green {
-            color: #00ffb0;
-        }
-
-        .blue {
-            color: #00bfff;
-        }
-
-        /* META */
-
-        .meta {
-            display: grid;
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-
-        .meta-item {
-            padding: 15px;
-
-            border: 1px solid rgba(0, 191, 255, .1);
-            border-radius: 10px;
-
-            background: rgba(0, 191, 255, .025);
-        }
-
-        .meta-label {
-            display: block;
-            margin-bottom: 6px;
-
-            color: #536a7f;
-
-            font-size: 9px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .meta-value {
-            color: #dce9f4;
-
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        /* CARD */
-
-        .card {
-            margin-bottom: 18px;
-            padding: 27px;
-
-            border: 1px solid rgba(0, 191, 255, .11);
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(5, 20, 34, .97),
-                    rgba(2, 11, 21, .97)
-                );
-        }
-
-        .heading {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-
-            margin-bottom: 15px;
-        }
-
-        .number {
-            width: 29px;
-            height: 29px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            flex-shrink: 0;
-
-            border: 1px solid rgba(0, 191, 255, .22);
-            border-radius: 7px;
-
-            color: #00bfff;
-            background: rgba(0, 191, 255, .045);
-
-            font-family: Consolas, monospace;
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .heading h2 {
-            margin: 0;
-
-            color: #fff;
-
-            font-size: 20px;
-        }
-
-        .card p {
-            margin: 0 0 12px;
-
-            color: #8fa5bb;
-
-            font-size: 13px;
-            line-height: 1.9;
-        }
-
-        /* DEFINITION */
-
-        .definition {
-            padding: 21px;
-
-            border-left: 3px solid #00bfff;
-            border-radius: 9px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    rgba(0, 191, 255, .055),
-                    rgba(0, 191, 255, .01)
-                );
-        }
-
-        .definition-label {
-            margin-bottom: 8px;
-
-            color: #00bfff;
-
-            font-size: 9px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .definition p {
-            margin: 0;
-
-            color: #cce9f4;
-            font-size: 14px;
-        }
-
-        /* FLOW */
-
-        .flow {
-            display: grid;
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-
-            gap: 12px;
-            margin-top: 18px;
-        }
-
-        .flow-card {
-            padding: 18px;
-
-            border: 1px solid rgba(0, 191, 255, .1);
-            border-radius: 10px;
-
-            background: rgba(0, 191, 255, .025);
-        }
-
-        .flow-card strong {
-            display: block;
-            margin-bottom: 7px;
-
-            color: #fff;
-            font-size: 13px;
-        }
-
-        .flow-card span {
-            color: #71879b;
-
-            font-size: 11px;
-            line-height: 1.7;
-        }
-
-        /* CODE */
-
-        .code-box {
-            margin-top: 16px;
-            padding: 18px;
-
-            border: 1px solid rgba(0, 255, 176, .1);
-            border-radius: 9px;
-
-            background: #01060b;
-
-            overflow-x: auto;
-        }
-
-        .code-box code {
-            color: #9bb1c3;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 11px;
-            line-height: 1.8;
-        }
-
-        /* WARNING */
-
-        .warning {
-            padding: 20px;
-
-            border: 1px solid rgba(255, 177, 0, .17);
-            border-radius: 10px;
-
-            background:
-                rgba(255, 177, 0, .035);
-        }
-
-        .warning strong {
-            display: block;
-            margin-bottom: 8px;
-
-            color: #ffc44d;
-            font-size: 13px;
-        }
-
-        .warning p {
-            margin: 0;
-
-            color: #899bad;
-            font-size: 12px;
-        }
-
-        /* SUMMARY */
-
-        .summary {
-            padding: 25px;
-
-            text-align: center;
-
-            border: 1px solid rgba(0, 191, 255, .14);
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(0, 191, 255, .035),
-                    rgba(0, 255, 176, .02)
-                );
-        }
-
-        .summary-label {
-            margin-bottom: 8px;
-
-            color: #00bfff;
-
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .summary h2 {
-            margin: 0 0 10px;
-
-            color: #fff;
-            font-size: 18px;
-        }
-
-        .summary p {
-            max-width: 760px;
-            margin: auto;
-
-            color: #7e94a8;
-
-            font-size: 12px;
-            line-height: 1.85;
-        }
-
-        /* LAB CTA */
-
-        .lab-area {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 20px;
-
-            margin-top: 25px;
-            padding: 21px;
-
-            border: 1px solid rgba(0, 191, 255, .14);
-            border-radius: 12px;
-
-            background: rgba(0, 191, 255, .025);
-        }
-
-        .lab-text strong {
-            display: block;
-            margin-bottom: 5px;
-
-            color: #fff;
-            font-size: 14px;
-        }
-
-        .lab-text span {
-            color: #71879b;
-            font-size: 11px;
-        }
-
-        .lab-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            padding: 12px 20px;
-
-            flex-shrink: 0;
-
-            border: 1px solid rgba(0, 191, 255, .3);
-            border-radius: 8px;
-
-            color: #ccefff;
-            background: rgba(0, 191, 255, .05);
-
-            text-decoration: none;
-
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .lab-button:hover {
-            border-color: rgba(0, 191, 255, .55);
-            background: rgba(0, 191, 255, .09);
-        }
-        @media (max-width: 800px) {
-            .ws-hero-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .flow {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .meta {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .ws-page {
-                padding: 45px 12px 60px;
-            }
-
-            .ws-hero {
-                padding: 27px 20px;
-            }
-
-            .ws-hero h1 {
-                font-size: 31px;
-            }
-
-            .card {
-                padding: 20px;
-            }
-
-            .flow {
-                grid-template-columns: 1fr;
-            }
-
-            .lab-area {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .lab-button {
-                width: 100%;
-            }
-
-            .topic-navigation {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 </head>
 
 <body>
@@ -614,8 +47,8 @@
                 </div>
 
                 <h1>
-                    <span>Path</span> Traversal
-                </h1>
+ <span>Path</span> Traversal
+ </h1>
 
                 <p class="ws-description">
                     Learn how insecure file-handling logic can allow an
@@ -673,23 +106,19 @@
 
     <div class="meta">
 
-        <div class="meta-item">
-            <span class="meta-label">Domain</span>
+        <div class="meta-item"><span class="meta-label">Domain</span>
             <span class="meta-value">Web Security</span>
         </div>
 
-        <div class="meta-item">
-            <span class="meta-label">Level</span>
+        <div class="meta-item"><span class="meta-label">Level</span>
             <span class="meta-value">Intermediate</span>
         </div>
 
-        <div class="meta-item">
-            <span class="meta-label">Category</span>
+        <div class="meta-item"><span class="meta-label">Category</span>
             <span class="meta-value">File Handling</span>
         </div>
 
-        <div class="meta-item">
-            <span class="meta-label">Environment</span>
+        <div class="meta-item"><span class="meta-label">Environment</span>
             <span class="meta-value green">Authorized Lab</span>
         </div>
 
@@ -982,8 +411,8 @@ if (!resolvedPath.startsWith(baseDirectory)) {
         </div>
 
         <h2>
-            Validate the Path. Protect the Resource.
-        </h2>
+ Validate the Path. Protect the Resource.
+ </h2>
 
         <p>
             Path Traversal occurs when untrusted path information can influence
@@ -1022,8 +451,8 @@ if (!resolvedPath.startsWith(baseDirectory)) {
             data-lesson-id="path-traversal"
             data-dashboard-url="../learning-paths/web-security/theory/path-traversal.html"
             data-status-id="pathTraversalCompletionStatus">
-            Mark Lesson as Complete
-        </button>
+ Mark Lesson as Complete
+ </button>
 
         <p
             id="pathTraversalCompletionStatus"
@@ -1054,8 +483,8 @@ if (!resolvedPath.startsWith(baseDirectory)) {
             href="../lab/path-traversal-lab.html"
             class="lab-button"
         >
-            🧪 Launch Lab →
-        </a>
+ Launch Lab →
+ </a>
 
     </div>
 </div>

@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
           await window.supabaseClient.auth.signInWithOAuth({
             provider,
             options: {
-              redirectTo: `${window.location.origin}/index.html`,
+              redirectTo: new URL("../index.html", window.location.href).href,
               ...(provider === "azure" ? { scopes: "email" } : {})
             }
           });

@@ -1,1002 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Log Analysis - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Log Analysis - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        /* =====================================================
-           DIGITAL FORENSICS PAGE
-        ====================================================== */
-
-        .df-page {
-
-            min-height: calc(100vh - 80px);
-
-            padding: 55px 20px 85px;
-
-            background:
-                radial-gradient(
-                    circle at 12% 8%,
-                    rgba(91, 111, 255, 0.08),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 90% 15%,
-                    rgba(0, 210, 190, 0.055),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    180deg,
-                    #050812 0%,
-                    #080d18 50%,
-                    #04070e 100%
-                );
-        }
-
-        .df-container {
-
-            width: 100%;
-            max-width: 1080px;
-
-            margin: 0 auto;
-        }
-
-        /* =====================================================
-           FORENSIC HEADER
-        ====================================================== */
-
-        .forensic-header {
-
-            position: relative;
-
-            margin-bottom: 20px;
-            padding: 34px;
-
-            border:
-                1px solid rgba(105, 125, 255, 0.18);
-
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(11, 17, 34, 0.98),
-                    rgba(6, 11, 22, 0.98)
-                );
-
-            overflow: hidden;
-
-            box-shadow:
-                0 18px 45px rgba(0, 0, 0, 0.25);
-        }
-
-        .forensic-header::after {
-
-            content: "";
-
-            position: absolute;
-
-            left: 0;
-            right: 0;
-            bottom: 0;
-
-            height: 2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #6678ff,
-                    #00d6c7,
-                    transparent
-                );
-        }
-
-        .header-layout {
-
-            display: grid;
-
-            grid-template-columns:
-                minmax(0, 1.6fr)
-                minmax(250px, 0.7fr);
-
-            gap: 35px;
-
-            align-items: center;
-        }
-
-        .case-label {
-
-            margin-bottom: 10px;
-
-            color: #7789ff;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-
-        .case-label span {
-            color: #00d6c7;
-        }
-
-        .forensic-header h1 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 42px;
-
-            line-height: 1.15;
-
-            font-weight: 850;
-        }
-
-        .forensic-header h1 span {
-            color: #7789ff;
-        }
-
-        .header-description {
-
-            max-width: 700px;
-
-            margin: 14px 0 0;
-
-            color: #8998ad;
-
-            font-size: 13px;
-
-            line-height: 1.9;
-        }
-
-        /* =====================================================
-           CASE PANEL
-        ====================================================== */
-
-        .case-panel {
-
-            padding: 18px;
-
-            border:
-                1px solid rgba(0, 214, 199, 0.13);
-
-            border-radius: 10px;
-
-            background:
-                rgba(0, 0, 0, 0.24);
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-        }
-
-        .case-top {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            padding-bottom: 11px;
-
-            margin-bottom: 12px;
-
-            border-bottom:
-                1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .case-top strong {
-
-            color: #cbd6e4;
-
-            font-size: 10px;
-        }
-
-        .case-status {
-
-            color: #00d6c7;
-
-            font-size: 9px;
-
-            font-weight: 800;
-        }
-
-        .case-row {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            gap: 15px;
-
-            margin-bottom: 8px;
-
-            color: #627287;
-
-            font-size: 10px;
-        }
-
-        .case-row span:last-child {
-            color: #aab7c7;
-        }
-
-        /* =====================================================
-           FORENSIC META
-        ====================================================== */
-
-        .df-meta {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-
-            gap: 10px;
-
-            margin-bottom: 20px;
-        }
-
-        .meta-box {
-
-            padding: 14px;
-
-            border:
-                1px solid rgba(105, 125, 255, 0.11);
-
-            border-radius: 9px;
-
-            background:
-                rgba(105, 125, 255, 0.025);
-        }
-
-        .meta-box small {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #58687c;
-
-            font-size: 8px;
-
-            letter-spacing: 1.3px;
-
-            text-transform: uppercase;
-        }
-
-        .meta-box strong {
-
-            color: #dce5ef;
-
-            font-size: 11px;
-        }
-
-        .meta-box .green {
-            color: #00d6c7;
-        }
-
-        /* =====================================================
-           CONTENT PANEL
-        ====================================================== */
-
-        .df-card {
-
-            margin-bottom: 16px;
-
-            padding: 26px;
-
-            border:
-                1px solid rgba(105, 125, 255, 0.10);
-
-            border-radius: 12px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(10, 17, 32, 0.98),
-                    rgba(6, 11, 21, 0.98)
-                );
-        }
-
-        .section-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            margin-bottom: 15px;
-        }
-
-        .section-number {
-
-            width: 30px;
-            height: 30px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            flex-shrink: 0;
-
-            border:
-                1px solid rgba(119, 137, 255, 0.25);
-
-            border-radius: 7px;
-
-            color: #7789ff;
-
-            background:
-                rgba(119, 137, 255, 0.05);
-
-            font-family:
-                Consolas,
-                monospace;
-
-            font-size: 10px;
-
-            font-weight: 800;
-        }
-
-        .section-heading h2 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 19px;
-        }
-
-        .df-card p {
-
-            margin: 0 0 12px;
-
-            color: #8998ad;
-
-            font-size: 12px;
-
-            line-height: 1.9;
-        }
-
-        .df-card p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* =====================================================
-           DEFINITION
-        ====================================================== */
-
-        .definition-box {
-
-            padding: 21px;
-
-            border-left:
-                3px solid #00d6c7;
-
-            border-radius: 8px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    rgba(0, 214, 199, 0.055),
-                    rgba(0, 214, 199, 0.01)
-                );
-        }
-
-        .definition-label {
-
-            margin-bottom: 8px;
-
-            color: #00d6c7;
-
-            font-size: 9px;
-
-            font-weight: 800;
-
-            letter-spacing: 1.5px;
-
-            text-transform: uppercase;
-        }
-
-        .definition-box p {
-
-            margin: 0;
-
-            color: #c9e9e6;
-
-            font-size: 13px;
-
-            line-height: 1.85;
-        }
-
-        /* =====================================================
-           LOG TYPES
-        ====================================================== */
-
-        .log-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
-            gap: 11px;
-
-            margin-top: 17px;
-        }
-
-        .log-type {
-
-            padding: 17px;
-
-            border:
-                1px solid rgba(105, 125, 255, 0.09);
-
-            border-radius: 9px;
-
-            background:
-                rgba(105, 125, 255, 0.025);
-
-            transition:
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-        .log-type:hover {
-
-            transform: translateY(-2px);
-
-            border-color:
-                rgba(0, 214, 199, 0.22);
-        }
-
-        .log-type h3 {
-
-            margin: 0 0 7px;
-
-            color: #ffffff;
-
-            font-size: 13px;
-        }
-
-        .log-type p {
-
-            margin: 0;
-
-            color: #718095;
-
-            font-size: 11px;
-
-            line-height: 1.7;
-        }
-
-        /* =====================================================
-           ANALYSIS FLOW
-        ====================================================== */
-
-        .analysis-flow {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(5, minmax(0, 1fr));
-
-            gap: 8px;
-
-            margin-top: 18px;
-        }
-
-        .flow-item {
-
-            position: relative;
-
-            padding: 15px 10px;
-
-            text-align: center;
-
-            border:
-                1px solid rgba(105, 125, 255, 0.09);
-
-            border-radius: 8px;
-
-            background:
-                rgba(255, 255, 255, 0.015);
-        }
-
-        .flow-number {
-
-            margin-bottom: 7px;
-
-            color: #7789ff;
-
-            font-family:
-                Consolas,
-                monospace;
-
-            font-size: 9px;
-
-            font-weight: 800;
-        }
-
-        .flow-item strong {
-
-            display: block;
-
-            color: #dbe4ef;
-
-            font-size: 10px;
-
-            line-height: 1.5;
-        }
-
-        /* =====================================================
-           EVIDENCE POINTS
-        ====================================================== */
-
-        .evidence-list {
-
-            display: grid;
-
-            gap: 8px;
-
-            margin-top: 16px;
-        }
-
-        .evidence-item {
-
-            display: grid;
-
-            grid-template-columns: 27px 1fr;
-
-            gap: 10px;
-
-            align-items: start;
-
-            padding: 12px;
-
-            border:
-                1px solid rgba(105, 125, 255, 0.08);
-
-            border-radius: 8px;
-
-            background:
-                rgba(105, 125, 255, 0.018);
-        }
-
-        .evidence-icon {
-
-            width: 27px;
-            height: 27px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 6px;
-
-            color: #00d6c7;
-
-            background:
-                rgba(0, 214, 199, 0.045);
-
-            font-size: 12px;
-        }
-
-        .evidence-item strong {
-
-            display: block;
-
-            margin-bottom: 3px;
-
-            color: #dce5ef;
-
-            font-size: 11px;
-        }
-
-        .evidence-item span {
-
-            color: #708096;
-
-            font-size: 10px;
-
-            line-height: 1.65;
-        }
-
-        /* =====================================================
-           SAMPLE LOG
-        ====================================================== */
-
-        .log-viewer {
-
-            margin-top: 17px;
-
-            padding: 18px;
-
-            border:
-                1px solid rgba(0, 214, 199, 0.12);
-
-            border-radius: 9px;
-
-            background:
-                #03060b;
-
-            overflow-x: auto;
-        }
-
-        .log-viewer code {
-
-            color: #8294a8;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 10px;
-
-            line-height: 1.9;
-
-            white-space: pre;
-        }
-
-        .log-green {
-            color: #00d6c7;
-        }
-
-        .log-blue {
-            color: #7789ff;
-        }
-
-        .log-warning {
-            color: #ffc75b;
-        }
-
-        /* =====================================================
-           FORENSIC WARNING
-        ====================================================== */
-
-        .forensic-note {
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(255, 193, 79, 0.16);
-
-            border-radius: 9px;
-
-            background:
-                rgba(255, 193, 79, 0.025);
-        }
-
-        .forensic-note strong {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            color: #ffc75b;
-
-            font-size: 12px;
-        }
-
-        .forensic-note p {
-
-            margin: 0;
-
-            color: #8795a6;
-
-            font-size: 11px;
-
-            line-height: 1.8;
-        }
-
-        /* =====================================================
-           KEY CONCEPTS
-        ====================================================== */
-
-        .concept-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-
-            gap: 10px;
-
-            margin-top: 17px;
-        }
-
-        .concept {
-
-            padding: 15px;
-
-            border:
-                1px solid rgba(0, 214, 199, 0.08);
-
-            border-radius: 8px;
-
-            background:
-                rgba(0, 214, 199, 0.018);
-        }
-
-        .concept h3 {
-
-            margin: 0 0 6px;
-
-            color: #ffffff;
-
-            font-size: 12px;
-        }
-
-        .concept p {
-
-            margin: 0;
-
-            color: #718095;
-
-            font-size: 10px;
-
-            line-height: 1.7;
-        }
-
-        /* =====================================================
-           SUMMARY
-        ====================================================== */
-
-        .df-summary {
-
-            padding: 26px;
-
-            text-align: center;
-
-            border:
-                1px solid rgba(0, 214, 199, 0.13);
-
-            border-radius: 12px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(0, 214, 199, 0.035),
-                    rgba(119, 137, 255, 0.025)
-                );
-        }
-
-        .summary-label {
-
-            margin-bottom: 8px;
-
-            color: #00d6c7;
-
-            font-size: 9px;
-
-            font-weight: 800;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-
-        .df-summary h2 {
-
-            margin: 0 0 9px;
-
-            color: #ffffff;
-
-            font-size: 18px;
-        }
-
-        .df-summary p {
-
-            max-width: 760px;
-
-            margin: auto;
-
-            color: #7f8fa3;
-
-            font-size: 11px;
-
-            line-height: 1.85;
-        }
-
-        /* =====================================================
-           LAB CTA
-        ====================================================== */
-
-        .lab-area {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            gap: 18px;
-
-            margin-top: 20px;
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(0, 214, 199, 0.13);
-
-            border-radius: 11px;
-
-            background:
-                rgba(0, 214, 199, 0.022);
-        }
-
-        .lab-text strong {
-
-            display: block;
-
-            margin-bottom: 5px;
-
-            color: #ffffff;
-
-            font-size: 13px;
-        }
-
-        .lab-text span {
-
-            color: #718095;
-
-            font-size: 10px;
-        }
-
-        .lab-button {
-
-            display: inline-flex;
-
-            align-items: center;
-            justify-content: center;
-
-            padding: 11px 18px;
-
-            border:
-                1px solid rgba(0, 214, 199, 0.28);
-
-            border-radius: 7px;
-
-            color: #c8eeeb;
-
-            background:
-                rgba(0, 214, 199, 0.05);
-
-            text-decoration: none;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            transition:
-                transform 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-        .lab-button:hover {
-
-            transform: translateY(-2px);
-
-            border-color:
-                rgba(0, 214, 199, 0.55);
-        }
-
-        /* =====================================================
-           RESPONSIVE
-        ====================================================== */
-
-        @media (max-width: 850px) {
-
-            .header-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .analysis-flow {
-                grid-template-columns:
-                    repeat(3, 1fr);
-            }
-
-            .df-meta {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .concept-grid {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-
-            .df-page {
-                padding: 40px 12px 60px;
-            }
-
-            .forensic-header {
-                padding: 25px 20px;
-            }
-
-            .forensic-header h1 {
-                font-size: 31px;
-            }
-
-            .header-description {
-                font-size: 11px;
-            }
-
-            .df-card {
-                padding: 20px;
-            }
-
-            .df-meta {
-                grid-template-columns:
-                    1fr 1fr;
-            }
-
-            .log-grid,
-            .concept-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .analysis-flow {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .lab-area {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .lab-button {
-                width: 100%;
-            }
-
-            .topic-navigation {
-                grid-template-columns: 1fr;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -1034,8 +57,8 @@
                         </div>
 
                         <h1>
-                            <span>Log</span> Analysis
-                        </h1>
+ <span>Log</span> Analysis
+ </h1>
 
                         <p class="header-description">
 
@@ -1132,8 +155,8 @@
                     </div>
 
                     <h2>
-                        What is Log Analysis?
-                    </h2>
+ What is Log Analysis?
+ </h2>
 
                 </div>
 
@@ -1173,8 +196,8 @@
                     </div>
 
                     <h2>
-                        Why Log Analysis Matters
-                    </h2>
+ Why Log Analysis Matters
+ </h2>
 
                 </div>
 
@@ -1293,8 +316,8 @@
                     </div>
 
                     <h2>
-                        Common Log Sources
-                    </h2>
+ Common Log Sources
+ </h2>
 
                 </div>
 
@@ -1312,8 +335,8 @@
                     <div class="log-type">
 
                         <h3>
-                            Authentication Logs
-                        </h3>
+ Authentication Logs
+ </h3>
 
                         <p>
                             Record login attempts, successful authentication,
@@ -1326,8 +349,8 @@
                     <div class="log-type">
 
                         <h3>
-                            System Logs
-                        </h3>
+ System Logs
+ </h3>
 
                         <p>
                             Record operating-system events, services,
@@ -1340,8 +363,8 @@
                     <div class="log-type">
 
                         <h3>
-                            Application Logs
-                        </h3>
+ Application Logs
+ </h3>
 
                         <p>
                             Contain events generated by software applications,
@@ -1354,8 +377,8 @@
                     <div class="log-type">
 
                         <h3>
-                            Security Logs
-                        </h3>
+ Security Logs
+ </h3>
 
                         <p>
                             Provide records related to security events,
@@ -1382,8 +405,8 @@
                     </div>
 
                     <h2>
-                        Log Analysis Process
-                    </h2>
+ Log Analysis Process
+ </h2>
 
                 </div>
 
@@ -1441,8 +464,8 @@
                     </div>
 
                     <h2>
-                        Important Log Fields
-                    </h2>
+ Important Log Fields
+ </h2>
 
                 </div>
 
@@ -1460,8 +483,8 @@
                     <div class="concept">
 
                         <h3>
-                            Timestamp
-                        </h3>
+ Timestamp
+ </h3>
 
                         <p>
                             Shows when the recorded event occurred.
@@ -1473,8 +496,8 @@
                     <div class="concept">
 
                         <h3>
-                            Source
-                        </h3>
+ Source
+ </h3>
 
                         <p>
                             Identifies the system, application or component
@@ -1487,8 +510,8 @@
                     <div class="concept">
 
                         <h3>
-                            User / Account
-                        </h3>
+ User / Account
+ </h3>
 
                         <p>
                             Identifies the account associated with an event
@@ -1501,8 +524,8 @@
                     <div class="concept">
 
                         <h3>
-                            Event Type
-                        </h3>
+ Event Type
+ </h3>
 
                         <p>
                             Describes the type or category of recorded event.
@@ -1514,8 +537,8 @@
                     <div class="concept">
 
                         <h3>
-                            Source Address
-                        </h3>
+ Source Address
+ </h3>
 
                         <p>
                             May identify the network address associated
@@ -1528,8 +551,8 @@
                     <div class="concept">
 
                         <h3>
-                            Message
-                        </h3>
+ Message
+ </h3>
 
                         <p>
                             Provides additional context about what happened.
@@ -1555,8 +578,8 @@
                     </div>
 
                     <h2>
-                        Sample Forensic Log
-                    </h2>
+ Sample Forensic Log
+ </h2>
 
                 </div>
 
@@ -1619,8 +642,8 @@ source=10.10.20.99</code>
                     </div>
 
                     <h2>
-                        Event Correlation
-                    </h2>
+ Event Correlation
+ </h2>
 
                 </div>
 
@@ -1678,8 +701,8 @@ source=10.10.20.99</code>
                     </div>
 
                     <h2>
-                        Preserving Log Evidence
-                    </h2>
+ Preserving Log Evidence
+ </h2>
 
                 </div>
 
@@ -1776,8 +799,8 @@ source=10.10.20.99</code>
                 </div>
 
                 <h2>
-                    Logs Turn Events Into Evidence
-                </h2>
+ Logs Turn Events Into Evidence
+ </h2>
 
                 <p>
 
@@ -1803,8 +826,8 @@ source=10.10.20.99</code>
         </div>
 
         <h2>
-            Complete This Lesson
-        </h2>
+ Complete This Lesson
+ </h2>
 
     </div>
 
@@ -1830,9 +853,9 @@ source=10.10.20.99</code>
             data-dashboard-url="../learning-paths/digital-forensics/theory/log-analysis.html"
             data-status-id="lessonCompletionStatus">
 
-            ✓ Mark Lesson Complete
+ Mark Lesson Complete
 
-        </button>
+ </button>
 
     </div>
 
@@ -1869,8 +892,8 @@ source=10.10.20.99</code>
                     href="../lab/log-analysis-lab.html"
                     class="lab-button"
                 >
-                    🔎 Open Forensic Lab →
-                </a>
+ Open Forensic Lab →
+ </a>
 
             </div>
         </div>

@@ -1,1245 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Linux Processes Practical Lab - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>Linux Processes Practical Lab - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        /* =====================================================
-           GLOBAL
-        ====================================================== */
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-
-        /* =====================================================
-           MAIN PAGE
-        ====================================================== */
-
-        .linux-process-page {
-
-            width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 70px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(34, 211, 238, 0.08),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(59, 130, 246, 0.07),
-                    transparent 30%
-                ),
-                #02080d;
-        }
-
-
-        .linux-process-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-
-        /* =====================================================
-           HEADER
-        ====================================================== */
-
-        .linux-process-header {
-
-            text-align: center;
-
-            margin-bottom: 35px;
-        }
-
-
-        .linux-process-category {
-
-            display: inline-block;
-
-            margin-bottom: 14px;
-
-            color: #67e8f9;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-
-
-        .linux-process-header h1 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 44px;
-            line-height: 1.2;
-
-            font-weight: 800;
-        }
-
-
-        .linux-process-header h1 span {
-
-            color: #67e8f9;
-        }
-
-
-        .linux-process-intro {
-
-            max-width: 760px;
-
-            margin: 18px auto 0;
-
-            color: #b6c2cc;
-
-            font-size: 15px;
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           LAB BADGE
-        ====================================================== */
-
-        .linux-process-badge {
-
-            display: inline-block;
-
-            margin-top: 20px;
-
-            padding: 8px 14px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.25);
-
-            border-radius: 20px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            font-size: 11px;
-            font-weight: 700;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-        }
-
-
-        /* =====================================================
-           MAIN CARD
-        ====================================================== */
-
-        .linux-process-card {
-
-            position: relative;
-
-            width: 100%;
-
-            margin-bottom: 22px;
-
-            padding: 30px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.16);
-
-            border-radius: 15px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 25, 35, 0.98),
-                    rgba(3, 13, 20, 0.98)
-                );
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.28);
-
-            overflow: hidden;
-
-            transition:
-                border-color 0.25s ease,
-                box-shadow 0.25s ease,
-                transform 0.25s ease;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .linux-process-card:hover {
-
-                border-color:
-                    rgba(103, 232, 249, 0.42);
-
-                box-shadow:
-                    0 18px 45px rgba(0, 0, 0, 0.32),
-                    0 0 28px rgba(103, 232, 249, 0.08);
-
-                transform: translateY(-2px);
-            }
-        }
-
-
-        /* =====================================================
-           SWEEP EFFECT
-        ====================================================== */
-
-        .linux-process-card::after {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: -120%;
-
-            width: 55%;
-            height: 100%;
-
-            background:
-                linear-gradient(
-                    100deg,
-                    transparent,
-                    rgba(103, 232, 249, 0.06),
-                    rgba(255, 255, 255, 0.10),
-                    rgba(103, 232, 249, 0.06),
-                    transparent
-                );
-
-            transform: skewX(-18deg);
-
-            pointer-events: none;
-
-            opacity: 0;
-        }
-
-
-        @media (hover: hover) and (pointer: fine) {
-
-            .linux-process-card:hover::after {
-
-                animation:
-                    linuxProcessLightSweep 0.75s ease forwards;
-            }
-        }
-
-
-        .mobile-sweep::after {
-
-            animation:
-                linuxProcessMobileSweep 0.75s ease forwards !important;
-        }
-
-
-        @keyframes linuxProcessLightSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        @keyframes linuxProcessMobileSweep {
-
-            0% {
-                left: -120%;
-                opacity: 0;
-            }
-
-            20% {
-                opacity: 1;
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                left: 140%;
-                opacity: 0;
-            }
-        }
-
-
-        /* =====================================================
-           CARD HEADING
-        ====================================================== */
-
-        .linux-process-heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-
-            margin-bottom: 18px;
-        }
-
-
-        .linux-process-icon {
-
-            width: 42px;
-            height: 42px;
-
-            flex-shrink: 0;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.30);
-
-            border-radius: 10px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 18px;
-        }
-
-
-        .linux-process-card h2 {
-
-            margin: 0;
-
-            color: #f8fafc;
-
-            font-size: 21px;
-
-            font-weight: 750;
-        }
-
-
-        .linux-process-card h3 {
-
-            margin: 0 0 9px;
-
-            color: #f8fafc;
-
-            font-size: 16px;
-        }
-
-
-        .linux-process-card p {
-
-            margin: 0 0 14px;
-
-            color: #b6c2cc;
-
-            font-size: 14px;
-
-            line-height: 1.85;
-        }
-
-
-        .linux-process-card p:last-child {
-
-            margin-bottom: 0;
-        }
-
-
-        /* =====================================================
-           OBJECTIVE
-        ====================================================== */
-
-        .linux-process-objective {
-
-            padding: 20px;
-
-            margin-top: 5px;
-
-            border-left:
-                3px solid
-                #67e8f9;
-
-            border-radius:
-                0 10px 10px 0;
-
-            background:
-                rgba(103, 232, 249, 0.055);
-        }
-
-
-        .linux-process-objective strong {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #f8fafc;
-
-            font-size: 14px;
-        }
-
-
-        .linux-process-objective span {
-
-            color: #c3cdd5;
-
-            font-size: 14px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           STEP GRID
-        ====================================================== */
-
-        .linux-process-step-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 14px;
-
-            margin-top: 20px;
-        }
-
-
-        .linux-process-step-box {
-
-            padding: 20px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.14);
-
-            border-radius: 11px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-        }
-
-
-        .linux-process-step-number {
-
-            display: inline-flex;
-
-            align-items: center;
-            justify-content: center;
-
-            width: 30px;
-            height: 30px;
-
-            margin-bottom: 12px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.30);
-
-            border-radius: 50%;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 12px;
-
-            font-weight: 700;
-        }
-
-
-        .linux-process-step-box p {
-
-            margin: 0;
-
-            color: #aebbc5;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-        }
-
-
-        /* =====================================================
-           COMMAND BOX
-        ====================================================== */
-
-        .linux-process-command-box {
-
-            position: relative;
-
-            margin-top: 18px;
-
-            padding: 18px 20px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.15);
-
-            border-radius: 10px;
-
-            background: #01060a;
-
-            overflow-x: auto;
-        }
-
-
-        .linux-process-command-box code {
-
-            color: #7dd3fc;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-
-            line-height: 1.9;
-
-            white-space: pre;
-        }
-
-
-        /* =====================================================
-           COPY BUTTON
-        ====================================================== */
-
-        .linux-process-copy-button {
-
-            position: absolute;
-
-            top: 10px;
-            right: 10px;
-
-            padding: 6px 10px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.20);
-
-            border-radius: 6px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            font-size: 10px;
-
-            cursor: pointer;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
-        }
-
-
-        .linux-process-copy-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.55);
-
-            background:
-                rgba(103, 232, 249, 0.10);
-        }
-
-
-        /* =====================================================
-           OUTPUT BOX
-        ====================================================== */
-
-        .linux-process-output-box {
-
-            margin-top: 15px;
-
-            padding: 18px 20px;
-
-            border:
-                1px solid
-                rgba(74, 222, 128, 0.16);
-
-            border-radius: 10px;
-
-            background:
-                rgba(74, 222, 128, 0.025);
-
-            overflow-x: auto;
-        }
-
-
-        .linux-process-output-label {
-
-            margin-bottom: 9px;
-
-            color: #86efac;
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-        }
-
-
-        .linux-process-output-box pre {
-
-            margin: 0;
-
-            color: #b8e8c7;
-
-            font-family:
-                Consolas,
-                "Courier New",
-                monospace;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           WARNING BOX
-        ====================================================== */
-
-        .linux-process-warning-box {
-
-            margin-top: 18px;
-
-            padding: 17px 20px;
-
-            border:
-                1px solid
-                rgba(251, 191, 36, 0.18);
-
-            border-left:
-                3px solid
-                #fbbf24;
-
-            border-radius:
-                0 10px 10px 0;
-
-            background:
-                rgba(251, 191, 36, 0.035);
-        }
-
-
-        .linux-process-warning-box strong {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            color: #fbbf24;
-
-            font-size: 13px;
-        }
-
-
-        .linux-process-warning-box p {
-
-            margin: 0;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.75;
-        }
-
-
-        /* =====================================================
-           PRACTICAL TASK
-        ====================================================== */
-
-        .linux-process-task-list {
-
-            margin: 18px 0 0;
-
-            padding: 0;
-
-            list-style: none;
-        }
-
-
-        .linux-process-task-list li {
-
-            position: relative;
-
-            padding:
-                10px 0 10px 25px;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.7;
-
-            border-bottom:
-                1px solid
-                rgba(103, 232, 249, 0.07);
-        }
-
-
-        .linux-process-task-list li:last-child {
-
-            border-bottom: none;
-        }
-
-
-        .linux-process-task-list li::before {
-
-            content: "✓";
-
-            position: absolute;
-
-            left: 0;
-            top: 10px;
-
-            color: #67e8f9;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           FLOW
-        ====================================================== */
-
-        .linux-process-flow {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 22px;
-        }
-
-
-        .linux-process-flow-item {
-
-            padding: 12px 16px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.20);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-            text-align: center;
-        }
-
-
-        .linux-process-flow-arrow {
-
-            color: #67e8f9;
-
-            font-size: 18px;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           RESULT
-        ====================================================== */
-
-        .linux-process-result-box {
-
-            padding: 20px;
-
-            margin-top: 18px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.18);
-
-            border-radius: 11px;
-
-            background:
-                rgba(103, 232, 249, 0.035);
-        }
-
-
-        .linux-process-result-box strong {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #67e8f9;
-
-            font-size: 14px;
-        }
-
-
-        .linux-process-result-box p {
-
-            margin: 0;
-
-            color: #b6c2cc;
-
-            font-size: 13px;
-
-            line-height: 1.8;
-        }
-
-
-        /* =====================================================
-           KEY CONCEPTS
-        ====================================================== */
-
-        .linux-process-key-concepts {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 10px;
-
-            margin-top: 20px;
-        }
-
-
-        .linux-process-key-item {
-
-            padding: 10px 14px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.16);
-
-            border-radius: 8px;
-
-            color: #d7e4eb;
-
-            background:
-                rgba(103, 232, 249, 0.04);
-
-            font-size: 12px;
-
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           PROCESS STATE TABLE
-        ====================================================== */
-
-        .linux-process-table-wrapper {
-
-            margin-top: 20px;
-
-            overflow-x: auto;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.12);
-
-            border-radius: 10px;
-        }
-
-
-        .linux-process-table {
-
-            width: 100%;
-
-            border-collapse: collapse;
-
-            min-width: 600px;
-        }
-
-
-        .linux-process-table th {
-
-            padding: 13px 15px;
-
-            color: #67e8f9;
-
-            background:
-                rgba(103, 232, 249, 0.06);
-
-            border-bottom:
-                1px solid
-                rgba(103, 232, 249, 0.14);
-
-            font-size: 12px;
-
-            text-align: left;
-        }
-
-
-        .linux-process-table td {
-
-            padding: 13px 15px;
-
-            color: #b6c2cc;
-
-            border-bottom:
-                1px solid
-                rgba(103, 232, 249, 0.07);
-
-            font-size: 12px;
-
-            line-height: 1.6;
-        }
-
-
-        .linux-process-table tr:last-child td {
-
-            border-bottom: none;
-        }
-
-
-        /* =====================================================
-           NAVIGATION
-        ====================================================== */
-
-        .linux-process-topic-navigation {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-top: 35px;
-        }
-
-
-        .linux-process-topic-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            padding: 13px 18px;
-
-            border:
-                1px solid
-                rgba(103, 232, 249, 0.25);
-
-            border-radius: 9px;
-
-            color: #dbeafe;
-
-            background:
-                rgba(103, 232, 249, 0.05);
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            transition:
-                background 0.2s ease,
-                border-color 0.2s ease,
-                transform 0.2s ease;
-        }
-
-
-        .linux-process-topic-button:hover {
-
-            border-color:
-                rgba(103, 232, 249, 0.65);
-
-            background:
-                rgba(103, 232, 249, 0.10);
-
-            transform: translateY(-1px);
-        }
-
-
-        .linux-process-topic-button span {
-
-            color: #67e8f9;
-
-            font-size: 17px;
-        }
-
-
-        /* =====================================================
-           TABLET
-        ====================================================== */
-
-        @media (max-width: 800px) {
-
-            .linux-process-page {
-
-                padding:
-                    55px 15px 65px;
-            }
-
-
-            .linux-process-header h1 {
-
-                font-size: 36px;
-            }
-
-
-            .linux-process-intro {
-
-                font-size: 14px;
-            }
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 600px) {
-
-            .linux-process-page {
-
-                padding:
-                    45px 12px 55px;
-            }
-
-
-            .linux-process-header {
-
-                margin-bottom: 30px;
-            }
-
-
-            .linux-process-header h1 {
-
-                font-size: 30px;
-
-                line-height: 1.25;
-            }
-
-
-            .linux-process-intro {
-
-                margin-top: 14px;
-
-                font-size: 13px;
-
-                line-height: 1.75;
-            }
-
-
-            .linux-process-card {
-
-                padding:
-                    21px 18px;
-
-                margin-bottom: 16px;
-
-                border-radius: 12px;
-            }
-
-
-            .linux-process-heading {
-
-                gap: 10px;
-
-                margin-bottom: 15px;
-            }
-
-
-            .linux-process-icon {
-
-                width: 37px;
-                height: 37px;
-
-                font-size: 16px;
-            }
-
-
-            .linux-process-card h2 {
-
-                font-size: 18px;
-            }
-
-
-            .linux-process-card p {
-
-                font-size: 13px;
-
-                line-height: 1.8;
-            }
-
-
-            .linux-process-step-grid {
-
-                grid-template-columns: 1fr;
-
-                gap: 10px;
-            }
-
-
-            .linux-process-flow {
-
-                flex-direction: column;
-
-                align-items: stretch;
-            }
-
-
-            .linux-process-flow-item {
-
-                width: 100%;
-            }
-
-
-            .linux-process-flow-arrow {
-
-                display: flex;
-
-                justify-content: center;
-
-                font-size: 0;
-            }
-
-
-            .linux-process-flow-arrow::after {
-
-                content: "↓";
-
-                color: #67e8f9;
-
-                font-size: 18px;
-            }
-
-
-            .linux-process-key-concepts {
-
-                gap: 7px;
-            }
-
-
-            .linux-process-key-item {
-
-                font-size: 11px;
-
-                padding: 9px 11px;
-            }
-
-
-            .linux-process-topic-navigation {
-
-                flex-direction: column;
-
-                align-items: stretch;
-
-                margin-top: 25px;
-            }
-
-
-            .linux-process-topic-button {
-
-                width: 100%;
-
-                justify-content: center;
-            }
-        }
-
-
-        /* =====================================================
-           SMALL MOBILE
-        ====================================================== */
-
-        @media (max-width: 380px) {
-
-            .linux-process-header h1 {
-
-                font-size: 27px;
-            }
-
-
-            .linux-process-page {
-
-                padding-left: 10px;
-
-                padding-right: 10px;
-            }
-
-
-            .linux-process-card {
-
-                padding:
-                    18px 15px;
-            }
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -1339,13 +119,11 @@
 
             <header class="linux-process-header">
 
-                <div class="linux-process-category">
-                    LINUX PRACTICAL LAB
-                </div>
+                <div class="linux-process-category">LINUX PRACTICAL LAB</div>
 
                 <h1>
-                    Lab 07 -  <span> Linux Services</span>
-                </h1>
+ Lab 07 - <span> Linux Services</span>
+ </h1>
 
                 <p class="linux-process-intro">
 
@@ -1357,9 +135,7 @@
 
                 </p>
 
-                <div class="linux-process-badge">
-                    Hands-On Lab • Beginner
-                </div>
+                <div class="linux-process-badge">Hands-On Lab • Beginner</div>
 
             </header>
 
@@ -1378,8 +154,8 @@
                     </div>
 
                     <h2>
-                        Lab Objective
-                    </h2>
+ Lab Objective
+ </h2>
 
                 </div>
 
@@ -1419,8 +195,8 @@
                     </div>
 
                     <h2>
-                        Lab Requirements
-                    </h2>
+ Lab Requirements
+ </h2>
 
                 </div>
 
@@ -1434,8 +210,8 @@
                         </div>
 
                         <h3>
-                            Linux System
-                        </h3>
+ Linux System
+ </h3>
 
                         <p>
                             Ubuntu, Kali Linux, Debian or another
@@ -1452,8 +228,8 @@
                         </div>
 
                         <h3>
-                            Terminal
-                        </h3>
+ Terminal
+ </h3>
 
                         <p>
                             Open the Linux Terminal to execute
@@ -1470,8 +246,8 @@
                         </div>
 
                         <h3>
-                            Sudo Access
-                        </h3>
+ Sudo Access
+ </h3>
 
                         <p>
                             Administrative access may be required
@@ -1488,8 +264,8 @@
                         </div>
 
                         <h3>
-                            Basic Linux Knowledge
-                        </h3>
+ Basic Linux Knowledge
+ </h3>
 
                         <p>
                             You should know how to open a terminal
@@ -1517,8 +293,8 @@
                     </div>
 
                     <h2>
-                        Step 1 — View Running Processes
-                    </h2>
+ Step 1 — View Running Processes
+ </h2>
 
                 </div>
 
@@ -1537,8 +313,8 @@
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>ps</code>
 
@@ -1574,8 +350,8 @@
                     </div>
 
                     <h2>
-                        Step 2 — View All Processes
-                    </h2>
+ Step 2 — View All Processes
+ </h2>
 
                 </div>
 
@@ -1594,8 +370,8 @@
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>ps aux</code>
 
@@ -1635,8 +411,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Step 3 — Find a Process by Name
-                    </h2>
+ Step 3 — Find a Process by Name
+ </h2>
 
                 </div>
 
@@ -1655,8 +431,8 @@ COMMAND  = Process command</pre>
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>pgrep bash</code>
 
@@ -1706,8 +482,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Step 4 — Check Process ID
-                    </h2>
+ Step 4 — Check Process ID
+ </h2>
 
                 </div>
 
@@ -1726,8 +502,8 @@ COMMAND  = Process command</pre>
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>pidof bash</code>
 
@@ -1761,8 +537,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Step 5 — Monitor Processes in Real Time
-                    </h2>
+ Step 5 — Monitor Processes in Real Time
+ </h2>
 
                 </div>
 
@@ -1782,8 +558,8 @@ COMMAND  = Process command</pre>
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>top</code>
 
@@ -1822,8 +598,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Step 6 — View Process Tree
-                    </h2>
+ Step 6 — View Process Tree
+ </h2>
 
                 </div>
 
@@ -1842,8 +618,8 @@ COMMAND  = Process command</pre>
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>pstree</code>
 
@@ -1898,8 +674,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Step 7 — Create a Test Process
-                    </h2>
+ Step 7 — Create a Test Process
+ </h2>
 
                 </div>
 
@@ -1919,8 +695,8 @@ COMMAND  = Process command</pre>
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>sleep 60 &amp;</code>
 
@@ -1971,8 +747,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Step 8 — Find the Test Process
-                    </h2>
+ Step 8 — Find the Test Process
+ </h2>
 
                 </div>
 
@@ -1991,8 +767,8 @@ COMMAND  = Process command</pre>
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>pgrep sleep</code>
 
@@ -2026,8 +802,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Step 9 — Terminate a Process
-                    </h2>
+ Step 9 — Terminate a Process
+ </h2>
 
                 </div>
 
@@ -2047,8 +823,8 @@ COMMAND  = Process command</pre>
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>kill 3250</code>
 
@@ -2088,8 +864,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Step 10 — Check Process Status
-                    </h2>
+ Step 10 — Check Process Status
+ </h2>
 
                 </div>
 
@@ -2108,8 +884,8 @@ COMMAND  = Process command</pre>
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>ps -p 3250</code>
 
@@ -2144,8 +920,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Linux Process States
-                    </h2>
+ Linux Process States
+ </h2>
 
                 </div>
 
@@ -2295,8 +1071,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Important Process Information
-                    </h2>
+ Important Process Information
+ </h2>
 
                 </div>
 
@@ -2306,8 +1082,8 @@ COMMAND  = Process command</pre>
                     <div class="linux-process-step-box">
 
                         <h3>
-                            PID
-                        </h3>
+ PID
+ </h3>
 
                         <p>
                             Process ID uniquely identifies a process
@@ -2320,8 +1096,8 @@ COMMAND  = Process command</pre>
                     <div class="linux-process-step-box">
 
                         <h3>
-                            PPID
-                        </h3>
+ PPID
+ </h3>
 
                         <p>
                             Parent Process ID identifies the process
@@ -2334,8 +1110,8 @@ COMMAND  = Process command</pre>
                     <div class="linux-process-step-box">
 
                         <h3>
-                            CPU Usage
-                        </h3>
+ CPU Usage
+ </h3>
 
                         <p>
                             Indicates how much processor time a
@@ -2348,8 +1124,8 @@ COMMAND  = Process command</pre>
                     <div class="linux-process-step-box">
 
                         <h3>
-                            Memory Usage
-                        </h3>
+ Memory Usage
+ </h3>
 
                         <p>
                             Shows the amount of system memory being
@@ -2377,8 +1153,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Practical Workflow
-                    </h2>
+ Practical Workflow
+ </h2>
 
                 </div>
 
@@ -2440,8 +1216,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Your Practical Task
-                    </h2>
+ Your Practical Task
+ </h2>
 
                 </div>
 
@@ -2514,8 +1290,8 @@ COMMAND  = Process command</pre>
                     </div>
 
                     <h2>
-                        Final Verification
-                    </h2>
+ Final Verification
+ </h2>
 
                 </div>
 
@@ -2534,8 +1310,8 @@ COMMAND  = Process command</pre>
                         class="linux-process-copy-button"
                         onclick="copyCommand(this)"
                     >
-                        Copy
-                    </button>
+ Copy
+ </button>
 
                     <code>ps aux
 pgrep bash
@@ -2579,8 +1355,8 @@ ps -p 1</code>
                     </div>
 
                     <h2>
-                        Cybersecurity Connection
-                    </h2>
+ Cybersecurity Connection
+ </h2>
 
                 </div>
 
@@ -2640,8 +1416,8 @@ ps -p 1</code>
                     </div>
 
                     <h2>
-                        Security Note
-                    </h2>
+ Security Note
+ </h2>
 
                 </div>
 
@@ -2681,8 +1457,8 @@ ps -p 1</code>
                     </div>
 
                     <h2>
-                        Lab Summary
-                    </h2>
+ Lab Summary
+ </h2>
 
                 </div>
 
@@ -2756,15 +1532,15 @@ ps -p 1</code>
                     class="linux-process-topic-button previous"
                 >
 
-                    <span>
-                        ←
-                    </span>
+ <span>
+ ←
+ </span>
 
-                    <strong>
-                        Previous: Linux Processes
-                    </strong>
+ <strong>
+ Previous: Linux Processes
+ </strong>
 
-                </a>
+ </a>
 
 
                 <a
@@ -2772,15 +1548,15 @@ ps -p 1</code>
                     class="linux-process-topic-button next"
                 >
 
-                    <strong>
-                        Next Topic: Linux SSH
-                    </strong>
+ <strong>
+ Next Topic: Linux SSH
+ </strong>
 
-                    <span>
-                        →
-                    </span>
+ <span>
+ →
+ </span>
 
-                </a>
+ </a>
 
             </div>
 

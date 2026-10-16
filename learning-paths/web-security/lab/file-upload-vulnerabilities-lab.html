@@ -1,635 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn File Upload Vulnerabilities Lab - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
+
+    <meta name="theme-color" content="#07101e">
 
     <title>File Upload Vulnerabilities Lab - CyberNexa</title>
 
+            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../../../css/base.css">
-    <link rel="stylesheet" href="../../../css/navbar.css">
-    <link rel="stylesheet" href="../../../css/footer.css">
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        body {
-            margin: 0;
-            overflow-x: hidden;
-        }
-
-        .lab-page {
-
-            min-height: calc(100vh - 80px);
-
-            padding: 65px 20px 90px;
-
-            background:
-                radial-gradient(
-                    circle at 10% 8%,
-                    rgba(0, 191, 255, 0.07),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 90% 10%,
-                    rgba(0, 255, 176, 0.05),
-                    transparent 30%
-                ),
-                linear-gradient(
-                    180deg,
-                    #01050b 0%,
-                    #020914 50%,
-                    #01050b 100%
-                );
-        }
-
-        .lab-container {
-
-            width: 100%;
-            max-width: 1050px;
-
-            margin: 0 auto;
-        }
-
-        /* HERO */
-
-        .lab-hero {
-
-            position: relative;
-
-            padding: 38px 32px;
-
-            margin-bottom: 22px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.15);
-
-            border-radius: 15px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(3, 20, 34, 0.98),
-                    rgba(2, 10, 20, 0.98)
-                );
-
-            overflow: hidden;
-        }
-
-        .lab-hero::before {
-
-            content: "";
-
-            position: absolute;
-
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 2px;
-
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #00bfff,
-                    #00ffb0,
-                    transparent
-                );
-        }
-
-        .lab-kicker {
-
-            margin-bottom: 12px;
-
-            color: #00bfff;
-
-            font-size: 10px;
-            font-weight: 800;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-
-        .lab-hero h1 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 38px;
-            line-height: 1.15;
-        }
-
-        .lab-hero h1 span {
-
-            color: #00ffb0;
-        }
-
-        .lab-hero p {
-
-            max-width: 760px;
-
-            margin: 14px 0 0;
-
-            color: #8fa5bb;
-
-            font-size: 13px;
-            line-height: 1.85;
-        }
-
-        /* INFO */
-
-        .lab-info {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-
-            gap: 10px;
-
-            margin-bottom: 20px;
-        }
-
-        .info-box {
-
-            padding: 14px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.10);
-
-            border-radius: 9px;
-
-            background:
-                rgba(0, 191, 255, 0.025);
-        }
-
-        .info-box small {
-
-            display: block;
-
-            margin-bottom: 5px;
-
-            color: #536a7f;
-
-            font-size: 9px;
-
-            letter-spacing: 1.2px;
-
-            text-transform: uppercase;
-        }
-
-        .info-box strong {
-
-            color: #dce9f4;
-
-            font-size: 11px;
-        }
-
-        .safe {
-
-            color: #00ffb0 !important;
-        }
-
-        /* CARD */
-
-        .lab-card {
-
-            margin-bottom: 18px;
-
-            padding: 25px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.11);
-
-            border-radius: 13px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(5, 20, 34, 0.97),
-                    rgba(2, 11, 21, 0.97)
-                );
-        }
-
-        .heading {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 11px;
-
-            margin-bottom: 16px;
-        }
-
-        .number {
-
-            width: 28px;
-            height: 28px;
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            border:
-                1px solid rgba(0, 255, 176, 0.22);
-
-            border-radius: 7px;
-
-            color: #00ffb0;
-
-            font-family:
-                Consolas,
-                monospace;
-
-            font-size: 10px;
-
-            font-weight: 800;
-        }
-
-        .heading h2 {
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 19px;
-        }
-
-        .lab-card > p {
-
-            color: #8fa5bb;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-        }
-
-        /* SIMULATOR */
-
-        .simulator {
-
-            padding: 20px;
-
-            border:
-                1px solid rgba(0, 255, 176, 0.12);
-
-            border-radius: 10px;
-
-            background:
-                rgba(0, 0, 0, 0.22);
-        }
-
-        .simulator-title {
-
-            margin-bottom: 12px;
-
-            color: #00ffb0;
-
-            font-family:
-                Consolas,
-                monospace;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            letter-spacing: 1px;
-
-            text-transform: uppercase;
-        }
-
-        .upload-area {
-
-            padding: 24px;
-
-            text-align: center;
-
-            border:
-                1px dashed rgba(0, 191, 255, 0.25);
-
-            border-radius: 9px;
-
-            background:
-                rgba(0, 191, 255, 0.025);
-        }
-
-        .upload-area input {
-
-            width: 100%;
-
-            margin: 10px 0;
-
-            color: #8fa5bb;
-
-            font-size: 11px;
-        }
-
-        .analyze-btn {
-
-            padding: 11px 18px;
-
-            border:
-                1px solid rgba(0, 255, 176, 0.30);
-
-            border-radius: 7px;
-
-            color: #c8fff0;
-
-            background:
-                rgba(0, 255, 176, 0.055);
-
-            cursor: pointer;
-
-            font-size: 11px;
-
-            font-weight: 800;
-        }
-
-        .analyze-btn:hover {
-
-            border-color:
-                rgba(0, 255, 176, 0.55);
-
-            background:
-                rgba(0, 255, 176, 0.09);
-        }
-
-        .result {
-
-            display: none;
-
-            margin-top: 15px;
-
-            padding: 15px;
-
-            border-radius: 8px;
-
-            color: #8fa5bb;
-
-            background:
-                rgba(0, 0, 0, 0.30);
-
-            font-family:
-                Consolas,
-                monospace;
-
-            font-size: 11px;
-
-            line-height: 1.8;
-        }
-
-        /* MCQ */
-
-        .question {
-
-            padding: 18px;
-
-            margin-bottom: 12px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.08);
-
-            border-radius: 9px;
-
-            background:
-                rgba(0, 191, 255, 0.018);
-        }
-
-        .question:last-child {
-
-            margin-bottom: 0;
-        }
-
-        .question p {
-
-            margin: 0 0 12px;
-
-            color: #dce9f4;
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-            line-height: 1.7;
-        }
-
-        .option {
-
-            display: block;
-
-            margin: 7px 0;
-
-            padding: 9px 11px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.07);
-
-            border-radius: 6px;
-
-            color: #71879b;
-
-            cursor: pointer;
-
-            font-size: 11px;
-        }
-
-        .option:hover {
-
-            border-color:
-                rgba(0, 255, 176, 0.22);
-
-            color: #ccefe5;
-        }
-
-        .option input {
-
-            margin-right: 7px;
-        }
-
-        .submit-btn {
-
-            width: 100%;
-
-            margin-top: 15px;
-
-            padding: 12px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.28);
-
-            border-radius: 8px;
-
-            color: #d8f7ff;
-
-            background:
-                rgba(0, 191, 255, 0.055);
-
-            cursor: pointer;
-
-            font-size: 11px;
-
-            font-weight: 800;
-        }
-
-        .score {
-
-            margin-top: 14px;
-
-            text-align: center;
-
-            color: #00ffb0;
-
-            font-family:
-                Consolas,
-                monospace;
-
-            font-size: 13px;
-
-            font-weight: 800;
-        }
-
-        /* WARNING */
-
-        .warning {
-
-            padding: 18px;
-
-            border:
-                1px solid rgba(255, 177, 0, 0.18);
-
-            border-radius: 9px;
-
-            background:
-                rgba(255, 177, 0, 0.025);
-        }
-
-        .warning strong {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            color: #ffc44d;
-
-            font-size: 12px;
-        }
-
-        .warning p {
-
-            margin: 0;
-
-            color: #899bad;
-
-            font-size: 11px;
-
-            line-height: 1.75;
-        }
-
-        /* NAVIGATION */
-
-        .navigation {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 10px;
-
-            margin-top: 25px;
-        }
-
-        .navigation a {
-
-            padding: 13px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.09);
-
-            border-radius: 8px;
-
-            color: #71879b;
-
-            background:
-                rgba(0, 191, 255, 0.02);
-
-            text-decoration: none;
-
-            text-align: center;
-
-            font-size: 11px;
-
-            font-weight: 700;
-        }
-
-        .navigation a:hover {
-
-            color: #ccefe5;
-
-            border-color:
-                rgba(0, 255, 176, 0.25);
-        }
-
-        @media (max-width: 800px) {
-
-            .lab-info {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-        }
-
-        @media (max-width: 600px) {
-
-            .lab-page {
-
-                padding: 45px 12px 60px;
-            }
-
-            .lab-hero {
-
-                padding: 27px 20px;
-            }
-
-            .lab-hero h1 {
-
-                font-size: 30px;
-            }
-
-            .lab-card {
-
-                padding: 20px;
-            }
-
-            .lab-info {
-
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .navigation {
-
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-    </style>
+        <link rel="stylesheet" href="../../../css/navbar.css">
+        <link rel="stylesheet" href="../../../css/footer.css">
+        <link rel="stylesheet" href="../../../css/lesson.css">
 
 </head>
 
@@ -722,9 +112,9 @@
         </div>
 
         <h1>
-            <span>File Upload</span>
-            Vulnerabilities Lab
-        </h1>
+ <span>File Upload</span>
+ Vulnerabilities Lab
+ </h1>
 
         <p>
             Analyze how a secure web application should handle uploaded
@@ -801,8 +191,8 @@
             </div>
 
             <h2>
-                Practical Upload Security Simulator
-            </h2>
+ Practical Upload Security Simulator
+ </h2>
 
         </div>
 
@@ -834,8 +224,8 @@
                     class="analyze-btn"
                     onclick="analyzeFile()"
                 >
-                    Analyze Upload
-                </button>
+ Analyze Upload
+ </button>
 
             </div>
 
@@ -860,8 +250,8 @@
             </div>
 
             <h2>
-                Knowledge Check
-            </h2>
+ Knowledge Check
+ </h2>
 
         </div>
 
@@ -991,8 +381,8 @@
             class="submit-btn"
             onclick="checkQuiz()"
         >
-            Submit Security Assessment
-        </button>
+ Submit Security Assessment
+ </button>
 
         <div
             class="score"
@@ -1013,8 +403,8 @@
             </div>
 
             <h2>
-                Secure Upload Checklist
-            </h2>
+ Secure Upload Checklist
+ </h2>
 
         </div>
 
