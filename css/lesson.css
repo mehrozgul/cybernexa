@@ -1,33 +1,80 @@
 /* =========================================================
-   CYBERNEXA — LESSON & LAB DESIGN SYSTEM
-   Human-crafted, realistic educational documentation layout
-   Supports: Theory Articles, Practical Labs, and Tutorials
+   CYBERNEXA — LESSON & LAB DESIGN SYSTEM (lesson.css)
+   Modern, Realistic, Accessible, and Fully Responsive
+   Supports: Theory Articles, Practical Labs, and Interactive Tutorials
 ========================================================= */
 
+:root {
+    --cnx-lesson-bg: #070d1a;
+    --cnx-lesson-card: #0c1527;
+    --cnx-lesson-card-hover: #101c34;
+    --cnx-lesson-border: rgba(255, 255, 255, 0.08);
+    --cnx-lesson-border-hover: rgba(59, 130, 246, 0.35);
+    
+    --cnx-lesson-primary: #3b82f6;
+    --cnx-lesson-primary-glow: rgba(59, 130, 246, 0.25);
+    --cnx-lesson-cyan: #38bdf8;
+    --cnx-lesson-emerald: #10b981;
+    --cnx-lesson-amber: #f59e0b;
+    --cnx-lesson-rose: #f43f5e;
+    
+    /* High contrast text tokens (WCAG AA & AAA compliant on dark backdrops) */
+    --cnx-lesson-text: #f8fafc;
+    --cnx-lesson-text-soft: #cbd5e1;
+    --cnx-lesson-text-muted: #94a3b8;
+    --cnx-lesson-text-faint: #94a3b8; /* Enhanced from #64748b to guarantee 6.8:1 contrast */
+    
+    --cnx-lesson-radius-lg: 16px;
+    --cnx-lesson-radius-md: 12px;
+    --cnx-lesson-radius-sm: 8px;
+    --cnx-lesson-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
+    
+    /* Universal Accessible Focus Ring */
+    --cnx-focus-ring: 0 0 0 3px rgba(56, 189, 248, 0.35);
+}
+
 /* =========================================================
-   PAGE WRAPPERS
+   KEYBOARD FOCUS ACCESSIBILITY (WCAG 2.4.7 FOCUS VISIBLE)
+========================================================= */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.quiz-option:focus-visible,
+.option:focus-visible,
+.topic-nav-link:focus-visible,
+.all-topics:focus-visible,
+.lab-cta-button:focus-visible,
+.theory-button:focus-visible {
+    outline: 2px solid #38bdf8 !important;
+    outline-offset: 3px !important;
+    box-shadow: var(--cnx-focus-ring) !important;
+}
+
+/* =========================================================
+   PAGE WRAPPERS & MAX WIDTH CONTAINERS
 ========================================================= */
 
 .article-page,
 .lab-page,
 .page {
     width: 100%;
-    min-height: calc(100vh - 68px);
-    padding: 56px 24px 88px;
+    min-height: calc(100vh - 72px);
+    padding: 48px 24px 96px;
     box-sizing: border-box;
     background: transparent;
+    max-width: 1040px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
 }
 
 .article-container,
 .lab-container {
     width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-/* Tutorial page alias */
-.page {
-    max-width: 1000px;
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -42,49 +89,59 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 32px;
-    color: #64748b;
-    font-size: 13px;
+    margin-bottom: 28px;
+    color: var(--cnx-lesson-text-muted);
+    font-size: 13.5px;
     font-weight: 500;
+    letter-spacing: 0.01em;
 }
 
 .article-breadcrumb a,
 .lab-breadcrumb a,
 .breadcrumb a {
-    color: #94a3b8;
+    color: var(--cnx-lesson-text-soft);
     text-decoration: none;
-    transition: color 0.15s ease;
+    transition: color 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
 }
 
 .article-breadcrumb a:hover,
 .lab-breadcrumb a:hover,
 .breadcrumb a:hover {
-    color: #3b82f6;
+    color: #60a5fa;
+    text-decoration: underline;
 }
 
 .article-breadcrumb span,
 .lab-breadcrumb span,
 .breadcrumb span {
-    color: #475569;
-    font-size: 11px;
+    color: #64748b; /* Enhanced contrast separator */
+    font-size: 12px;
+    user-select: none;
 }
 
 /* =========================================================
-   PAGE HEADER
+   PAGE HERO HEADER
 ========================================================= */
 
 .article-header,
 .lab-header {
-    margin-bottom: 40px;
-    padding: 36px 32px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    background: #0d1525;
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+    margin-bottom: 32px;
+    padding: 38px 36px;
+    border: 1px solid var(--cnx-lesson-border);
+    border-radius: var(--cnx-lesson-radius-lg);
+    background: linear-gradient(160deg, #0d172e 0%, #080f1e 100%);
+    box-shadow: 
+        0 12px 36px -8px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
     position: relative;
     overflow: hidden;
 }
 
+/* Left neon accent line */
 .article-header::before,
 .lab-header::before {
     content: '';
@@ -93,22 +150,39 @@
     left: 0;
     width: 4px;
     height: 100%;
-    background: linear-gradient(180deg, #3b82f6, #60a5fa);
+    background: linear-gradient(180deg, #3b82f6 0%, #38bdf8 100%);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+}
+
+/* Top corner ambient light */
+.article-header::after,
+.lab-header::after {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .article-label,
 .lab-label,
 .label {
-    display: inline-block;
-    margin-bottom: 12px;
-    color: #3b82f6;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+    color: #38bdf8;
     font-size: 11.5px;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    padding: 3px 10px;
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.25);
+    padding: 4px 12px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.28);
     border-radius: 9999px;
 }
 
@@ -117,62 +191,73 @@
 .page h1 {
     margin: 0;
     color: #ffffff;
-    font-size: clamp(26px, 3.5vw, 40px);
-    line-height: 1.22;
+    font-size: clamp(26px, 3.2vw, 38px);
+    line-height: 1.25;
     font-weight: 800;
     letter-spacing: -0.025em;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .article-header h1 span,
 .lab-header h1 span,
 .page h1 span {
     color: #60a5fa;
+    background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .article-intro,
 .lab-intro,
 .intro {
-    max-width: 820px;
+    max-width: 860px;
     margin: 16px 0 0;
-    color: #94a3b8;
+    color: var(--cnx-lesson-text-soft);
     font-size: 16px;
     line-height: 1.75;
 }
 
 /* =========================================================
-   CONTENT SECTIONS
+   CORE CONTENT SECTIONS
 ========================================================= */
 
 .article-section,
 .lab-section,
 .section {
-    margin-bottom: 24px;
-    padding: 32px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    background: #0d1525;
-    box-shadow: 0 2px 12px -2px rgba(0, 0, 0, 0.35);
-    transition: border-color 0.2s ease;
+    margin-bottom: 28px;
+    padding: 34px 36px;
+    border: 1px solid var(--cnx-lesson-border);
+    border-radius: var(--cnx-lesson-radius-md);
+    background: linear-gradient(175deg, #0b1426 0%, #080f1d 100%);
+    box-shadow: 
+        0 4px 20px -2px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
 }
 
 .article-section:hover,
 .lab-section:hover,
 .section:hover {
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(59, 130, 246, 0.25);
+    box-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.5);
 }
 
 .article-section h2,
 .lab-section h2,
 .section h2 {
-    margin: 0 0 16px;
-    color: #f8fafc;
-    font-size: 21px;
+    margin: 0 0 18px;
+    color: #ffffff;
+    font-size: clamp(20px, 2.2vw, 24px);
     font-weight: 700;
     line-height: 1.35;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.02em;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .article-section h2 span,
@@ -184,18 +269,21 @@
 .article-section h3,
 .lab-section h3,
 .section h3 {
-    margin: 22px 0 12px;
-    color: #e2e8f0;
-    font-size: 16px;
+    margin: 26px 0 12px;
+    color: #f1f5f9;
+    font-size: 17px;
     font-weight: 700;
+    letter-spacing: -0.01em;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .article-section p,
 .lab-section p,
 .section p {
-    margin: 0 0 16px;
-    color: #cbd5e1;
-    font-size: 15px;
+    margin: 0 0 18px;
+    color: var(--cnx-lesson-text-soft);
+    font-size: 15.5px;
     line-height: 1.8;
 }
 
@@ -211,22 +299,24 @@
 .lab-section ol,
 .section ul,
 .section ol {
-    margin: 12px 0 18px 24px;
+    margin: 14px 0 20px 24px;
+    padding-left: 4px;
 }
 
 .article-section li,
 .lab-section li,
 .section li {
-    color: #cbd5e1;
+    color: var(--cnx-lesson-text-soft);
     font-size: 15px;
     line-height: 1.8;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .article-section li::marker,
 .lab-section li::marker,
 .section li::marker {
     color: #3b82f6;
+    font-weight: 700;
 }
 
 .article-section strong,
@@ -237,18 +327,20 @@
 }
 
 /* =========================================================
-   DEFINITION & CALLOUT BOXES
+   STANDARDIZED CALLOUTS, DEFINITIONS & NOTICE BOXES
 ========================================================= */
 
+/* Definition Box (Blue Theme) */
 .definition-box {
-    padding: 20px 24px;
-    margin: 20px 0;
-    border-left: 3px solid #3b82f6;
-    border-radius: 0 10px 10px 0;
-    background: rgba(59, 130, 246, 0.06);
-    border-top: 1px solid rgba(59, 130, 246, 0.15);
-    border-right: 1px solid rgba(59, 130, 246, 0.15);
-    border-bottom: 1px solid rgba(59, 130, 246, 0.15);
+    padding: 22px 26px;
+    margin: 24px 0;
+    border-left: 4px solid #3b82f6;
+    border-radius: 0 var(--cnx-lesson-radius-md) var(--cnx-lesson-radius-md) 0;
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.03) 100%);
+    border-top: 1px solid rgba(59, 130, 246, 0.18);
+    border-right: 1px solid rgba(59, 130, 246, 0.18);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.18);
+    position: relative;
 }
 
 .definition-box strong {
@@ -257,48 +349,75 @@
     color: #93c5fd;
     font-size: 15px;
     font-weight: 700;
+    letter-spacing: 0.02em;
 }
 
 .definition-box p {
     margin: 0;
-    color: #cbd5e1;
+    color: var(--cnx-lesson-text-soft);
     font-size: 14.5px;
     line-height: 1.75;
 }
 
-/* Warning & Disclaimer notices */
+/* Warning & Notice Boxes (Amber Theme) */
 .notice-box,
 .disclaimer-notice,
-.warning-box {
-    padding: 18px 22px;
-    margin: 20px 0;
-    border-left: 3px solid #f59e0b;
-    border-radius: 0 10px 10px 0;
-    background: rgba(245, 158, 11, 0.06);
-    border-top: 1px solid rgba(245, 158, 11, 0.15);
-    border-right: 1px solid rgba(245, 158, 11, 0.15);
-    border-bottom: 1px solid rgba(245, 158, 11, 0.15);
-    color: #cbd5e1;
-    font-size: 14px;
+.warning-box,
+.warning,
+.notice {
+    padding: 22px 24px;
+    margin: 24px 0;
+    border-left: 4px solid #f59e0b;
+    border-radius: 0 var(--cnx-lesson-radius-md) var(--cnx-lesson-radius-md) 0;
+    background: linear-gradient(90deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.02) 100%);
+    border-top: 1px solid rgba(245, 158, 11, 0.2);
+    border-right: 1px solid rgba(245, 158, 11, 0.2);
+    border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+    color: var(--cnx-lesson-text-soft);
+    font-size: 14.5px;
     line-height: 1.75;
 }
 
 .notice-box strong,
 .disclaimer-notice strong,
-.warning-box strong {
+.warning-box strong,
+.warning strong,
+.notice strong {
     color: #fbbf24;
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+/* Tip Box (Emerald Theme) */
+.tip {
+    padding: 22px 24px;
+    margin: 24px 0;
+    border-left: 4px solid #10b981;
+    border-radius: 0 var(--cnx-lesson-radius-md) var(--cnx-lesson-radius-md) 0;
+    background: linear-gradient(90deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.02) 100%);
+    border-top: 1px solid rgba(16, 185, 129, 0.2);
+    border-right: 1px solid rgba(16, 185, 129, 0.2);
+    border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+    color: var(--cnx-lesson-text-soft);
+    font-size: 14.5px;
+    line-height: 1.75;
+}
+
+.tip strong {
+    color: #6ee7b7;
     font-weight: 700;
     margin-right: 6px;
 }
 
 /* Summary Box */
 .summary-box {
-    padding: 24px 28px;
+    padding: 26px 30px;
     margin: 24px 0;
-    border: 1px solid rgba(16, 185, 129, 0.25);
+    border: 1px solid rgba(16, 185, 129, 0.3);
     border-left: 4px solid #10b981;
-    border-radius: 12px;
-    background: rgba(16, 185, 129, 0.05);
+    border-radius: var(--cnx-lesson-radius-md);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);
 }
 
 .summary-box strong {
@@ -311,113 +430,144 @@
 
 .summary-box p {
     margin: 0;
-    color: #cbd5e1;
+    color: var(--cnx-lesson-text-soft);
+    font-size: 14.5px;
+    line-height: 1.75;
+}
+
+/* Example Box */
+.example-box {
+    margin: 24px 0;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--cnx-lesson-radius-md);
+    background: #080e1b;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.example-box .example-label {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #38bdf8;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.example-box p {
+    margin: 0;
+    color: var(--cnx-lesson-text-soft);
     font-size: 14.5px;
     line-height: 1.75;
 }
 
 /* =========================================================
-   INFO GRID & CARDS
+   GRIDS & CONCEPT CARDS
 ========================================================= */
 
 .info-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
-    margin: 22px 0;
+    margin: 24px 0;
 }
 
 .info-card {
-    padding: 22px;
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.02);
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--cnx-lesson-radius-md);
+    background: rgba(255, 255, 255, 0.025);
+    transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
 }
 
 .info-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(59, 130, 246, 0.35);
+    transform: translateY(-3px);
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(59, 130, 246, 0.04);
 }
 
 .info-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     margin-bottom: 14px;
-    border: 1px solid rgba(59, 130, 246, 0.25);
-    border-radius: 8px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--cnx-lesson-radius-sm);
     color: #60a5fa;
-    background: rgba(59, 130, 246, 0.08);
+    background: rgba(59, 130, 246, 0.1);
     font-size: 18px;
 }
 
 .info-card h3 {
     margin: 0 0 8px;
-    color: #f8fafc;
-    font-size: 15px;
+    color: #ffffff;
+    font-size: 15.5px;
     font-weight: 700;
 }
 
 .info-card p {
     margin: 0;
-    color: #94a3b8;
+    color: var(--cnx-lesson-text-muted);
     font-size: 13.5px;
     line-height: 1.65;
 }
 
-/* =========================================================
-   CONCEPT LIST & KEY POINTS
-========================================================= */
-
+/* Concept List */
 .concept-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    margin: 20px 0;
+    gap: 16px;
+    margin: 24px 0;
 }
 
 .concept-item {
-    padding: 18px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.02);
+    padding: 20px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--cnx-lesson-radius-md);
+    background: rgba(255, 255, 255, 0.025);
+    transition: border-color 0.2s ease;
+}
+
+.concept-item:hover {
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .concept-item strong {
     display: block;
     margin-bottom: 6px;
-    color: #f1f5f9;
-    font-size: 14.5px;
+    color: #f8fafc;
+    font-size: 15px;
     font-weight: 700;
 }
 
 .concept-item p {
     margin: 0;
-    color: #94a3b8;
-    font-size: 13.5px;
+    color: var(--cnx-lesson-text-muted);
+    font-size: 14px;
     line-height: 1.65;
 }
 
+/* Key Points List */
 .key-points {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin: 20px 0;
+    gap: 14px;
+    margin: 24px 0;
 }
 
 .key-point {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    padding: 14px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.02);
-    color: #cbd5e1;
-    font-size: 14px;
+    gap: 12px;
+    padding: 16px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--cnx-lesson-radius-sm);
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--cnx-lesson-text-soft);
+    font-size: 14.5px;
     line-height: 1.6;
 }
 
@@ -426,59 +576,41 @@
     flex-shrink: 0;
     color: #10b981;
     font-weight: 800;
-    font-size: 14px;
-}
-
-/* Example Box */
-.example-box {
-    margin: 20px 0;
-    padding: 22px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    background: #090e18;
-}
-
-.example-box .example-label {
-    display: block;
-    margin-bottom: 10px;
-    color: #38bdf8;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.example-box p {
-    margin: 0;
-    color: #cbd5e1;
-    font-size: 14px;
-    line-height: 1.75;
+    font-size: 15px;
+    line-height: 1.4;
 }
 
 /* =========================================================
-   TERMINAL & CODE BLOCKS
+   TERMINAL & CODE BLOCKS (OVERFLOW PROTECTED)
 ========================================================= */
 
 .terminal {
-    margin: 20px 0;
-    padding: 22px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    background: #060a12;
+    margin: 24px 0;
+    padding: 22px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--cnx-lesson-radius-md);
+    background: #050a14;
     font-family: var(--cnx-font-mono, "JetBrains Mono", Consolas, monospace);
-    font-size: 13.5px;
-    line-height: 1.65;
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 100%;
+    box-sizing: border-box;
     overflow-x: auto;
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    -webkit-overflow-scrolling: touch;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+    position: relative;
 }
 
 .terminal-line {
     color: #cbd5e1;
+    white-space: pre-wrap;
+    word-break: break-all;
 }
 
 .terminal-line .prompt {
     color: #10b981;
     font-weight: 700;
+    margin-right: 8px;
 }
 
 .terminal-line .cmd {
@@ -487,68 +619,88 @@
 }
 
 .terminal-line .output {
-    color: #94a3b8;
+    color: var(--cnx-lesson-text-muted);
+    display: block;
+    margin-top: 4px;
 }
 
+/* Inline Code */
 code,
 .code {
     font-family: var(--cnx-font-mono, "JetBrains Mono", Consolas, monospace);
-    font-size: 13px;
-    padding: 3px 7px;
-    border-radius: 5px;
+    font-size: 13.5px;
+    padding: 3px 8px;
+    border-radius: 6px;
     background: rgba(255, 255, 255, 0.06);
     color: #93c5fd;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    word-break: break-word;
 }
 
+/* Code Pre Blocks */
 pre {
-    margin: 18px 0;
-    padding: 20px 22px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    background: #060a12;
+    margin: 24px 0;
+    padding: 22px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--cnx-lesson-radius-md);
+    background: #050914;
+    max-width: 100%;
+    box-sizing: border-box;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
 }
 
 pre code {
     background: none;
     border: none;
     padding: 0;
-    color: #cbd5e1;
-    font-size: 13.5px;
-    line-height: 1.65;
+    color: #e2e8f0;
+    font-size: 14px;
+    line-height: 1.7;
 }
 
 /* =========================================================
-   TABLES
+   TABLES (RESPONSIVE SCROLL PROTECTED)
 ========================================================= */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 24px 0;
+}
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 14px;
+    margin: 24px 0;
+    font-size: 14.5px;
+    border-radius: var(--cnx-lesson-radius-sm);
+    overflow: hidden;
 }
 
 th, td {
-    padding: 12px 16px;
+    padding: 14px 18px;
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 th {
-    background: rgba(255, 255, 255, 0.04);
-    color: #f1f5f9;
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
     font-weight: 700;
     letter-spacing: 0.02em;
+    font-size: 13.5px;
+    text-transform: uppercase;
 }
 
 td {
-    color: #cbd5e1;
+    color: var(--cnx-lesson-text-soft);
 }
 
 tr:hover td {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 /* =========================================================
@@ -556,121 +708,134 @@ tr:hover td {
 ========================================================= */
 
 .quiz-section {
-    margin-bottom: 24px;
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    background: #0d1525;
+    margin-bottom: 28px;
+    padding: 32px 36px;
+    border: 1px solid var(--cnx-lesson-border);
+    border-radius: var(--cnx-lesson-radius-md);
+    background: linear-gradient(175deg, #0b1426 0%, #080f1d 100%);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
 }
 
 .quiz-question {
-    margin-bottom: 18px;
-    color: #f8fafc;
-    font-size: 16px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-size: 17px;
     font-weight: 700;
     line-height: 1.5;
 }
 
-.quiz-option {
+.quiz-option,
+.option {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 14px 18px;
-    margin-bottom: 10px;
+    padding: 15px 20px;
+    margin-bottom: 12px;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--cnx-lesson-radius-sm);
+    background: rgba(255, 255, 255, 0.025);
     cursor: pointer;
-    color: #cbd5e1;
-    font-size: 14px;
+    color: var(--cnx-lesson-text-soft);
+    font-size: 14.5px;
     font-weight: 500;
     transition: all 0.2s ease;
+    user-select: none;
+    min-height: 48px;
+    box-sizing: border-box;
 }
 
-.quiz-option:hover {
+.quiz-option:hover,
+.option:hover {
     border-color: rgba(59, 130, 246, 0.4);
     background: rgba(59, 130, 246, 0.06);
     color: #ffffff;
-    transform: translateX(2px);
+    transform: translateX(3px);
+}
+
+.option input,
+.quiz-option input {
+    margin-right: 8px;
+    accent-color: #3b82f6;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
 }
 
 .quiz-option.correct {
-    border-color: rgba(16, 185, 129, 0.4);
-    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.5);
+    background: rgba(16, 185, 129, 0.12);
     color: #6ee7b7;
 }
 
 .quiz-option.incorrect {
-    border-color: rgba(239, 68, 68, 0.4);
-    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.5);
+    background: rgba(239, 68, 68, 0.12);
     color: #fca5a5;
 }
 
 .quiz-feedback {
-    margin-top: 14px;
-    padding: 14px 18px;
-    border-radius: 8px;
-    font-size: 14px;
+    margin-top: 16px;
+    padding: 14px 20px;
+    border-radius: var(--cnx-lesson-radius-sm);
+    font-size: 14.5px;
     display: none;
     line-height: 1.6;
 }
 
 .quiz-feedback.correct {
     display: block;
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    background: rgba(16, 185, 129, 0.1);
     color: #6ee7b7;
 }
 
 .quiz-feedback.incorrect {
     display: block;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    background: rgba(239, 68, 68, 0.1);
     color: #fca5a5;
 }
 
-/* =========================================================
-   TUTORIAL INTERACTIVE ELEMENTS (.tip, .warning, .complete-check)
-========================================================= */
-
-.tip {
-    margin: 20px 0;
-    padding: 18px 22px;
-    border-left: 3px solid #10b981;
-    border-radius: 0 10px 10px 0;
-    background: rgba(16, 185, 129, 0.06);
-    border-top: 1px solid rgba(16, 185, 129, 0.15);
-    border-right: 1px solid rgba(16, 185, 129, 0.15);
-    border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+.quiz-button {
+    margin-top: 20px;
+    padding: 13px 26px;
+    border-radius: var(--cnx-lesson-radius-sm);
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 14.5px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    transition: all 0.22s ease;
+    min-height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.tip strong {
-    color: #6ee7b7;
-    font-weight: 700;
+.quiz-button:hover {
+    background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+    transform: translateY(-2px);
 }
 
-.warning {
-    margin: 20px 0;
-    padding: 18px 22px;
-    border-left: 3px solid #f59e0b;
-    border-radius: 0 10px 10px 0;
-    background: rgba(245, 158, 11, 0.06);
-    border-top: 1px solid rgba(245, 158, 11, 0.15);
-    border-right: 1px solid rgba(245, 158, 11, 0.15);
-    border-bottom: 1px solid rgba(245, 158, 11, 0.15);
+#quizResult,
+.quiz-result {
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 14.5px;
+    padding: 12px 16px;
+    border-radius: var(--cnx-lesson-radius-sm);
 }
 
-.warning strong {
-    color: #fbbf24;
-    font-weight: 700;
-}
-
+/* Completion Badge */
 .complete-check {
-    margin-top: 18px;
-    padding: 14px 18px;
-    border: 1px solid rgba(16, 185, 129, 0.25);
-    border-radius: 10px;
-    background: rgba(16, 185, 129, 0.04);
+    margin-top: 20px;
+    padding: 16px 20px;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: var(--cnx-lesson-radius-md);
+    background: rgba(16, 185, 129, 0.05);
 }
 
 .complete-check label {
@@ -678,8 +843,8 @@ tr:hover td {
     align-items: center;
     gap: 12px;
     cursor: pointer;
-    color: #cbd5e1;
-    font-size: 14px;
+    color: var(--cnx-lesson-text-soft);
+    font-size: 14.5px;
     font-weight: 500;
 }
 
@@ -690,83 +855,34 @@ tr:hover td {
     cursor: pointer;
 }
 
-.option {
-    display: block;
-    margin: 10px 0;
-    padding: 12px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.02);
-    cursor: pointer;
-    color: #cbd5e1;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.option:hover {
-    border-color: rgba(59, 130, 246, 0.4);
-    background: rgba(59, 130, 246, 0.06);
-    color: #ffffff;
-}
-
-.option input {
-    margin-right: 10px;
-    accent-color: #3b82f6;
-}
-
-.quiz-button {
-    margin-top: 20px;
-    padding: 12px 24px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
-    transition: all 0.2s ease;
-}
-
-.quiz-button:hover {
-    background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
-    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
-    transform: translateY(-1px);
-}
-
-#quizResult,
-.quiz-result {
-    margin-top: 16px;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 14px;
-    border-radius: 8px;
-}
-
 .completion {
-    margin-top: 28px;
-    padding: 32px;
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    border-left: 4px solid #10b981;
-    border-radius: 14px;
-    background: rgba(16, 185, 129, 0.05);
+    margin-top: 36px;
+    padding: 36px;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    border-left: 5px solid #10b981;
+    border-radius: var(--cnx-lesson-radius-lg);
+    background: linear-gradient(145deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
     text-align: center;
 }
 
 .completion h2 {
     color: #6ee7b7;
     margin-top: 0;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .completion p {
-    color: #cbd5e1;
+    color: var(--cnx-lesson-text-soft);
 }
 
 .completion-status {
     color: #10b981;
     font-weight: 700;
 }
+
+/* =========================================================
+   BOTTOM NAVIGATION & CTAs
+========================================================= */
 
 .article-navigation {
     display: flex;
@@ -778,51 +894,52 @@ tr:hover td {
 .article-navigation a {
     flex: 1;
     text-align: center;
-    padding: 14px 18px;
+    padding: 15px 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    border-radius: var(--cnx-lesson-radius-md);
     text-decoration: none;
-    color: #cbd5e1;
-    font-size: 13.5px;
+    color: var(--cnx-lesson-text-soft);
+    font-size: 14px;
     font-weight: 600;
-    background: #0d1525;
-    transition: all 0.2s ease;
+    background: #0d1527;
+    transition: all 0.22s ease;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .article-navigation a:hover {
     color: #ffffff;
     border-color: rgba(59, 130, 246, 0.4);
-    background: #111b30;
+    background: #111d36;
     transform: translateY(-2px);
 }
-
-/* =========================================================
-   NAVIGATION / BOTTOM CTAS
-========================================================= */
 
 .topic-navigation {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     gap: 16px;
     align-items: center;
-    margin-top: 48px;
+    margin-top: 36px;
 }
 
 .topic-nav-link {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 16px 20px;
+    gap: 6px;
+    padding: 18px 22px;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    background: #0d1525;
+    border-radius: var(--cnx-lesson-radius-md);
+    background: #0c1426;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all 0.22s ease;
+    min-height: 52px;
 }
 
 .topic-nav-link:hover {
     border-color: rgba(59, 130, 246, 0.4);
-    background: #111b30;
+    background: #101c34;
     transform: translateY(-2px);
 }
 
@@ -831,16 +948,16 @@ tr:hover td {
 }
 
 .topic-nav-label {
-    color: #64748b;
-    font-size: 11px;
+    color: #38bdf8; /* High contrast cyan accent for topic nav */
+    font-size: 11.5px;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
 }
 
 .topic-nav-title {
     color: #f1f5f9;
-    font-size: 14.5px;
+    font-size: 15px;
     font-weight: 700;
 }
 
@@ -848,21 +965,22 @@ tr:hover td {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    padding: 12px 20px;
+    gap: 8px;
+    padding: 13px 22px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    background: #0d1525;
-    color: #cbd5e1;
-    font-size: 13.5px;
+    border-radius: var(--cnx-lesson-radius-md);
+    background: #0c1426;
+    color: var(--cnx-lesson-text-soft);
+    font-size: 14px;
     font-weight: 600;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all 0.22s ease;
+    min-height: 48px;
 }
 
 .all-topics:hover {
     border-color: rgba(59, 130, 246, 0.4);
-    background: #111b30;
+    background: #101c34;
     color: #ffffff;
     transform: translateY(-2px);
 }
@@ -873,17 +991,18 @@ tr:hover td {
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    margin-top: 28px;
-    padding: 24px 28px;
-    border: 1px solid rgba(59, 130, 246, 0.25);
-    border-radius: 12px;
-    background: rgba(59, 130, 246, 0.06);
+    margin-top: 32px;
+    padding: 26px 30px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--cnx-lesson-radius-lg);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.03) 100%);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
 }
 
 .lab-cta p {
     margin: 0;
-    color: #cbd5e1;
-    font-size: 15px;
+    color: var(--cnx-lesson-text-soft);
+    font-size: 15.5px;
     font-weight: 500;
 }
 
@@ -893,39 +1012,40 @@ tr:hover td {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 22px;
-    border: 1px solid rgba(59, 130, 246, 0.4);
-    border-radius: 8px;
+    padding: 13px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--cnx-lesson-radius-sm);
     color: #ffffff;
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 600;
     text-decoration: none;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    min-height: 46px;
 }
 
 .lab-cta-button:hover,
 .lab-button:hover {
     background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
-    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
+    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.55);
     transform: translateY(-2px);
 }
 
-/* Theory button */
 .theory-button {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 22px;
+    padding: 13px 22px;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
-    color: #cbd5e1;
+    border-radius: var(--cnx-lesson-radius-sm);
+    color: var(--cnx-lesson-text-soft);
     background: rgba(255, 255, 255, 0.04);
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s ease;
+    min-height: 46px;
 }
 
 .theory-button:hover {
@@ -938,24 +1058,25 @@ tr:hover td {
    RESPONSIVE DESIGN (LESSONS & LABS)
 ========================================================= */
 
-@media (max-width: 860px) {
+@media (max-width: 900px) {
     .article-page,
     .lab-page,
     .page {
-        padding: 44px 18px 64px;
+        padding: 36px 18px 72px;
     }
 
     .article-header,
     .lab-header {
-        padding: 28px 22px;
-        margin-bottom: 28px;
+        padding: 30px 24px;
+        margin-bottom: 24px;
     }
 
     .article-section,
     .lab-section,
     .section,
     .quiz-section {
-        padding: 24px 20px;
+        padding: 26px 22px;
+        margin-bottom: 22px;
     }
 
     .info-grid {
@@ -973,28 +1094,33 @@ tr:hover td {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
     .article-page,
     .lab-page,
     .page {
-        padding: 32px 14px 48px;
+        padding: 20px 14px 48px;
     }
 
     .article-header,
     .lab-header {
-        padding: 20px 16px;
+        padding: 22px 18px;
+        border-radius: var(--cnx-lesson-radius-md);
+        margin-bottom: 20px;
     }
 
     .article-header h1,
     .lab-header h1,
     .page h1 {
-        font-size: 24px;
+        font-size: 23px;
+        line-height: 1.3;
     }
 
     .article-intro,
     .lab-intro,
     .intro {
         font-size: 14.5px;
+        line-height: 1.65;
+        margin-top: 12px;
     }
 
     .article-section,
@@ -1002,19 +1128,63 @@ tr:hover td {
     .section,
     .quiz-section {
         padding: 20px 16px;
-        border-radius: 10px;
+        border-radius: var(--cnx-lesson-radius-sm);
+        margin-bottom: 18px;
+    }
+
+    .article-section h2,
+    .lab-section h2,
+    .section h2 {
+        font-size: 19px;
     }
 
     .info-grid,
     .concept-list,
     .key-points {
         grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 18px 0;
+    }
+
+    .definition-box,
+    .notice-box,
+    .disclaimer-notice,
+    .warning-box,
+    .warning,
+    .notice,
+    .tip,
+    .summary-box,
+    .example-box {
+        padding: 18px 18px;
+        margin: 18px 0;
+    }
+
+    /* Overflow-safe table scrolling on mobile */
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        font-size: 13.5px;
+    }
+
+    th, td {
+        padding: 10px 12px;
+    }
+
+    /* Compact overflow-safe terminal & pre on mobile */
+    .terminal,
+    pre {
+        padding: 16px 14px;
+        margin: 18px 0;
+        font-size: 13px;
     }
 
     .lab-cta {
         flex-direction: column;
         align-items: flex-start;
-        padding: 20px;
+        padding: 20px 18px;
+        margin-top: 24px;
     }
 
     .lab-cta-button {
@@ -1024,6 +1194,8 @@ tr:hover td {
 
     .topic-navigation {
         grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 24px;
     }
 
     .topic-nav-link.next {
@@ -1033,5 +1205,11 @@ tr:hover td {
     .all-topics {
         order: -1;
         width: 100%;
+    }
+    
+    .article-navigation {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 24px;
     }
 }
