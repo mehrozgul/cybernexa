@@ -13,16 +13,14 @@ async function initCyberNexaSession() {
         return;
     }
 
-    const supabase = window.supabaseClient;
     const profileNav = document.getElementById("profileNav");
     const menuToggle = document.getElementById("menu-toggle");
 
-    if (!supabase || !profileNav) {
-        console.error("Supabase client or profile container missing.");
+    if (!profileNav) {
         return;
     }
 
-    // Mark initialized only after required elements are found
+    const supabase = window.supabaseClient;
     cyberNexaSessionInitialized = true;
 
     // Root URL for links from nested pages
@@ -198,6 +196,12 @@ async function initCyberNexaSession() {
         }
 
     });
+
+    // If Supabase client is not loaded or available, show logged out fallback
+    if (!supabase || !supabase.auth) {
+        showLoggedOut();
+        return;
+    }
 
     // Restore current Supabase session
     const { data, error } = await supabase.auth.getSession();
