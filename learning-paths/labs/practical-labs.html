@@ -1,1368 +1,828 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Learn Practical Cybersecurity Labs - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
-
     <meta name="theme-color" content="#07101e">
-
     <title>Practical Cybersecurity Labs - CyberNexa</title>
-
-            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="../../css/base.css">
-        <link rel="stylesheet" href="../../css/navbar.css">
-        <link rel="stylesheet" href="../../css/footer.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
+    <link rel="stylesheet" href="../../css/footer.css">
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* =====================================================
+           LABS PAGE — LOCAL STYLES
+        ====================================================== */
 
+        .labs-page {
+            min-height: 100vh;
+            padding: 48px 24px 80px;
+            background: #07101e;
+        }
+
+        .labs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ---- Header ---- */
+        .labs-header {
+            position: relative;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 18, 36, 0.98) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3b82f6;
+            border-radius: 14px;
+            padding: 40px 44px;
+            margin-bottom: 32px;
+        }
+
+        .labs-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #93c5fd;
+            margin-bottom: 18px;
+        }
+
+        .labs-header h1 {
+            font-size: clamp(1.75rem, 4vw, 2.6rem);
+            font-weight: 800;
+            color: #f1f5f9;
+            margin: 0 0 14px;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        .labs-header h1 span {
+            color: #60a5fa;
+        }
+
+        .labs-intro {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #94a3b8;
+            max-width: 760px;
+            margin: 0;
+        }
+
+        /* ---- Intro Card ---- */
+        .labs-intro-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 36px 40px;
+            margin-bottom: 48px;
+        }
+
+        .labs-intro-card h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin: 0 0 12px;
+        }
+
+        .labs-intro-card > p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #94a3b8;
+            margin: 0 0 28px;
+            max-width: 680px;
+        }
+
+        .lab-flow {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .lab-flow-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #93c5fd;
+        }
+
+        .lab-flow-arrow {
+            font-size: 18px;
+            color: #475569;
+            font-weight: 700;
+            padding: 0 2px;
+        }
+
+        /* ---- Section Heading ---- */
+        .labs-section-heading {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .labs-section-heading h2 {
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 800;
+            color: #f1f5f9;
+            margin: 0 0 10px;
+            letter-spacing: -0.015em;
+        }
+
+        .labs-section-heading p {
+            font-size: 15px;
+            color: #64748b;
+            margin: 0;
+        }
+
+        /* ---- Labs Grid ---- */
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        /* ---- Lab Card ---- */
+        .lab-card {
+            display: flex;
+            flex-direction: column;
+            background: rgba(13, 20, 38, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 28px;
+            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.22s ease;
+        }
+
+        .lab-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.35);
+            box-shadow: 0 12px 36px rgba(37, 99, 235, 0.2);
+        }
+
+        .lab-card-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .lab-icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 12px;
+        }
+
+        .lab-icon svg {
+            width: 24px;
+            height: 24px;
+            color: #60a5fa;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.75;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .lab-card-top > div > h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin: 0 0 5px;
+            line-height: 1.3;
+        }
+
+        .lab-count {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #60a5fa;
+        }
+
+        .lab-card > p {
+            font-size: 14px;
+            line-height: 1.65;
+            color: #64748b;
+            margin: 0 0 16px;
+        }
+
+        .lab-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            flex: 1;
+        }
+
+        .lab-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13.5px;
+            color: #94a3b8;
+        }
+
+        .lab-list li::before {
+            content: '';
+            flex-shrink: 0;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #3b82f6;
+            opacity: 0.7;
+        }
+
+        /* ---- How It Works ---- */
+        .how-it-works {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 40px;
+            margin-bottom: 32px;
+        }
+
+        .how-it-works h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin: 0 0 28px;
+            text-align: center;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            padding: 22px 20px;
+        }
+
+        .step-number {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+
+        .step strong {
+            display: block;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #64748b;
+            margin: 0;
+        }
+
+        /* ---- Labs Note ---- */
+        .labs-note {
+            background: rgba(245, 158, 11, 0.07);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            border-left: 4px solid #f59e0b;
+            border-radius: 10px;
+            padding: 16px 22px;
+            font-size: 14px;
+            line-height: 1.65;
+            color: #94a3b8;
+        }
+
+        .labs-note strong {
+            color: #fcd34d;
+            font-weight: 700;
+        }
+
+        /* ---- Mobile sweep animation ---- */
+        @keyframes labMobileSweep {
+            0% { border-color: rgba(255, 255, 255, 0.07); box-shadow: none; }
+            50% { border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 0 18px rgba(59, 130, 246, 0.18); }
+            100% { border-color: rgba(255, 255, 255, 0.07); box-shadow: none; }
+        }
+
+        .lab-card.mobile-sweep {
+            animation: labMobileSweep 0.8s ease;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 1024px) {
+            .labs-grid { grid-template-columns: repeat(2, 1fr); }
+            .steps-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .labs-page { padding: 32px 16px 60px; }
+            .labs-header { padding: 28px 24px; }
+            .labs-intro-card { padding: 24px; }
+            .how-it-works { padding: 28px 20px; }
+        }
+
+        @media (max-width: 600px) {
+            .labs-grid { grid-template-columns: 1fr; }
+            .steps-grid { grid-template-columns: 1fr; }
+            .lab-flow { flex-direction: column; align-items: flex-start; }
+            .lab-flow-arrow { transform: rotate(90deg); padding: 0; }
+        }
+    </style>
 </head>
-
-
 <body>
-
 
     <!-- =====================================================
          NAVBAR
     ====================================================== -->
-
     <header class="navbar">
-
         <div class="nav-container">
-
             <a href="../../index.html" class="brand">
-
                 <div class="brand-logo">
-
                     <svg viewBox="0 0 50 60">
-
-                        <path
-                            d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="3"
-                        />
-
-                        <rect
-                            x="18"
-                            y="25"
-                            width="14"
-                            height="14"
-                            rx="2"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2.5"
-                        />
-
-                        <path
-                            d="M20 25 V20 C20 16 30 16 30 20 V25"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2.5"
-                        />
-
-                        <circle
-                            cx="25"
-                            cy="31"
-                            r="2"
-                            fill="currentColor"
-                        />
-
-                        <path
-                            d="M25 33 V36"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        />
-
+                        <path d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z" fill="none" stroke="currentColor" stroke-width="3"/>
+                        <rect x="18" y="25" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                        <path d="M20 25 V20 C20 16 30 16 30 20 V25" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                        <circle cx="25" cy="31" r="2" fill="currentColor"/>
+                        <path d="M25 33 V36" stroke="currentColor" stroke-width="2"/>
                     </svg>
-
                 </div>
-
-
                 <div class="brand-text">
-
-                    <div class="brand-name">
-                        Cyber<span>Nexa</span>
-                    </div>
-
-                    <div class="brand-tagline">
-                        Cybersecurity &amp; IT Learning
-                    </div>
-
+                    <div class="brand-name">Cyber<span>Nexa</span></div>
+                    <div class="brand-tagline">Cybersecurity &amp; IT Learning</div>
                 </div>
-
             </a>
-
         </div>
-
     </header>
-
-
 
     <!-- =====================================================
          MAIN CONTENT
     ====================================================== -->
-
     <main class="labs-page">
-
         <div class="labs-container">
 
-
-            <!-- =================================================
+            <!-- ============================================
                  PAGE HEADER
-            ================================================== -->
-
+            ============================================= -->
             <header class="labs-header">
-
-                <div class="labs-category">PRACTICAL LEARNING</div>
-
-                <h1>
- Practical <span>Cybersecurity Labs</span>
- </h1>
-
+                <div class="labs-category">Practical Learning</div>
+                <h1>Practical <span>Cybersecurity Labs</span></h1>
                 <p class="labs-intro">
-
-                    Turn cybersecurity theory into practical skills through
-                    guided, hands-on labs covering cybersecurity, networking,
-                    Linux, web security, Python, ethical hacking, SOC,
-                    incident response, Windows security, digital forensics
-                    and cybersecurity tools.
-
+                    Turn cybersecurity theory into practical skills through guided, hands-on labs covering
+                    cybersecurity, networking, Linux, web security, Python, ethical hacking, SOC,
+                    incident response, Windows security, digital forensics and cybersecurity tools.
                 </p>
-
             </header>
 
-
-
-            <!-- =================================================
+            <!-- ============================================
                  INTRODUCTION
-            ================================================== -->
-
+            ============================================= -->
             <section class="labs-intro-card">
-
-                <h2>
- Learn → Practice → Build Skills
- </h2>
-
+                <h2>Learn → Practice → Build Skills</h2>
                 <p>
-
-                    CyberNexa practical labs are designed to connect each
-                    learning topic with a hands-on exercise. Study the
-                    theory first, perform the related practical task,
-                    understand the result and then continue to the next topic.
-
+                    CyberNexa practical labs are designed to connect each learning topic with a hands-on exercise.
+                    Study the theory first, perform the related practical task, understand the result and then
+                    continue to the next topic.
                 </p>
-
-
                 <div class="lab-flow">
-
-                    <div class="lab-flow-item">
-                        📖 Theory
-                    </div>
-
-                    <div class="lab-flow-arrow">
-                        →
-                    </div>
-
-                    <div class="lab-flow-item">
-                        🧪 Practical Lab
-                    </div>
-
-                    <div class="lab-flow-arrow">
-                        →
-                    </div>
-
-                    <div class="lab-flow-item">
-                        ✓ Result
-                    </div>
-
-                    <div class="lab-flow-arrow">
-                        →
-                    </div>
-
-                    <div class="lab-flow-item">
-                        🚀 Next Topic
-                    </div>
-
+                    <div class="lab-flow-item">📖 Theory</div>
+                    <div class="lab-flow-arrow">→</div>
+                    <div class="lab-flow-item">🧪 Practical Lab</div>
+                    <div class="lab-flow-arrow">→</div>
+                    <div class="lab-flow-item">✓ Result</div>
+                    <div class="lab-flow-arrow">→</div>
+                    <div class="lab-flow-item">🚀 Next Topic</div>
                 </div>
-
             </section>
 
-
-
-            <!-- =================================================
+            <!-- ============================================
                  LAB SECTION HEADING
-            ================================================== -->
-
+            ============================================= -->
             <div class="labs-section-heading">
-
-                <h2>
- Explore Practical Labs
- </h2>
-
-                <p>
-                    Select a learning area to explore its dedicated
-                    hands-on laboratory exercises.
-                </p>
-
+                <h2>Explore Practical Labs</h2>
+                <p>Select a learning area to explore its dedicated hands-on laboratory exercises.</p>
             </div>
 
-
-
-            <!-- =================================================
+            <!-- ============================================
                  ALL 12 LAB CATEGORIES
-            ================================================== -->
-
+            ============================================= -->
             <section class="labs-grid">
 
-
-                <!-- =================================================
-                     01 - CYBERSECURITY
-                ================================================== -->
-
+                <!-- 01 - CYBERSECURITY -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            ◇
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.5C16.5 22.15 20 17.25 20 12V6l-8-4z"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Cybersecurity Labs
- </h3>
-
-                            <div class="lab-count">
-                                CYBERSECURITY
-                            </div>
-
+                            <h3>Cybersecurity Labs</h3>
+                            <div class="lab-count">Cybersecurity</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Practice core cybersecurity concepts through
-                        controlled exercises covering threats, attacks,
-                        security controls and defensive techniques.
-
-                    </p>
-
-
+                    <p>Practice core cybersecurity concepts through controlled exercises covering threats, attacks, security controls and defensive techniques.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            Security Fundamentals
-                        </li>
-
-                        <li>
-                            Threats &amp; Vulnerabilities
-                        </li>
-
-                        <li>
-                            Security Controls
-                        </li>
-
-                        <li>
-                            Defensive Techniques
-                        </li>
-
+                        <li>Security Fundamentals</li>
+                        <li>Threats &amp; Vulnerabilities</li>
+                        <li>Security Controls</li>
+                        <li>Defensive Techniques</li>
                     </ul>
-
-
-                    <a
-                        href="../cybersecurity/lab/cybersecurity-lab.html"
-                        class="lab-button"
-                    >
-
- Explore Cybersecurity Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../cybersecurity/lab/cybersecurity-lab.html" class="lab-button">Explore Cybersecurity Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     02 - NETWORKING
-                ================================================== -->
-
+                <!-- 02 - NETWORKING -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            ◎
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Networking Labs
- </h3>
-
-                            <div class="lab-count">
-                                NETWORKING
-                            </div>
-
+                            <h3>Networking Labs</h3>
+                            <div class="lab-count">Networking</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Build practical networking skills through
-                        exercises involving IP addresses, DNS, DHCP,
-                        ports, protocols and troubleshooting.
-
-                    </p>
-
-
+                    <p>Build practical networking skills through exercises involving IP addresses, DNS, DHCP, ports, protocols and troubleshooting.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            IP Addressing
-                        </li>
-
-                        <li>
-                            DNS &amp; DHCP
-                        </li>
-
-                        <li>
-                            Ports &amp; Protocols
-                        </li>
-
-                        <li>
-                            Network Troubleshooting
-                        </li>
-
+                        <li>IP Addressing</li>
+                        <li>DNS &amp; DHCP</li>
+                        <li>Ports &amp; Protocols</li>
+                        <li>Network Troubleshooting</li>
                     </ul>
-
-
-                    <a
-                        href="../networking/lab/lab.html"
-                        class="lab-button"
-                    >
-
- Explore Networking Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../networking/lab/lab.html" class="lab-button">Explore Networking Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     03 - LINUX
-                ================================================== -->
-
+                <!-- 03 - LINUX -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            &gt;_
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <polyline points="4 17 10 11 4 5"/>
+                                <line x1="12" y1="19" x2="20" y2="19"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Linux Labs
- </h3>
-
-                            <div class="lab-count">
-                                LINUX
-                            </div>
-
+                            <h3>Linux Labs</h3>
+                            <div class="lab-count">Linux</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Practice Linux administration and security
-                        using commands, permissions, processes,
-                        services, SSH and system logs.
-
-                    </p>
-
-
+                    <p>Practice Linux administration and security using commands, permissions, processes, services, SSH and system logs.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            Linux Commands
-                        </li>
-
-                        <li>
-                            File Permissions
-                        </li>
-
-                        <li>
-                            Processes &amp; Services
-                        </li>
-
-                        <li>
-                            SSH &amp; Linux Security
-                        </li>
-
+                        <li>Linux Commands</li>
+                        <li>File Permissions</li>
+                        <li>Processes &amp; Services</li>
+                        <li>SSH &amp; Linux Security</li>
                     </ul>
-
-
-                    <a
-                        href="../linux/lab/linux-labs.html"
-                        class="lab-button"
-                    >
-
- Explore Linux Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../linux/lab/linux-labs.html" class="lab-button">Explore Linux Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     04 - WEB SECURITY
-                ================================================== -->
-
+                <!-- 04 - WEB SECURITY -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            &lt;/&gt;
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <polyline points="16 18 22 12 16 6"/>
+                                <polyline points="8 6 2 12 8 18"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Web Security Labs
- </h3>
-
-                            <div class="lab-count">
-                                WEB SECURITY
-                            </div>
-
+                            <h3>Web Security Labs</h3>
+                            <div class="lab-count">Web Security</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Practice web security concepts using controlled
-                        exercises involving HTTP, authentication,
-                        vulnerabilities and security controls.
-
-                    </p>
-
-
+                    <p>Practice web security concepts using controlled exercises involving HTTP, authentication, vulnerabilities and security controls.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            HTTP &amp; HTTPS
-                        </li>
-
-                        <li>
-                            Authentication
-                        </li>
-
-                        <li>
-                            Web Vulnerabilities
-                        </li>
-
-                        <li>
-                            Security Controls
-                        </li>
-
+                        <li>HTTP &amp; HTTPS</li>
+                        <li>Authentication</li>
+                        <li>Web Vulnerabilities</li>
+                        <li>Security Controls</li>
                     </ul>
-
-
-                    <a
-                        href="../web-security/lab/web-security-lab.html"
-                        class="lab-button"
-                    >
-
- Explore Web Security Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../web-security/lab/web-security-lab.html" class="lab-button">Explore Web Security Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     05 - PYTHON FOR CYBERSECURITY
-                ================================================== -->
-
+                <!-- 05 - PYTHON -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            Py
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 2C8.5 2 8 3.5 8 5v2h4v1H6C4.3 8 3 9.3 3 11v3c0 1.7 1.3 3 3 3h1v-2.5c0-1.9 1.6-3.5 3.5-3.5h4c1.4 0 2.5-1.1 2.5-2.5v-4C17 3.1 14.9 2 12 2zM10.5 4.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                <path d="M12 22c3.5 0 4-1.5 4-3v-2h-4v-1h6c1.7 0 3-1.3 3-3v-3c0-1.7-1.3-3-3-3h-1v2.5c0 1.9-1.6 3.5-3.5 3.5h-4C8.1 13 7 14.1 7 15.5v4C7 20.9 9.1 22 12 22zM13.5 19.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Python for Cybersecurity Labs
- </h3>
-
-                            <div class="lab-count">
-                                PYTHON
-                            </div>
-
+                            <h3>Python for Cybersecurity Labs</h3>
+                            <div class="lab-count">Python</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Apply Python programming to cybersecurity
-                        automation, file handling, network tasks,
-                        data processing and security scripting.
-
-                    </p>
-
-
+                    <p>Apply Python programming to cybersecurity automation, file handling, network tasks, data processing and security scripting.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            Python Basics
-                        </li>
-
-                        <li>
-                            File &amp; Data Processing
-                        </li>
-
-                        <li>
-                            Security Automation
-                        </li>
-
-                        <li>
-                            Cybersecurity Scripts
-                        </li>
-
+                        <li>Python Basics</li>
+                        <li>File &amp; Data Processing</li>
+                        <li>Security Automation</li>
+                        <li>Cybersecurity Scripts</li>
                     </ul>
-
-
-                    <a
-                        href="../python/lab/python-labs.html"
-                        class="lab-button"
-                    >
-
- Explore Python Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../python/lab/python-labs.html" class="lab-button">Explore Python Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     06 - ETHICAL HACKING
-                ================================================== -->
-
+                <!-- 06 - ETHICAL HACKING -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            ⚔
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Ethical Hacking Labs
- </h3>
-
-                            <div class="lab-count">
-                                OFFENSIVE SECURITY
-                            </div>
-
+                            <h3>Ethical Hacking Labs</h3>
+                            <div class="lab-count">Offensive Security</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Practice ethical hacking methodology through
-                        authorized and controlled exercises covering
-                        reconnaissance, scanning and security testing.
-
-                    </p>
-
-
+                    <p>Practice ethical hacking methodology through authorized and controlled exercises covering reconnaissance, scanning and security testing.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            Reconnaissance
-                        </li>
-
-                        <li>
-                            Scanning
-                        </li>
-
-                        <li>
-                            Enumeration
-                        </li>
-
-                        <li>
-                            Security Testing
-                        </li>
-
+                        <li>Reconnaissance</li>
+                        <li>Scanning</li>
+                        <li>Enumeration</li>
+                        <li>Security Testing</li>
                     </ul>
-
-
-                    <a
-                        href="../ethical-hacking/lab/ethical-hacking-lab.html"
-                        class="lab-button"
-                    >
-
- Explore Ethical Hacking Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../ethical-hacking/lab/ethical-hacking-lab.html" class="lab-button">Explore Ethical Hacking Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     07 - SOC & BLUE TEAM
-                ================================================== -->
-
+                <!-- 07 - SOC & BLUE TEAM -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            ⚡
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                <path d="M8 21h8M12 17v4"/>
+                                <circle cx="12" cy="10" r="2.5"/>
+                                <path d="M9.5 10a2.5 2.5 0 0 1 5 0"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- SOC &amp; Blue Team Labs
- </h3>
-
-                            <div class="lab-count">
-                                DEFENSIVE SECURITY
-                            </div>
-
+                            <h3>SOC &amp; Blue Team Labs</h3>
+                            <div class="lab-count">Defensive Security</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Develop defensive security skills through
-                        log analysis, monitoring, alert investigation
-                        and basic security operations.
-
-                    </p>
-
-
+                    <p>Develop defensive security skills through log analysis, monitoring, alert investigation and basic security operations.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            Security Monitoring
-                        </li>
-
-                        <li>
-                            Log Analysis
-                        </li>
-
-                        <li>
-                            Alert Investigation
-                        </li>
-
-                        <li>
-                            Threat Detection
-                        </li>
-
+                        <li>Security Monitoring</li>
+                        <li>Log Analysis</li>
+                        <li>Alert Investigation</li>
+                        <li>Threat Detection</li>
                     </ul>
-
-
-                    <a
-                        href="../soc-blue-team/lab/soc-blue-team-lab.html"
-                        class="lab-button"
-                    >
-
- Explore SOC Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../soc-blue-team/lab/soc-blue-team-lab.html" class="lab-button">Explore SOC Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     08 - INCIDENT RESPONSE
-                ================================================== -->
-
+                <!-- 08 - INCIDENT RESPONSE -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            !
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                                <line x1="12" y1="2" x2="12" y2="4"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Incident Response Labs
- </h3>
-
-                            <div class="lab-count">
-                                INCIDENT RESPONSE
-                            </div>
-
+                            <h3>Incident Response Labs</h3>
+                            <div class="lab-count">Incident Response</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Practice the basic incident response lifecycle
-                        through controlled scenarios involving detection,
-                        investigation, containment and recovery.
-
-                    </p>
-
-
+                    <p>Practice the basic incident response lifecycle through controlled scenarios involving detection, investigation, containment and recovery.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            Incident Detection
-                        </li>
-
-                        <li>
-                            Investigation
-                        </li>
-
-                        <li>
-                            Containment
-                        </li>
-
-                        <li>
-                            Recovery
-                        </li>
-
+                        <li>Incident Detection</li>
+                        <li>Investigation</li>
+                        <li>Containment</li>
+                        <li>Recovery</li>
                     </ul>
-
-
-                    <a
-                        href="../incident-response/lab/incident-response-lab.html"
-                        class="lab-button"
-                    >
-
- Explore Incident Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../incident-response/lab/incident-response-lab.html" class="lab-button">Explore Incident Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     09 - WINDOWS & SYSTEM SECURITY
-                ================================================== -->
-
+                <!-- 09 - WINDOWS -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            ◈
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="3" width="8" height="8" rx="1"/>
+                                <rect x="13" y="3" width="8" height="8" rx="1"/>
+                                <rect x="3" y="13" width="8" height="8" rx="1"/>
+                                <rect x="13" y="13" width="8" height="8" rx="1"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Windows &amp; System Security Labs
- </h3>
-
-                            <div class="lab-count">
-                                WINDOWS SECURITY
-                            </div>
-
+                            <h3>Windows &amp; System Security Labs</h3>
+                            <div class="lab-count">Windows Security</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Practice Windows administration and security
-                        using CMD, PowerShell, users, services,
-                        firewall, event logs and system hardening.
-
-                    </p>
-
-
+                    <p>Practice Windows administration and security using CMD, PowerShell, users, services, firewall, event logs and system hardening.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            CMD &amp; PowerShell
-                        </li>
-
-                        <li>
-                            Users &amp; Groups
-                        </li>
-
-                        <li>
-                            Firewall &amp; Event Logs
-                        </li>
-
-                        <li>
-                            System Hardening
-                        </li>
-
+                        <li>CMD &amp; PowerShell</li>
+                        <li>Users &amp; Groups</li>
+                        <li>Firewall &amp; Event Logs</li>
+                        <li>System Hardening</li>
                     </ul>
-
-
-                    <a
-                        href="../windows/labs/windows-labs.html"
-                        class="lab-button"
-                    >
-
- Explore Windows Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../windows/labs/windows-labs.html" class="lab-button">Explore Windows Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     10 - DIGITAL FORENSICS
-                ================================================== -->
-
+                <!-- 10 - DIGITAL FORENSICS -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            ◫
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="11" cy="11" r="7"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                                <line x1="11" y1="8" x2="11" y2="14"/>
+                                <line x1="8" y1="11" x2="14" y2="11"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Digital Forensics Labs
- </h3>
-
-                            <div class="lab-count">
-                                DIGITAL FORENSICS
-                            </div>
-
+                            <h3>Digital Forensics Labs</h3>
+                            <div class="lab-count">Digital Forensics</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Learn practical digital forensics concepts
-                        through controlled exercises involving evidence
-                        collection, preservation, examination and analysis.
-
-                    </p>
-
-
+                    <p>Learn practical digital forensics concepts through controlled exercises involving evidence collection, preservation, examination and analysis.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            Evidence Collection
-                        </li>
-
-                        <li>
-                            Evidence Preservation
-                        </li>
-
-                        <li>
-                            File Analysis
-                        </li>
-
-                        <li>
-                            Digital Investigation
-                        </li>
-
+                        <li>Evidence Collection</li>
+                        <li>Evidence Preservation</li>
+                        <li>File Analysis</li>
+                        <li>Digital Investigation</li>
                     </ul>
-
-
-                    <a
-                        href="../digital-forensics/lab/digital-forensics-lab.html"
-                        class="lab-button"
-                    >
-
- Explore Forensics Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../digital-forensics/lab/digital-forensics-lab.html" class="lab-button">Explore Forensics Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     11 - PRACTICAL CYBERSECURITY
-                ================================================== -->
-
+                <!-- 11 - PRACTICAL CYBERSECURITY -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            ⌘
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                <polyline points="2 17 12 22 22 17"/>
+                                <polyline points="2 12 12 17 22 12"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Practical Cybersecurity Labs
- </h3>
-
-                            <div class="lab-count">
-                                HANDS-ON PRACTICE
-                            </div>
-
+                            <h3>Practical Cybersecurity Labs</h3>
+                            <div class="lab-count">Hands-On Practice</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Combine cybersecurity knowledge through practical
-                        scenarios covering multiple security concepts,
-                        systems and defensive activities.
-
-                    </p>
-
-
+                    <p>Combine cybersecurity knowledge through practical scenarios covering multiple security concepts, systems and defensive activities.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            Security Scenarios
-                        </li>
-
-                        <li>
-                            System Security
-                        </li>
-
-                        <li>
-                            Network Security
-                        </li>
-
-                        <li>
-                            Defensive Practice
-                        </li>
-
+                        <li>Security Scenarios</li>
+                        <li>System Security</li>
+                        <li>Network Security</li>
+                        <li>Defensive Practice</li>
                     </ul>
-
-
-                    <a
-                        href="../cybersecurity/lab/cybersecurity-lab.html"
-                        class="lab-button"
-                    >
-
- Explore Practical Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../cybersecurity/lab/cybersecurity-lab.html" class="lab-button">Explore Practical Labs <span>→</span></a>
                 </article>
 
-
-
-                <!-- =================================================
-                     12 - CYBERSECURITY TOOLS
-                ================================================== -->
-
+                <!-- 12 - CYBERSECURITY TOOLS -->
                 <article class="lab-card">
-
                     <div class="lab-card-top">
-
                         <div class="lab-icon">
-                            ⚙
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                            </svg>
                         </div>
-
                         <div>
-
-                            <h3>
- Cybersecurity Tools Labs
- </h3>
-
-                            <div class="lab-count">
-                                SECURITY TOOLS
-                            </div>
-
+                            <h3>Cybersecurity Tools Labs</h3>
+                            <div class="lab-count">Security Tools</div>
                         </div>
-
                     </div>
-
-
-                    <p>
-
-                        Gain hands-on experience with commonly used
-                        cybersecurity tools for network analysis,
-                        scanning, monitoring and security testing.
-
-                    </p>
-
-
+                    <p>Gain hands-on experience with commonly used cybersecurity tools for network analysis, scanning, monitoring and security testing.</p>
                     <ul class="lab-list">
-
-                        <li>
-                            Network Analysis Tools
-                        </li>
-
-                        <li>
-                            Scanning Tools
-                        </li>
-
-                        <li>
-                            Security Testing Tools
-                        </li>
-
-                        <li>
-                            Monitoring Tools
-                        </li>
-
+                        <li>Network Analysis Tools</li>
+                        <li>Scanning Tools</li>
+                        <li>Security Testing Tools</li>
+                        <li>Monitoring Tools</li>
                     </ul>
-
-
-                    <a
-                        href="../cybersecurity-tools/lab/cyber-tools-lab.html"
-                        class="lab-button"
-                    >
-
- Explore Tools Labs
-
- <span>
- →
- </span>
-
- </a>
-
+                    <a href="../cybersecurity-tools/lab/cyber-tools-lab.html" class="lab-button">Explore Tools Labs <span>→</span></a>
                 </article>
-
 
             </section>
 
-
-
-            <!-- =================================================
+            <!-- ============================================
                  HOW IT WORKS
-            ================================================== -->
-
+            ============================================= -->
             <section class="how-it-works">
-
-                <h2>
- How Practical Learning Works
- </h2>
-
-
+                <h2>How Practical Learning Works</h2>
                 <div class="steps-grid">
-
-
                     <div class="step">
-
-                        <span class="step-number">
-                            STEP 01
-                        </span>
-
-                        <strong>
-                            Learn the Theory
-                        </strong>
-
-                        <p>
-                            Understand the concept through the
-                            CyberNexa learning path.
-                        </p>
-
+                        <span class="step-number">Step 01</span>
+                        <strong>Learn the Theory</strong>
+                        <p>Understand the concept through the CyberNexa learning path.</p>
                     </div>
-
-
                     <div class="step">
-
-                        <span class="step-number">
-                            STEP 02
-                        </span>
-
-                        <strong>
-                            Open the Lab
-                        </strong>
-
-                        <p>
-                            Use the practical lab link provided
-                            with the related topic.
-                        </p>
-
+                        <span class="step-number">Step 02</span>
+                        <strong>Open the Lab</strong>
+                        <p>Use the practical lab link provided with the related topic.</p>
                     </div>
-
-
                     <div class="step">
-
-                        <span class="step-number">
-                            STEP 03
-                        </span>
-
-                        <strong>
-                            Perform the Task
-                        </strong>
-
-                        <p>
-                            Follow the instructions and perform
-                            the hands-on exercise.
-                        </p>
-
+                        <span class="step-number">Step 03</span>
+                        <strong>Perform the Task</strong>
+                        <p>Follow the instructions and perform the hands-on exercise.</p>
                     </div>
-
-
                     <div class="step">
-
-                        <span class="step-number">
-                            STEP 04
-                        </span>
-
-                        <strong>
-                            Verify the Result
-                        </strong>
-
-                        <p>
-                            Check the expected result and continue
-                            to the next learning topic.
-                        </p>
-
+                        <span class="step-number">Step 04</span>
+                        <strong>Verify the Result</strong>
+                        <p>Check the expected result and continue to the next learning topic.</p>
                     </div>
-
-
                 </div>
-
             </section>
 
-
-
-            <!-- =================================================
+            <!-- ============================================
                  SECURITY NOTE
-            ================================================== -->
-
+            ============================================= -->
             <div class="labs-note">
-
-                <strong>
-                    Lab Safety:
-                </strong>
-
-                Perform practical cybersecurity exercises only in
-                systems, virtual machines, networks and applications
-                that you own or have explicit permission to test.
-
+                <strong>Lab Safety:</strong> Perform practical cybersecurity exercises only in systems, virtual machines, networks and applications that you own or have explicit permission to test.
             </div>
 
-
         </div>
-
     </main>
-
-
 
     <!-- =====================================================
          FOOTER
     ====================================================== -->
-
     <footer class="footer">
-
         <div class="footer-container">
-
             <div>
-
-                <div class="footer-brand">
-                    Cyber<span>Nexa</span>
-                </div>
-
-                <p>
-                    Cybersecurity &amp; IT Learning
-                </p>
-
+                <div class="footer-brand">Cyber<span>Nexa</span></div>
+                <p>Cybersecurity &amp; IT Learning</p>
             </div>
-
-
             <div class="footer-links">
-
-                <a href="../../index.html">
-                    Home
-                </a>
-
-                <a href="../../footer/about.html">
-                    About
-                </a>
-
-                <a href="../../footer/contact.html">
-                    Contact
-                </a>
-
-                <a href="../../footer/privacy-policy.html">
-                    Privacy Policy
-                </a>
-
-                <a href="../../footer/disclaimer.html">
-                    Disclaimer
-                </a>
-
+                <a href="../../index.html">Home</a>
+                <a href="../../footer/about.html">About</a>
+                <a href="../../footer/contact.html">Contact</a>
+                <a href="../../footer/privacy-policy.html">Privacy Policy</a>
+                <a href="../../footer/disclaimer.html">Disclaimer</a>
             </div>
-
         </div>
-
-
-        <div class="copyright">
-
-            © 2026 CyberNexa. All rights reserved.
-
-        </div>
-
+        <div class="copyright">© 2026 CyberNexa. All rights reserved.</div>
     </footer>
-
-
 
     <!-- =====================================================
          NAVBAR JS
     ====================================================== -->
-
     <script src="../../js/navbar.js"></script>
-
-
 
     <!-- =====================================================
          MOBILE SWEEP
     ====================================================== -->
-
     <script>
-
-        const labCards =
-            document.querySelectorAll(".lab-card");
-
+        const labCards = document.querySelectorAll(".lab-card");
         let labSweepTimeout;
 
-
         function triggerLabMobileSweep() {
-
-            if (window.innerWidth > 600) {
-
-                return;
-            }
-
-
+            if (window.innerWidth > 600) return;
             labCards.forEach(card => {
-
                 card.classList.remove("mobile-sweep");
-
                 void card.offsetWidth;
-
                 card.classList.add("mobile-sweep");
-
             });
-
-
             clearTimeout(labSweepTimeout);
-
-
             labSweepTimeout = setTimeout(() => {
-
-                labCards.forEach(card => {
-
-                    card.classList.remove("mobile-sweep");
-
-                });
-
+                labCards.forEach(card => card.classList.remove("mobile-sweep"));
             }, 800);
-
         }
 
-
-        window.addEventListener(
-            "touchstart",
-            triggerLabMobileSweep,
-            {
-                passive: true
-            }
-        );
-
-
-        window.addEventListener(
-            "scroll",
-            () => {
-
-                if (window.innerWidth <= 600) {
-
-                    triggerLabMobileSweep();
-
-                }
-
-            },
-            {
-                passive: true
-            }
-        );
+        window.addEventListener("touchstart", triggerLabMobileSweep, { passive: true });
+        window.addEventListener("scroll", () => {
+            if (window.innerWidth <= 600) triggerLabMobileSweep();
+        }, { passive: true });
     </script>
 </body>
 </html>
