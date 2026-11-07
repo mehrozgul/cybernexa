@@ -82,7 +82,7 @@
             const segments = path.split("/").filter(Boolean);
             const index = segments.findIndex(s => s === "learning-paths" || s === "tutorials" || s === "dashboard" || s === "auth" || s === "footer");
             if (index >= 0) {
-                const upLevels = "../".repeat(segments.length - index);
+                const upLevels = "../".repeat(Math.max(1, segments.length - 1 - index));
                 return new URL(upLevels, window.location.href).href;
             }
         }

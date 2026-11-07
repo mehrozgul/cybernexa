@@ -34,17 +34,17 @@
          * Replace each URL with an existing landing-page HTML file if needed.
          */
         const COURSE_START_URLS = {
-            cybersecurity: "../learning-paths/cybersecurity/",
-            "cybersecurity-tools": "../learning-paths/cybersecurity-tools/",
-            "digital-forensics": "../learning-paths/digital-forensics/",
-            "ethical-hacking": "../learning-paths/ethical-hacking/",
-            "incident-response": "../learning-paths/incident-response/",
-            linux: "../learning-paths/linux/",
-            networking: "../learning-paths/networking/",
-            python: "../learning-paths/python/",
-            "soc-blue-team": "../learning-paths/soc-blue-team/",
-            "web-security": "../learning-paths/web-security/",
-            windows: "../learning-paths/windows/"
+            cybersecurity: "../learning-paths/cybersecurity/theory/cybersecurity.html",
+            "cybersecurity-tools": "../learning-paths/cybersecurity-tools/theory/cyber-tools.html",
+            "digital-forensics": "../learning-paths/digital-forensics/theory/digital-forensics.html",
+            "ethical-hacking": "../learning-paths/ethical-hacking/theory/ethical-hacking.html",
+            "incident-response": "../learning-paths/incident-response/theory/incident-response.html",
+            linux: "../learning-paths/linux/theory/linux.html",
+            networking: "../learning-paths/networking/theory/networking.html",
+            python: "../learning-paths/python/theory/python-basics.html",
+            "soc-blue-team": "../learning-paths/soc-blue-team/theory/soc-blue-team.html",
+            "web-security": "../learning-paths/web-security/theory/web-security.html",
+            windows: "../learning-paths/windows/theory/windows.html"
         };
 
         const $ = id => document.getElementById(id);

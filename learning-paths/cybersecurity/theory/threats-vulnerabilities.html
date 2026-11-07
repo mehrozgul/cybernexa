@@ -21,7 +21,751 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../../../css/base.css">
-        <link rel="stylesheet" href="../../../css/navbar.css">
+        <style>
+
+        /* =====================================================
+           GLOBAL PAGE CONTROL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ====================================================== */
+
+        .cyber-topic-page {
+
+            width: 100%;
+            min-height: calc(100vh - 80px);
+
+            padding: 65px 20px 80px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 191, 255, 0.09),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(0, 100, 180, 0.06),
+                    transparent 30%
+                ),
+                #020714;
+        }
+
+
+        .cyber-topic-container {
+
+            width: 100%;
+            max-width: 1050px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           TOPIC HEADER
+        ====================================================== */
+
+        .topic-header {
+
+            text-align: center;
+
+            margin-bottom: 48px;
+        }
+
+
+        .topic-label {
+
+            display: inline-block;
+
+            margin-bottom: 13px;
+
+            color: #00bfff;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .topic-icon {
+
+            width: 62px;
+            height: 62px;
+
+            margin: 0 auto 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(0, 191, 255, 0.25);
+
+            border-radius: 14px;
+
+            color: #00bfff;
+
+            background: rgba(0, 191, 255, 0.055);
+
+            box-shadow:
+                0 0 25px rgba(0, 191, 255, 0.05);
+        }
+
+
+        .topic-icon svg {
+
+            width: 34px;
+            height: 34px;
+
+            fill: none;
+
+            stroke: currentColor;
+
+            stroke-width: 1.8;
+
+            stroke-linecap: round;
+
+            stroke-linejoin: round;
+        }
+
+
+        .topic-header h1 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 43px;
+
+            line-height: 1.2;
+
+            font-weight: 800;
+        }
+
+
+        .topic-header h1 span {
+
+            color: #00bfff;
+        }
+
+
+        .topic-intro {
+
+            max-width: 760px;
+
+            margin: 17px auto 0;
+
+            color: #91a4bd;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           CONTENT BOX
+        ====================================================== */
+
+        .topic-section {
+
+            margin-bottom: 22px;
+
+            padding: 27px;
+
+            border: 1px solid rgba(0, 191, 255, 0.13);
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(7, 26, 51, 0.96),
+                    rgba(3, 16, 32, 0.96)
+                );
+
+            box-shadow:
+                0 13px 35px rgba(0, 0, 0, 0.20);
+        }
+
+
+        .topic-section h2 {
+
+            margin: 0 0 13px;
+
+            color: #ffffff;
+
+            font-size: 21px;
+
+            line-height: 1.4;
+        }
+
+
+        .topic-section h2 span {
+
+            color: #00bfff;
+        }
+
+
+        .topic-section p {
+
+            margin: 0 0 13px;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+
+
+        .topic-section p:last-child {
+
+            margin-bottom: 0;
+        }
+
+
+        /* =====================================================
+           DEFINITION BOX
+        ====================================================== */
+
+        .definition-box {
+
+            padding: 20px;
+
+            border-left: 3px solid #00bfff;
+
+            border-radius: 8px;
+
+            background: rgba(0, 191, 255, 0.045);
+        }
+
+
+        .definition-box strong {
+
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           THREAT / VULNERABILITY CARDS
+        ====================================================== */
+
+        .concept-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 15px;
+
+            margin-top: 18px;
+        }
+
+
+        .concept-card {
+
+            position: relative;
+
+            padding: 21px;
+
+            border: 1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 12px;
+
+            background: rgba(0, 191, 255, 0.025);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+
+        .concept-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: -120%;
+
+            width: 70%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(0, 191, 255, 0.12),
+                    transparent
+                );
+
+            transform: skewX(-20deg);
+
+            pointer-events: none;
+        }
+
+
+        .concept-card:hover::before {
+
+            animation: conceptSweep 0.75s ease;
+        }
+
+
+        @keyframes conceptSweep {
+
+            0% {
+                left: -120%;
+            }
+
+            100% {
+                left: 150%;
+            }
+        }
+
+
+        .concept-card:hover {
+
+            border-color: rgba(0, 191, 255, 0.32);
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.20);
+        }
+
+
+        .concept-icon {
+
+            width: 38px;
+            height: 38px;
+
+            margin-bottom: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid rgba(0, 191, 255, 0.20);
+
+            border-radius: 9px;
+
+            color: #00bfff;
+
+            background: rgba(0, 191, 255, 0.055);
+        }
+
+
+        .concept-icon svg {
+
+            width: 21px;
+            height: 21px;
+
+            fill: none;
+
+            stroke: currentColor;
+
+            stroke-width: 1.8;
+
+            stroke-linecap: round;
+
+            stroke-linejoin: round;
+        }
+
+
+        .concept-card h3 {
+
+            margin: 0 0 8px;
+
+            color: #ffffff;
+
+            font-size: 16px;
+        }
+
+
+        .concept-card p {
+
+            margin: 0;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =====================================================
+           COMPARISON
+        ====================================================== */
+
+        .comparison-table-wrapper {
+
+            width: 100%;
+
+            overflow-x: auto;
+
+            margin-top: 18px;
+        }
+
+
+        .comparison-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 600px;
+        }
+
+
+        .comparison-table th {
+
+            padding: 13px;
+
+            text-align: left;
+
+            color: #ffffff;
+
+            font-size: 12px;
+
+            background: rgba(0, 191, 255, 0.08);
+
+            border: 1px solid rgba(0, 191, 255, 0.10);
+        }
+
+
+        .comparison-table td {
+
+            padding: 13px;
+
+            color: #91a4bd;
+
+            font-size: 12px;
+
+            line-height: 1.65;
+
+            border: 1px solid rgba(0, 191, 255, 0.08);
+        }
+
+
+        .comparison-table td:first-child {
+
+            color: #bfeaff;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           EXAMPLE
+        ====================================================== */
+
+        .example-box {
+
+            margin-top: 17px;
+
+            padding: 21px;
+
+            border: 1px solid rgba(0, 191, 255, 0.12);
+
+            border-radius: 10px;
+
+            background: rgba(0, 0, 0, 0.18);
+        }
+
+
+        .example-box strong {
+
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: #ffffff;
+
+            font-size: 13px;
+        }
+
+
+        .example-box p {
+
+            margin: 0;
+
+            color: #8193aa;
+
+            font-size: 12px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           KEY POINTS
+        ====================================================== */
+
+        .key-points {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 10px;
+
+            margin-top: 17px;
+        }
+
+
+        .key-point {
+
+            padding: 13px 15px;
+
+            border: 1px solid rgba(0, 191, 255, 0.09);
+
+            border-radius: 8px;
+
+            color: #91a4bd;
+
+            background: rgba(0, 191, 255, 0.025);
+
+            font-size: 12px;
+
+            line-height: 1.65;
+        }
+
+
+        .key-point::before {
+
+            content: "✓";
+
+            margin-right: 8px;
+
+            color: #00bfff;
+
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .summary-box {
+
+            padding: 22px;
+
+            border: 1px solid rgba(0, 191, 255, 0.15);
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 191, 255, 0.045),
+                    rgba(0, 80, 150, 0.025)
+                );
+        }
+
+
+        .summary-box p {
+
+            margin: 0;
+
+            color: #91a4bd;
+
+            font-size: 13px;
+
+            line-height: 1.85;
+        }
+        
+        /* =====================================================
+           LAB BUTTON
+        ====================================================== */
+
+        .lab-button-area {
+
+            margin-top: 30px;
+
+            text-align: right;
+        }
+
+        .lab-button {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            padding: 13px 22px;
+
+            border:
+                1px solid rgba(0, 191, 255, 0.30);
+
+            border-radius: 9px;
+
+            color: #bfeaff;
+
+            background:
+                rgba(0, 191, 255, 0.06);
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition:
+                border-color 0.25s ease,
+                background 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .lab-button span {
+
+            color: #00bfff;
+
+            font-size: 16px;
+        }
+
+        .lab-button:hover {
+
+            border-color:
+                rgba(0, 191, 255, 0.55);
+
+            background:
+                rgba(0, 191, 255, 0.10);
+
+            transform: translateY(-2px);
+        }
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 700px) {
+
+            .cyber-topic-page {
+
+                padding: 45px 12px 60px;
+            }
+
+
+            .topic-header {
+
+                margin-bottom: 35px;
+            }
+
+
+            .topic-header h1 {
+
+                font-size: 30px;
+            }
+
+
+            .topic-intro {
+
+                font-size: 13px;
+
+                line-height: 1.75;
+            }
+
+
+            .topic-section {
+
+                padding: 20px 18px;
+
+                border-radius: 12px;
+            }
+
+
+            .topic-section h2 {
+
+                font-size: 18px;
+            }
+
+
+            .concept-grid {
+
+                grid-template-columns: 1fr;
+
+                gap: 11px;
+            }
+
+
+            .key-points {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .topic-navigation {
+
+                grid-template-columns: 1fr;
+
+                text-align: center;
+            }
+
+
+            .topic-nav-button.next {
+
+                text-align: center;
+            }
+
+
+            .all-topics {
+
+                order: -1;
+            }
+        }
+
+
+        @media (max-width: 380px) {
+
+            .cyber-topic-page {
+
+                padding-left: 10px;
+
+                padding-right: 10px;
+            }
+
+
+            .topic-header h1 {
+
+                font-size: 27px;
+            }
+
+
+            .topic-section {
+
+                padding: 18px 15px;
+            }
+        }
+
+    </style>
+    <link rel="stylesheet" href="../../../css/navbar.css">
         <link rel="stylesheet" href="../../../css/footer.css">
         <link rel="stylesheet" href="../../../css/lesson.css">
 
