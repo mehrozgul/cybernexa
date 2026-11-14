@@ -356,6 +356,12 @@
                     });
                 }
 
+                if (course.percent === 100) {
+                    card.classList.add('course-complete');
+                    const badge = makeElement('div', 'path-complete-badge', '✓ Course Complete!');
+                    card.prepend(badge);
+                }
+
                 card.appendChild(link);
                 grid.appendChild(card);
             });
@@ -410,6 +416,33 @@
                     "aria-valuenow",
                     String(overallPercent)
                 );
+            }
+
+            // Sync the visible percentage label next to the progress bar
+            const pctLabel = document.getElementById("overallProgressLabel");
+            if (pctLabel) {
+                pctLabel.textContent =
+                    totalLessons !== null && totalLessons > 0
+                        ? overallPercent + "%"
+                        : "—";
+            }
+
+            // Motivational tip based on progress
+            const tipEl = document.getElementById("motivationalTip");
+            if (tipEl) {
+                if (overallPercent === 0) {
+                    tipEl.textContent = "Start your first lesson to begin tracking progress! 🌱";
+                } else if (overallPercent < 25) {
+                    tipEl.textContent = "Great start! Keep the momentum going. 🚀";
+                } else if (overallPercent < 50) {
+                    tipEl.textContent = "You're building real skills — keep it up! 💪";
+                } else if (overallPercent < 75) {
+                    tipEl.textContent = "Halfway there! You're doing amazing. ⚡";
+                } else if (overallPercent < 100) {
+                    tipEl.textContent = "Almost done — the finish line is in sight! 🎯";
+                } else {
+                    tipEl.textContent = "Outstanding! You've completed all your courses! 🏆";
+                }
             }
 
             setText("activePaths", String(activeCourses.length));

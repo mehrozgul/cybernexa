@@ -1,18 +1,19 @@
 /* =====================================================
-   CYBERNEXA — PROFILE PAGE
-   Human-crafted, realistic student account settings
+   CYBERNEXA — PROFILE PAGE  (Redesigned)
+   Dark theme: bg #07101e, cards #0d1b2e, accent #3b82f6
 ===================================================== */
 
+/* ── Custom properties ── */
 .profile-page {
-    --profile-bg: #090e17;
-    --profile-panel: #0d1525;
+    --profile-bg:          #07101e;
+    --profile-panel:       #0d1b2e;
     --profile-panel-light: #121c30;
-    --profile-border: rgba(255, 255, 255, 0.08);
-    --profile-primary: #3b82f6;
-    --profile-blue: #2563eb;
-    --profile-text: #f8fafc;
-    --profile-muted: #94a3b8;
-    --profile-danger: #f87171;
+    --profile-border:      rgba(255, 255, 255, 0.08);
+    --profile-primary:     #3b82f6;
+    --profile-blue:        #2563eb;
+    --profile-text:        #f8fafc;
+    --profile-muted:       #94a3b8;
+    --profile-danger:      #f87171;
 
     min-height: 100vh;
     margin: 0;
@@ -25,6 +26,7 @@
     display: none !important;
 }
 
+/* ── Layout ── */
 .profile-container {
     width: min(1040px, calc(100% - 40px));
     margin: 0 auto;
@@ -98,7 +100,10 @@
     margin-bottom: 24px;
 }
 
-/* Profile Overview Card */
+/* =====================================================
+   PROFILE OVERVIEW CARD  — avatar ring
+===================================================== */
+
 .profile-overview {
     display: flex;
     align-items: center;
@@ -107,18 +112,36 @@
     flex-wrap: wrap;
 }
 
-.profile-overview .avatar {
-    width: 64px;
-    height: 64px;
+/* Gradient border ring around the avatar */
+.profile-avatar-ring {
+    flex-shrink: 0;
+    padding: 3px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    color: #ffffff;
-    font-size: 24px;
+    background: linear-gradient(135deg, #3b82f6, #a855f7, #3b82f6);
+    background-size: 300% 300%;
+    animation: avatar-ring-spin 4s linear infinite;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.35), 0 0 40px rgba(168, 85, 247, 0.2);
+}
+
+@keyframes avatar-ring-spin {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Avatar circle inside the ring */
+.profile-overview .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e3a5f 0%, #0d1b2e 100%);
+    color: #60a5fa;
+    font-size: 30px;
     font-weight: 800;
     display: grid;
     place-items: center;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
-    flex-shrink: 0;
+    border: 3px solid var(--profile-panel);
+    letter-spacing: -0.02em;
 }
 
 .overview-details {
@@ -127,7 +150,7 @@
 }
 
 .overview-details h2 {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: #ffffff;
     margin: 4px 0 2px;
@@ -136,13 +159,80 @@
 .study-label {
     display: inline-block;
     margin-top: 6px;
-    padding: 2px 8px;
-    border-radius: 6px;
+    padding: 2px 10px;
+    border-radius: 20px;
     background: rgba(16, 185, 129, 0.12);
     border: 1px solid rgba(16, 185, 129, 0.25);
     color: #6ee7b7;
     font-size: 11px;
     font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+/* =====================================================
+   PROFILE TABS  (pills style)
+===================================================== */
+
+.profile-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.profile-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--profile-border);
+    background: var(--profile-panel);
+    color: var(--profile-muted);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.profile-tab-btn:hover {
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.07);
+}
+
+.profile-tab-btn.active {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+}
+
+.profile-tab-btn svg {
+    opacity: 0.8;
+}
+
+.profile-tab-btn.active svg {
+    opacity: 1;
+}
+
+/* =====================================================
+   TAB CONTENT PANELS
+===================================================== */
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: tab-fade-in 0.25s ease;
+}
+
+@keyframes tab-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 /* =====================================================
@@ -167,6 +257,19 @@
     font-weight: 700;
     color: #ffffff;
     margin: 4px 0 2px;
+}
+
+.text-link {
+    color: var(--profile-primary);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.text-link:hover {
+    color: #93c5fd;
+    text-decoration: underline;
 }
 
 .form-grid {
@@ -226,6 +329,11 @@
     margin-top: 24px;
 }
 
+.small-text {
+    font-size: 12px;
+    margin: 12px 0 0;
+}
+
 /* =====================================================
    BUTTONS
 ===================================================== */
@@ -283,7 +391,7 @@
 }
 
 /* =====================================================
-   LEARNING SUMMARY & STATS
+   LEARNING STATS GRID  — profile-stat-card
 ===================================================== */
 
 .stats-grid {
@@ -293,6 +401,62 @@
     margin: 20px 0;
 }
 
+/* Modern stat card */
+.profile-stat-card {
+    padding: 22px 20px 18px;
+    border: 1px solid rgba(59, 130, 246, 0.14);
+    border-radius: 14px;
+    background: rgba(59, 130, 246, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #a855f7);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.profile-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+}
+
+.profile-stat-card:hover::before {
+    opacity: 1;
+}
+
+.profile-stat-icon {
+    font-size: 22px;
+    margin-bottom: 2px;
+    line-height: 1;
+}
+
+.profile-stat-card strong {
+    font-size: 26px;
+    font-weight: 800;
+    color: #60a5fa;
+    line-height: 1;
+}
+
+.profile-stat-card .stat-label {
+    font-size: 11.5px;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Keep old .stat-card for any backward-compat */
 .profile-page .stat-card {
     padding: 18px 20px;
     border: 1px solid rgba(255, 255, 255, 0.07);
@@ -317,6 +481,7 @@
     color: #60a5fa;
 }
 
+/* Last Activity Row */
 .last-activity {
     padding: 14px 18px;
     border-radius: 10px;
@@ -329,6 +494,11 @@
     font-size: 14px;
     color: #cbd5e1;
     margin: 4px 0 0;
+}
+
+/* Course list */
+.course-list {
+    margin-top: 4px;
 }
 
 /* =====================================================
@@ -357,6 +527,10 @@
     margin: 0 0 4px;
 }
 
+/* =====================================================
+   PROFILE FOOTER
+===================================================== */
+
 .profile-footer {
     display: flex;
     align-items: center;
@@ -369,13 +543,23 @@
     gap: 16px;
 }
 
+.profile-footer span {
+    color: var(--profile-primary);
+    font-weight: 600;
+}
+
 .profile-footer a {
     color: #3b82f6;
     text-decoration: none;
+    transition: color 0.2s;
+}
+
+.profile-footer a:hover {
+    color: #93c5fd;
 }
 
 /* =====================================================
-   RESPONSIVE DESIGN (PROFILE)
+   RESPONSIVE
 ===================================================== */
 
 @media (max-width: 768px) {
@@ -389,12 +573,17 @@
     }
 
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .section-panel,
     .profile-overview {
         padding: 22px 18px;
+    }
+
+    .profile-tab-btn {
+        padding: 8px 14px;
+        font-size: 13px;
     }
 }
 
@@ -402,6 +591,19 @@
     .profile-heading {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-tabs {
+        gap: 6px;
+    }
+
+    .profile-tab-btn {
+        padding: 7px 12px;
+        font-size: 12.5px;
     }
 
     .form-actions {
