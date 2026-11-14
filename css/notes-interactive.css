@@ -1,0 +1,340 @@
+/* =========================================================
+   CYBERNEXA — INTERACTIVE NOTES STYLE v2
+   Real notes experience: collapsible, checkable, highlighted
+   Applies to ALL theory + lab pages automatically
+   ========================================================= */
+
+/* ── Notebook-feel background ── */
+body { background: #07101e; }
+
+/* ── Reading progress bar ── */
+#cnx-reading-bar {
+    position: fixed;
+    top: 68px; left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.05);
+    z-index: 998;
+    pointer-events: none;
+}
+#cnx-reading-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #38bdf8, #10b981);
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* ── Back to top ── */
+#cnx-back-top {
+    position: fixed;
+    bottom: 28px; right: 24px;
+    width: 40px; height: 40px;
+    background: #3b82f6;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(59,130,246,0.5);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+    z-index: 997;
+}
+#cnx-back-top.show { opacity: 1; pointer-events: all; }
+#cnx-back-top:hover { background: #2563eb; transform: translateY(-3px); }
+
+/* ── Reading time badge ── */
+.cnx-read-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 999px;
+    color: #6ee7b7;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* ── Auto-generated TOC (floating) ── */
+#cnx-toc-float {
+    display: none;
+}
+@media (min-width: 1200px) {
+    #cnx-toc-float {
+        display: block;
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        width: 200px;
+        background: #0d1a2e;
+        border: 1px solid rgba(59,130,246,0.15);
+        border-radius: 10px;
+        padding: 14px;
+        z-index: 100;
+        max-height: calc(100vh - 130px);
+        overflow-y: auto;
+    }
+    #cnx-toc-float::-webkit-scrollbar { width: 3px; }
+    #cnx-toc-float::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.3); border-radius: 999px; }
+
+    /* Shift main content left of TOC */
+    main, .article-page, .lab-page, .theory-page, .learning-page,
+    .eh-page, .ws-page, .df-page, .tool-page, .cyber-topic-page {
+        margin-right: 230px !important;
+        max-width: calc(900px) !important;
+    }
+}
+.cnx-toc-title {
+    font-size: 9px;
+    font-weight: 800;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 8px;
+    display: flex; align-items: center; gap: 5px;
+}
+.cnx-toc-title::before { content: '📋'; font-size: 11px; }
+.cnx-toc-link {
+    display: block;
+    padding: 4px 8px;
+    color: #64748b;
+    font-size: 11.5px;
+    text-decoration: none;
+    border-radius: 5px;
+    border-left: 2px solid transparent;
+    transition: all 0.18s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+.cnx-toc-link:hover, .cnx-toc-link.cnx-active {
+    background: rgba(59,130,246,0.1);
+    color: #93c5fd;
+    border-left-color: #3b82f6;
+}
+
+/* ── Collapsible section toggle ── */
+.cnx-section-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+    padding: 0;
+    font: inherit;
+}
+.cnx-section-toggle:hover { opacity: 0.85; }
+.cnx-toggle-icon {
+    width: 22px; height: 22px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    color: #60a5fa;
+    font-size: 14px;
+    font-weight: 400;
+    flex-shrink: 0;
+    transition: transform 0.2s, background 0.2s;
+    user-select: none;
+}
+.cnx-collapsed .cnx-toggle-icon { transform: rotate(-90deg); background: rgba(59,130,246,0.05); }
+.cnx-section-body {
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.25s;
+    max-height: 2000px;
+    opacity: 1;
+}
+.cnx-collapsed .cnx-section-body {
+    max-height: 0 !important;
+    opacity: 0;
+}
+
+/* ── Checkbox key-points ── */
+.cnx-check-item {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 9px 12px !important;
+    background: rgba(59,130,246,0.04) !important;
+    border: 1px solid rgba(59,130,246,0.1) !important;
+    border-radius: 8px !important;
+    color: #cbd5e1 !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    cursor: pointer !important;
+    transition: background 0.2s, border-color 0.2s, opacity 0.2s !important;
+    user-select: none !important;
+    list-style: none !important;
+}
+.cnx-check-item:hover { background: rgba(59,130,246,0.08) !important; border-color: rgba(59,130,246,0.22) !important; }
+.cnx-check-item.cnx-checked {
+    background: rgba(16,185,129,0.06) !important;
+    border-color: rgba(16,185,129,0.2) !important;
+    opacity: 0.75 !important;
+}
+.cnx-checkbox {
+    width: 16px; height: 16px;
+    border: 1.5px solid rgba(59,130,246,0.4);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.18s, border-color 0.18s;
+    background: rgba(255,255,255,0.03);
+}
+.cnx-check-item.cnx-checked .cnx-checkbox {
+    background: #10b981;
+    border-color: #10b981;
+}
+.cnx-checkbox::after {
+    content: '';
+    display: none;
+    width: 4px; height: 7px;
+    border: 1.5px solid #fff;
+    border-top: none; border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+}
+.cnx-check-item.cnx-checked .cnx-checkbox::after { display: block; }
+.cnx-item-text { flex: 1; min-width: 0; }
+.cnx-check-item.cnx-checked .cnx-item-text { text-decoration: line-through; color: #64748b !important; }
+
+/* ── Section done badge ── */
+.cnx-section-done-badge {
+    display: none;
+    padding: 2px 8px;
+    background: rgba(16,185,129,0.12);
+    border: 1px solid rgba(16,185,129,0.25);
+    border-radius: 999px;
+    color: #6ee7b7;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.cnx-section-done-badge.show { display: inline-flex; align-items: center; gap: 4px; }
+
+/* ── Short paragraph with "read more" ── */
+.cnx-para-short { display: block; }
+.cnx-para-rest { display: none; }
+.cnx-read-more-btn {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 4px;
+    transition: color 0.18s;
+}
+.cnx-read-more-btn:hover { color: #60a5fa; text-decoration: underline; }
+.cnx-para-expanded .cnx-para-rest { display: inline; }
+.cnx-para-expanded .cnx-read-more-btn { display: none; }
+
+/* ── Copy button for code blocks ── */
+.cnx-code-wrap {
+    position: relative;
+}
+.cnx-copy-btn {
+    position: absolute;
+    top: 8px; right: 8px;
+    padding: 3px 10px;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 5px;
+    color: #93c5fd;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+.cnx-copy-btn:hover { background: rgba(59,130,246,0.3); }
+.cnx-copy-btn.copied { color: #6ee7b7; border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.1); }
+
+/* ── Highlight marker style ── */
+mark, .highlight, .cnx-highlight {
+    background: rgba(245,158,11,0.25) !important;
+    color: #fcd34d !important;
+    border-radius: 3px !important;
+    padding: 1px 3px !important;
+    -webkit-text-fill-color: #fcd34d !important;
+}
+
+/* ── Progress counter in header ── */
+.cnx-progress-wrap {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.cnx-progress-bar-mini {
+    flex: 1;
+    max-width: 180px;
+    height: 5px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    overflow: hidden;
+}
+.cnx-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #10b981);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+.cnx-progress-label {
+    font-size: 11px;
+    color: #64748b;
+    white-space: nowrap;
+}
+
+/* ── Smooth scrolling ── */
+html { scroll-behavior: smooth; }
+
+/* ── Selection ── */
+::selection { background: rgba(59,130,246,0.3); color: #fff; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #07101e; }
+::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.35); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(59,130,246,0.6); }
+
+/* ── Article section reset for collapsible ── */
+.article-section > h2:first-child,
+.theory-section > h2:first-child,
+.topic-section > h2:first-child,
+.note-card > h2:first-child,
+.lab-section > h2:first-child {
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+/* ── Compact paragraphs ── */
+.article-section p,
+.theory-section p,
+.note-card p,
+.lab-section p {
+    font-size: 13px !important;
+    line-height: 1.72 !important;
+    color: #94a3b8 !important;
+    margin: 0 0 8px !important;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1199px) {
+    main, .article-page, .lab-page, .theory-page {
+        margin-right: auto !important;
+    }
+}
+@media (max-width: 600px) {
+    #cnx-back-top { bottom: 16px; right: 14px; width: 36px; height: 36px; font-size: 15px; }
+}
