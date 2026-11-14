@@ -1,677 +1,390 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Learn What is Cybersecurity? - CyberNexa with structured theory, hands-on practical labs, and security best practices on CyberNexa.">
-
+    <meta name="description" content="What is Cybersecurity? Learn the fundamentals — definition, importance, CIA triad, and core concepts. Notes-style, easy to understand.">
     <meta name="theme-color" content="#07101e">
+    <title>What is Cybersecurity? — CyberNexa</title>
 
-    <title>What is Cybersecurity? - CyberNexa</title>
-
-    <!-- =====================================================
-         CYBERNEXA COMMON CSS
-    ====================================================== -->
-
-            <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 60'%3E%3Cpath d='M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z' fill='none' stroke='%233b82f6' stroke-width='3'/%3E%3Crect x='18' y='25' width='14' height='14' rx='2' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Cpath d='M20 25 V20 C20 16 30 16 30 20 V25' fill='none' stroke='%233b82f6' stroke-width='2.5'/%3E%3Ccircle cx='25' cy='31' r='2' fill='%233b82f6'/%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../../../css/base.css">
-        <style>/* =====================================================
-           GLOBAL PAGE CONTROL
-        ====================================================== */
+    <link rel="stylesheet" href="../../../css/navbar.css">
+    <link rel="stylesheet" href="../../../css/footer.css">
+    <link rel="stylesheet" href="../../../css/lesson.css">
+    <link rel="stylesheet" href="../../../css/notes-style.css">
 
-        *{
-            box-sizing: border-box;
-        }
-html{
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-body{
-            margin: 0;
-            overflow-x: hidden;
-        }
-/* =====================================================
-           PAGE
-        ====================================================== */
+    <style>
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { margin: 0; overflow-x: hidden; background: #07101e; }
 
-        .article-page{
-
+        /* ── Page layout ── */
+        .article-page {
             width: 100%;
-            min-height: calc(100vh - 80px);
-
-            padding: 65px 20px 80px;
-
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(0, 191, 255, 0.09),
-                    transparent 32%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(0, 100, 180, 0.06),
-                    transparent 30%
-                ),
-                #020714;
-        }
-.article-container{
-
-            width: 100%;
-            max-width: 1000px;
-
+            min-height: calc(100vh - 68px);
+            padding: 40px 20px 80px;
+            max-width: 900px;
             margin: 0 auto;
         }
-/* =====================================================
-           BREADCRUMB
-        ====================================================== */
 
-        .article-breadcrumb{
-
-            display: flex;
-            align-items: center;
-
-            gap: 8px;
-
-            margin-bottom: 25px;
-
-            color: #8193aa;
-
-            font-size: 11px;
+        /* ── Progress bar ── */
+        .reading-progress {
+            position: fixed;
+            top: 68px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(255,255,255,0.06);
+            z-index: 999;
         }
-.article-breadcrumb a{
-
-            color: #00bfff;
-
-            text-decoration: none;
+        .reading-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #38bdf8);
+            width: 0%;
+            transition: width 0.1s linear;
         }
-.article-breadcrumb span{
 
-            color: #4d6178;
+        /* ── Sticky TOC sidebar (desktop only) ── */
+        @media (min-width: 1200px) {
+            .article-page { max-width: 1100px; display: grid; grid-template-columns: 1fr 220px; gap: 40px; align-items: start; }
+            .article-main { min-width: 0; }
+            .toc-sidebar { position: sticky; top: 90px; }
         }
-/* =====================================================
-           TOPIC HEADER
-        ====================================================== */
-
-        .article-header{
-
-            text-align: center;
-
-            margin-bottom: 48px;
+        @media (max-width: 1199px) {
+            .toc-sidebar { display: none; }
         }
-.article-label{
 
-            display: inline-block;
-
-            margin-bottom: 13px;
-
-            color: #00bfff;
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            letter-spacing: 2px;
-
-            text-transform: uppercase;
-        }
-.article-header h1{
-
-            margin: 0;
-
-            color: #ffffff;
-
-            font-size: 42px;
-
-            line-height: 1.25;
-
-            font-weight: 800;
-        }
-.article-header h1 span{
-
-            color: #00bfff;
-        }
-.article-intro{
-
-            max-width: 760px;
-
-            margin: 17px auto 0;
-
-            color: #91a4bd;
-
-            font-size: 15px;
-
-            line-height: 1.8;
-        }
-/* =====================================================
-           ARTICLE SECTION
-        ====================================================== */
-
-        .article-section{
-
-            margin-bottom: 25px;
-
-            padding: 27px;
-
-            border: 1px solid rgba(0, 191, 255, 0.14);
-
-            border-radius: 14px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(7, 26, 51, 0.96),
-                    rgba(3, 16, 32, 0.96)
-                );
-
-            box-shadow:
-                0 12px 30px rgba(0, 0, 0, 0.20);
-        }
-.article-section h2{
-
-            margin: 0 0 14px;
-
-            color: #ffffff;
-
-            font-size: 21px;
-
-            line-height: 1.4;
-        }
-.article-section h2 span{
-
-            color: #00bfff;
-        }
-.article-section p{
-
-            margin: 0 0 13px;
-
-            color: #91a4bd;
-
-            font-size: 13px;
-
-            line-height: 1.85;
-        }
-.article-section p:last-child{
-
-            margin-bottom: 0;
-        }
-/* =====================================================
-           DEFINITION BOX
-        ====================================================== */
-
-        .definition-box{
-
-            padding: 22px;
-
-            margin-top: 8px;
-
-            border-left: 3px solid #00bfff;
-
-            border-radius: 9px;
-
-            background: rgba(0, 191, 255, 0.045);
-        }
-.definition-box strong{
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #ffffff;
-
-            font-size: 14px;
-        }
-.definition-box p{
-
-            margin: 0;
-
-            color: #b8c9dc;
-        }
-/* =====================================================
-           WHY IT MATTERS CARDS
-        ====================================================== */
-
-        .info-grid{
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
-
-            gap: 14px;
-
-            margin-top: 18px;
-        }
-.info-card{
-
-            padding: 19px;
-
-            border: 1px solid rgba(0, 191, 255, 0.11);
-
-            border-radius: 11px;
-
-            background: rgba(0, 191, 255, 0.035);
-        }
-.info-icon{
-
-            display: flex;
-
-            align-items: center;
-            justify-content: center;
-
-            width: 38px;
-            height: 38px;
-
-            margin-bottom: 13px;
-
-            border: 1px solid rgba(0, 191, 255, 0.20);
-
-            border-radius: 9px;
-
-            color: #00bfff;
-
-            background: rgba(0, 191, 255, 0.06);
-
-            font-size: 18px;
-        }
-.info-card h3{
-
-            margin: 0 0 7px;
-
-            color: #ffffff;
-
-            font-size: 14px;
-        }
-.info-card p{
-
-            margin: 0;
-
-            color: #8193aa;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-/* =====================================================
-           CORE CONCEPT
-        ====================================================== */
-
-        .concept-list{
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
-            gap: 12px;
-
-            margin-top: 17px;
-        }
-.concept-item{
-
-            padding: 17px;
-
-            border: 1px solid rgba(0, 191, 255, 0.10);
-
-            border-radius: 10px;
-
-            background: rgba(0, 191, 255, 0.03);
-        }
-.concept-item strong{
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #dbeafe;
-
-            font-size: 13px;
-        }
-.concept-item p{
-
-            margin: 0;
-
-            color: #8193aa;
-
-            font-size: 12px;
-
-            line-height: 1.7;
-        }
-/* =====================================================
-           EXAMPLE
-        ====================================================== */
-
-        .example-box{
-
-            margin-top: 17px;
-
-            padding: 21px;
-
-            border: 1px solid rgba(0, 191, 255, 0.12);
-
-            border-radius: 10px;
-
-            background: #020b18;
-        }
-.example-box .example-label{
-
-            display: block;
-
-            margin-bottom: 10px;
-
-            color: #00bfff;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            letter-spacing: 1.5px;
-
-            text-transform: uppercase;
-        }
-.example-box p{
-
-            margin: 0;
-
-            color: #a9bad0;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-        }
-/* =====================================================
-           KEY CONCEPTS
-        ====================================================== */
-
-        .key-points{
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-
-            gap: 10px;
-
-            margin-top: 17px;
-        }
-.key-point{
-
-            display: flex;
-
-            align-items: flex-start;
-
-            gap: 10px;
-
-            padding: 13px 15px;
-
-            border: 1px solid rgba(0, 191, 255, 0.09);
-
-            border-radius: 9px;
-
-            background: rgba(0, 191, 255, 0.025);
-
-            color: #91a4bd;
-
-            font-size: 12px;
-
-            line-height: 1.6;
-        }
-.key-point::before{
-
-            content: "✓";
-
-            flex-shrink: 0;
-
-            color: #00bfff;
-
-            font-weight: 800;
-        }
-/* =====================================================
-           SUMMARY
-        ====================================================== */
-
-        .summary-box{
-
-            padding: 23px;
-
-            border: 1px solid rgba(0, 191, 255, 0.18);
-
+        /* ── TOC ── */
+        .toc-sidebar {
+            background: #0d1a2e;
+            border: 1px solid rgba(59,130,246,0.15);
             border-radius: 12px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(0, 191, 255, 0.055),
-                    rgba(0, 100, 180, 0.025)
-                );
+            padding: 16px;
         }
-.summary-box strong{
-
+        .toc-title {
+            font-size: 10px;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: 0 0 10px;
+        }
+        .toc-link {
             display: block;
-
-            margin-bottom: 8px;
-
-            color: #ffffff;
-
-            font-size: 15px;
+            padding: 5px 8px;
+            color: #94a3b8;
+            font-size: 12px;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.2s, color 0.2s;
+            border-left: 2px solid transparent;
         }
-.summary-box p{
-
-            margin: 0;
-
-            color: #91a4bd;
-
-            font-size: 13px;
-
-            line-height: 1.8;
+        .toc-link:hover, .toc-link.active {
+            background: rgba(59,130,246,0.08);
+            color: #93c5fd;
+            border-left-color: #3b82f6;
         }
-/* =====================================================
-           LAB BUTTON
-        ====================================================== */
 
-        .lab-button-area{
-
-            margin-top: 30px;
-
-            text-align: right;
+        /* ── Header ── */
+        .article-header {
+            background: linear-gradient(135deg, #0d1a2e 0%, #0a1628 100%);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-left: 4px solid #3b82f6;
+            border-radius: 12px;
+            padding: 28px 28px 24px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
         }
-.lab-button{
+        .article-header::after {
+            content: '🛡️';
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 48px;
+            opacity: 0.1;
+        }
 
+        /* ── Section cards ── */
+        .note-card {
+            background: #0d1a2e;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 22px 24px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .note-card:hover {
+            border-color: rgba(59,130,246,0.3);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .note-card h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin: 0 0 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-num {
             display: inline-flex;
-
             align-items: center;
             justify-content: center;
+            min-width: 24px;
+            height: 24px;
+            background: rgba(59,130,246,0.15);
+            border: 1px solid rgba(59,130,246,0.3);
+            border-radius: 6px;
+            color: #60a5fa;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 0 4px;
+            flex-shrink: 0;
+        }
 
+        /* ── Bullet list ── */
+        .note-bullets {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .note-bullets li {
+            display: flex;
+            align-items: flex-start;
             gap: 10px;
-
-            padding: 13px 22px;
-
-            border:
-                1px solid rgba(0, 191, 255, 0.30);
-
-            border-radius: 9px;
-
-            color: #bfeaff;
-
-            background:
-                rgba(0, 191, 255, 0.06);
-
-            text-decoration: none;
-
-            font-size: 12px;
+            padding: 9px 12px;
+            background: rgba(59,130,246,0.04);
+            border: 1px solid rgba(59,130,246,0.1);
+            border-radius: 8px;
+            color: #cbd5e1;
+            font-size: 13px;
+            line-height: 1.6;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .note-bullets li:hover {
+            background: rgba(59,130,246,0.08);
+            border-color: rgba(59,130,246,0.22);
+        }
+        .note-bullets li::before {
+            content: '→';
+            color: #3b82f6;
             font-weight: 700;
-
-            transition:
-                border-color 0.25s ease,
-                background 0.25s ease,
-                transform 0.25s ease;
+            flex-shrink: 0;
+            margin-top: 1px;
         }
-.lab-button span{
 
-            color: #00bfff;
-
-            font-size: 16px;
+        /* ── Definition box ── */
+        .def-box {
+            background: rgba(59,130,246,0.07);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-left: 4px solid #3b82f6;
+            border-radius: 0 8px 8px 0;
+            padding: 14px 16px;
+            margin-bottom: 14px;
         }
-.lab-button:hover{
-
-            border-color: rgba(0, 191, 255, 0.55);
-
-            background:
-                rgba(0, 191, 255, 0.10);
-
-            transform: translateY(-2px);
+        .def-label {
+            font-size: 9px;
+            font-weight: 800;
+            color: #93c5fd;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+            display: block;
         }
-/* =====================================================
-           TABLET
-        ====================================================== */
+        .def-box p { font-size: 13.5px; color: #cbd5e1; margin: 0; line-height: 1.75; }
 
-        @media (max-width: 800px){
-
-            .info-grid {
-
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
+        /* ── CIA Triad cards ── */
+        .cia-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 14px;
         }
-/* =====================================================
-           MOBILE
-        ====================================================== */
+        @media (max-width: 600px) { .cia-grid { grid-template-columns: 1fr; } }
 
-        @media (max-width: 600px){
-
-            .article-page {
-
-                padding: 45px 12px 55px;
-            }
-
-
-            .article-header {
-
-                margin-bottom: 35px;
-            }
-
-
-            .article-header h1 {
-
-                font-size: 30px;
-            }
-
-
-            .article-intro {
-
-                font-size: 13px;
-
-                line-height: 1.75;
-            }
-
-
-            .article-section {
-
-                padding: 20px 18px;
-
-                margin-bottom: 17px;
-            }
-
-
-            .article-section h2 {
-
-                font-size: 18px;
-            }
-
-
-            .article-section p {
-
-                font-size: 12px;
-            }
-
-
-            .info-grid,
-            .concept-list,
-            .key-points {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .lab-cta {
-
-                flex-direction: column;
-
-                align-items: flex-start;
-            }
-
-
-            .topic-navigation {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .all-topics {
-
-                text-align: center;
-
-                order: -1;
-            }
-
-
-            .topic-nav-link.next {
-
-                text-align: left;
-            }
-
+        .cia-card {
+            background: rgba(255,255,255,0.025);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: transform 0.22s, border-color 0.22s;
         }
-/* =====================================================
-           SMALL MOBILE
-        ====================================================== */
+        .cia-card:hover { transform: translateY(-3px); border-color: rgba(59,130,246,0.3); }
+        .cia-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+        .cia-name { font-size: 13.5px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+        .cia-desc { font-size: 11.5px; color: #94a3b8; line-height: 1.55; }
 
-        @media (max-width: 380px){
-
-            .article-page {
-
-                padding-left: 10px;
-
-                padding-right: 10px;
-            }
-
-
-            .article-header h1 {
-
-                font-size: 27px;
-            }
-
+        /* ── Example box ── */
+        .ex-box {
+            background: rgba(16,185,129,0.06);
+            border: 1px solid rgba(16,185,129,0.18);
+            border-left: 4px solid #10b981;
+            border-radius: 0 8px 8px 0;
+            padding: 14px 16px;
         }
-</style>
-    <link rel="stylesheet" href="../../../css/navbar.css">
-        <link rel="stylesheet" href="../../../css/footer.css">
-        <link rel="stylesheet" href="../../../css/lesson.css">
+        .ex-label {
+            font-size: 9px; font-weight: 800; color: #6ee7b7;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            margin-bottom: 6px; display: block;
+        }
+        .ex-box p { font-size: 13px; color: #cbd5e1; margin: 0; line-height: 1.75; }
 
+        /* ── Quiz ── */
+        .quiz-card {
+            background: rgba(168,85,247,0.06);
+            border: 1px solid rgba(168,85,247,0.2);
+            border-radius: 12px;
+            padding: 22px 24px;
+            margin-bottom: 16px;
+        }
+        .quiz-label {
+            font-size: 9px; font-weight: 800; color: #d8b4fe;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+        }
+        .quiz-label::before { content: '🎯'; }
+        .quiz-q { font-size: 15px; font-weight: 700; color: #f1f5f9; margin: 0 0 14px; }
+        .quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+        .quiz-opt {
+            display: flex; align-items: center; gap: 10px;
+            padding: 11px 14px;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            color: #cbd5e1; font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            user-select: none;
+        }
+        .quiz-opt:hover { background: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.3); color: #fff; }
+        .quiz-opt.correct { background: rgba(16,185,129,0.1) !important; border-color: rgba(16,185,129,0.4) !important; color: #6ee7b7 !important; }
+        .quiz-opt.wrong { background: rgba(244,63,94,0.1) !important; border-color: rgba(244,63,94,0.4) !important; color: #fda4af !important; }
+        .quiz-opt input[type=radio] { accent-color: #a855f7; }
+        .quiz-result { display: none; margin-top: 10px; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+        .quiz-result.show { display: block; }
+        .quiz-result.pass { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
+        .quiz-result.fail { background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.3); color: #fda4af; }
+        .quiz-btn {
+            margin-top: 12px; padding: 9px 20px;
+            background: rgba(168,85,247,0.15);
+            border: 1px solid rgba(168,85,247,0.3);
+            border-radius: 8px;
+            color: #d8b4fe; font-size: 13px; font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .quiz-btn:hover { background: rgba(168,85,247,0.25); }
+
+        /* ── Summary box ── */
+        .summary-box {
+            background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(56,189,248,0.05));
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 12px;
+            padding: 20px 22px;
+            margin-bottom: 16px;
+        }
+        .summary-title {
+            font-size: 10px; font-weight: 800; color: #93c5fd;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+        }
+        .summary-title::before { content: '📋'; }
+        .summary-box p { font-size: 13.5px; color: #cbd5e1; margin: 0 0 8px; line-height: 1.8; }
+        .summary-box p:last-child { margin: 0; }
+
+        /* ── Completion / action bar ── */
+        .action-bar {
+            display: flex; gap: 12px; flex-wrap: wrap;
+            padding: 20px 24px;
+            background: #0d1a2e;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 22px;
+            background: #3b82f6; color: #fff;
+            border: none; border-radius: 8px;
+            font-size: 13.5px; font-weight: 600;
+            cursor: pointer; text-decoration: none;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 14px rgba(59,130,246,0.35);
+        }
+        .btn-primary:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59,130,246,0.5); }
+        .btn-outline {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px;
+            background: transparent; color: #93c5fd;
+            border: 1px solid rgba(59,130,246,0.35); border-radius: 8px;
+            font-size: 13px; font-weight: 600;
+            cursor: pointer; text-decoration: none;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .btn-outline:hover { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.6); color: #fff; }
+
+        /* ── Topic nav (prev/next) ── */
+        .topic-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 12px; flex-wrap: wrap;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            margin-top: 8px;
+        }
+        .nav-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 18px;
+            background: #0d1a2e;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #cbd5e1; font-size: 13px; font-weight: 600;
+            text-decoration: none;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+        }
+        .nav-btn:hover { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.08); color: #fff; }
+        .nav-btn-label { font-size: 10px; color: #64748b; display: block; margin-bottom: 2px; }
+        .nav-btn-text { display: block; }
+
+        @media (max-width: 600px) {
+            .topic-nav { flex-direction: column; }
+            .nav-btn { width: 100%; justify-content: center; }
+            .action-bar { flex-direction: column; }
+            .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+        }
+    </style>
 </head>
-
-
 <body>
 
+<!-- Reading Progress Bar -->
+<div class="reading-progress">
+    <div class="reading-progress-fill" id="readingProgress"></div>
+</div>
 
-<!-- SHARED NAVBAR -->
-<div id="navbar-placeholder" data-navbar-path="../../../components/navbar.html"
-    data-root-path="../../../">
+<!-- ===== NAVBAR ===== -->
 <header class="navbar">
     <div class="nav-container">
-        <!-- BRAND -->
-        <a href="../../../index.html" class="brand" data-path="index.html">
+        <a href="../../../index.html" class="brand">
             <div class="brand-logo">
                 <svg viewBox="0 0 50 60" aria-hidden="true">
-                    <path d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z" fill="none" stroke="currentColor" stroke-width="3" />
-                    <rect x="18" y="25" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2.5" />
-                    <path d="M20 25 V20 C20 16 30 16 30 20 V25" fill="none" stroke="currentColor" stroke-width="2.5" />
-                    <circle cx="25" cy="31" r="2" fill="currentColor" />
-                    <path d="M25 33 V36" stroke="currentColor" stroke-width="2" />
+                    <path d="M25 2 L46 10 V27 C46 42 37 52 25 58 C13 52 4 42 4 27 V10 Z" fill="none" stroke="currentColor" stroke-width="3"/>
+                    <rect x="18" y="25" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M20 25 V20 C20 16 30 16 30 20 V25" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                    <circle cx="25" cy="31" r="2" fill="currentColor"/>
+                    <path d="M25 33 V36" stroke="currentColor" stroke-width="2"/>
                 </svg>
             </div>
             <div class="brand-text">
@@ -679,572 +392,332 @@ body{
                 <div class="brand-tagline">Cybersecurity &amp; IT Learning</div>
             </div>
         </a>
-
-        <!-- NAVIGATION -->
         <input type="checkbox" id="menu-toggle" class="menu-toggle">
-
         <nav class="navigation">
-            <a href="../../../index.html" data-path="index.html" class="nav-item">
-                <span>Home</span>
-            </a>
-            <a href="../../../learning-paths/cybersecurity/theory/cybersecurity.html" data-path="learning-paths/cybersecurity/theory/cybersecurity.html" class="nav-item">
-                <span>Cybersecurity</span>
-            </a>
-            <a href="../../../learning-paths/networking/theory/networking.html" data-path="learning-paths/networking/theory/networking.html" class="nav-item">
-                <span>Networking</span>
-            </a>
-            <a href="../../../learning-paths/linux/theory/linux.html" data-path="learning-paths/linux/theory/linux.html" class="nav-item">
-                <span>Linux</span>
-            </a>
-            <a href="../../../learning-paths/cybersecurity-tools/theory/cyber-tools.html" data-path="learning-paths/cybersecurity-tools/theory/cyber-tools.html" class="nav-item">
-                <span>Tools</span>
-            </a>
-            <a href="../../../learning-paths/labs/practical-labs.html" data-path="learning-paths/labs/practical-labs.html" class="nav-item">
-                <span>Labs</span>
-            </a>
-            <a href="../../../index.html#tutorials" data-path="index.html#tutorials" class="nav-item">
-                <span>Tutorials</span>
-            </a>
+            <a href="../../../index.html" class="nav-item"><span>Home</span></a>
+            <a href="../../../learning-paths/cybersecurity/theory/cybersecurity.html" class="nav-item active"><span>Cybersecurity</span></a>
+            <a href="../../../learning-paths/networking/theory/networking.html" class="nav-item"><span>Networking</span></a>
+            <a href="../../../learning-paths/linux/theory/linux.html" class="nav-item"><span>Linux</span></a>
+            <a href="../../../learning-paths/cybersecurity-tools/theory/cyber-tools.html" class="nav-item"><span>Tools</span></a>
+            <a href="../../../learning-paths/labs/practical-labs.html" class="nav-item"><span>Labs</span></a>
             <div class="profile-nav" id="profileNav"></div>
         </nav>
-
-        <!-- SEARCH -->
         <div class="search-wrapper">
             <button type="button" class="search-button" aria-label="Open search">
                 <span class="search-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
                 <span class="search-text">Search...</span>
             </button>
         </div>
-
-        <!-- MOBILE MENU BUTTON -->
         <label for="menu-toggle" class="menu-button" aria-label="Open navigation menu">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </label>
     </div>
 </header>
-</div>
 
-    <!-- =====================================================
-         THEORY PAGE
-    ====================================================== -->
+<!-- ===== MAIN CONTENT ===== -->
+<main class="article-page">
 
-    <main class="article-page">
+    <!-- TOC Sidebar (desktop) -->
+    <aside class="toc-sidebar" aria-label="Table of Contents">
+        <p class="toc-title">On This Page</p>
+        <a href="#definition" class="toc-link">01. Definition</a>
+        <a href="#why-matters" class="toc-link">02. Why It Matters</a>
+        <a href="#cia-triad" class="toc-link">03. CIA Triad</a>
+        <a href="#what-protects" class="toc-link">04. What It Protects</a>
+        <a href="#how-works" class="toc-link">05. How It Works</a>
+        <a href="#example" class="toc-link">06. Real Example</a>
+        <a href="#key-concepts" class="toc-link">07. Key Concepts</a>
+        <a href="#quiz" class="toc-link">08. Quick Quiz</a>
+        <a href="#summary" class="toc-link">09. Summary</a>
+    </aside>
 
-        <div class="article-container">
+    <!-- Main article -->
+    <div class="article-main">
 
+        <!-- Breadcrumb -->
+        <nav class="article-breadcrumb" aria-label="Breadcrumb">
+            <a href="../../../index.html">Home</a>
+            <span>›</span>
+            <a href="../../../learning-paths/cybersecurity/theory/cybersecurity.html">Cybersecurity</a>
+            <span>›</span>
+            <span>What is Cybersecurity?</span>
+        </nav>
 
-            <!-- =================================================
-                 BREADCRUMB
-            ================================================== -->
+        <!-- Header -->
+        <header class="article-header">
+            <div class="article-label">📚 Cybersecurity Fundamentals · Topic 01</div>
+            <h1>What is <span style="color:#38bdf8">Cybersecurity?</span></h1>
+            <p class="article-intro">Protection of digital systems, networks, and data from threats. Learn the core concepts in simple notes format.</p>
+        </header>
 
-            <div class="article-breadcrumb">
-
-                <a href="cybersecurity.html">
-                    Cybersecurity Fundamentals
-                </a>
-
-                <span>›</span>
-
-                <span>What is Cybersecurity?</span>
-
+        <!-- 01. Definition -->
+        <section class="note-card" id="definition">
+            <h2><span class="section-num">01</span> Definition</h2>
+            <div class="def-box">
+                <span class="def-label">📖 Definition</span>
+                <p><strong>Cybersecurity</strong> is the practice of protecting computers, networks, programs, and data from digital attacks, unauthorized access, damage, or theft.</p>
             </div>
+            <ul class="note-bullets">
+                <li>Also called <strong>information security</strong> or <strong>IT security</strong></li>
+                <li>Covers both hardware and software protection</li>
+                <li>Includes people, processes, and technology</li>
+                <li>Goal: keep digital systems safe and working correctly</li>
+            </ul>
+        </section>
 
+        <!-- 02. Why It Matters -->
+        <section class="note-card" id="why-matters">
+            <h2><span class="section-num">02</span> Why Cybersecurity Matters</h2>
+            <ul class="note-bullets">
+                <li>🔐 Protects <strong>personal data</strong> (passwords, financial info, medical records)</li>
+                <li>🏢 Keeps <strong>businesses running</strong> — cyberattacks cost millions per incident</li>
+                <li>🌐 Secures <strong>critical infrastructure</strong> (power grids, hospitals, banks)</li>
+                <li>🛡️ Prevents <strong>identity theft</strong> and financial fraud</li>
+                <li>📱 Secures <strong>devices</strong> we use every day</li>
+                <li>⚖️ Required by <strong>laws and regulations</strong> (GDPR, HIPAA, etc.)</li>
+            </ul>
+        </section>
 
-            <!-- =================================================
-                 TOPIC HEADER
-            ================================================== -->
-
-            <header class="article-header">
-
-                <div class="article-label">
-                    CYBERSECURITY FUNDAMENTALS • TOPIC 01
+        <!-- 03. CIA Triad -->
+        <section class="note-card" id="cia-triad">
+            <h2><span class="section-num">03</span> The CIA Triad — Core Principles</h2>
+            <p style="font-size:13px;color:#94a3b8;margin:0 0 14px;">Everything in cybersecurity is built around 3 principles:</p>
+            <div class="cia-grid">
+                <div class="cia-card">
+                    <span class="cia-icon">🔒</span>
+                    <div class="cia-name">Confidentiality</div>
+                    <div class="cia-desc">Only authorized people can see the data. Example: encrypted files, password protection.</div>
                 </div>
-
-                <h1>
- What is <span>Cybersecurity?</span>
- </h1>
-
-                <p class="article-intro">
-
-                    Learn the fundamental concept of cybersecurity,
-                    why it is important, what it protects, and how
-                    security controls help protect digital systems,
-                    networks, applications and information.
-
-                </p>
-
-            </header>
-
-
-            <!-- =================================================
-                 DEFINITION
-            ================================================== -->
-
-            <section class="article-section">
-
-                <h2>
- <span>01.</span> What is Cybersecurity?
- </h2>
-
-                <div class="definition-box">
-
-                    <strong>
-                        Definition
-                    </strong>
-
-                    <p>
-
-                        Cybersecurity is the practice of protecting
-                        computers, networks, applications, devices,
-                        systems and data from unauthorized access,
-                        misuse, damage, disruption or theft.
-
-                    </p>
-
+                <div class="cia-card">
+                    <span class="cia-icon">✅</span>
+                    <div class="cia-name">Integrity</div>
+                    <div class="cia-desc">Data is accurate and not tampered with. Example: checksums, digital signatures.</div>
                 </div>
-
-                <p style="margin-top:17px;">
-
-                    In simple words, cybersecurity means keeping
-                    digital systems and information safe from
-                    security threats. It combines technologies,
-                    processes and security practices to reduce
-                    security risks.
-
-                </p>
-
-            </section>
-
-
-            <!-- =================================================
-                 WHY IT MATTERS
-            ================================================== -->
-
-            <section class="article-section">
-
-                <h2>
- <span>02.</span> Why Cybersecurity Matters
- </h2>
-
-                <p>
-
-                    Modern organizations depend heavily on computers,
-                    networks, cloud services and digital information.
-                    A security incident can affect the confidentiality,
-                    integrity and availability of these resources.
-
-                </p>
-
-
-                <div class="info-grid">
-
-
-                    <div class="info-card">
-
-                        <div class="info-icon">
-                            🔒
-                        </div>
-
-                        <h3>
- Protect Data
- </h3>
-
-                        <p>
-                            Helps protect sensitive information from
-                            unauthorized access, disclosure and theft.
-                        </p>
-
-                    </div>
-
-
-                    <div class="info-card">
-
-                        <div class="info-icon">
-                            🛡
-                        </div>
-
-                        <h3>
- Protect Systems
- </h3>
-
-                        <p>
-                            Helps defend computers, servers, networks
-                            and applications against security threats.
-                        </p>
-
-                    </div>
-
-
-                    <div class="info-card">
-
-                        <div class="info-icon">
-                            🌐
-                        </div>
-
-                        <h3>
- Secure Communication
- </h3>
-
-                        <p>
-                            Security controls help protect information
-                            while it moves between connected systems.
-                        </p>
-
-                    </div>
-
+                <div class="cia-card">
+                    <span class="cia-icon">🌐</span>
+                    <div class="cia-name">Availability</div>
+                    <div class="cia-desc">Systems are available when needed. Example: backups, DDoS protection, uptime.</div>
                 </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 WHAT CYBERSECURITY PROTECTS
-            ================================================== -->
-
-            <section class="article-section">
-
-                <h2>
- <span>03.</span> What Does Cybersecurity Protect?
- </h2>
-
-                <div class="concept-list">
-
-
-                    <div class="concept-item">
-
-                        <strong>
-                            Computers &amp; Devices
-                        </strong>
-
-                        <p>
-                            Protects laptops, desktops, mobile devices,
-                            servers and other computing devices.
-                        </p>
-
-                    </div>
-
-
-                    <div class="concept-item">
-
-                        <strong>
-                            Networks
-                        </strong>
-
-                        <p>
-                            Protects network infrastructure and the
-                            communication between connected systems.
-                        </p>
-
-                    </div>
-
-
-                    <div class="concept-item">
-
-                        <strong>
-                            Applications
-                        </strong>
-
-                        <p>
-                            Helps protect software and web applications
-                            from unauthorized or malicious activity.
-                        </p>
-
-                    </div>
-
-
-                    <div class="concept-item">
-
-                        <strong>
-                            Data &amp; Information
-                        </strong>
-
-                        <p>
-                            Protects personal, business and sensitive
-                            information from unauthorized use or theft.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 CORE EXPLANATION
-            ================================================== -->
-
-            <section class="article-section">
-
-                <h2>
- <span>04.</span> How Cybersecurity Works
- </h2>
-
-                <p>
-
-                    Cybersecurity does not depend on a single tool.
-                    Organizations normally use multiple security
-                    controls together to protect their systems.
-
-                </p>
-
-                <div class="key-points">
-
-
-                    <div class="key-point">
-                        Identify important systems and information.
-                    </div>
-
-
-                    <div class="key-point">
-                        Identify possible threats and vulnerabilities.
-                    </div>
-
-
-                    <div class="key-point">
-                        Apply security controls to reduce risk.
-                    </div>
-
-
-                    <div class="key-point">
-                        Monitor systems for suspicious activity.
-                    </div>
-
-
-                    <div class="key-point">
-                        Detect and respond to security incidents.
-                    </div>
-
-
-                    <div class="key-point">
-                        Recover systems and improve security.
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 EXAMPLE
-            ================================================== -->
-
-            <section class="article-section">
-
-                <h2>
- <span>05.</span> Real-World Example
- </h2>
-
-                <div class="example-box">
-
-                    <span class="example-label">
-                        Example
-                    </span>
-
-                    <p>
-
-                        Imagine a company that stores customer information
-                        on a server. The company can use strong passwords,
-                        multi-factor authentication, firewalls, encryption,
-                        access controls and monitoring to protect that
-                        information. These controls work together as part
-                        of the organization's cybersecurity approach.
-
-                    </p>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 KEY CONCEPTS
-            ================================================== -->
-
-            <section class="article-section">
-
-                <h2>
- <span>06.</span> Key Concepts
- </h2>
-
-                <div class="key-points">
-
-                    <div class="key-point">
-                        Cybersecurity protects digital resources.
-                    </div>
-
-                    <div class="key-point">
-                        Security threats can target people, systems and data.
-                    </div>
-
-                    <div class="key-point">
-                        Security controls help reduce cybersecurity risk.
-                    </div>
-
-                    <div class="key-point">
-                        Authentication controls who can access a system.
-                    </div>
-
-                    <div class="key-point">
-                        Encryption helps protect information from unauthorized reading.
-                    </div>
-
-                    <div class="key-point">
-                        Monitoring helps identify suspicious activity.
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- =================================================
-                 SUMMARY
-            ================================================== -->
-
-            <section class="article-section">
-
-                <h2>
- <span>07.</span> Summary
- </h2>
-
-                <div class="summary-box">
-
-                    <strong>
-                        What you should remember
-                    </strong>
-
-                    <p>
-
-                        Cybersecurity is the practice of protecting
-                        digital systems, networks, applications,
-                        devices and information from security threats.
-                        It uses multiple technologies, processes and
-                        security controls to reduce risk and protect
-                        important digital resources.
-
-                    </p>
-
-                </div>
-
-            </section>
-                          
-<!-- LESSON COMPLETION -->
-<section class="article-section" id="lessonCompletion">
-
-    <h2>Complete This Lesson</h2>
-
-    <p>
-        Mark this lesson as complete after studying the
-        Attack Surface topic. Your progress will be saved
-        to your CyberNexa account.
-    </p>
-
-    <div style="text-align: center; margin-top: 20px;">
-        <button
-            type="button"
-            class="lab-button"
-            data-lesson-progress
-            data-course-id="cybersecurity"
-            data-lesson-id="what-is-cybersecurity"
-            data-dashboard-url="../learning-paths/cybersecurity/theory/what-is-cybersecurity.html"
-            data-status-id="lessonCompletionStatus">
-
- Mark Lesson Complete
-
- </button>
+            </div>
+        </section>
+
+        <!-- 04. What It Protects -->
+        <section class="note-card" id="what-protects">
+            <h2><span class="section-num">04</span> What Does Cybersecurity Protect?</h2>
+            <ul class="note-bullets">
+                <li>💻 <strong>Computers &amp; Devices</strong> — laptops, desktops, mobile phones, servers</li>
+                <li>🌐 <strong>Networks</strong> — routers, switches, Wi-Fi, internet connections</li>
+                <li>📦 <strong>Applications</strong> — web apps, mobile apps, software programs</li>
+                <li>🗄️ <strong>Data &amp; Databases</strong> — personal info, business data, government records</li>
+                <li>☁️ <strong>Cloud Systems</strong> — online storage, cloud services, SaaS platforms</li>
+                <li>🏭 <strong>Critical Infrastructure</strong> — power grids, water systems, healthcare</li>
+            </ul>
+        </section>
+
+        <!-- 05. How It Works -->
+        <section class="note-card" id="how-works">
+            <h2><span class="section-num">05</span> How Cybersecurity Works</h2>
+            <p style="font-size:13px;color:#94a3b8;margin:0 0 12px;">It follows a cycle — not a one-time setup:</p>
+            <ul class="note-bullets">
+                <li>🔍 <strong>Identify</strong> — find assets, risks, and threats</li>
+                <li>🛡️ <strong>Protect</strong> — apply firewalls, encryption, access control</li>
+                <li>👁️ <strong>Detect</strong> — monitor systems for suspicious activity</li>
+                <li>⚡ <strong>Respond</strong> — handle incidents quickly to reduce damage</li>
+                <li>🔄 <strong>Recover</strong> — restore systems and improve defenses</li>
+            </ul>
+            <div class="def-box" style="margin-top:14px;margin-bottom:0;">
+                <span class="def-label">💡 Remember</span>
+                <p>These 5 steps are from the <strong>NIST Cybersecurity Framework</strong> — a widely used standard by companies worldwide.</p>
+            </div>
+        </section>
+
+        <!-- 06. Real Example -->
+        <section class="note-card" id="example">
+            <h2><span class="section-num">06</span> Real-World Example</h2>
+            <div class="ex-box">
+                <span class="ex-label">🌍 Example</span>
+                <p>A hospital stores patient records. If hackers steal these records, it violates <strong>confidentiality</strong>. If they change drug dosage records, it violates <strong>integrity</strong>. If they shut down the system, it violates <strong>availability</strong>. Cybersecurity prevents all three.</p>
+            </div>
+        </section>
+
+        <!-- 07. Key Concepts -->
+        <section class="note-card" id="key-concepts">
+            <h2><span class="section-num">07</span> Key Concepts to Remember</h2>
+            <ul class="note-bullets">
+                <li>Cybersecurity = protection of digital assets from threats</li>
+                <li>3 core principles: <strong>Confidentiality, Integrity, Availability</strong> (CIA)</li>
+                <li>Threats include: hackers, malware, phishing, ransomware</li>
+                <li>Controls include: firewalls, encryption, MFA, antivirus</li>
+                <li>No system is 100% secure — goal is to <strong>reduce risk</strong></li>
+                <li>Both humans and technology are part of cybersecurity</li>
+                <li>Regular updates and monitoring are essential</li>
+            </ul>
+        </section>
+
+        <!-- 08. Quick Quiz -->
+        <section class="quiz-card" id="quiz">
+            <div class="quiz-label">Quick Quiz</div>
+            <p class="quiz-q">Which of the following best describes the "Availability" principle in the CIA Triad?</p>
+            <div class="quiz-opts" id="quizOpts">
+                <label class="quiz-opt">
+                    <input type="radio" name="q1" value="a">
+                    Only authorized users can read the data
+                </label>
+                <label class="quiz-opt">
+                    <input type="radio" name="q1" value="b">
+                    Data cannot be changed without permission
+                </label>
+                <label class="quiz-opt">
+                    <input type="radio" name="q1" value="c">
+                    Systems and data are accessible when needed
+                </label>
+                <label class="quiz-opt">
+                    <input type="radio" name="q1" value="d">
+                    All files are encrypted on disk
+                </label>
+            </div>
+            <button class="quiz-btn" onclick="checkQuiz()">Check Answer</button>
+            <div class="quiz-result" id="quizResult"></div>
+        </section>
+
+        <!-- 09. Summary -->
+        <section class="summary-box" id="summary">
+            <div class="summary-title">Summary</div>
+            <p>Cybersecurity protects digital systems, networks, and data from attacks and unauthorized access.</p>
+            <p>Built on the CIA Triad: <strong>Confidentiality</strong>, <strong>Integrity</strong>, <strong>Availability</strong>.</p>
+            <p>Uses a cycle: Identify → Protect → Detect → Respond → Recover.</p>
+            <p>Covers devices, networks, apps, data, cloud, and critical infrastructure.</p>
+        </section>
+
+        <!-- Completion + Lab -->
+        <div class="action-bar" id="lessonCompletion">
+            <div style="flex:1;min-width:0;">
+                <div style="font-size:13.5px;font-weight:700;color:#f1f5f9;margin-bottom:4px;">Mark this lesson complete</div>
+                <div style="font-size:12px;color:#64748b;">Progress saved to your CyberNexa account</div>
+            </div>
+            <button
+                type="button"
+                class="btn-primary"
+                data-lesson-progress
+                data-course-id="cybersecurity"
+                data-lesson-id="what-is-cybersecurity"
+                data-dashboard-url="../learning-paths/cybersecurity/theory/what-is-cybersecurity.html"
+                data-status-id="lessonCompletionStatus">
+                ✓ Mark Complete
+            </button>
+            <a href="../lab/what-is-cybersecurity-lab.html" class="btn-outline">🧪 Open Lab →</a>
+        </div>
+        <p id="lessonCompletionStatus" role="status" aria-live="polite" style="font-size:12px;color:#94a3b8;text-align:center;margin:0 0 16px;"></p>
+
+        <!-- Topic Navigation -->
+        <nav class="topic-nav" aria-label="Topic navigation">
+            <a href="../../../learning-paths/cybersecurity/theory/cybersecurity.html" class="nav-btn">
+                <span>←</span>
+                <span>
+                    <span class="nav-btn-label">Back to</span>
+                    <span class="nav-btn-text">All Topics</span>
+                </span>
+            </a>
+            <a href="attack-surface.html" class="nav-btn">
+                <span>
+                    <span class="nav-btn-label">Next Topic</span>
+                    <span class="nav-btn-text">Attack Surface</span>
+                </span>
+                <span>→</span>
+            </a>
+        </nav>
+
+    </div><!-- /.article-main -->
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="footer-container">
+        <div>
+            <div class="footer-brand">Cyber<span>Nexa</span></div>
+            <p>Cybersecurity &amp; IT Learning</p>
+        </div>
+        <div class="footer-links">
+            <a href="../../../index.html">Home</a>
+            <a href="../../../footer/about.html">About</a>
+            <a href="../../../footer/contact.html">Contact</a>
+            <a href="../../../footer/privacy-policy.html">Privacy Policy</a>
+            <a href="../../../footer/disclaimer.html">Disclaimer</a>
+        </div>
     </div>
+    <div class="copyright">© 2026 CyberNexa. All rights reserved.</div>
+</footer>
 
-    <p
-        id="lessonCompletionStatus"
-        role="status"
-        aria-live="polite"
-        style="text-align: center; margin-top: 15px;">
-    </p>
-
-</section>
-            <!-- PRACTICAL LAB -->
-
-            <div class="lab-button-area">
-
-                <a
-                    href="../lab/what-is-cybersecurity-lab.html"
-                    class="lab-button"
-                >
- Open Practical Lab
- <span>→</span>
- </a>
-            </div>
-        </div>
-
-    </main>
-
-
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
-
-    <footer class="footer">
-
-        <div class="footer-container">
-
-            <div>
-
-                <div class="footer-brand">
-                    Cyber<span>Nexa</span>
-                </div>
-
-                <p>
-                    Cybersecurity &amp; IT Learning
-                </p>
-
-            </div>
-
-
-            <div class="footer-links">
-
-                <a href="../../../index.html">
-                    Home
-                </a>
-
-                <a href="../../../footer/about.html">
-                    About
-                </a>
-
-                <a href="../../../footer/contact.html">
-                    Contact
-                </a>
-
-                <a href="../../../footer/privacy-policy.html">
-                    Privacy Policy
-                </a>
-
-                <a href="../../../footer/disclaimer.html">
-                    Disclaimer
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="copyright">
-
-            © 2026 CyberNexa. All rights reserved.
-
-        </div>
-
-    </footer>
-
-<!-- Supabase -->
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../../../js/supabase-client.js"></script>
 <script src="../../../js/lesson-progress.js"></script>
 <script src="../../../js/navbar-loader.js"></script>
 <script src="../../../js/navbar.js"></script>
 <script src="../../../js/session.js"></script>
-</body>
 
+<script>
+// Reading Progress Bar
+(function(){
+    var fill = document.getElementById('readingProgress');
+    if(!fill) return;
+    function update(){
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var docH = document.documentElement.scrollHeight - window.innerHeight;
+        fill.style.width = (docH > 0 ? (scrollTop / docH * 100) : 0) + '%';
+    }
+    window.addEventListener('scroll', update, {passive:true});
+    update();
+})();
+
+// TOC active link highlight
+(function(){
+    var links = document.querySelectorAll('.toc-link');
+    var sections = [];
+    links.forEach(function(l){
+        var id = l.getAttribute('href').replace('#','');
+        var el = document.getElementById(id);
+        if(el) sections.push({el:el, link:l});
+    });
+    function onScroll(){
+        var scroll = window.scrollY + 120;
+        var active = null;
+        sections.forEach(function(s){
+            if(s.el.offsetTop <= scroll) active = s;
+        });
+        sections.forEach(function(s){ s.link.classList.remove('active'); });
+        if(active) active.link.classList.add('active');
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+})();
+
+// Quiz
+function checkQuiz(){
+    var opts = document.querySelectorAll('.quiz-opt');
+    var selected = document.querySelector('input[name="q1"]:checked');
+    var result = document.getElementById('quizResult');
+    opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+    if(!selected){
+        result.textContent = 'Please select an answer first.';
+        result.className = 'quiz-result show fail';
+        return;
+    }
+    var correct = 'c';
+    opts.forEach(function(o){
+        var inp = o.querySelector('input');
+        if(inp.value === correct) o.classList.add('correct');
+        else if(inp === selected) o.classList.add('wrong');
+    });
+    if(selected.value === correct){
+        result.textContent = '✅ Correct! Availability means systems and data are accessible when needed.';
+        result.className = 'quiz-result show pass';
+    } else {
+        result.textContent = '❌ Not quite. Availability means systems and data are accessible when needed.';
+        result.className = 'quiz-result show fail';
+    }
+}
+</script>
+
+</body>
 </html>
