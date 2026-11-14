@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,7 +90,7 @@
             <div>
                 <p class="eyebrow">STUDENT ACCOUNT</p>
                 <h1>My Profile</h1>
-                <p class="muted">Manage your personal information and learning account.</p>
+                <p class="muted">Manage your personal information, profile photo, and account security.</p>
             </div>
             <a class="button button-secondary" href="student-dashboard.html">
                 <span aria-hidden="true">←</span> Dashboard
@@ -105,9 +104,23 @@
 
         <!-- Profile Overview Hero (stays outside tabs) -->
         <section class="profile-overview panel">
-            <div class="profile-avatar-ring">
-                <div class="avatar" id="profileAvatar" aria-hidden="true">C</div>
+            <div class="profile-avatar-container">
+                <div class="profile-avatar-ring">
+                    <div class="avatar" id="profileAvatar" aria-hidden="true">C</div>
+                </div>
+                <!-- Avatar Upload Controls -->
+                <div class="avatar-controls">
+                    <label for="avatarFileInput" class="avatar-upload-trigger" title="Upload custom avatar image">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        <span>Change Photo</span>
+                    </label>
+                    <button type="button" id="removeAvatarBtn" class="avatar-remove-btn" title="Remove custom photo" hidden>
+                        Remove
+                    </button>
+                    <input type="file" id="avatarFileInput" accept="image/png, image/jpeg, image/webp" hidden>
+                </div>
             </div>
+
             <div class="overview-details">
                 <p class="eyebrow">YOUR PROFILE</p>
                 <h2 id="overviewName">Loading...</h2>
@@ -129,7 +142,7 @@
             </button>
             <button class="profile-tab-btn" data-tab="security" role="tab" aria-selected="false" aria-controls="tab-security">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Security
+                Security &amp; Protection
             </button>
         </nav>
 
@@ -142,7 +155,7 @@
                     <div>
                         <p class="eyebrow">PROFILE DETAILS</p>
                         <h2>Personal Information</h2>
-                        <p class="muted">Update your student information below.</p>
+                        <p class="muted">Update your student information, email address, and academic profile.</p>
                     </div>
                 </div>
 
@@ -151,40 +164,60 @@
                         <div class="form-field">
                             <label for="fullName">Full Name</label>
                             <input id="fullName" name="full_name" type="text"
-                                   maxlength="100" autocomplete="name" required>
+                                   maxlength="100" autocomplete="name" required placeholder="Enter your full name">
                         </div>
 
-                        <div class="form-field">
-                            <label for="email">Email Address</label>
+                        <!-- Editable Email with dedicated Change Action -->
+                        <div class="form-field email-field-container">
+                            <div class="field-label-row">
+                                <label for="email">Email Address</label>
+                                <button type="button" id="toggleChangeEmailBtn" class="field-link-action">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    Edit Email
+                                </button>
+                            </div>
                             <input id="email" name="email" type="email"
                                    autocomplete="email" readonly>
-                            <small>Email is managed by your authentication account.</small>
+                            <small class="muted" id="emailStatusHint">Account authentication email.</small>
+
+                            <!-- Change Email Inline Box -->
+                            <div id="changeEmailBox" class="inline-change-box" hidden>
+                                <label for="newEmailInput">New Email Address</label>
+                                <div class="inline-input-group">
+                                    <input id="newEmailInput" type="email" placeholder="new-email@example.com">
+                                    <button type="button" id="submitEmailChange" class="button button-primary button-sm">Update Email</button>
+                                    <button type="button" id="cancelEmailChange" class="button button-secondary button-sm">Cancel</button>
+                                </div>
+                                <small class="email-notice-text">
+                                    A confirmation verification link will be sent to the new email address to complete the change.
+                                </small>
+                            </div>
                         </div>
 
                         <div class="form-field">
                             <label for="phone">Phone Number</label>
                             <input id="phone" name="phone" type="tel"
                                    maxlength="30" autocomplete="tel"
-                                   placeholder="Enter phone number">
+                                   placeholder="e.g. +1 555-0199">
                         </div>
 
                         <div class="form-field">
                             <label for="country">Country</label>
                             <input id="country" name="country" type="text"
                                    maxlength="80" autocomplete="country-name"
-                                   placeholder="Enter country">
+                                   placeholder="e.g. Pakistan, United States, UK">
                         </div>
 
                         <div class="form-field">
-                            <label for="university">University</label>
+                            <label for="university">University / Institution</label>
                             <input id="university" name="university" type="text"
-                                   maxlength="150" placeholder="Enter university">
+                                   maxlength="150" placeholder="e.g. Virtual University, NUST">
                         </div>
 
                         <div class="form-field">
-                            <label for="degree">Degree</label>
+                            <label for="degree">Degree / Major</label>
                             <input id="degree" name="degree" type="text"
-                                   maxlength="100" placeholder="e.g. BS Computer Science">
+                                   maxlength="100" placeholder="e.g. BS Cybersecurity / Computer Science">
                         </div>
 
                         <div class="form-field">
@@ -199,6 +232,7 @@
                                 <option value="6">Semester 6</option>
                                 <option value="7">Semester 7</option>
                                 <option value="8">Semester 8</option>
+                                <option value="graduated">Graduated / Professional</option>
                             </select>
                         </div>
                     </div>
@@ -255,41 +289,119 @@
             </section>
         </div>
 
-        <!-- ===== TAB 3: Security ===== -->
+        <!-- ===== TAB 3: Security & Protection ===== -->
         <div class="tab-content" id="tab-security" data-tab="security" role="tabpanel">
 
+            <!-- Security Overview Status Panel -->
+            <section class="panel section-panel" id="security-overview-panel">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">DEFENSE IN DEPTH</p>
+                        <h2>Account Security Status</h2>
+                        <p class="muted">Real-time status of your authentication and session security.</p>
+                    </div>
+                    <span class="security-badge"><span class="badge-dot"></span> Protected</span>
+                </div>
+
+                <div class="security-metrics-grid">
+                    <div class="security-metric-card">
+                        <span class="metric-icon">🛡️</span>
+                        <div>
+                            <span class="metric-label">Authentication Status</span>
+                            <strong class="metric-value text-success" id="securityAuthStatus">Active &amp; Verified</strong>
+                        </div>
+                    </div>
+                    <div class="security-metric-card">
+                        <span class="metric-icon">🔒</span>
+                        <div>
+                            <span class="metric-label">Encryption</span>
+                            <strong class="metric-value">TLS 1.3 / Supabase JWT</strong>
+                        </div>
+                    </div>
+                    <div class="security-metric-card">
+                        <span class="metric-icon">🕒</span>
+                        <div>
+                            <span class="metric-label">Last Sign In</span>
+                            <strong class="metric-value" id="securityLastSignIn">Loading...</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Password & Device Management -->
             <section class="panel section-panel" id="account-security">
                 <div class="section-heading">
                     <div>
-                        <p class="eyebrow">ACCOUNT PROTECTION</p>
-                        <h2>Account &amp; Security</h2>
-                        <p class="muted">Keep your account secure.</p>
+                        <p class="eyebrow">CREDENTIAL MANAGEMENT</p>
+                        <h2>Password &amp; Access</h2>
+                        <p class="muted">Update your password with strong entropy and manage active sessions.</p>
                     </div>
                 </div>
 
+                <!-- Change Password Row -->
                 <div class="security-row">
                     <div>
                         <h3>Change Password</h3>
-                        <p class="muted">Choose a new password for your account.</p>
+                        <p class="muted">Enhance account security with a strong, unique passphrase.</p>
                     </div>
                     <button type="button" id="togglePasswordForm"
                             class="button button-secondary">Change Password</button>
                 </div>
 
+                <!-- Strong Password Form -->
                 <form id="passwordForm" hidden>
                     <div class="form-grid">
+                        <!-- New Password with Show/Hide Toggle -->
                         <div class="form-field">
                             <label for="newPassword">New Password</label>
-                            <input id="newPassword" type="password"
-                                   autocomplete="new-password" minlength="8" required>
+                            <div class="password-input-wrapper">
+                                <input id="newPassword" type="password"
+                                       autocomplete="new-password" minlength="8" required
+                                       placeholder="Enter at least 8 characters">
+                                <button type="button" class="password-toggle-btn" data-target="newPassword" aria-label="Toggle password visibility">
+                                    <svg class="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
+
+                            <!-- Live Password Strength Meter -->
+                            <div class="password-strength-container" id="passwordStrengthBox">
+                                <div class="strength-bar-track">
+                                    <div class="strength-bar-fill" id="strengthBarFill"></div>
+                                </div>
+                                <div class="strength-label-row">
+                                    <span>Strength:</span>
+                                    <strong id="strengthLabel">Enter password</strong>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Confirm Password with Show/Hide Toggle -->
                         <div class="form-field">
                             <label for="confirmPassword">Confirm New Password</label>
-                            <input id="confirmPassword" type="password"
-                                   autocomplete="new-password" minlength="8" required>
+                            <div class="password-input-wrapper">
+                                <input id="confirmPassword" type="password"
+                                       autocomplete="new-password" minlength="8" required
+                                       placeholder="Re-enter your new password">
+                                <button type="button" class="password-toggle-btn" data-target="confirmPassword" aria-label="Toggle password visibility">
+                                    <svg class="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
+                            </div>
+                            <small class="password-match-hint" id="passwordMatchHint"></small>
                         </div>
                     </div>
-                    <p class="muted small-text">Use at least 8 characters and choose a password you do not use elsewhere.</p>
+
+                    <!-- Live Password Rules Checklist -->
+                    <div class="password-rules-box">
+                        <p class="rules-title">Password Security Requirements:</p>
+                        <ul class="rules-list">
+                            <li id="ruleLength" class="rule-item"><span>✕</span> At least 8 characters</li>
+                            <li id="ruleUpper" class="rule-item"><span>✕</span> At least 1 uppercase letter (A-Z)</li>
+                            <li id="ruleLower" class="rule-item"><span>✕</span> At least 1 lowercase letter (a-z)</li>
+                            <li id="ruleNumber" class="rule-item"><span>✕</span> At least 1 number (0-9)</li>
+                            <li id="ruleSpecial" class="rule-item"><span>✕</span> At least 1 special character (!@#$%^&amp;*...)</li>
+                        </ul>
+                    </div>
+
                     <div class="form-actions">
                         <button type="button" id="cancelPassword"
                                 class="button button-secondary">Cancel</button>
@@ -298,13 +410,54 @@
                     </div>
                 </form>
 
+                <!-- Global Device Logout (Sign out from all devices) -->
+                <div class="security-row">
+                    <div>
+                        <h3>Sign Out of All Devices</h3>
+                        <p class="muted">Terminates all active sessions across all browsers and devices immediately.</p>
+                    </div>
+                    <button type="button" id="logoutAllDevicesBtn"
+                            class="button button-secondary">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        Logout All Devices
+                    </button>
+                </div>
+
+                <!-- Current Device Sign Out -->
                 <div class="security-row logout-row">
                     <div>
-                        <h3>Sign Out</h3>
+                        <h3>Current Session Sign Out</h3>
                         <p class="muted">Sign out of your CyberNexa account on this browser.</p>
                     </div>
                     <button type="button" id="logoutButton"
                             class="button button-danger">Logout</button>
+                </div>
+            </section>
+
+            <!-- Cybersecurity Best Practices Advice -->
+            <section class="panel section-panel security-advice-panel">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">BEST PRACTICES</p>
+                        <h2>Cybersecurity Recommendations</h2>
+                    </div>
+                </div>
+                <div class="advice-grid">
+                    <div class="advice-card">
+                        <span class="advice-icon">🔑</span>
+                        <h4>Unique Passphrases</h4>
+                        <p>Avoid reusing passwords across personal, educational, and work accounts.</p>
+                    </div>
+                    <div class="advice-card">
+                        <span class="advice-icon">🎣</span>
+                        <h4>Phishing Vigilance</h4>
+                        <p>CyberNexa will never ask for your password via email or unofficial links.</p>
+                    </div>
+                    <div class="advice-card">
+                        <span class="advice-icon">💻</span>
+                        <h4>Public Computer Safety</h4>
+                        <p>Always use "Logout All Devices" when logging in from shared university labs.</p>
+                    </div>
                 </div>
             </section>
         </div>

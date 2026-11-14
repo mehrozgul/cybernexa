@@ -1,5 +1,5 @@
 /* =====================================================
-   CYBERNEXA — PROFILE PAGE  (Redesigned)
+   CYBERNEXA — PROFILE PAGE  (Enhanced)
    Dark theme: bg #07101e, cards #0d1b2e, accent #3b82f6
 ===================================================== */
 
@@ -74,18 +74,32 @@
 ===================================================== */
 
 .status-message {
-    padding: 12px 18px;
+    padding: 14px 20px;
     border-radius: 10px;
-    font-size: 13.5px;
+    font-size: 14px;
     margin-bottom: 24px;
     background: rgba(59, 130, 246, 0.08);
     border: 1px solid rgba(59, 130, 246, 0.25);
     color: #93c5fd;
     display: none;
+    line-height: 1.5;
 }
 
 .status-message.visible {
     display: block;
+    animation: tab-fade-in 0.25s ease;
+}
+
+.status-message.status-success {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #6ee7b7;
+}
+
+.status-message.status-error {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
 }
 
 /* =====================================================
@@ -101,7 +115,7 @@
 }
 
 /* =====================================================
-   PROFILE OVERVIEW CARD  — avatar ring
+   PROFILE OVERVIEW CARD — Avatar & Image Upload
 ===================================================== */
 
 .profile-overview {
@@ -110,6 +124,14 @@
     gap: 24px;
     padding: 28px 32px;
     flex-wrap: wrap;
+}
+
+.profile-avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
 }
 
 /* Gradient border ring around the avatar */
@@ -142,6 +164,57 @@
     place-items: center;
     border: 3px solid var(--profile-panel);
     letter-spacing: -0.02em;
+    overflow: hidden;
+}
+
+.profile-overview .avatar.has-image {
+    color: transparent;
+    border-color: rgba(59, 130, 246, 0.4);
+}
+
+/* Avatar upload and removal controls */
+.avatar-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.avatar-upload-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.28);
+    color: #93c5fd;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.avatar-upload-trigger:hover {
+    background: rgba(59, 130, 246, 0.25);
+    color: #ffffff;
+    border-color: #3b82f6;
+}
+
+.avatar-remove-btn {
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.28);
+    color: #fca5a5;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.avatar-remove-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    color: #ffffff;
 }
 
 .overview-details {
@@ -170,7 +243,7 @@
 }
 
 /* =====================================================
-   PROFILE TABS  (pills style)
+   PROFILE TABS (pills style)
 ===================================================== */
 
 .profile-tabs {
@@ -312,8 +385,9 @@
 }
 
 .form-field input[readonly] {
-    opacity: 0.65;
-    cursor: not-allowed;
+    opacity: 0.75;
+    cursor: default;
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .form-field small {
@@ -321,17 +395,69 @@
     color: #64748b;
 }
 
-.form-actions {
+/* =====================================================
+   EMAIL EDITING STYLES
+===================================================== */
+
+.field-label-row {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
+    justify-content: space-between;
 }
 
-.small-text {
+.field-link-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    color: var(--profile-primary);
     font-size: 12px;
-    margin: 12px 0 0;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.field-link-action:hover {
+    color: #93c5fd;
+    text-decoration: underline;
+}
+
+.inline-change-box {
+    margin-top: 10px;
+    padding: 16px;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(59, 130, 246, 0.28);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: tab-fade-in 0.2s ease;
+}
+
+.inline-input-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.inline-input-group input {
+    flex: 1;
+    min-width: 180px;
+}
+
+.button-sm {
+    height: 38px;
+    padding: 0 14px;
+    font-size: 13px;
+}
+
+.email-notice-text {
+    font-size: 11.5px;
+    color: #94a3b8;
+    line-height: 1.4;
 }
 
 /* =====================================================
@@ -390,8 +516,16 @@
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
 }
 
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
 /* =====================================================
-   LEARNING STATS GRID  — profile-stat-card
+   LEARNING STATS GRID — profile-stat-card
 ===================================================== */
 
 .stats-grid {
@@ -401,7 +535,6 @@
     margin: 20px 0;
 }
 
-/* Modern stat card */
 .profile-stat-card {
     padding: 22px 20px 18px;
     border: 1px solid rgba(59, 130, 246, 0.14);
@@ -456,31 +589,6 @@
     letter-spacing: 0.05em;
 }
 
-/* Keep old .stat-card for any backward-compat */
-.profile-page .stat-card {
-    padding: 18px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.02);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.profile-page .stat-label {
-    font-size: 11.5px;
-    color: #64748b;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.profile-page .stat-card strong {
-    font-size: 20px;
-    font-weight: 800;
-    color: #60a5fa;
-}
-
 /* Last Activity Row */
 .last-activity {
     padding: 14px 18px;
@@ -496,13 +604,227 @@
     margin: 4px 0 0;
 }
 
-/* Course list */
 .course-list {
     margin-top: 4px;
 }
 
 /* =====================================================
-   ACCOUNT SECURITY
+   DEFENSE IN DEPTH: SECURITY METRICS & STATUS
+===================================================== */
+
+.security-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    color: #6ee7b7;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+}
+
+.security-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.security-metric-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+}
+
+.metric-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.metric-label {
+    display: block;
+    font-size: 11.5px;
+    color: var(--profile-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+}
+
+.metric-value {
+    font-size: 13.5px;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.text-success {
+    color: #4ade80 !important;
+}
+
+.text-warning {
+    color: #fbbf24 !important;
+}
+
+.text-info {
+    color: #38bdf8 !important;
+}
+
+.text-danger {
+    color: #f87171 !important;
+}
+
+/* =====================================================
+   PASSWORD SECURITY & STRENGTH METER
+===================================================== */
+
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper input {
+    padding-right: 44px;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 6px;
+    color: #94a3b8;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.password-toggle-btn:hover {
+    color: #ffffff;
+}
+
+.password-strength-container {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.strength-bar-track {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+}
+
+.strength-bar-fill {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 3px;
+}
+
+.strength-weak {
+    background-color: #ef4444;
+}
+
+.strength-fair {
+    background-color: #f59e0b;
+}
+
+.strength-good {
+    background-color: #3b82f6;
+}
+
+.strength-strong {
+    background-color: #10b981;
+}
+
+.strength-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    color: #94a3b8;
+}
+
+.password-match-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.password-rules-box {
+    margin-top: 16px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.rules-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #cbd5e1;
+    margin: 0 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.rules-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 6px;
+}
+
+.rule-item {
+    font-size: 12px;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+}
+
+.rule-item span {
+    font-size: 11px;
+    color: #ef4444;
+    font-weight: 700;
+}
+
+.rule-item.passed {
+    color: #6ee7b7;
+}
+
+.rule-item.passed span {
+    color: #10b981;
+}
+
+/* =====================================================
+   ACCOUNT SECURITY ROWS
 ===================================================== */
 
 .security-row {
@@ -525,6 +847,51 @@
     font-weight: 700;
     color: #f1f5f9;
     margin: 0 0 4px;
+}
+
+/* =====================================================
+   CYBERSECURITY RECOMMENDATIONS
+===================================================== */
+
+.security-advice-panel {
+    margin-top: 24px;
+}
+
+.advice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.advice-card {
+    padding: 20px 18px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.advice-icon {
+    font-size: 24px;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.advice-card h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #f1f5f9;
+}
+
+.advice-card p {
+    margin: 0;
+    font-size: 12.5px;
+    color: #94a3b8;
+    line-height: 1.45;
 }
 
 /* =====================================================
@@ -572,8 +939,10 @@
         grid-template-columns: 1fr;
     }
 
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .stats-grid,
+    .security-metrics-grid,
+    .advice-grid {
+        grid-template-columns: 1fr;
     }
 
     .section-panel,
@@ -585,16 +954,17 @@
         padding: 8px 14px;
         font-size: 13px;
     }
+
+    .inline-input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
 
 @media (max-width: 480px) {
     .profile-heading {
         flex-direction: column;
         align-items: flex-start;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
     }
 
     .profile-tabs {

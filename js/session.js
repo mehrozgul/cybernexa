@@ -70,7 +70,17 @@ async function initCyberNexaSession() {
 
         const profileIcon = document.createElement("span");
         profileIcon.className = "profile-avatar";
-        profileIcon.textContent = getUserName(user).charAt(0).toUpperCase();
+
+        const avatarUrl = user.user_metadata?.avatar_url || localStorage.getItem("cybernexa_avatar_" + user.id);
+        if (avatarUrl) {
+            profileIcon.style.backgroundImage = `url("${avatarUrl}")`;
+            profileIcon.style.backgroundSize = "cover";
+            profileIcon.style.backgroundPosition = "center";
+            profileIcon.style.color = "transparent";
+            profileIcon.textContent = "";
+        } else {
+            profileIcon.textContent = getUserName(user).charAt(0).toUpperCase();
+        }
 
         const profileLabel = document.createElement("span");
         profileLabel.textContent = "Profile";
