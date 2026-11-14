@@ -49,7 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (forgotForm) {
     const emailInput = document.getElementById("resetEmail");
     const submitButton = document.getElementById("sendResetButton");
-
+    if (!emailInput || !submitButton) {
+      console.error("Forgot password form elements are missing.");
+      return;
+    }
     emailInput.addEventListener("input", () => {
       showError("resetEmailError", "");
       showMessage("forgotMessage", "");
