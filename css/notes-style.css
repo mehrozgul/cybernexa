@@ -1,8 +1,7 @@
 /* =========================================================
-   CYBERNEXA — NOTES STYLE GLOBAL CSS
-   Makes all topic/lab pages look like clean, interactive
-   digital notes with bullet points, highlights, and
-   collapsible sections. Fully responsive.
+   CYBERNEXA — NOTES STYLE GLOBAL CSS  v4
+   Modern, realistic digital-notes layout for all 330 topic pages.
+   Boxes size to content. Fully responsive. No hardcoded heights.
    ========================================================= */
 
 /* =========================================================
@@ -32,16 +31,23 @@
 }
 
 /* =========================================================
-   BODY BACKGROUND (dark note paper feel)
+   SMOOTH SCROLL & GLOBAL RESET
    ========================================================= */
+html { scroll-behavior: smooth; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
-    background: var(--note-bg);
-    color: var(--note-text);
+    background: var(--note-bg) !important;
+    color: var(--note-text) !important;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 /* =========================================================
-   PAGE WRAPPER - all topic pages
+   PAGE WRAPPER — all topic pages, unified max-width
    ========================================================= */
 .article-page,
 .lab-page,
@@ -52,20 +58,31 @@ body {
 .windows-lab-container,
 .windows-learning-page,
 .linux-learning-page,
+.tools-page,
+.tool-page,
+.tool-labs-page,
 .eh-page,
 .ws-page,
 .df-page,
-.tool-page,
 .cyber-topic-page,
 .page {
     max-width: 960px !important;
-    padding: 30px 20px 80px !important;
+    width: 100% !important;
+    padding: clamp(16px, 3vw, 30px) clamp(12px, 4vw, 20px) 80px !important;
     margin: 0 auto !important;
     box-sizing: border-box !important;
+    overflow-x: hidden !important;
+}
+
+/* Full-width outer page shells — keep them full width, constrain inner container */
+.learning-page {
+    max-width: 100% !important;
+    background: var(--note-bg) !important;
+    min-height: auto !important;
 }
 
 /* =========================================================
-   ARTICLE / TOPIC HEADER - notes title style
+   TOPIC HEADER — modern notes-style title block
    ========================================================= */
 .article-header,
 .topic-header,
@@ -77,8 +94,8 @@ body {
     border: 1px solid var(--note-border) !important;
     border-left: 4px solid var(--note-blue) !important;
     border-radius: var(--note-radius) !important;
-    padding: 28px 32px !important;
-    margin-bottom: 28px !important;
+    padding: clamp(18px, 3vw, 28px) clamp(16px, 4vw, 32px) !important;
+    margin-bottom: 24px !important;
     text-align: left !important;
     position: relative;
     overflow: hidden;
@@ -90,12 +107,30 @@ body {
     top: 16px;
     right: 20px;
     font-size: 28px;
-    opacity: 0.15;
+    opacity: 0.12;
+    pointer-events: none;
 }
 
+/* Topic header h1 — responsive font size */
+.article-header h1,
+.topic-header h1,
+.theory-header h1,
+.lab-header h1,
+.windows-lab-header h1,
+.topic-header > h1 {
+    font-size: clamp(20px, 4vw, 34px) !important;
+    font-weight: 800 !important;
+    color: var(--note-text) !important;
+    margin: 0 0 10px !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.02em !important;
+}
+
+/* Category/eyebrow label above h1 */
 .article-label,
 .theory-label,
-.topic-label {
+.topic-label,
+.topic-category {
     display: inline-flex !important;
     align-items: center !important;
     gap: 6px !important;
@@ -111,19 +146,7 @@ body {
     margin-bottom: 12px !important;
 }
 
-.article-header h1,
-.topic-header h1,
-.theory-header h1,
-.lab-header h1,
-.windows-lab-header h1 {
-    font-size: clamp(22px, 4vw, 34px) !important;
-    font-weight: 800 !important;
-    color: var(--note-text) !important;
-    margin: 0 0 10px !important;
-    line-height: 1.25 !important;
-    letter-spacing: -0.02em !important;
-}
-
+/* Topic intro text */
 .article-intro,
 .topic-intro,
 .theory-intro {
@@ -135,103 +158,224 @@ body {
 }
 
 /* =========================================================
-   ARTICLE SECTION - notes card style
+   UNIVERSAL CARD BASE — all 12+ card types
+   Boxes size to their content. No min-height overriding content.
    ========================================================= */
+.learning-card,
+.windows-card,
+.windows-lab-card,
+.linux-card,
+.linux-command-card,
+.linux-user-card,
+.lab-card,
+.tool-card,
+.tool-lab-card,
+.concept-card,
+.method-card,
+.note-card,
+.topic-card,
+.command-card,
+.network-section,
+.eh-card,
+.ws-card,
+.df-card,
 .article-section,
 .theory-section,
 .topic-section,
-.lesson-section {
-    background: var(--note-card) !important;
-    border: 1px solid var(--note-border) !important;
-    border-radius: var(--note-radius) !important;
-    padding: 22px 24px !important;
+.lesson-section,
+.lab-section {
+    /* Content-driven sizing — no fixed height, no min-height */
+    min-height: 0 !important;
+    height: auto !important;
+    width: 100% !important;
+    /* Consistent padding using clamp */
+    padding: clamp(16px, 2.5vw, 24px) clamp(16px, 3vw, 26px) !important;
     margin-bottom: 18px !important;
-    box-shadow: var(--note-shadow) !important;
-    transition: border-color var(--note-transition), box-shadow var(--note-transition) !important;
+    /* Modern notes card look */
+    background: #0d1b2e !important;
+    border: 1px solid rgba(59,130,246,0.16) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.35) !important;
+    /* Allow content to wrap, don't clip it */
+    overflow: visible !important;
+    position: relative;
+    /* Smooth interactions */
+    transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease !important;
+    box-sizing: border-box !important;
 }
 
+/* Linux cards have a sweep ::after effect — keep overflow hidden only for desktop hover */
+.linux-card,
+.linux-command-card,
+.linux-user-card {
+    overflow: hidden !important; /* needed for ::after sweep effect */
+}
+
+/* Hover effects */
+.learning-card:hover,
+.windows-card:hover,
+.windows-lab-card:hover,
+.linux-card:hover,
+.linux-command-card:hover,
+.lab-card:hover,
+.tool-card:hover,
+.tool-lab-card:hover,
+.eh-card:hover,
+.ws-card:hover,
+.df-card:hover,
 .article-section:hover,
-.theory-section:hover,
-.topic-section:hover {
-    border-color: rgba(59,130,246,0.3) !important;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(59,130,246,0.08) !important;
+.theory-section:hover {
+    border-color: rgba(59,130,246,0.32) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.08) !important;
+    transform: translateY(-1px) !important;
 }
 
+/* =========================================================
+   CARD HEADINGS — consistent across all card types
+   ========================================================= */
+.learning-card-heading,
+.linux-card-heading,
+.windows-card-heading,
+.windows-lab-card-heading,
+.lab-card-heading,
+.card-heading {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 16px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+    flex-wrap: wrap !important;
+}
+
+/* Card icons / number badges */
+.learning-icon,
+.linux-icon,
+.windows-icon,
+.card-icon,
+.section-icon {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
+    font-size: 17px !important;
+    border: 1px solid rgba(59,130,246,0.25) !important;
+    background: rgba(59,130,246,0.08) !important;
+    color: var(--note-cyan) !important;
+}
+
+/* Card H2 headings */
+.learning-card h2,
+.windows-card h2,
+.windows-lab-card h2,
+.linux-card h2,
+.lab-card h2,
+.tool-card h2,
+.eh-card h2,
+.ws-card h2,
+.df-card h2,
 .article-section h2,
 .theory-section h2,
 .topic-section h2 {
-    font-size: 17px !important;
+    font-size: clamp(15px, 2.2vw, 19px) !important;
     font-weight: 700 !important;
     color: var(--note-text) !important;
     margin: 0 0 14px !important;
-    padding-bottom: 10px !important;
-    border-bottom: 1px solid rgba(255,255,255,0.07) !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
     line-height: 1.4 !important;
+    letter-spacing: -0.01em !important;
 }
 
-.article-section h2 span,
-.theory-section h2 span {
+/* Section number badges (card-number, section-number, etc.) */
+.card-number,
+.section-number,
+.section-num,
+.section-index,
+.section-marker,
+.step-number {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    min-width: 26px !important;
-    height: 26px !important;
+    min-width: 28px !important;
+    height: 28px !important;
+    padding: 0 6px !important;
     background: rgba(59,130,246,0.15) !important;
     border: 1px solid rgba(59,130,246,0.3) !important;
     border-radius: 6px !important;
     color: #60a5fa !important;
     font-size: 11px !important;
     font-weight: 800 !important;
-    padding: 0 5px !important;
     flex-shrink: 0 !important;
-    -webkit-background-clip: initial !important;
-    -webkit-text-fill-color: initial !important;
-    background-clip: initial !important;
 }
 
+/* =========================================================
+   BODY TEXT IN CARDS
+   ========================================================= */
+.learning-card p,
+.windows-card p,
+.windows-lab-card p,
+.linux-card p,
+.lab-card p,
+.tool-card p,
+.tool-lab-card p,
+.eh-card p,
+.ws-card p,
+.df-card p,
+.concept-card p,
+.method-card p,
 .article-section p,
-.theory-section p {
+.theory-section p,
+main p {
     font-size: 13.5px !important;
     color: var(--note-text-soft) !important;
     line-height: 1.8 !important;
     margin: 0 0 10px !important;
 }
 
+.learning-card p:last-child,
+.windows-card p:last-child,
+.linux-card p:last-child,
 .article-section p:last-child,
 .theory-section p:last-child {
     margin-bottom: 0 !important;
 }
 
 /* =========================================================
-   KEY POINTS - bullet list (notes style)
+   KEY ITEMS / CHECK ITEMS — notes bullet rows
    ========================================================= */
+.key-item,
+.windows-key-item,
+.linux-key-item,
+.check-item,
 .key-points,
 .key-list,
 .note-points {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 8px !important;
     list-style: none !important;
     padding: 0 !important;
-    margin: 12px 0 0 !important;
+    margin: 10px 0 0 !important;
 }
 
+.key-item li,
+.windows-key-item,
+.linux-key-item,
+.check-item,
 .key-point,
 .key-list li,
 .note-point {
     display: flex !important;
     align-items: flex-start !important;
     gap: 10px !important;
-    padding: 10px 14px !important;
-    background: rgba(59,130,246,0.05) !important;
+    padding: 9px 13px !important;
+    background: rgba(59,130,246,0.04) !important;
     border: 1px solid rgba(59,130,246,0.1) !important;
     border-radius: var(--note-radius-sm) !important;
     color: var(--note-text-soft) !important;
     font-size: 13px !important;
-    line-height: 1.6 !important;
+    line-height: 1.65 !important;
+    margin-bottom: 7px !important;
     transition: background var(--note-transition), border-color var(--note-transition) !important;
 }
 
@@ -246,18 +390,22 @@ body {
 
 .key-point:hover,
 .note-point:hover {
-    background: rgba(59,130,246,0.1) !important;
-    border-color: rgba(59,130,246,0.25) !important;
+    background: rgba(59,130,246,0.09) !important;
+    border-color: rgba(59,130,246,0.22) !important;
 }
 
 /* =========================================================
-   INFO GRID / CARDS
+   INFO GRID / CONCEPT GRID — responsive 2-col → 1-col
    ========================================================= */
 .info-grid,
-.concept-grid {
+.concept-grid,
+.tools-grid,
+.tool-grid,
+.cards-grid,
+.topics-grid {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
-    gap: 12px !important;
+    grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)) !important;
+    gap: 14px !important;
     margin: 14px 0 0 !important;
 }
 
@@ -267,6 +415,8 @@ body {
     border: 1px solid rgba(255,255,255,0.08) !important;
     border-radius: var(--note-radius-sm) !important;
     padding: 16px !important;
+    min-height: 0 !important;
+    height: auto !important;
     transition: border-color var(--note-transition), transform var(--note-transition) !important;
 }
 
@@ -299,7 +449,23 @@ body {
 }
 
 /* =========================================================
-   CONCEPT LIST - notes bullet style
+   TOOL CARDS (cybersecurity-tools pages)
+   ========================================================= */
+.tool-card,
+.tool-lab-card {
+    min-height: 0 !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.tool-card p,
+.tool-lab-card p {
+    flex: 1 !important;
+}
+
+/* =========================================================
+   CONCEPT LIST — notes bullet style
    ========================================================= */
 .concept-list {
     display: flex !important;
@@ -309,7 +475,7 @@ body {
 }
 
 .concept-item {
-    padding: 12px 16px !important;
+    padding: 11px 15px !important;
     background: rgba(255,255,255,0.025) !important;
     border: 1px solid rgba(255,255,255,0.07) !important;
     border-left: 3px solid var(--note-blue) !important;
@@ -338,16 +504,19 @@ body {
 }
 
 /* =========================================================
-   DEFINITION BOX - highlighted note
+   DEFINITION BOX — blue accent callout
    ========================================================= */
 .definition-box,
-.note-box {
+.note-box,
+.windows-objective-box {
     background: rgba(59,130,246,0.07) !important;
     border: 1px solid rgba(59,130,246,0.2) !important;
     border-left: 4px solid var(--note-blue) !important;
     border-radius: 0 var(--note-radius-sm) var(--note-radius-sm) 0 !important;
-    padding: 16px 18px !important;
+    padding: 15px 18px !important;
     margin: 0 0 12px !important;
+    height: auto !important;
+    min-height: 0 !important;
 }
 
 .definition-box strong,
@@ -362,7 +531,8 @@ body {
 }
 
 .definition-box p,
-.note-box p {
+.note-box p,
+.windows-objective-box p {
     font-size: 13.5px !important;
     color: var(--note-text-soft) !important;
     margin: 0 !important;
@@ -370,15 +540,16 @@ body {
 }
 
 /* =========================================================
-   EXAMPLE BOX - green accent
+   EXAMPLE BOX — green accent
    ========================================================= */
 .example-box {
     background: rgba(16,185,129,0.06) !important;
     border: 1px solid rgba(16,185,129,0.18) !important;
     border-left: 4px solid var(--note-green) !important;
     border-radius: 0 var(--note-radius-sm) var(--note-radius-sm) 0 !important;
-    padding: 16px 18px !important;
+    padding: 15px 18px !important;
     margin: 0 !important;
+    height: auto !important;
 }
 
 .example-label {
@@ -399,7 +570,7 @@ body {
 }
 
 /* =========================================================
-   WARNING / CAUTION BOX - amber accent
+   WARNING / CAUTION BOX — amber accent
    ========================================================= */
 .warning-box,
 .caution-box {
@@ -407,18 +578,21 @@ body {
     border: 1px solid rgba(245,158,11,0.2) !important;
     border-left: 4px solid var(--note-amber) !important;
     border-radius: 0 var(--note-radius-sm) var(--note-radius-sm) 0 !important;
-    padding: 16px 18px !important;
+    padding: 15px 18px !important;
     margin: 0 !important;
+    height: auto !important;
 }
 
 /* =========================================================
-   SUMMARY BOX - end of topic
+   SUMMARY BOX — end-of-topic highlight
    ========================================================= */
 .summary-box {
     background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(56,189,248,0.05)) !important;
     border: 1px solid rgba(59,130,246,0.2) !important;
     border-radius: var(--note-radius) !important;
-    padding: 20px 22px !important;
+    padding: 18px 22px !important;
+    height: auto !important;
+    min-height: 0 !important;
 }
 
 .summary-box strong {
@@ -439,7 +613,63 @@ body {
 }
 
 /* =========================================================
-   LAB CODE BLOCKS - terminal style
+   LAB STEPS / NUMBERED LISTS — notes-style steps
+   ========================================================= */
+.lab-steps,
+.tool-steps,
+.steps-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    counter-reset: step-counter !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 12px 0 0 !important;
+}
+
+.lab-step,
+.tool-step,
+.step-item {
+    display: flex !important;
+    gap: 14px !important;
+    padding: 13px 15px !important;
+    background: rgba(255,255,255,0.02) !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
+    border-radius: var(--note-radius-sm) !important;
+    counter-increment: step-counter !important;
+    align-items: flex-start !important;
+    transition: border-color var(--note-transition) !important;
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+.lab-step::before,
+.tool-step::before,
+.step-item::before {
+    content: counter(step-counter) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 26px !important;
+    height: 26px !important;
+    background: rgba(59,130,246,0.15) !important;
+    border: 1px solid rgba(59,130,246,0.3) !important;
+    border-radius: 50% !important;
+    color: #93c5fd !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    flex-shrink: 0 !important;
+}
+
+.lab-step:hover,
+.tool-step:hover,
+.step-item:hover {
+    border-color: rgba(59,130,246,0.25) !important;
+    background: rgba(59,130,246,0.04) !important;
+}
+
+/* =========================================================
+   CODE BLOCKS / TERMINAL — notes code style
    ========================================================= */
 .code-block,
 .terminal-block,
@@ -452,10 +682,11 @@ pre, code {
     font-size: 12.5px !important;
     line-height: 1.65 !important;
     overflow-x: auto !important;
-    padding: 14px 16px !important;
+    padding: 13px 16px !important;
     white-space: pre-wrap !important;
     word-break: break-word !important;
     margin: 10px 0 !important;
+    height: auto !important;
 }
 
 pre code {
@@ -465,8 +696,40 @@ pre code {
     border-radius: 0 !important;
 }
 
+/* Lab terminal title bar */
+.lab-box,
+.terminal-box,
+.command-box {
+    background: #040c18 !important;
+    border: 1px solid rgba(56,189,248,0.2) !important;
+    border-radius: var(--note-radius-sm) !important;
+    padding: 16px 20px !important;
+    margin: 12px 0 !important;
+    position: relative !important;
+    height: auto !important;
+}
+
+.lab-box-title,
+.terminal-title {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #38bdf8 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    margin-bottom: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.lab-box-title::before,
+.terminal-title::before {
+    content: '▶' !important;
+    font-size: 8px !important;
+}
+
 /* =========================================================
-   COLLAPSIBLE SECTIONS (interactive)
+   COLLAPSIBLE SECTIONS
    ========================================================= */
 .collapsible-section {
     background: var(--note-card) !important;
@@ -481,7 +744,7 @@ pre code {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 16px 20px !important;
+    padding: 15px 20px !important;
     background: transparent !important;
     border: none !important;
     color: var(--note-text) !important;
@@ -508,7 +771,6 @@ pre code {
 
 .collapsible-toggle.open::after {
     content: '−' !important;
-    transform: rotate(0deg) !important;
 }
 
 .collapsible-body {
@@ -522,7 +784,7 @@ pre code {
 }
 
 /* =========================================================
-   PROGRESS INDICATOR (topic completion feel)
+   PROGRESS INDICATOR
    ========================================================= */
 .topic-progress-bar {
     width: 100%;
@@ -541,7 +803,7 @@ pre code {
 }
 
 /* =========================================================
-   BREADCRUMB - navigation trail
+   BREADCRUMB
    ========================================================= */
 .article-breadcrumb,
 .breadcrumb,
@@ -575,7 +837,7 @@ pre code {
 }
 
 /* =========================================================
-   LAB BUTTON / ACTION BUTTONS
+   BUTTONS — primary & secondary
    ========================================================= */
 .lab-button,
 .theory-button,
@@ -600,6 +862,7 @@ pre code {
     text-decoration: none !important;
     transition: background var(--note-transition), transform var(--note-transition), box-shadow var(--note-transition) !important;
     box-shadow: 0 4px 14px rgba(59,130,246,0.35) !important;
+    height: auto !important;
 }
 
 .lab-button:hover,
@@ -623,7 +886,6 @@ pre code {
     margin-top: 20px !important;
 }
 
-/* secondary / outline buttons */
 .btn-secondary,
 .reset-btn,
 .copy-button,
@@ -643,6 +905,7 @@ pre code {
     cursor: pointer !important;
     text-decoration: none !important;
     transition: background var(--note-transition), border-color var(--note-transition), color var(--note-transition) !important;
+    height: auto !important;
 }
 
 .btn-secondary:hover,
@@ -656,7 +919,7 @@ pre code {
 }
 
 /* =========================================================
-   NAVIGATION BAR (previous / next topic)
+   TOPIC NAVIGATION (prev/next links)
    ========================================================= */
 .topic-nav,
 .lab-navigation,
@@ -721,6 +984,7 @@ pre code {
     padding: 22px 24px !important;
     margin-bottom: 18px !important;
     text-align: center !important;
+    height: auto !important;
 }
 
 #lessonCompletion h2,
@@ -739,40 +1003,7 @@ pre code {
 }
 
 /* =========================================================
-   LAB TERMINAL / COMMAND BOX
-   ========================================================= */
-.lab-box,
-.terminal-box,
-.command-box {
-    background: #040c18 !important;
-    border: 1px solid rgba(56,189,248,0.2) !important;
-    border-radius: var(--note-radius-sm) !important;
-    padding: 18px 20px !important;
-    margin: 12px 0 !important;
-    position: relative !important;
-}
-
-.lab-box-title,
-.terminal-title {
-    font-size: 10px !important;
-    font-weight: 700 !important;
-    color: #38bdf8 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.1em !important;
-    margin-bottom: 10px !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-}
-
-.lab-box-title::before,
-.terminal-title::before {
-    content: '▶' !important;
-    font-size: 8px !important;
-}
-
-/* =========================================================
-   QUIZ / INTERACTIVE SECTIONS
+   QUIZ / INTERACTIVE
    ========================================================= */
 .quiz-section,
 .quiz-container {
@@ -781,6 +1012,7 @@ pre code {
     border-radius: var(--note-radius) !important;
     padding: 22px 24px !important;
     margin-bottom: 18px !important;
+    height: auto !important;
 }
 
 .quiz-question {
@@ -810,6 +1042,7 @@ pre code {
     cursor: pointer !important;
     transition: background var(--note-transition), border-color var(--note-transition) !important;
     user-select: none !important;
+    height: auto !important;
 }
 
 .quiz-option:hover,
@@ -834,7 +1067,7 @@ pre code {
 }
 
 /* =========================================================
-   TABLE STYLES - notes table
+   TABLES — notes table style
    ========================================================= */
 table {
     width: 100% !important;
@@ -872,17 +1105,6 @@ tr:last-child td {
 }
 
 /* =========================================================
-   SECTION DIVIDER (visual note separator)
-   ========================================================= */
-.section-divider,
-.note-divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent);
-    margin: 20px 0;
-    border: none;
-}
-
-/* =========================================================
    TOPIC TAGS / BADGES
    ========================================================= */
 .topic-tag,
@@ -904,128 +1126,130 @@ tr:last-child td {
 .tag-red { background: rgba(244,63,94,0.12) !important; color: #fda4af !important; border: 1px solid rgba(244,63,94,0.25) !important; }
 
 /* =========================================================
-   TOOL STEPS / NUMBERED LIST (lab steps)
+   SECTION DIVIDER
    ========================================================= */
-.lab-steps,
-.tool-steps,
-.steps-list {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    counter-reset: step-counter !important;
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 12px 0 0 !important;
-}
-
-.lab-step,
-.tool-step,
-.step-item {
-    display: flex !important;
-    gap: 14px !important;
-    padding: 14px 16px !important;
-    background: rgba(255,255,255,0.02) !important;
-    border: 1px solid rgba(255,255,255,0.07) !important;
-    border-radius: var(--note-radius-sm) !important;
-    counter-increment: step-counter !important;
-    align-items: flex-start !important;
-    transition: border-color var(--note-transition) !important;
-}
-
-.lab-step::before,
-.tool-step::before,
-.step-item::before {
-    content: counter(step-counter) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-width: 26px !important;
-    height: 26px !important;
-    background: rgba(59,130,246,0.15) !important;
-    border: 1px solid rgba(59,130,246,0.3) !important;
-    border-radius: 50% !important;
-    color: #93c5fd !important;
-    font-size: 11px !important;
-    font-weight: 800 !important;
-    flex-shrink: 0 !important;
-}
-
-.lab-step:hover,
-.tool-step:hover,
-.step-item:hover {
-    border-color: rgba(59,130,246,0.25) !important;
-    background: rgba(59,130,246,0.04) !important;
+.section-divider,
+.note-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59,130,246,0.3), transparent);
+    margin: 20px 0;
+    border: none;
 }
 
 /* =========================================================
-   RESPONSIVE — TABLET
+   SELECTION & SCROLLBAR
+   ========================================================= */
+::selection {
+    background: rgba(59,130,246,0.35);
+    color: #fff;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0d1a2e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(59,130,246,0.4);
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(59,130,246,0.65);
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET (≤860px)
    ========================================================= */
 @media (max-width: 860px) {
     .article-page,
     .lab-page,
     .theory-page,
-    .learning-page,
-    .eh-page, .ws-page, .df-page, .tool-page {
-        padding: 28px 16px 64px !important;
+    .learning-container,
+    .eh-page, .ws-page, .df-page, .tool-page, .tools-page, .tool-labs-page {
+        padding: 24px 16px 64px !important;
     }
 
     .article-header,
     .topic-header {
-        padding: 20px 20px !important;
-    }
-
-    .article-header h1,
-    .topic-header h1 {
-        font-size: 24px !important;
-    }
-
-    .article-section,
-    .theory-section {
-        padding: 18px 18px !important;
+        padding: 18px 20px !important;
+        margin-bottom: 20px !important;
     }
 
     .info-grid,
-    .concept-grid {
+    .concept-grid,
+    .tools-grid,
+    .tool-grid {
         grid-template-columns: 1fr 1fr !important;
+    }
+
+    .learning-card,
+    .windows-card,
+    .windows-lab-card,
+    .linux-card,
+    .lab-card,
+    .eh-card, .ws-card, .df-card {
+        padding: 18px 18px !important;
     }
 }
 
 /* =========================================================
-   RESPONSIVE — MOBILE
+   RESPONSIVE — MOBILE (≤600px)
    ========================================================= */
 @media (max-width: 600px) {
     .article-page,
     .lab-page,
     .theory-page,
-    .learning-page,
-    .eh-page, .ws-page, .df-page, .tool-page {
-        padding: 20px 12px 56px !important;
+    .learning-container,
+    .windows-lab-container,
+    .eh-page, .ws-page, .df-page, .tool-page, .tools-page, .tool-labs-page {
+        padding: 16px 12px 56px !important;
     }
 
     .article-header,
     .topic-header {
-        padding: 16px 16px !important;
-        margin-bottom: 18px !important;
+        padding: 15px 14px !important;
+        margin-bottom: 16px !important;
     }
 
     .article-header h1,
-    .topic-header h1 {
-        font-size: 20px !important;
+    .topic-header h1,
+    .theory-header h1 {
+        font-size: clamp(18px, 5vw, 24px) !important;
     }
 
+    .learning-card,
+    .windows-card,
+    .windows-lab-card,
+    .linux-card,
+    .lab-card,
+    .tool-card,
+    .tool-lab-card,
+    .eh-card, .ws-card, .df-card,
     .article-section,
     .theory-section {
         padding: 14px 14px !important;
         margin-bottom: 12px !important;
+        border-radius: 10px !important;
     }
 
     .article-section h2,
-    .theory-section h2 {
-        font-size: 15px !important;
+    .theory-section h2,
+    .learning-card h2,
+    .windows-card h2,
+    .linux-card h2 {
+        font-size: 14.5px !important;
     }
 
     .info-grid,
-    .concept-grid {
+    .concept-grid,
+    .tools-grid,
+    .tool-grid,
+    .cards-grid {
         grid-template-columns: 1fr !important;
     }
 
@@ -1051,6 +1275,16 @@ tr:last-child td {
         width: 100% !important;
     }
 
+    .lab-button-area,
+    .theory-button-area {
+        flex-direction: column !important;
+    }
+
+    .btn-secondary,
+    .reset-btn {
+        width: 100% !important;
+    }
+
     pre, code, .code-block {
         font-size: 11px !important;
     }
@@ -1063,42 +1297,32 @@ tr:last-child td {
         padding: 7px 10px !important;
     }
 
-    .lab-button-area,
-    .theory-button-area {
-        flex-direction: column !important;
-    }
-
-    .btn-secondary,
-    .reset-btn {
-        width: 100% !important;
+    .learning-card-heading,
+    .linux-card-heading,
+    .windows-card-heading {
+        gap: 10px !important;
     }
 }
 
 /* =========================================================
-   SMOOTH SCROLLING & SELECTION COLOR
+   RESPONSIVE — SMALL MOBILE (≤380px)
    ========================================================= */
-html { scroll-behavior: smooth; }
+@media (max-width: 380px) {
+    .learning-card,
+    .windows-card,
+    .linux-card,
+    .lab-card,
+    .eh-card, .ws-card, .df-card {
+        padding: 12px 12px !important;
+    }
 
-::selection {
-    background: rgba(59,130,246,0.35);
-    color: #fff;
+    .article-header h1,
+    .topic-header h1 {
+        font-size: 18px !important;
+    }
+
+    .info-grid,
+    .concept-grid {
+        gap: 8px !important;
+    }
 }
-
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: #0d1a2e;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(59,130,246,0.4);
-    border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(59,130,246,0.65);
-}
-

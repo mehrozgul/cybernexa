@@ -1,8 +1,7 @@
 /* =========================================================
-   CYBERNEXA — INTERACTIVE NOTES STYLE v3
-   Smart Concise Notes Engine: High-yield concepts,
-   streamlined steps, interactive checkpoints & full responsiveness.
-   Applies to ALL 330 theory and lab topics automatically.
+   CYBERNEXA — INTERACTIVE NOTES STYLE v4
+   Smart Concise Notes Engine: collapsible cards, checkpoints,
+   reading progress, TOC, copy buttons — all 330 topic pages.
    ========================================================= */
 
 /* ── Notebook-feel Dark Base ── */
@@ -26,21 +25,23 @@ body {
     transition: width 0.1s linear;
 }
 
-/* ── Essential Notes Mode Bar (Header Pill) ── */
+/* ── Essential Notes Mode Bar ── */
 .cnx-mode-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     padding: 10px 18px;
-    margin: 18px auto 26px;
-    max-width: 1000px;
+    margin: 16px auto 22px;
+    max-width: 960px;
     background: linear-gradient(135deg, rgba(13, 27, 46, 0.95), rgba(7, 16, 30, 0.95));
     border: 1px solid rgba(59, 130, 246, 0.28);
     border-radius: 12px;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
     flex-wrap: wrap;
     z-index: 10;
+    box-sizing: border-box;
+    width: 100%;
 }
 .cnx-mode-title {
     font-size: 13px;
@@ -65,6 +66,7 @@ body {
     background: rgba(59, 130, 246, 0.12);
     color: #93c5fd;
     transition: all 0.2s ease;
+    white-space: nowrap;
 }
 .cnx-mode-toggle:hover {
     background: rgba(59, 130, 246, 0.25);
@@ -113,7 +115,7 @@ body {
     margin-top: 8px;
 }
 
-/* ── Universal Card Compactness (Applies to all 330 pages) ── */
+/* ── Universal Card Base (All 330 pages) ── */
 .learning-card,
 .lab-card,
 .concept-card,
@@ -132,13 +134,37 @@ body {
 .article-section,
 .theory-section,
 .lab-section {
-    padding: 20px 24px !important;
-    margin-bottom: 18px !important;
+    padding: clamp(14px, 2.5vw, 24px) clamp(14px, 3vw, 26px) !important;
+    margin-bottom: 16px !important;
     border-radius: 12px !important;
     background: #0d1b2e !important;
     border: 1px solid rgba(59, 130, 246, 0.16) !important;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35) !important;
+    min-height: 0 !important;
+    height: auto !important;
     transition: border-color 0.2s, box-shadow 0.2s !important;
+    box-sizing: border-box !important;
+}
+
+/* Linux cards keep overflow:hidden for sweep effect */
+.linux-card,
+.linux-command-card {
+    overflow: hidden !important;
+}
+
+/* Other cards should not clip their content */
+.learning-card,
+.windows-card,
+.windows-lab-card,
+.lab-card,
+.eh-card,
+.ws-card,
+.df-card,
+.concept-card,
+.method-card,
+.article-section,
+.theory-section {
+    overflow: visible !important;
 }
 
 .learning-card:hover,
@@ -147,9 +173,10 @@ body {
 .windows-lab-card:hover,
 .linux-card:hover {
     border-color: rgba(59, 130, 246, 0.32) !important;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.08) !important;
 }
 
-/* ── Universal Collapsible Section Toggle ── */
+/* ── Collapsible Section Toggle ── */
 .cnx-section-toggle {
     width: 100%;
     display: flex;
@@ -174,6 +201,7 @@ body {
 }
 .cnx-toggle-icon {
     width: 24px; height: 24px;
+    min-width: 24px;
     background: rgba(59, 130, 246, 0.1);
     border: 1px solid rgba(59, 130, 246, 0.25);
     border-radius: 6px;
@@ -202,7 +230,7 @@ body {
     padding-top: 0 !important;
 }
 
-/* ── Universal Section Done Badge ── */
+/* ── Section Done Badge ── */
 .cnx-section-done-badge {
     display: none;
     padding: 2px 8px;
@@ -213,6 +241,7 @@ body {
     font-size: 10px;
     font-weight: 700;
     flex-shrink: 0;
+    white-space: nowrap;
 }
 .cnx-section-done-badge.show {
     display: inline-flex;
@@ -237,6 +266,9 @@ body {
     user-select: none !important;
     list-style: none !important;
     margin-bottom: 6px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
 }
 .cnx-check-item:hover {
     background: rgba(59, 130, 246, 0.08) !important;
@@ -249,6 +281,7 @@ body {
 }
 .cnx-checkbox {
     width: 17px; height: 17px;
+    min-width: 17px;
     border: 1.5px solid rgba(59, 130, 246, 0.4);
     border-radius: 4px;
     flex-shrink: 0;
@@ -276,7 +309,7 @@ body {
     color: #64748b !important;
 }
 
-/* ── Short Paragraph Truncation ── */
+/* ── Paragraph Truncation ── */
 .cnx-para-short { display: inline; }
 .cnx-para-rest { display: none; }
 .cnx-read-more-btn {
@@ -303,7 +336,7 @@ body {
     color: #94a3b8;
 }
 
-/* ── In Essential Notes Mode: Streamline Narrative Details ── */
+/* ── Essential Notes Mode ── */
 body.cnx-essential-mode .cnx-trimmed:not(.cnx-para-expanded) .cnx-para-rest {
     display: none !important;
 }
@@ -312,7 +345,7 @@ body.cnx-essential-mode .windows-objective-box,
 body.cnx-essential-mode .summary-box {
     border-left: 3px solid #3b82f6 !important;
     background: rgba(59, 130, 246, 0.06) !important;
-    padding: 14px 18px !important;
+    padding: 12px 16px !important;
 }
 
 /* ── Code Copy Buttons ── */
@@ -333,6 +366,7 @@ body.cnx-essential-mode .summary-box {
     cursor: pointer;
     transition: all 0.18s;
     z-index: 5;
+    white-space: nowrap;
 }
 .cnx-copy-btn:hover {
     background: rgba(59, 130, 246, 0.3);
@@ -355,6 +389,7 @@ body.cnx-essential-mode .summary-box {
 .cnx-progress-bar-mini {
     flex: 1;
     max-width: 160px;
+    min-width: 60px;
     height: 5px;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 999px;
@@ -372,7 +407,7 @@ body.cnx-essential-mode .summary-box {
     white-space: nowrap;
 }
 
-/* ── Floating Table of Contents (Desktop Only) ── */
+/* ── Floating Table of Contents (Desktop ≥1260px) ── */
 #cnx-toc-float {
     display: none;
 }
@@ -395,8 +430,11 @@ body.cnx-essential-mode .summary-box {
     #cnx-toc-float::-webkit-scrollbar { width: 3px; }
     #cnx-toc-float::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 999px; }
 
+    /* Push main content left of TOC */
     main, .article-page, .lab-page, .theory-page, .learning-page,
-    .windows-lab-page, .eh-page, .ws-page, .df-page, .tool-page, .cyber-topic-page {
+    .learning-container, .windows-lab-page, .windows-lab-container,
+    .eh-page, .ws-page, .df-page, .tool-page, .tools-page, .tool-labs-page,
+    .cyber-topic-page {
         margin-right: 240px !important;
         max-width: 960px !important;
     }
@@ -430,17 +468,20 @@ body.cnx-essential-mode .summary-box {
     border-left-color: #3b82f6;
 }
 
-/* ── Typography and Spacing Tweaks for High Readability ── */
-main p, .learning-card p, .windows-lab-card p, .linux-card p {
-    font-size: 14px !important;
-    line-height: 1.7 !important;
+/* ── Typography Tweaks for Readability ── */
+main p, .learning-card p, .windows-lab-card p, .linux-card p,
+.windows-card p, .lab-card p, .eh-card p, .ws-card p, .df-card p {
+    font-size: 13.5px !important;
+    line-height: 1.8 !important;
     color: #cbd5e1 !important;
 }
 
 /* ── Full Mobile Responsiveness ── */
 @media (max-width: 1259px) {
     main, .article-page, .lab-page, .theory-page, .learning-page,
-    .windows-lab-page, .learning-container, .windows-lab-container {
+    .learning-container, .windows-lab-page, .windows-lab-container,
+    .eh-page, .ws-page, .df-page, .tool-page, .tools-page, .tool-labs-page,
+    .cyber-topic-page {
         margin-right: auto !important;
         max-width: 100% !important;
     }
@@ -451,8 +492,10 @@ main p, .learning-card p, .windows-lab-card p, .linux-card p {
     .lab-card,
     .windows-card,
     .windows-lab-card,
-    .linux-card {
-        padding: 16px 16px !important;
+    .linux-card,
+    .eh-card, .ws-card, .df-card,
+    .concept-card, .method-card {
+        padding: 15px 15px !important;
         border-radius: 10px !important;
     }
 
@@ -461,7 +504,7 @@ main p, .learning-card p, .windows-lab-card p, .linux-card p {
         align-items: flex-start;
         gap: 8px;
         padding: 10px 14px;
-        margin: 12px 0 18px;
+        margin: 10px 0 16px;
     }
 
     .cnx-mode-toggle {
@@ -473,6 +516,10 @@ main p, .learning-card p, .windows-lab-card p, .linux-card p {
         font-size: 13px !important;
         padding: 8px 10px !important;
     }
+
+    .cnx-read-more-btn {
+        font-size: 10.5px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -482,5 +529,21 @@ main p, .learning-card p, .windows-lab-card p, .linux-card p {
         width: 36px;
         height: 36px;
         font-size: 16px;
+    }
+
+    .cnx-mode-bar {
+        margin: 8px 0 14px;
+        padding: 10px 12px;
+        border-radius: 10px;
+    }
+
+    .cnx-copy-btn {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+
+    .cnx-toggle-icon {
+        width: 22px; height: 22px;
+        font-size: 13px;
     }
 }
